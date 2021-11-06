@@ -8,14 +8,15 @@
 
 
       <div class="ml-3">
-        <div class="input-group input-group-sm">
+          <img src="image/alpahred.png" class="brand-image" width="15%">
+        {{-- <div class="input-group input-group-sm">
             <input class="form-control form-control-navbar" @keyup="searchit" v-model="search" type="search" placeholder="Search" aria-label="Search">
             <div class="input-group-append">
               <button class="btn btn-navbar" @click="searchit">
                 <i class="fa fa-search"></i>
               </button>
             </div>
-        </div>
+        </div> --}}
     </div>
 
 

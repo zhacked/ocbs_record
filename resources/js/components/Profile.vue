@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-md-12 mt-3">
                 <div class="card card-widget widget-user">
-                <div class="widget-user-header text-pink" style="background-image:url('./image/user-cover.jpg')">
+                <div class="widget-user-header text-bold text-white" style="background-image:url('./image/user-cover.jpg')">
                     <h1 class="widget-user-username ">{{this.form.name}}</h1>
                     <h5 class="widget-user-desc">{{this.form.type}}</h5>
                 </div>
@@ -28,20 +28,20 @@
                     <div class="row">
                     <div class="col-sm-4 border-right">
                         <div class="description-block">
-                        <h5 class="description-header">3,200</h5>
-                        <span class="description-text">SALES</span>
+                        <h5 class="description-header">0</h5>
+                        <span class="description-text">Activity</span>
                         </div>
                     </div>
                     <div class="col-sm-4 border-right">
                         <div class="description-block">
-                        <h5 class="description-header">13,000</h5>
-                        <span class="description-text">FOLLOWERS</span>
+                        <h5 class="description-header">0</h5>
+                        <span class="description-text">Pending</span>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="description-block">
-                        <h5 class="description-header">35</h5>
-                        <span class="description-text">PRODUCTS</span>
+                        <h5 class="description-header">0</h5>
+                        <span class="description-text">Users</span>
                         </div>
                     </div>
                     </div>
@@ -118,7 +118,7 @@
 
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-12">
-                                    <button @click.prevent="updateInfo" type="submit" class="btn btn-success">Update</button>
+                                    <button @click.prevent="updateInfo" type="submit" class="btn btn-success text-white">Update</button>
                                     </div>
                                 </div>
                                 </form>
