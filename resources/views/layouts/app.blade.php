@@ -8,8 +8,10 @@
 		<title>{{ config('app.name', 'Laravel') }}</title>
         <link rel="shortcut icon" href="{{ asset('image/favicon.ico') }}">
 		<script src="{{ asset('js/app.js') }}" defer></script>
+	
 		<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 		<link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+		
 
 	</head>
 		<body>
