@@ -7,13 +7,13 @@
 						<v-card-title class="card-header">
 							<strong> Statement of Account</strong>
                             <v-spacer></v-spacer>
-							<v-card-actions class="card-tools">
-                              <input class="form-control" type="file" id="input" accept=".xls,.xlsx"  @change="file" >
-
-                                <button class="btn btn-success" id="button" >
-                                   <i class="fa fa-plus"></i>  import excel
-                                </button>
+                            <form @submit.prevent="proceedAction()">
+							<v-card-actions class="card-tools" >
+                               <label class="form-control-label"  for="input-file-import">Upload Excel File</label>
+                                <input type="file" class="form-control" :class="{ ' is-invalid' : error.message }" id="input-file-import" name="file_import" ref="import_file"  @change="onFileChange">
+                              	<v-btn type="submit" color="success"  elevation="2">send</v-btn>
 							</v-card-actions>
+                            </form>
 						</v-card-title>
 
 
@@ -53,7 +53,7 @@
 				</v-col>
 			</v-row>
 
-              <pre id="jsondata"></pre>
+        
 		</v-container>
 	</v-app>
 </template>
@@ -61,23 +61,34 @@
      export default {
          data(){
              return {
-                 data : [{
-                    "name":"jayanth",
-                    "data":"scd",
-                    "abc":"sdef"
-                }],
-                selectedFile:[]
+                error: {},
+                import_file: '',
              }
          },
         methods: {
-            file(event){
-                let selectedFile;
-                selectedFile =this.file = event.target.files ? event.target.files[0] : null;
-   
-                var fileReader = new FileReader();
-                console.log(fileReader);
+            onFileChange(e) {
+                 this.import_file = e.target.files[0];
+            },
+            proceedAction() {
     
-            }
+                let formData = new FormData();
+                formData.append('import_file', this.import_file);
+
+                axios.post('/api/import', formData, {
+                    headers: { 'content-type': 'multipart/form-data' }
+                    })
+                    .then(response => {
+                        if(response.status === 200) {
+                                console.log(response)
+                        }
+                    })
+                    .catch(error => {
+                        // code here when an upload is not valid
+                        this.uploading = false
+                        this.error = error.response.data
+                        console.log('check error: ', this.error)
+                    });
+                }
         }
      }
 </script>

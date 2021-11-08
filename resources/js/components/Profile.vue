@@ -152,8 +152,6 @@
             getProfilePhoto(){
                 let photo = (this.form.photo.length > 200) ? this.form.photo : "image/profile/"+ this.form.photo ;
                 return photo;
-
-
             },
             updateInfo(){
 
