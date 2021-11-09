@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\import;
-use Maatwebsite\Excel\Excel;
 
 class importController extends Controller
 {
@@ -29,9 +28,10 @@ class importController extends Controller
             'import_file' => 'required|file|mimes:xls,xlsx'
         ]);
 
+        dd($request->file('import_file'));
         $path = $request->file('import_file');
         $data = Excel::import($path)->get();
-        dd($path);
+
         if($data->count() > 0)
             {
             foreach($data->toArray() as $key => $value)
@@ -39,19 +39,13 @@ class importController extends Controller
                 foreach($value as $row)
                     {
                         $insert_data[] = array(
-                        
+
                         );
                     }
                 }
 
-                if(!empty($insert_data))
-                    {
-                    DB::table('import')->insert($insert_data);
-                    }
-                }
+
             return back()->with('success', 'Excel Data Imported successfully.');
         }
-     
-
-
+    }
 }

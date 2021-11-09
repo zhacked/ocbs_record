@@ -88,6 +88,10 @@ let routes = [
         path: '/soa', component: require('./components/SOA.vue').default
     },
     {
+        path: '/arena', component: require('./components/Arena.vue').default
+    },
+    {
+
         path: '*', component: require('./components/NotFound.vue').default
     },
 ]
