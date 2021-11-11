@@ -9,7 +9,7 @@
 window.Vue = require('vue').default;
 import moment from 'moment';
 import Vue from 'vue'
-
+import VueCompositionAPI from '@vue/composition-api';
 import vuetify from '../plugin/vuetify'
 
 import Form from 'vform'
@@ -45,6 +45,7 @@ Vue.filter('myDate',function(created){
 });
 Vue.prototype.$gate = new Gate(window.user)
 
+Vue.use(VueCompositionAPI);
 Vue.use(VueRouter)
 Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
