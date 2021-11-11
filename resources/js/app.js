@@ -91,6 +91,9 @@ let routes = [
         path: '/arena', component: require('./components/Arena.vue').default
     },
     {
+        path: '/bankaccount', component: require('./components/BankAccount.vue').default
+    },
+    {
 
         path: '*', component: require('./components/NotFound.vue').default
     },

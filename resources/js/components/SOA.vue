@@ -40,7 +40,7 @@
 
 
 										<td>
-											<button class="btn btn-primary">
+											<button class="btn btn-primary" @click="openModel">
 												<i class="fa fa-edit"></i> Review
 											</button>
 										</td>
@@ -53,6 +53,50 @@
 				</v-col>
 			</v-row>
 
+            		<!-- Modal -->
+			<div class="modal fade" id="addNew" tabindex="-1" width="100" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+				<div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+					<div class="modal-content">
+                        <div class="text-align-center" >
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h1 class="modal-title w-100 text-center">Statement of Account</h1>
+
+                            <div class="modal-body">
+                                <div class="text-right ">
+                                        <v-row class=" mb-1  no-gutters" >
+                                            <v-col class="col-sm-10 mt-2">
+                                                SOA # : &nbsp;
+                                            </v-col>
+                                            <v-col class=" col-sm-2">
+                                                 <input type="text" class="form-control" id="inputName" placeholder="Name" >
+                                            </v-col>
+                                        </v-row>
+                                        <v-row class=" mb-1 no-gutters">
+                                            <v-col class="col-sm-10  mt-2">
+                                               Date of  SOA : &nbsp;
+                                            </v-col>
+                                            <v-col class="col-sm-2">
+                                                 <input type="text" class="form-control" id="inputName" placeholder="Name" >
+                                            </v-col>
+                                        </v-row>
+                                         <v-row class=" mb-1 no-gutters" >
+                                            <v-col class="col-sm-10  mt-2">
+                                               Date of Event : &nbsp;
+                                            </v-col>
+                                            <v-col class="col-sm-2">
+                                                 <input type="text" class="form-control" id="inputName" placeholder="Name" >
+                                            </v-col>
+                                        </v-row>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+					</div>
+				</div>
+			</div>
         
 		</v-container>
 	</v-app>
@@ -66,6 +110,9 @@
              }
          },
         methods: {
+            openModel(){
+                $('#addNew').modal('show');
+            },
             onFileChange(e) {
                  this.import_file = e.target.files[0];
             },

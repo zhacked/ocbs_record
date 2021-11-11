@@ -45,7 +45,21 @@ class ArenaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'arena' => 'required|string',
+            'address' => 'required|string|max:191',
+            'operator' => 'required|string',
+            'contact_number' => 'required|numeric',
+            'email' => 'required|string|email|max:191'
+        ]);
+
+        return arena::create([
+            'arena' => $request['arena'],
+            'address' => $request['address'],
+            'operator' => $request['operator'],
+            'contact_number' => $request['contact_number'],
+            'email' => $request['email'],
+        ]);
     }
 
     /**
@@ -56,7 +70,7 @@ class ArenaController extends Controller
      */
     public function show($id)
     {
-        //
+        return  arena::findOrFail($id);;
     }
 
     /**
@@ -79,7 +93,18 @@ class ArenaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $arena = arena::findOrFail($id);
+
+        $this->validate($request,[
+            'arena' => 'required|string',
+            'address' => 'required|string|max:191',
+            'operator' => 'required|string',
+            'contact_number' => 'required|numeric',
+            'email' => 'required|string|email|max:191'
+        ]);
+
+        $arena->update($request->all());
+        return ['message' => 'Updated the areana details'];
     }
 
     /**
@@ -90,6 +115,12 @@ class ArenaController extends Controller
      */
     public function destroy($id)
     {
-        //
+    
+        $arena = arena::findOrFail($id);
+        // delete the user
+
+        $arena->delete();
+
+        return ['message' => 'User Deleted'];
     }
 }

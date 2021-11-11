@@ -17,28 +17,39 @@
 
 		<nav class="mt-2">
 			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+			
 			<li class="nav-item">
 				<router-link to="/dashboard" class="nav-link " >
 					<i class="nav-icon fas fa-tachometer-alt "></i>
 					<p>Dashboard</p>
 				</router-link>
 			</li>
+
 			<li class="nav-item">
 				<router-link to="/profile" class="nav-link ">
 					<i class="nav-icon fas fa-user "></i>
 					<p>Profile</p>
 				</router-link>
 			</li>
+
             <li class="nav-item">
 				<router-link to="/soa" class="nav-link ">
 					<i class="nav-icon fas fa-file "></i>
 					<p>Statement of Account</p>
 				</router-link>
 			</li>
+
             <li class="nav-item">
 				<router-link to="/arena" class="nav-link ">
 					<i class="nav-icon fab fa-angular"></i>
 					<p>Arena</p>
+				</router-link>
+			</li>
+
+			<li class="nav-item">
+				<router-link to="/bankaccount" class="nav-link ">
+					<i class="nav-icon fa fa-money-check-alt"></i>
+					<p>Bank Details</p>
 				</router-link>
 			</li>
 

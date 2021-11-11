@@ -5,7 +5,7 @@
 				<v-col class="col-md-12">
 					<v-card >
 						<v-card-title class="card-header">
-							<strong> User Management</strong>
+							<strong> Arena Detials</strong>
                             <v-spacer></v-spacer>
 							<v-card-actions class="card-tools">
 								<v-btn color="success"
@@ -31,18 +31,18 @@
 										<td colspan="7" class="text-center"> <h3>No Data Available</h3> </td>
 									</tr> -->
 									<tr  v-for="arenas in arena.data" :key="arenas.id" class="text-center">
-										<td>{{arenas}}</td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
+										<td>{{arenas.arena}}</td>
+										<td>{{arenas.address}}</td>
+										<td>{{arenas.operator}}</td>
+										<td>{{arenas.contact_number}}</td>
+										<td>{{arenas.email}}</td>
 
 										<td>
-											<button class="btn btn-primary"  @click="editModal(user)">
+											<button class="btn btn-primary"  @click="editModal(arenas)">
 												<i class="fa fa-edit"></i> Update
 											</button>
 
-												<button class="btn btn-danger"  @click="deleteUser(user.id)">
+												<button class="btn btn-danger"  @click="deleteUser(arenas.id)">
 												<i class="fa fa-trash"></i> Delete
 											</button>
 										</td>
@@ -51,7 +51,7 @@
 							</v-simple-table>
 
 						<v-card-title class="ma-0">
-							<pagination  :data="users" @pagination-change-page="getResults"></pagination>
+							<pagination  :data="arena" @pagination-change-page="getResults"></pagination>
 						</v-card-title>
 					</v-card>
 				</v-col>
@@ -72,10 +72,10 @@
 					<form @submit.prevent="editmode ? updateArena() : createArena()">
 						<div class="modal-body">
 							<div class="form-group">
-								<input v-model="form.arena" type="text" name="name"
+								<input v-model="form.arena" type="text" name="arena"
 									placeholder="Name"
-									class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
-								<has-error :form="form" field="name"></has-error>
+									class="form-control" :class="{ 'is-invalid': form.errors.has('arena') }">
+								<has-error :form="form" field="arena"></has-error>
 							</div>
 
 							<div class="form-group">
@@ -162,11 +162,11 @@
                     this.$Progress.fail();
                 });
             },
-            editModal(user){
+            editModal(arenas){
                 this.editmode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
-                this.form.fill(user);
+                this.form.fill(arenas);
             },
             openModal(){
                 this.editmode = false;
@@ -208,7 +208,7 @@
                     $('#addNew').modal('hide')
                     toast({
                         type: 'success',
-                        title: 'User Created in successfully'
+                        title: 'Arena Created in successfully'
                         })
                     this.$Progress.finish();
                 })
@@ -230,9 +230,9 @@
                 .catch(() => {
                 })
             })
-           this.loadUsers();
+           this.loadArena();
            Fire.$on('AfterCreate',() => {
-               this.loadUsers();
+               this.loadArena();
            });
         }
     }

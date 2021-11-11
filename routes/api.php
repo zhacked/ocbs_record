@@ -20,10 +20,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::apiResources(['user' => App\Http\Controllers\API\UserController::class]);
-Route::apiResources(['arena' => App\Http\Controllers\API\importController::class]);
+Route::apiResources(['arena' => App\Http\Controllers\API\ArenaController::class]);
 Route::apiResources(['import' => App\Http\Controllers\API\importController::class]);
+Route::apiResources(['bankaccount' => App\Http\Controllers\API\BankDetailsController::class]);
+
 
 Route::get('profile', [App\Http\Controllers\API\UserController::class, 'profile'])->name('profile');
 Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');
 Route::get('findUser', [App\Http\Controllers\API\UserController::class, 'search']);
+Route::get('arenaId', [App\Http\Controllers\API\BankDetailsController::class, 'show_arena'])->name('arenaId');
 
