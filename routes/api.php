@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResources(['user' => App\Http\Controllers\API\UserController::class]);
 Route::apiResources(['arena' => App\Http\Controllers\API\ArenaController::class]);
-Route::apiResources(['import' => App\Http\Controllers\API\importController::class]);
+Route::apiResources(['import' => App\Http\Controllers\API\ImportController::class]);
 Route::apiResources(['bankaccount' => App\Http\Controllers\API\BankDetailsController::class]);
 
 

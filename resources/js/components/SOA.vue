@@ -9,92 +9,73 @@
                             <v-spacer></v-spacer>
                             <form @submit.prevent="proceedAction()">
 							<v-card-actions class="card-tools" >
-                               <label class="form-control-label"  for="input-file-import">Upload Excel File</label>
+                               <label class="form-control-label"  for="input-file-import"></label>
                                 <!--<input type="file" class="form-control" :class="{ ' is-invalid' : error.message }" id="input-file-import" name="file_import" ref="import_file"  @change="onFileChange"> -->
-                                <input type="file" class="form-control" @change="onFileChange">
+                                <input type="file" id="importData"  class="form-control" @change="onFileChange">
                               	<v-btn type="submit" color="success"  elevation="2">send</v-btn>
 							</v-card-actions>
                             </form>
 						</v-card-title>
 
-
-							<v-simple-table class="table-bordered table-hover elevation-1">
-                              <template v-slot:default>
-								<thead >
-									<tr class="text-center ">
-										<td>SOA #</td>
-										<td>Arena/OCBS NAME</td>
-                                        <td>MERON</td>
-										<td>WALA</td>
-										<td>TOTAL</td>
-										<td>PAYOUT PAID</td>
-                                        <td>UNCLAIMED</td>
-                                        <td>RAKE</td>
-                                        <td>DRAW/CANCELLED</td>
-                                        <td>C/D Paid</td>
-                                        <td>C Unpaid</td>
-                                        <td>D Unpaid</td>
-                                        <td>DRAW</td>
-                                        <td>DRAW PAID</td>
-                                        <td>DRAW UNCLAIMED</td>
-                                        <td>DRAW GAIN/LOSS</td>
-                                        <td>DRAW(2%)</td>
-                                        <td></td>
-									</tr>
-								</thead>
-                                <tbody >
-                                    <tr v-for="ocbs in state.ocbsArrayFiltered" :key="ocbs.key" >
-                                        <td>#</td>
-                                        <td>{{ ocbs.arenaName }}</td>
-                                        <td>{{ ocbs.meron }}</td>
-                                        <td>{{ ocbs.wala }}</td>
-                                        <td>{{ ocbs.total }}</td>
-                                        <td>{{ ocbs.payoutPaid }}</td>
-                                        <td>{{ ocbs.unclaimed }}</td>
-                                        <td>{{ ocbs.rake }}</td>
-                                        <td>{{ ocbs.drawCancelled }}</td>
-                                        <td>{{ ocbs.cDPaid }}</td>
-                                        <td>{{ ocbs.cUnpaid }}</td>
-                                        <td>{{ ocbs.dUnpaid }}</td>
-                                        <td>{{ ocbs.draw }}</td>
-                                        <td>{{ ocbs.drawPaid }}</td>
-                                        <td>{{ ocbs.drawUnclaimed }}</td>
-                                        <td>{{ ocbs.drawGainLoss }}</td>
-                                        <td>{{ ocbs.draw2 }}</td>
-                                        <td>
-                                            <button class="btn btn-primary" @click="openModel(ocbs)">
-                                                <i class="fa fa-edit"></i> Review
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-								
-                                </template>
-							</v-simple-table>
-
-
+                            <div class="card card-primary card-outline" style="overflow: auto; !important">
+                              
+                                <div class="card-body"  >
+                                    <v-simple-table class="table-bordered table-hover " >
+                                                <template v-slot:default>
+                                                    <thead class="text-center" >
+                                                        <tr>
+                                                            <th>Arena/OCBS NAME (kiosk)</th>
+                                                            <th>address</th>
+                                                            <th>Operator</th>
+                                                            <th>Contact</th>
+                                                            <th>Email</th>
+                                                          
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody >
+                                                        <tr v-for="arena in state.arenaData" :key="arena.id" >
+                                                            <td>{{arena.arena_name}}</td>
+                                                            <td>{{arena.arena_details == null ? null : arena.arena_details.address}}</td>
+                                                            <td>{{arena.arena_details == null ? null : arena.arena_details.operator}}</td>
+                                                            <td>{{arena.arena_details == null ? null : arena.arena_details.contact_number}}</td>
+                                                            <td>{{arena.arena_details == null ? null : arena.arena_details.email}}</td> 
+                                                            <td class="text-center">
+                                                                <button class="btn btn-primary" @click="openModel()">
+                                                                    <i class="fa fa-eye"></i> View
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </template>
+                                            </v-simple-table>
+                                </div>
+                                <!-- <v-card-title class="ma-0">
+                                    <pagination  :data="state.arenaData" @pagination-change-page="getResults()"></pagination>
+                                </v-card-title> -->
+                            <!-- /.card -->
+                            </div>
 					</v-card>
 				</v-col>
 			</v-row>
 
             		<!-- Modal -->
-			<div class="modal fade" id="addNew" tabindex="-1" width="100" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
-				<div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-					<div class="modal-content">
+			<div class="modal fade" id="addNew" tabindex="-1" width="100" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true"  >
+				<div class="modal-dialog modal-xl modal-dialog-centered " role="document"  >
+					<div class="modal-content" style="padding:80px 100px;" >
                         <div class="text-align-center" >
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                            </button>
+                            </button> -->
                             <h1 class="modal-title w-100 text-center">Statement of Account</h1>
 
-                            <div class="modal-body">
+                            <div class="modal-body" style="overflow-y: auto;">
                                 <div class="text-right ">
                                         <v-row class=" mb-1  no-gutters" >
                                             <v-col class="col-sm-10 mt-2">
                                                 SOA # : &nbsp;
                                             </v-col>
                                             <v-col class=" col-sm-2">
-                                                 <input type="text" class="form-control" id="inputName" placeholder="Name" :value="state.ocbs.arenaName">
+                                                 <input type="text" class="form-control form-control-sm" id="inputName" placeholder="SOA-xxxxxxx" >
                                             </v-col>
                                         </v-row>
                                         <v-row class=" mb-1 no-gutters">
@@ -102,7 +83,7 @@
                                                Date of  SOA : &nbsp;
                                             </v-col>
                                             <v-col class="col-sm-2">
-                                                 <input type="text" class="form-control" id="inputName" placeholder="Name" >
+                                                 <input type="text" class="form-control form-control-sm" id="inputName" placeholder="" >
                                             </v-col>
                                         </v-row>
                                          <v-row class=" mb-1 no-gutters" >
@@ -110,60 +91,365 @@
                                                Date of Event : &nbsp;
                                             </v-col>
                                             <v-col class="col-sm-2">
-                                                 <input type="text" class="form-control" id="inputName" placeholder="Name" >
+                                                 <input type="text" class="form-control form-control-sm" id="inputName" placeholder="" >
                                             </v-col>
                                         </v-row>
                                 </div>
+
+                                <div class="mt-5 pt-5">
+                                    <v-row  class=" mb-1 no-gutters" >
+                                        <v-col class="col-sm-2 mt-2">
+                                               Arena / OCBS Name : 
+                                        </v-col>
+                                        <v-col class="col-sm-10" >
+                                                <input type="text" class="form-control form-control-sm" id="inputName" placeholder="Enter OCBS Name" >
+                                        </v-col>
+                                    </v-row>
+                                    <v-row  class=" mb-1 no-gutters" >
+                                        <v-col class="col-sm-2 mt-2">
+                                               Address : 
+                                        </v-col>
+                                        <v-col class="col-sm-10" >
+                                                <input type="text" class="form-control form-control-sm" id="inputName" placeholder="Enter address" >
+                                        </v-col>
+                                    </v-row>
+                                    <v-row  class=" mb-1 no-gutters" >
+                                        <v-col class="col-sm-2 mt-2">
+                                               Operator : 
+                                        </v-col>
+                                        <v-col class="col-sm-10" >
+                                                <input type="text" class="form-control form-control-sm" id="inputName" placeholder="Enter Operator Name" >
+                                        </v-col>
+                                    </v-row>
+                                    <v-row   class=" mb-1 no-gutters">
+                                        <v-col class="col-sm-2 mt-2">
+                                               Contact Number : 
+                                        </v-col>
+                                        <v-col class="col-sm-10" >
+                                                <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0912-345-7894" >
+                                        </v-col>
+                                    </v-row>
+                                    <v-row  class=" mb-1 no-gutters" >
+                                        <v-col class="col-sm-2 mt-2">
+                                               Email Address :  
+                                        </v-col>
+                                        <v-col class="col-sm-10" >
+                                                <input type="text" class="form-control form-control-sm" id="inputName" placeholder="sample@gmail.com" >
+                                        </v-col>
+                                    </v-row>
+                                </div>
+
+                                <!-- computation -->
+                                <div style="border:1px solid black;" class="mt-5">
+                                    <h5 class="w-100 text-center pt-1">Computation</h5>
+                                </div>
+
+                                <div  class="mt-5">
+                                    <v-row>
+                                        <!-- left -->
+                                        <v-col class="text-right">
+                                            <p class="w-100 text-center pa-0 mx-0">(Kiosk)</p>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Total M/W Bets : &nbsp; &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Total Cancelled Bets : <span class="text-success text-bold"> + </span>&nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Total Draw Bets : <span class="text-success text-bold"> + </span> &nbsp;
+                                                </v-col> 
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Total Payout Paid : <span class="text-danger text-bold"> - </span> &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Total C/D Paid : <span class="text-danger text-bold"> - </span> &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Total Draw Paid : <span class="text-danger text-bold"> - </span> &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <hr>
+                                            <v-row  class=" mb-1 no-gutters pb-5" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Net Win/Loss : <span class="text-primary text-bold"> = </span> &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="" >
+                                                </v-col>
+                                            </v-row>
+
+
+                                            <!-- mobile -->
+                                            <div class="mt-5 pt-4">
+                                                <p class="w-100 text-center pa-0 mx-0">(Mobile)</p>
+                                                <v-row  class=" mb-1 no-gutters" >
+                                                    <v-col class="col-sm-6 mt-2">
+                                                        Total M/W Bets : &nbsp; &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6" >
+                                                            <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row  class=" mb-1 no-gutters" >
+                                                    <v-col class="col-sm-6 mt-2">
+                                                        Total Draw Bets : &nbsp; &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6" >
+                                                            <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                    </v-col>
+                                                </v-row>
+                                            </div>
+                                        </v-col>
+
+                                        <!-- right -->
+                                        <v-col class="text-right">
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Net Win/Loss : &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <hr>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    M/W * {{state.commission_percent}} (kiosk) : &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                   Draw * {{state.commission_percent}} (kiosk) : <span class="text-success text-bold"> + </span> &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                     M/W * {{state.commission_percent}} (mobile) : <span class="text-success text-bold"> + </span> &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Draw * {{state.commission_percent}} (mobile) : <span class="text-success text-bold"> + </span> &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Total Unclaimed : <span class="text-success text-bold"> + </span> &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row><v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Total C unpaid : &nbsp; &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Operator Expenses : &nbsp; &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Net operator's Commission : <span class="text-primary text-bold"> = </span> &nbsp; 
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Cash Load from Mobile : <span class="text-success text-bold"> + </span> &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    Cash Withdraw from Mobile : <span class="text-danger text-bold"> - </span>  &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <hr>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 mt-2">
+                                                    For Deposit : <span class="text-primary text-bold"> = </span> &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                </v-col>
+                                            </v-row>
+                                            <hr>
+                                            <hr>
+                                        </v-col>
+
+                                    </v-row>
+                                </div>
+
+                                <!-- kindly deposit -->
+                                <v-row>
+                                    <v-col class="col-sm-9">
+                                        <div  style="border:1px solid black;" class="mt-5 pl-5 text-left">
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-3">
+                                                    Kindly Deposit To : &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-9" >
+                                                    name here
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-3 ">
+                                                    &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-9" >
+                                                    Bank type here
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-3 ">
+                                                    &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-9" >
+                                                    Bank number here
+                                                </v-col>
+                                            </v-row>
+                                        </div>
+                                    </v-col>
+                                    <v-col class="col-sm-3">
+                                        
+                                    </v-col>
+                                </v-row>
+                                
+
+                                <!-- signiture -->
+                                <div  class="mt-5 pl-5 ">
+                                    <v-row>
+                                        <!-- left -->
+                                        <v-col>
+                                             <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6">
+                                                    Computed by : &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                    name here
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 ">
+                                                    Prepared by : &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                  
+                                                </v-col>
+                                            </v-row>
+                                        </v-col>
+
+                                        <!-- right -->
+                                         <v-col>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 ">
+                                                    Checked by : &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                    name here
+                                                </v-col>
+                                            </v-row>
+                                            <v-row  class=" mb-1 no-gutters" >
+                                                <v-col class="col-sm-6 ">
+                                                    Checked by : &nbsp;
+                                                </v-col>
+                                                <v-col class="col-sm-6" >
+                                                    name here
+                                                </v-col>
+                                            </v-row>
+                                        </v-col>
+                                    </v-row>
+                                </div>     
                             </div>
                         </div>
-
-                        
+                        <div class="modal-footer w-100">
+                            <div class="text-left  ">
+                                <v-row class=" no-gutters ">
+                                    <v-col class="col-md-8">
+                                          <span>Select commission % : </span>
+                                    </v-col>
+                                    <v-col  class="col-md-4">
+                                        <input type="text"  v-model="state.commission_percent" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                    </v-col>
+                                </v-row>
+                               
+                            </div>
+                            <v-spacer></v-spacer>
+                            <div class="text-right bg-info">
+                                <button type="button" class="btn btn-success">Save as PDF</button>
+                            </div>
+                          
+                        </div>
 					</div>
 				</div>
+                 
+                        
 			</div>
         
 		</v-container>
 	</v-app>
 </template>
 <script>
-import { reactive } from "@vue/composition-api";
+import { reactive,onMounted } from "@vue/composition-api";
 import { camelCase } from "lodash";
 import XLSX from "xlsx";
      export default {
-        //  data(){
-        //      return {
-        //         error: {},
-        //         import_file: '',
-        //      }
-        //  },
-        // methods: {
-        //     openModel(){
-        //         $('#addNew').modal('show');
-        //     },
-        //     onFileChange(e) {
-        //          this.import_file = e.target.files[0];
-        //     },
-        //     proceedAction() {
-    
-        //         let formData = new FormData();
-        //         formData.append('import_file', this.import_file);
-
-        //         axios.post('/api/import', formData, {
-        //             headers: { 'content-type': 'multipart/form-data' }
-        //             })
-        //             .then(response => {
-        //                 if(response.status === 200) {
-        //                         console.log(response)
-        //                 }
-        //             })
-        //             .catch(error => {
-        //                 // code here when an upload is not valid
-        //                 this.uploading = false
-        //                 this.error = error.response.data
-        //                 console.log('check error: ', this.error)
-        //             });
-        //         }
-        // }
 
         setup() {
  
@@ -173,8 +459,18 @@ import XLSX from "xlsx";
             ocbsArray: [],
             ocbsArrayFiltered: [],
             dialog: false,
-            ocbs: {}
+            commission_percent:'0.02',
+            ocbs: {},
+            arenaData: {},
             });
+
+            function showData(){
+                axios.get('api/import').then(({ data }) => (
+                    state.arenaData = data,
+                    console.log(data)
+                    ));
+            }
+           
 
             const onFileChange = (event) => {
             const file = event.target.files ? event.target.files[0] : null;
@@ -193,7 +489,7 @@ import XLSX from "xlsx";
                 const data = XLSX.utils.sheet_to_json(ws, {header: 1});
                 
                 data.map(r => {
-                    if(Object.keys(r).length === 17) reportCombined.push(Object.assign({}, r))
+                    if(Object.keys(r).length >= 17) reportCombined.push(Object.assign({}, r))
                 })
                 
 
@@ -218,19 +514,36 @@ import XLSX from "xlsx";
                 };
 
                 reader.readAsBinaryString(file);
-            }
-            };
 
+                
+            }
+
+            };
+            onMounted(()=> {
+                showData()
+            })
 
             return {
             onFileChange,
             state,
-            openModel(ocbs){
-                // console.log(e.target.value)
-                console.log(ocbs)
-                state.ocbs = ocbs
+            openModel(){
                 $('#addNew').modal('show');
             },
+          
+            proceedAction(){
+                this.$Progress.start();
+                axios.post('api/import',state.ocbsArrayFiltered).then(({ data }) => (
+                    $('#importData').val(''),
+                      swal.fire(
+                        'Successfully!',
+                        'Excel Imported',
+                        'success'
+                        ),
+                    this.$Progress.finish()
+                   
+                ));
+            }
+       
             };
         },
      }
