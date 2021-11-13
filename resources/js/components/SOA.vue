@@ -570,7 +570,27 @@ import XLSX from "xlsx";
 
                     const removeKeyReportObject = filterObjectHeader.map(({key, ...rest}) => ({...rest}));
 
-                        this.ocbsArrayFiltered = removeKeyReportObject;
+                        
+                    
+                    // For Kiosk-MObile wth same Arena Name
+                    let helper = {};
+                    const duplicateObj = removeKeyReportObject.reduce(function (r, obj) {
+                        const key = obj.arenaName;
+                        
+                        if (!helper[key]) {
+                        helper[key] = Object.assign({}, obj); // create a copy of o
+
+                        r.push(helper[key]);
+                        } else {
+                            const {arenaName, ...o} = obj;
+                        helper[key].mobile = { ...o };
+                        }
+
+                        return r;
+                    }, []);
+
+                    this.ocbsArrayFiltered = duplicateObj;
+
                     };
 
                     reader.readAsBinaryString(file);
