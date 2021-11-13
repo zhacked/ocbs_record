@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\arena;
-
+use App\Models\BankAccount;
 class ArenaController extends Controller
 {
     /**
@@ -24,7 +24,7 @@ class ArenaController extends Controller
 
     public function index()
     {
-         return arena::latest()->paginate(10);
+         return arena::with('BankDetails')->paginate(10);
     }
 
     /**
@@ -45,21 +45,33 @@ class ArenaController extends Controller
      */
     public function store(Request $request)
     {
+
+ 
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
             'operator' => 'required|string',
             'contact_number' => 'required|numeric',
-            'email' => 'required|string|email|max:191'
+            'email' => 'required|string|email|max:191',
+            
+         
         ]);
 
-        return arena::create([
+        $arena =  arena::create([
             'arena' => $request['arena'],
             'address' => $request['address'],
             'operator' => $request['operator'],
             'contact_number' => $request['contact_number'],
             'email' => $request['email'],
         ]);
+
+        foreach($request->bank_details as $bank){
+            $bank =  BankAccount::create([
+                'arenas_id' =>   $arena->id ,
+                'bank_name' => $bank['bank_name'],
+                'bank_number' => $bank['bank_number'],
+            ]);
+            }
     }
 
     /**
@@ -93,17 +105,37 @@ class ArenaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $arena = arena::findOrFail($id);
+   
+        $arenas = arena::with('BankDetails')->findOrFail($id);
+       
+        // $this->validate($request,[
+        //     'arena' => 'required|string',
+        //     'address' => 'required|string|max:191',
+        //     'operator' => 'required|string',
+        //     'contact_number' => 'required|numeric',
+        //     'email' => 'required|string|email|max:191',
+        // ]);
 
-        $this->validate($request,[
-            'arena' => 'required|string',
-            'address' => 'required|string|max:191',
-            'operator' => 'required|string',
-            'contact_number' => 'required|numeric',
-            'email' => 'required|string|email|max:191'
-        ]);
-
-        $arena->update($request->all());
+        // $arena = arena::with('BankDetails')->where('id',$id)->update([
+        //     'arena' => $request['arena'],
+        //     'address' => $request['address'],
+        //     'operator' => $request['operator'],
+        //     'contact_number' => $request['contact_number'],
+        //     'email' => $request['email'],
+        // ]);
+       
+        
+        
+        foreach($arenas->BankDetails as $bank){
+           
+            $bank =  BankAccount::where('arenas_id',$bank->arenas_id)->update([
+                'bank_name' => $request->bank_details[0]['bank_name'],
+                'bank_number' => $request->bank_details[0]['bank_number'],
+            ]);
+           
+            
+        }
+        
         return ['message' => 'Updated the areana details'];
     }
 

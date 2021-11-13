@@ -48,6 +48,7 @@ class BankDetailsController extends Controller
      */
     public function store(Request $request)
     {
+     
         $this->validate($request,[
             'arena_id' => 'required|numeric',
             'bank_name' => 'required|string|max:191',

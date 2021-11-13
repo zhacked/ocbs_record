@@ -94,15 +94,36 @@
 
 							<div class="form-group">
 								<input v-model="form.contact_number" type="number" name="contact_number" id="contact_number"
-								class="form-control" :class="{ 'is-invalid': form.errors.has('contact_number') }">
+								class="form-control" :class="{ 'is-invalid': form.errors.has('contact_number') }" placeholder="0912-123-4567">
 								<has-error :form="form" field="contact_number"></has-error>
 							</div>
 
                             <div class="form-group">
 								<input v-model="form.email" type="email" name="email" id="email"
-								class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+								class="form-control" :class="{ 'is-invalid': form.errors.has('email') }" placeholder="sample@gmail.com">
 								<has-error :form="form" field="email"></has-error>
 							</div>
+
+                            <hr>
+                            <p>
+                               <strong>Add Bank Details</strong>  <span><button  type="button" class="btn btn-success text-white" style="border-radius:50%"  @click="addField(input)"><i class="fas fa-plus" aria-hidden="true"></i></button></span>
+                            </p>
+                            <v-container >
+                                 <v-row fluid v-for="(input, index) in inputs" :key="input.id">
+                                                <v-col class="col-5">
+                                                    <input type="text"  class="form-control"  v-model="input.bank_name"   name="bank_name" id="bank_name" placeholder="Bank Name">
+                                                </v-col>
+                                                <v-col  class="col-6">
+                                                    <input type="text" class="form-control"  v-model="input.bank_number"   name="bank_number" id="bank_number" placeholder="Account Number">
+                                                </v-col>
+                                                <v-col  class="col-1">
+                                                    <span class="d-flex justify-content-center align-items-center h-100 d-inline-block" tabindex="0"  @click="removeField(index)" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Remove column"><i class="fas fa-trash text-danger" aria-hidden="true"></i></span> 
+                                                </v-col>
+                                    
+                                </v-row>
+                            </v-container>
+                           
+                          
 
 						</div>
 						<div class="modal-footer">
@@ -124,9 +145,14 @@
     export default {
         data() {
             return {
+                 inputs: [{
+                    bank_name: '',
+                    bank_number: ''
+                }],
                 editmode: false,
                 arena : {},
                 length: '',
+                input: '',
                 form: new Form({
                     id:'',
                     arena : '',
@@ -134,10 +160,47 @@
                     operator: '',
                     contact_number: '',
                     email: '',
-                })
+                }),
+               
+                
             }
         },
         methods: {
+             addField() {
+                   this.inputs.push({
+                        bank_name: '',
+                        bank_number: ''
+                    })
+                 
+                },
+            removeField(index) {
+                  
+                    swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                         if (result.value) {
+                               let x =  this.inputs.splice(index, 1);
+                                this.form.delete('api/bankaccount/'+x[0].id).then(()=>{
+                                        swal.fire(
+                                        'Deleted!',
+                                        'Your file has been deleted.',
+                                        'success'
+                                        )
+                                    
+                                    Fire.$emit('AfterCreate');
+                                }).catch(()=> {
+                                    swal.fire("Failed!", "There was something wrong.", "warning");
+                                });
+                         }
+                    })
+                   
+                },
             getResults(page = 1) {
                         axios.get('api/arena?page=' + page)
                             .then(response => {
@@ -146,7 +209,7 @@
                 },
             updateArena(){
                 this.$Progress.start();
-                console.log('Editing data');
+                this.form.bank_details = this.inputs
                 this.form.put('api/arena/'+this.form.id)
                 .then(() => {
                     $('#addNew').modal('hide');
@@ -162,15 +225,22 @@
                     this.$Progress.fail();
                 });
             },
+            deleteColum(){
+
+            },
             editModal(arenas){
                 this.editmode = true;
                 this.form.reset();
+                this.inputs= '';
                 $('#addNew').modal('show');
                 this.form.fill(arenas);
+
+                this.inputs = arenas.bank_details;
             },
             openModal(){
                 this.editmode = false;
                 this.form.reset();
+                this.inputs= '';
                 $('#addNew').modal('show');
             },
             deleteArena(id){
@@ -198,25 +268,32 @@
                     })
             },
             loadArena(){
-                    axios.get("api/arena").then(({ data }) => (this.arena = data));
+                    axios.get("api/arena").then(({ data }) => (
+                        this.arena = data,
+                        console.log(data)
+                        ));
             },
             createArena(){
                 this.$Progress.start();
+                this.form.bank_details = this.inputs
                 this.form.post('api/arena')
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
-                    toast({
-                        type: 'success',
-                        title: 'Arena Created in successfully'
-                        })
+                     swal.fire(
+                                'Save!',
+                                'You create new Arena.',
+                                'success'
+                        )
                     this.$Progress.finish();
                 })
-                .catch(()=>{
-                     toast({
-                        type: 'error',
-                        title: 'something went wrong'
-                        })
+                .catch((e)=>{
+                       swal.fire(
+                                'Error!',
+                                'Bank Detials is Required!',
+                                'error'
+                        )
+                     
                 })
             }
         },

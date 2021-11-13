@@ -33,14 +33,14 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody >
-                                                        <tr v-for="arena in state.arenaData" :key="arena.id" >
+                                                        <tr v-for="arena in arenaData" :key="arena.id" >
                                                             <td>{{arena.arena_name}}</td>
                                                             <td>{{arena.arena_details == null ? null : arena.arena_details.address}}</td>
                                                             <td>{{arena.arena_details == null ? null : arena.arena_details.operator}}</td>
                                                             <td>{{arena.arena_details == null ? null : arena.arena_details.contact_number}}</td>
                                                             <td>{{arena.arena_details == null ? null : arena.arena_details.email}}</td> 
                                                             <td class="text-center">
-                                                                <button class="btn btn-primary" @click="openModel()">
+                                                                <button class="btn btn-primary" @click="openModel(arena)">
                                                                     <i class="fa fa-eye"></i> View
                                                                 </button>
                                                             </td>
@@ -50,7 +50,7 @@
                                             </v-simple-table>
                                 </div>
                                 <!-- <v-card-title class="ma-0">
-                                    <pagination  :data="state.arenaData" @pagination-change-page="getResults()"></pagination>
+                                    <pagination  :data="arenaData" @pagination-change-page="getResults()"></pagination>
                                 </v-card-title> -->
                             <!-- /.card -->
                             </div>
@@ -75,7 +75,7 @@
                                                 SOA # : &nbsp;
                                             </v-col>
                                             <v-col class=" col-sm-2">
-                                                 <input type="text" class="form-control form-control-sm" id="inputName" placeholder="SOA-xxxxxxx" >
+                                                 <input type="text" readonly class="form-control form-control-sm" id="inputName" placeholder="SOA-xxxxxxx" >
                                             </v-col>
                                         </v-row>
                                         <v-row class=" mb-1 no-gutters">
@@ -83,7 +83,7 @@
                                                Date of  SOA : &nbsp;
                                             </v-col>
                                             <v-col class="col-sm-2">
-                                                 <input type="text" class="form-control form-control-sm" id="inputName" placeholder="" >
+                                                 <input type="text" readonly class="form-control form-control-sm" id="inputName" placeholder="" >
                                             </v-col>
                                         </v-row>
                                          <v-row class=" mb-1 no-gutters" >
@@ -91,7 +91,7 @@
                                                Date of Event : &nbsp;
                                             </v-col>
                                             <v-col class="col-sm-2">
-                                                 <input type="text" class="form-control form-control-sm" id="inputName" placeholder="" >
+                                                 <input type="text" readonly class="form-control form-control-sm" id="inputName" placeholder="" >
                                             </v-col>
                                         </v-row>
                                 </div>
@@ -102,7 +102,10 @@
                                                Arena / OCBS Name : 
                                         </v-col>
                                         <v-col class="col-sm-10" >
-                                                <input type="text" class="form-control form-control-sm" id="inputName" placeholder="Enter OCBS Name" >
+                                             <input type="text" readonly v-model="form.arena" class="form-control form-control-sm" id="inputName" placeholder="Enter OCBS Name" 
+                                             :class="{ 'is-invalid': form.errors.has('arena') }" >
+                                            <has-error :form="form" field="arena"></has-error>
+                                               
                                         </v-col>
                                     </v-row>
                                     <v-row  class=" mb-1 no-gutters" >
@@ -110,7 +113,9 @@
                                                Address : 
                                         </v-col>
                                         <v-col class="col-sm-10" >
-                                                <input type="text" class="form-control form-control-sm" id="inputName" placeholder="Enter address" >
+                                             <input type="text" readonly v-model="form.address" class="form-control form-control-sm" id="inputName" placeholder="Enter address"
+                                             :class="{ 'is-invalid': form.errors.has('address') }" >
+                                            <has-error :form="form" field="address"></has-error>
                                         </v-col>
                                     </v-row>
                                     <v-row  class=" mb-1 no-gutters" >
@@ -118,7 +123,9 @@
                                                Operator : 
                                         </v-col>
                                         <v-col class="col-sm-10" >
-                                                <input type="text" class="form-control form-control-sm" id="inputName" placeholder="Enter Operator Name" >
+                                                <input type="text" readonly v-model="form.operator" class="form-control form-control-sm" id="inputName" placeholder="Enter Operator Name" 
+                                                :class="{ 'is-invalid': form.errors.has('operator') }" >
+                                                <has-error :form="form" field="operator"></has-error>
                                         </v-col>
                                     </v-row>
                                     <v-row   class=" mb-1 no-gutters">
@@ -126,7 +133,10 @@
                                                Contact Number : 
                                         </v-col>
                                         <v-col class="col-sm-10" >
-                                                <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0912-345-7894" >
+                                            <input type="text" readonly v-model="form.contact_number" class="form-control form-control-sm" id="inputName" placeholder="0912-345-7894" 
+                                                :class="{ 'is-invalid': form.errors.has('contact_number') }" >
+                                                <has-error :form="form" field="contact_number"></has-error>
+                                               
                                         </v-col>
                                     </v-row>
                                     <v-row  class=" mb-1 no-gutters" >
@@ -134,7 +144,10 @@
                                                Email Address :  
                                         </v-col>
                                         <v-col class="col-sm-10" >
-                                                <input type="text" class="form-control form-control-sm" id="inputName" placeholder="sample@gmail.com" >
+                                             <input readonly v-model="form.email" type="email" name="email"
+                                                placeholder="sample@gmail.com" 
+                                                class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                                            <has-error :form="form" field="email"></has-error>
                                         </v-col>
                                     </v-row>
                                 </div>
@@ -154,7 +167,7 @@
                                                     Total M/W Bets : &nbsp; &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -162,7 +175,7 @@
                                                     Total Cancelled Bets : <span class="text-success text-bold"> + </span>&nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -170,7 +183,7 @@
                                                     Total Draw Bets : <span class="text-success text-bold"> + </span> &nbsp;
                                                 </v-col> 
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -178,7 +191,7 @@
                                                     Total Payout Paid : <span class="text-danger text-bold"> - </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -186,7 +199,7 @@
                                                     Total C/D Paid : <span class="text-danger text-bold"> - </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -194,7 +207,7 @@
                                                     Total Draw Paid : <span class="text-danger text-bold"> - </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <hr>
@@ -203,7 +216,7 @@
                                                     Net Win/Loss : <span class="text-primary text-bold"> = </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="" >
                                                 </v-col>
                                             </v-row>
 
@@ -216,7 +229,7 @@
                                                         Total M/W Bets : &nbsp; &nbsp;
                                                     </v-col>
                                                     <v-col class="col-sm-6" >
-                                                            <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                            <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                     </v-col>
                                                 </v-row>
                                                 <v-row  class=" mb-1 no-gutters" >
@@ -224,7 +237,7 @@
                                                         Total Draw Bets : &nbsp; &nbsp;
                                                     </v-col>
                                                     <v-col class="col-sm-6" >
-                                                            <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                            <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                     </v-col>
                                                 </v-row>
                                             </div>
@@ -237,40 +250,40 @@
                                                     Net Win/Loss : &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <hr>
                                             <v-row  class=" mb-1 no-gutters" >
                                                 <v-col class="col-sm-6 mt-2">
-                                                    M/W * {{state.commission_percent}} (kiosk) : &nbsp;
+                                                    M/W * {{this.commission_percent}} (kiosk) : &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
                                                 <v-col class="col-sm-6 mt-2">
-                                                   Draw * {{state.commission_percent}} (kiosk) : <span class="text-success text-bold"> + </span> &nbsp;
+                                                   Draw * {{this.commission_percent}} (kiosk) : <span class="text-success text-bold"> + </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
                                                 <v-col class="col-sm-6 mt-2">
-                                                     M/W * {{state.commission_percent}} (mobile) : <span class="text-success text-bold"> + </span> &nbsp;
+                                                     M/W * {{this.commission_percent}} (mobile) : <span class="text-success text-bold"> + </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
                                                 <v-col class="col-sm-6 mt-2">
-                                                    Draw * {{state.commission_percent}} (mobile) : <span class="text-success text-bold"> + </span> &nbsp;
+                                                    Draw * {{this.commission_percent}} (mobile) : <span class="text-success text-bold"> + </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -278,14 +291,14 @@
                                                     Total Unclaimed : <span class="text-success text-bold"> + </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row><v-row  class=" mb-1 no-gutters" >
                                                 <v-col class="col-sm-6 mt-2">
                                                     Total C unpaid : &nbsp; &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -293,7 +306,7 @@
                                                     Operator Expenses : &nbsp; &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -301,7 +314,7 @@
                                                     Net operator's Commission : <span class="text-primary text-bold"> = </span> &nbsp; 
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -309,7 +322,7 @@
                                                     Cash Load from Mobile : <span class="text-success text-bold"> + </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -317,16 +330,16 @@
                                                     Cash Withdraw from Mobile : <span class="text-danger text-bold"> - </span>  &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <hr>
                                             <v-row  class=" mb-1 no-gutters" >
                                                 <v-col class="col-sm-6 mt-2">
-                                                    For Deposit : <span class="text-primary text-bold"> = </span> &nbsp;
+                                                    For {{this.status}} : <span class="text-primary text-bold"> = </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <hr>
@@ -345,7 +358,8 @@
                                                     Kindly Deposit To : &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-9" >
-                                                    name here
+                                                    <span> {{this.status == 'Deposit' ? 'LUCKY 8 STAR QUEST INC' : '' }}</span>
+                                                   
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -425,14 +439,18 @@
                                           <span>Select commission % : </span>
                                     </v-col>
                                     <v-col  class="col-md-4">
-                                        <input type="text"  v-model="state.commission_percent" class="form-control form-control-sm" id="inputName" placeholder="0" >
+                                        <input type="text"   v-model="this.commission_percent" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                     </v-col>
                                 </v-row>
                                
                             </div>
                             <v-spacer></v-spacer>
-                            <div class="text-right bg-info">
-                                <button type="button" class="btn btn-success">Save as PDF</button>
+                            <div class="text-right">
+                             
+                                    <button type="button" v-show="editmode" class="btn btn-outline-primary" @click="updateModal()">Update</button>
+                                    <button type="button" v-show="!editmode" class="btn btn-outline-primary" @click="saveModal()">Save</button>
+                                    <button type="button" class="btn btn-outline-success">Save as PDF</button>
+                                   
                             </div>
                           
                         </div>
@@ -446,93 +464,56 @@
 	</v-app>
 </template>
 <script>
-import { reactive,onMounted } from "@vue/composition-api";
 import { camelCase } from "lodash";
 import XLSX from "xlsx";
-     export default {
-
-        setup() {
- 
-            let reportCombined = [];
-            const state = reactive({
+    export default {
+        data() {
+            return {    
+            reportCombined: [],
             headers: [],
             ocbsArray: [],
             ocbsArrayFiltered: [],
-            dialog: false,
+            editmode: false,
             commission_percent:'0.02',
+            status:'Deposit',
             ocbs: {},
             arenaData: {},
-            });
+            form: new Form({
+                    id:'',
+                    arena: '',
+                    address : '',
+                    operator: '',
+                    contact_number: '',
+                    email: '',
+                })
+        
 
-            function showData(){
+            }
+        },
+        methods: {
+            //  getResults(page = 1) {
+            //             axios.get('api/import?page=' + page)
+            //                 .then(response => {
+            //                     this.arenaData = response.data;
+            //                 });
+            //     },
+           showData(){
                 axios.get('api/import').then(({ data }) => (
-                    state.arenaData = data,
-                    console.log(data)
+                    this.arenaData = data
                     ));
-            }
-           
-
-            const onFileChange = (event) => {
-            const file = event.target.files ? event.target.files[0] : null;
-            if (file) {
-                const reader = new FileReader();
-
-                reader.onload = (e) => {
-                // eslint-disable-next-line no-unused-vars
-                /* Parse data */
-                const bstr = e.target.result;
-                const wb = XLSX.read(bstr, { type: "binary" });
-                /* Get first worksheet */
-                const wsname = wb.SheetNames[0];
-                const ws = wb.Sheets[wsname];
-                /* Convert array of arrays */
-                const data = XLSX.utils.sheet_to_json(ws, {header: 1});
-                
-                data.map(r => {
-                    if(Object.keys(r).length >= 17) reportCombined.push(Object.assign({}, r))
-                })
-                
-
-                let objectKeyReplacedArray = [];
-                const [, ...headKey] = Object.values(reportCombined[0]);
-                const headK = ["key",...headKey]
-                
-                reportCombined.map((data) => {
-                    data = Object.assign({}, ...Object.entries(data)
-                    .map(([, prop], index) => ({[camelCase(headK[index])]: prop})));
-                    objectKeyReplacedArray.push(data)
-                })
-
-
-                const filterObjectHeader = objectKeyReplacedArray.filter((obk) => {
-                    if(obk.arenaName !== 'OCBS NAME' && obk.arenaName !== 'ARENA NAME') return obk;
-                });
-
-                const removeKeyReportObject = filterObjectHeader.map(({key, ...rest}) => ({...rest}));
-
-                    state.ocbsArrayFiltered = removeKeyReportObject;
-                };
-
-                reader.readAsBinaryString(file);
-
-                
-            }
-
-            };
-            onMounted(()=> {
-                showData()
-            })
-
-            return {
-            onFileChange,
-            state,
-            openModel(){
-                $('#addNew').modal('show');
             },
-          
+            updateModal(){
+                $('.computation').attr("disabled", false);
+                this.editmode = false;
+
+            },
+            saveModal(){
+                $('.computation').attr("disabled", true);
+                this.editmode = true;
+            },
             proceedAction(){
                 this.$Progress.start();
-                axios.post('api/import',state.ocbsArrayFiltered).then(({ data }) => (
+                axios.post('api/import',this.ocbsArrayFiltered).then(({ data }) => (
                     $('#importData').val(''),
                       swal.fire(
                         'Successfully!',
@@ -542,9 +523,67 @@ import XLSX from "xlsx";
                     this.$Progress.finish()
                    
                 ));
-            }
-       
-            };
+            },
+            openModel(data){
+                this.form.reset();
+                console.log(data.arena_details);
+                $('#addNew').modal('show');
+                this.form.fill(data.arena_details);
+                $('.computation').attr("disabled", true);
+                  this.editmode = true;
+            },
+            onFileChange(event) {
+                const file = event.target.files ? event.target.files[0] : null;
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.onload = (e) => {
+                    // eslint-disable-next-line no-unused-vars
+                    /* Parse data */
+                    const bstr = e.target.result;
+                    const wb = XLSX.read(bstr, { type: "binary" });
+                    /* Get first worksheet */
+                    const wsname = wb.SheetNames[0];
+                    const ws = wb.Sheets[wsname];
+                    /* Convert array of arrays */
+                    const data = XLSX.utils.sheet_to_json(ws, {header: 1});
+                    
+                    data.map(r => {
+                        if(Object.keys(r).length >= 17) reportCombined.push(Object.assign({}, r))
+                    })
+                    
+
+                    let objectKeyReplacedArray = [];
+                    const [, ...headKey] = Object.values(reportCombined[0]);
+                    const headK = ["key",...headKey]
+                    
+                    reportCombined.map((data) => {
+                        data = Object.assign({}, ...Object.entries(data)
+                        .map(([, prop], index) => ({[camelCase(headK[index])]: prop})));
+                        objectKeyReplacedArray.push(data)
+                    })
+
+
+                    const filterObjectHeader = objectKeyReplacedArray.filter((obk) => {
+                        if(obk.arenaName !== 'OCBS NAME' && obk.arenaName !== 'ARENA NAME') return obk;
+                    });
+
+                    const removeKeyReportObject = filterObjectHeader.map(({key, ...rest}) => ({...rest}));
+
+                        this.ocbsArrayFiltered = removeKeyReportObject;
+                    };
+
+                    reader.readAsBinaryString(file);
+
+                    
+                }
+
+            },
+
         },
-     }
+        created() {
+           this.showData();
+        }
+    }
 </script>
+
