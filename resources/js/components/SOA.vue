@@ -20,39 +20,19 @@
                             <div class="card card-primary card-outline" style="overflow: auto; !important">
                               
                                 <div class="card-body"  >
-                                    <v-simple-table class="table-bordered table-hover " >
-                                                <template v-slot:default>
-                                                    <thead class="text-center" >
-                                                        <tr>
-                                                            <th>Arena/OCBS NAME (kiosk)</th>
-                                                            <th>address</th>
-                                                            <th>Operator</th>
-                                                            <th>Contact</th>
-                                                            <th>Email</th>
-                                                          
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody >
-                                                        <tr v-for="arena in arenaData" :key="arena.id" >
-                                                            <td>{{arena.arena_name}}</td>
-                                                            <td>{{arena.arena_details == null ? null : arena.arena_details.address}}</td>
-                                                            <td>{{arena.arena_details == null ? null : arena.arena_details.operator}}</td>
-                                                            <td>{{arena.arena_details == null ? null : arena.arena_details.contact_number}}</td>
-                                                            <td>{{arena.arena_details == null ? null : arena.arena_details.email}}</td> 
-                                                            <td class="text-center">
-                                                                <button class="btn btn-primary" @click="openModel(arena)">
-                                                                    <i class="fa fa-eye"></i> View
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </template>
-                                            </v-simple-table>
-                                </div>
-                                <!-- <v-card-title class="ma-0">
-                                    <pagination  :data="arenaData" @pagination-change-page="getResults()"></pagination>
-                                </v-card-title> -->
-                            <!-- /.card -->
+                                    <v-data-table
+                                        :headers="headers"
+                                        :items="arenaData.data"
+                                        :items-per-page="10"
+                                        class="elevation-1 text-center"
+                                    >
+                                <template v-slot:[`item.actions`]="{ item }">
+                                        <button class="btn btn-primary" @click="openModel(item)">
+                                            <i class="fa fa-eye"></i> View
+                                        </button>
+                                    </template>
+                                </v-data-table>
+                             </div>
                             </div>
 					</v-card>
 				</v-col>
@@ -352,8 +332,8 @@
                                 <!-- kindly deposit -->
                                 <v-row>
                                     <v-col class="col-sm-9">
-                                        <div  style="border:1px solid black;" class="mt-5 pl-5 text-left">
-                                            <v-row  class=" mb-1 no-gutters" >
+                                        <div  style="border:1px solid black; " class="mt-5 pl-5 text-left">
+                                            <v-row  class="no-gutters" >
                                                 <v-col class="col-sm-3">
                                                     Kindly Deposit To : &nbsp;
                                                 </v-col>
@@ -362,20 +342,34 @@
                                                    
                                                 </v-col>
                                             </v-row>
-                                            <v-row  class=" mb-1 no-gutters" >
+                                            <v-row  class="no-gutters pa-0" >
                                                 <v-col class="col-sm-3 ">
                                                     &nbsp;
                                                 </v-col>
-                                                <v-col class="col-sm-9" >
-                                                    Bank type here
+                                                <v-col class="col-sm-9 no-gutters" >
+                                                    <v-col class="col-sm-6 ">
+                                                        <span v-if="editmode" >!Select bank name by click edit button</span>
+
+                                                         <select v-else name="type" id="arena_id" class="form-control form-control-sm pa-0" >
+                                                            <option value="">Select Bank</option>
+                                                            <option v-for="bank in bankDetials" :key="bank.id"  :value="bank.id" >{{bank.bank_name}}</option>
+                                                        </select>
+                                                    </v-col>
                                                 </v-col>
                                             </v-row>
-                                            <v-row  class=" mb-1 no-gutters" >
+                                            <v-row  class=" mb-1 no-gutters pa-0 " >
                                                 <v-col class="col-sm-3 ">
                                                     &nbsp;
                                                 </v-col>
-                                                <v-col class="col-sm-9" >
-                                                    Bank number here
+                                                <v-col class="col-sm-9 no-gutters" >
+                                                     <v-col class="col-sm-6 ">
+                                                        <span v-if="editmode" >!Select bank number by click edit button</span>
+
+                                                         <select v-else name="type" id="arena_id" class="form-control form-control-sm" >
+                                                            <option value="">Select Bank</option>
+                                                            <option v-for="bank in bankDetials" :key="bank.id"  :value="bank.id" >{{bank.bank_number}}</option>
+                                                        </select>
+                                                    </v-col>
                                                 </v-col>
                                             </v-row>
                                         </div>
@@ -447,7 +441,7 @@
                             <v-spacer></v-spacer>
                             <div class="text-right">
                              
-                                    <button type="button" v-show="editmode" class="btn btn-outline-primary" @click="updateModal()">Update</button>
+                                    <button type="button" v-show="editmode" class="btn btn-outline-primary" @click="updateModal()">Edit</button>
                                     <button type="button" v-show="!editmode" class="btn btn-outline-primary" @click="saveModal()">Save</button>
                                     <button type="button" class="btn btn-outline-success">Save as PDF</button>
                                    
@@ -469,15 +463,21 @@ import XLSX from "xlsx";
     export default {
         data() {
             return {    
+            headers: [
+                    { text: 'Arena Name', value: 'arena_name' },
+                    { text: 'Operator', value: 'arena_details.operator' },
+                    { text: 'Contact', value: 'arena_details.contact_number'},
+                    { text: '', value: 'actions', sortable: false },
+                ],
             reportCombined: [],
-            headers: [],
             ocbsArray: [],
             ocbsArrayFiltered: [],
             editmode: false,
             commission_percent:'0.02',
             status:'Deposit',
             ocbs: {},
-            arenaData: {},
+            bankDetials: {},
+            arenaData: [],
             form: new Form({
                     id:'',
                     arena: '',
@@ -498,9 +498,7 @@ import XLSX from "xlsx";
             //                 });
             //     },
            showData(){
-                axios.get('api/import').then(({ data }) => (
-                    this.arenaData = data
-                    ));
+                axios.get("api/import").then((data) => ( this.arenaData = data,console.log(data.data)));
             },
             updateModal(){
                 $('.computation').attr("disabled", false);
@@ -526,11 +524,11 @@ import XLSX from "xlsx";
             },
             openModel(data){
                 this.form.reset();
-                console.log(data.arena_details);
                 $('#addNew').modal('show');
                 this.form.fill(data.arena_details);
+                this.bankDetials = data.bank_details;
                 $('.computation').attr("disabled", true);
-                  this.editmode = true;
+                this.editmode = true;
             },
             onFileChange(event) {
                 const file = event.target.files ? event.target.files[0] : null;
@@ -549,15 +547,15 @@ import XLSX from "xlsx";
                     const data = XLSX.utils.sheet_to_json(ws, {header: 1});
                     
                     data.map(r => {
-                        if(Object.keys(r).length >= 17) reportCombined.push(Object.assign({}, r))
+                        if(Object.keys(r).length >= 17) this.reportCombined.push(Object.assign({}, r))
                     })
                     
 
                     let objectKeyReplacedArray = [];
-                    const [, ...headKey] = Object.values(reportCombined[0]);
+                    const [, ...headKey] = Object.values(this.reportCombined[0]);
                     const headK = ["key",...headKey]
                     
-                    reportCombined.map((data) => {
+                    this.reportCombined.map((data) => {
                         data = Object.assign({}, ...Object.entries(data)
                         .map(([, prop], index) => ({[camelCase(headK[index])]: prop})));
                         objectKeyReplacedArray.push(data)

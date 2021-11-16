@@ -24,7 +24,7 @@ class ImportController extends Controller
      */
     public function index()
     {
-        return import::with('arenaDetails')->get();
+        return import::with(['arenaDetails','BankDetails'])->get();
     }
 
     /**

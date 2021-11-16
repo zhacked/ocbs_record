@@ -106,10 +106,10 @@
 
                             <hr>
                             <p>
-                               <strong>Add Bank Details</strong>  <span><button  type="button" class="btn btn-success text-white" style="border-radius:50%"  @click="addField(input)"><i class="fas fa-plus" aria-hidden="true"></i></button></span>
+                               <strong>Add Bank Details</strong>  <span><button  type="button" class="btn btn-success text-white" style="border-radius:50%"  @click="addField()"><i class="fas fa-plus" aria-hidden="true"></i></button></span>
                             </p>
                             <v-container >
-                                 <v-row fluid v-for="(input, index) in inputs" :key="input.id">
+                                 <v-row fluid class="add" v-for="(input,index) in inputs" :key="index">
                                                 <v-col class="col-5">
                                                     <input type="text"  class="form-control"  v-model="input.bank_name"   name="bank_name" id="bank_name" placeholder="Bank Name">
                                                 </v-col>
@@ -145,10 +145,11 @@
     export default {
         data() {
             return {
-                 inputs: [{
-                    bank_name: '',
-                    bank_number: ''
+                inputs: [{
+                    bank_name: null,
+                    bank_number: null,
                 }],
+
                 editmode: false,
                 arena : {},
                 length: '',
@@ -166,12 +167,14 @@
             }
         },
         methods: {
-             addField() {
-                   this.inputs.push({
-                        bank_name: '',
-                        bank_number: ''
-                    })
+            
+            addField(index) {
                  
+                    this.inputs.push({
+                        bank_name: "",
+                        bank_number: "",
+                      
+                    });
                 },
             removeField(index) {
                   
@@ -195,7 +198,7 @@
                                     
                                     Fire.$emit('AfterCreate');
                                 }).catch(()=> {
-                                    swal.fire("Failed!", "There was something wrong.", "warning");
+                                   this.inputs.splice(index, 1);
                                 });
                          }
                     })
@@ -239,8 +242,9 @@
             },
             openModal(){
                 this.editmode = false;
+                this.inputs== '';
                 this.form.reset();
-                this.inputs= '';
+                
                 $('#addNew').modal('show');
             },
             deleteArena(id){
@@ -253,6 +257,7 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, delete it!'
                     }).then((result) => {
+                      
                          if (result.value) {
                                 this.form.delete('api/arena/'+id).then(()=>{
                                         swal.fire(
@@ -262,15 +267,18 @@
                                         )
                                     Fire.$emit('AfterCreate');
                                 }).catch(()=> {
-                                    swal.fire("Failed!", "There was something wrong.", "warning");
+                                     swal.fire(
+                                        'Deleted!',
+                                        'Your file has been deleted.',
+                                        'success'
+                                        )
                                 });
                          }
                     })
             },
             loadArena(){
                     axios.get("api/arena").then(({ data }) => (
-                        this.arena = data,
-                        console.log(data)
+                        this.arena = data
                         ));
             },
             createArena(){
