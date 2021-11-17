@@ -50,7 +50,7 @@ class ImportController extends Controller
         foreach ($request->all() as $data ){
         
         $arena= arena::where('arena', $data['arenaName'])->first();
-
+            
            $import =  import::create([
                 'arena_id' =>  $arena == null ? null : $arena->id,
                 'arena_name' => $data['arenaName'],
