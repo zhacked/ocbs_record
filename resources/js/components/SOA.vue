@@ -491,12 +491,7 @@ import XLSX from "xlsx";
             }
         },
         methods: {
-            //  getResults(page = 1) {
-            //             axios.get('api/import?page=' + page)
-            //                 .then(response => {
-            //                     this.arenaData = response.data;
-            //                 });
-            //     },
+            
            showData(){
                 axios.get("api/import").then((data) => ( this.arenaData = data,console.log(data.data)));
             },
@@ -513,6 +508,7 @@ import XLSX from "xlsx";
                 this.$Progress.start();
                 axios.post('api/import',this.ocbsArrayFiltered).then(({ data }) => (
                     $('#importData').val(''),
+                     Fire.$emit('AfterCreate'),
                       swal.fire(
                         'Successfully!',
                         'Excel Imported',
@@ -601,6 +597,9 @@ import XLSX from "xlsx";
         },
         created() {
            this.showData();
+           Fire.$on('AfterCreate',() => {
+                  this.showData();
+            });
         }
     }
 </script>
