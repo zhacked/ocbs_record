@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\arena;
 use App\Models\import;
+use App\Models\BankAccount;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Support\Authorization\AuthorizationUserTrait;
 
 class ImportController extends Controller
 {
@@ -24,7 +26,8 @@ class ImportController extends Controller
      */
     public function index()
     {
-        return import::with(['arenaDetails','BankDetails'])->get();
+        return import::with(['BankDetails','arenaDetails.BankDetails'])->get();
+       
     }
 
     /**
@@ -32,11 +35,34 @@ class ImportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function SavePrimaryBank($id)
     {
-        //
+        $arena = arena::findOrFail($id);
+      
+        if($arena->bank_id == null){
+                $bankOwn = BankAccount::where('arenas_id',$id)->first();
+                $arena->bank_id = $bankOwn->id;
+                $arena->update();
+        }
+     
+     
+        return BankAccount::where('id',$arena->bank_id)->first();
     }
+    public function bankaccountfilter($id)
+    {
+        return BankAccount::where('arenas_id',$id)->get();
+    }
+    public function updatebankaccount($id,$bank_id){
+     
+       return  arena::where('id',$id)->update([
+            'bank_id' => $bank_id
+        ]); 
 
+
+        
+
+    }
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -84,9 +110,9 @@ class ImportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function bankdetialsfilter($id)
     {
-        //
+        return BankAccount::where('arenas_id',$id)->get();
     }
 
     /**

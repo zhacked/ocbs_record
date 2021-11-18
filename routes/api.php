@@ -30,3 +30,8 @@ Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updatePr
 Route::get('findUser', [App\Http\Controllers\API\UserController::class, 'search']);
 Route::get('arenaId', [App\Http\Controllers\API\BankDetailsController::class, 'show_arena'])->name('arenaId');
 
+
+Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);
+Route::get('bankfilter/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
+Route::get('savePrimaryBank/{id}', [App\Http\Controllers\API\ImportController::class, 'SavePrimaryBank']);
+

@@ -46,7 +46,7 @@ class ArenaController extends Controller
     public function store(Request $request)
     {
 
- 
+    
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',

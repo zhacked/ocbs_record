@@ -39,9 +39,9 @@
 			</v-row>
 
             		<!-- Modal -->
-			<div class="modal fade" id="addNew" tabindex="-1" width="100" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true"  >
+			<div class="modal fade "    id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true"  >
 				<div class="modal-dialog modal-xl modal-dialog-centered " role="document"  >
-					<div class="modal-content" style="padding:80px 100px;" >
+					<div class="modal-content   h-100 "  style="padding:80px 100px;" >
                         <div class="text-align-center" >
                             <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -147,7 +147,7 @@
                                                     Total M/W Bets : &nbsp; &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
+                                                        <input type="text"  v-model="total_m_w_bet" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -348,11 +348,10 @@
                                                 </v-col>
                                                 <v-col class="col-sm-9 no-gutters" >
                                                     <v-col class="col-sm-6 ">
-                                                        <span v-if="editmode" >!Select bank name by click edit button</span>
+                                                        <span v-if="editmode" >{{selectedbank.bank_name}}</span>
 
-                                                         <select v-else name="type" id="arena_id" class="form-control form-control-sm pa-0" >
-                                                            <option value="">Select Bank</option>
-                                                            <option v-for="bank in bankDetials" :key="bank.id"  :value="bank.id" >{{bank.bank_name}}</option>
+                                                         <select v-else name="type"  v-model="bankaccount_id" id="arena_id" class="form-control form-control-sm pa-0" >
+                                                            <option v-for="banks in bank" :key="banks.id"  :value="banks.id" >{{banks.bank_name}}</option>
                                                         </select>
                                                     </v-col>
                                                 </v-col>
@@ -363,12 +362,11 @@
                                                 </v-col>
                                                 <v-col class="col-sm-9 no-gutters" >
                                                      <v-col class="col-sm-6 ">
-                                                        <span v-if="editmode" >!Select bank number by click edit button</span>
+                                                        <span v-if="editmode" >{{ selectedbank.bank_number}}</span>
 
-                                                         <select v-else name="type" id="arena_id" class="form-control form-control-sm" >
-                                                            <option value="">Select Bank</option>
+                                                         <!-- <select  name="type" id="arena_id" class="form-control form-control-sm" >
                                                             <option v-for="bank in bankDetials" :key="bank.id"  :value="bank.id" >{{bank.bank_number}}</option>
-                                                        </select>
+                                                        </select> -->
                                                     </v-col>
                                                 </v-col>
                                             </v-row>
@@ -453,6 +451,8 @@
                  
                         
 			</div>
+
+            
         
 		</v-container>
 	</v-app>
@@ -477,7 +477,12 @@ import XLSX from "xlsx";
             status:'Deposit',
             ocbs: {},
             bankDetials: {},
+            bank:{},
             arenaData: [],
+            arenaDetails:{},
+            total_m_w_bet:0,
+            selectedbank:[],
+            arena_id : '',
             form: new Form({
                     id:'',
                     arena: '',
@@ -485,15 +490,16 @@ import XLSX from "xlsx";
                     operator: '',
                     contact_number: '',
                     email: '',
-                })
-        
+                }),
 
+            bankaccount_id:'',
+
+        
             }
         },
         methods: {
-            
            showData(){
-                axios.get("api/import").then((data) => ( this.arenaData = data,console.log(data.data)));
+                axios.get("api/import").then((data) => ( this.arenaData = data));
             },
             updateModal(){
                 $('.computation').attr("disabled", false);
@@ -503,6 +509,19 @@ import XLSX from "xlsx";
             saveModal(){
                 $('.computation').attr("disabled", true);
                 this.editmode = true;
+                axios.get('api/updateBank/' + this.arena_id+'/' + this.bankaccount_id).then((data)=>{
+                    Fire.$emit('AfterCreate')
+                     swal.fire(
+                        'Successfully!',
+                        'Updated',
+                        'success'
+                        )
+                })
+              
+             
+            },
+            test(){
+                 axios.get('api/savePrimaryBank/'+this.arena_id).then(({data}) => (this.selectedbank = data));
             },
             proceedAction(){
                 this.$Progress.start();
@@ -521,11 +540,18 @@ import XLSX from "xlsx";
             openModel(data){
                 this.form.reset();
                 $('#addNew').modal('show');
+                this.total_m_w_bet = data.total_meron_wala;
                 this.form.fill(data.arena_details);
-                this.bankDetials = data.bank_details;
+                this.arenaDetails = data.arena_details;
+                this.arena_id = data.id;
                 $('.computation').attr("disabled", true);
                 this.editmode = true;
+                Fire.$emit('AfterCreate'),
+                axios.get('api/bankfilter/'+ data.arena_details.id).then(({data}) => ( this.bank = data));
+            
+               
             },
+        
             onFileChange(event) {
                 const file = event.target.files ? event.target.files[0] : null;
                 if (file) {
@@ -565,25 +591,8 @@ import XLSX from "xlsx";
                     const removeKeyReportObject = filterObjectHeader.map(({key, ...rest}) => ({...rest}));
 
                         
-                    
-                    // For Kiosk-MObile wth same Arena Name
-                    let helper = {};
-                    const duplicateObj = removeKeyReportObject.reduce(function (r, obj) {
-                        const key = obj.arenaName;
-                        
-                        if (!helper[key]) {
-                        helper[key] = Object.assign({}, obj); // create a copy of o
-
-                        r.push(helper[key]);
-                        } else {
-                            const {arenaName, ...o} = obj;
-                        helper[key].mobile = { ...o };
-                        }
-
-                        return r;
-                    }, []);
-
-                    this.ocbsArrayFiltered = duplicateObj;
+            
+                    this.ocbsArrayFiltered = removeKeyReportObject;
 
                     };
 
@@ -597,8 +606,10 @@ import XLSX from "xlsx";
         },
         created() {
            this.showData();
+     
            Fire.$on('AfterCreate',() => {
                   this.showData();
+                    this.test();
             });
         }
     }

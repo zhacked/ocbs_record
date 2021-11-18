@@ -11,7 +11,7 @@ class import extends Model
     protected $guarded = [];
 
     public function arenaDetails(){
-        return $this->hasOne('App\Models\arena','id', 'arena_id');
+        return $this->hasOne('App\Models\arena','arena', 'arena_name');
     }
 
     public function BankDetails(){

@@ -71,39 +71,48 @@
 					</div>
 					<form @submit.prevent="editmode ? updateArena() : createArena()">
 						<div class="modal-body">
-							<div class="form-group">
-								<input v-model="form.arena" type="text" name="arena"
-									placeholder="Name"
-									class="form-control" :class="{ 'is-invalid': form.errors.has('arena') }">
-								<has-error :form="form" field="arena"></has-error>
-							</div>
-
-							<div class="form-group">
-								<input v-model="form.address" type="text" name="address"
-									placeholder="Arena Address"
-									class="form-control" :class="{ 'is-invalid': form.errors.has('address') }">
-								<has-error :form="form" field="address"></has-error>
-							</div>
-
-							<div class="form-group">
-								<textarea v-model="form.operator" name="operator" id="operator"
-								placeholder="operator name"
-								class="form-control" :class="{ 'is-invalid': form.errors.has('operator') }"></textarea>
-								<has-error :form="form" field="operator"></has-error>
-							</div>
-
-							<div class="form-group">
-								<input v-model="form.contact_number" type="number" name="contact_number" id="contact_number"
-								class="form-control" :class="{ 'is-invalid': form.errors.has('contact_number') }" placeholder="0912-123-4567">
-								<has-error :form="form" field="contact_number"></has-error>
-							</div>
-
-                            <div class="form-group">
-								<input v-model="form.email" type="email" name="email" id="email"
-								class="form-control" :class="{ 'is-invalid': form.errors.has('email') }" placeholder="sample@gmail.com">
-								<has-error :form="form" field="email"></has-error>
-							</div>
-
+					
+                                <v-text-field
+                                    label="Arena Name"
+                                    outlined
+                                    v-model="form.arena"
+                                    :rules="[() => !!form.arena || 'This field is required']"
+                                ></v-text-field>
+							
+                                <v-text-field
+                                    label="Arena Address"
+                                    outlined
+                                    v-model="form.address"
+                                    :rules="[() => !!form.address || 'This field is required']"
+                                   :class="{ 'is-invalid': form.errors.has('address') }"
+                                ></v-text-field>
+								
+                                 <v-text-field
+                                    label="Operator Name"
+                                    placeholder="john Doe"
+                                    outlined
+                                    v-model="form.operator"
+                                    :rules="[() => !!form.operator || 'This field is required']"
+                                ></v-text-field>
+							
+                                 <v-text-field
+                                    label="Contact Number"
+                                    placeholder="0912-123-4567"
+                                    outlined
+                                    v-model="form.contact_number"
+                                    :rules="[() => !!form.contact_number || 'This field is required']"
+                                ></v-text-field>
+				
+                                <v-text-field
+                                    label="Email"
+                                     placeholder="sample@gmail.com"
+                                    outlined
+                                   
+                                    v-model="form.email"
+                                    :rules="[() => !!form.email || 'This field is required']"
+                                ></v-text-field>
+							
+	
                             <hr>
                             <p>
                                <strong>Add Bank Details</strong>  <span><button  type="button" class="btn btn-success text-white" style="border-radius:50%"  @click="addField()"><i class="fas fa-plus" aria-hidden="true"></i></button></span>
@@ -111,10 +120,23 @@
                             <v-container >
                                  <v-row fluid class="add" v-for="(input,index) in inputs" :key="index">
                                                 <v-col class="col-5">
-                                                    <input type="text"  class="form-control"  v-model="input.bank_name"   name="bank_name" id="bank_name" placeholder="Bank Name">
+                                                    <v-text-field
+                                                        label="Bank Name"
+                                                        placeholder="BDO"
+                                                        outlined
+                                                         v-model="input.bank_name" 
+                                                        :rules="[() => !!input.bank_name || 'This field is required']"
+                                                    ></v-text-field>
                                                 </v-col>
                                                 <v-col  class="col-6">
-                                                    <input type="text" class="form-control"  v-model="input.bank_number"   name="bank_number" id="bank_number" placeholder="Account Number">
+                                                    <v-text-field
+                                                        label="Bank Number"
+                                                        placeholder="xxx-xxx-xxx"
+                                                        outlined
+                                                        v-model="input.bank_number"
+                                                        :rules="[() => !!input.bank_number || 'This field is required']"
+                                                    ></v-text-field>
+                                                   
                                                 </v-col>
                                                 <v-col  class="col-1">
                                                     <span class="d-flex justify-content-center align-items-center h-100 d-inline-block" tabindex="0"  @click="removeField(index)" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Remove column"><i class="fas fa-trash text-danger" aria-hidden="true"></i></span> 
@@ -149,7 +171,8 @@
                     bank_name: null,
                     bank_number: null,
                 }],
-
+                errorMessages: '',
+                formHasErrors: false,
                 editmode: false,
                 arena : {},
                 length: '',
