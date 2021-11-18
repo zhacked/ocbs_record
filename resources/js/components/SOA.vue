@@ -27,7 +27,7 @@
                                         class="elevation-1 text-center"
                                     >
                                 <template v-slot:[`item.actions`]="{ item }">
-                                        <button class="btn btn-primary" @click="openModel(item)">
+                                        <button class="btn btn-primary" @click="openModel(item, commission_percent)">
                                             <i class="fa fa-eye"></i> View
                                         </button>
                                     </template>
@@ -147,7 +147,7 @@
                                                     Total M/W Bets : &nbsp; &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text"  v-model="total_m_w_bet" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
+                                                        <input type="text"  v-model="computation.totalMWBet" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -155,7 +155,7 @@
                                                     Total Cancelled Bets : <span class="text-success text-bold"> + </span>&nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
+                                                        <input type="text" v-model="computation.drawCancelled" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -163,7 +163,7 @@
                                                     Total Draw Bets : <span class="text-success text-bold"> + </span> &nbsp;
                                                 </v-col> 
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
+                                                        <input type="text" v-model="computation.draw" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -171,7 +171,7 @@
                                                     Total Payout Paid : <span class="text-danger text-bold"> - </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
+                                                        <input type="text" v-model="computation.totalPayoutPaid" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -179,7 +179,7 @@
                                                     Total C/D Paid : <span class="text-danger text-bold"> - </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
+                                                        <input type="text" v-model="computation.cdPaid" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -187,7 +187,7 @@
                                                     Total Draw Paid : <span class="text-danger text-bold"> - </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
+                                                        <input type="text" v-model="computation.drawPaid" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <hr>
@@ -196,7 +196,7 @@
                                                     Net Win/Loss : <span class="text-primary text-bold"> = </span> &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="" >
+                                                        <input type="text" v-model="computation.netWinLoss" class="form-control form-control-sm computation" id="inputName" placeholder="" >
                                                 </v-col>
                                             </v-row>
 
@@ -230,7 +230,7 @@
                                                     Net Win/Loss : &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
+                                                        <input type="text" v-model="computation.netWinLoss" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <hr>
@@ -239,7 +239,7 @@
                                                     M/W * {{this.commission_percent}} (kiosk) : &nbsp;
                                                 </v-col>
                                                 <v-col class="col-sm-6" >
-                                                        <input type="text" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
+                                                        <input type="text" v-model="computation.totalMWBetPercent" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                                 </v-col>
                                             </v-row>
                                             <v-row  class=" mb-1 no-gutters" >
@@ -365,7 +365,7 @@
                                                         <span v-if="editmode" >{{ selectedbank.bank_number}}</span>
 
                                                          <!-- <select  name="type" id="arena_id" class="form-control form-control-sm" >
-                                                            <option v-for="bank in bankDetials" :key="bank.id"  :value="bank.id" >{{bank.bank_number}}</option>
+                                                            <option v-for="bank in bankDetails" :key="bank.id"  :value="bank.id" >{{bank.bank_number}}</option>
                                                         </select> -->
                                                     </v-col>
                                                 </v-col>
@@ -431,7 +431,7 @@
                                           <span>Select commission % : </span>
                                     </v-col>
                                     <v-col  class="col-md-4">
-                                        <input type="text"   v-model="this.commission_percent" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
+                                        <input type="text"   v-model="commission_percent" @change="handleCommissionPercent" class="form-control form-control-sm computation" id="inputName" placeholder="0" >
                                     </v-col>
                                 </v-row>
                                
@@ -476,11 +476,11 @@ import XLSX from "xlsx";
             commission_percent:'0.02',
             status:'Deposit',
             ocbs: {},
-            bankDetials: {},
+            bankDetails: {},
             bank:{},
             arenaData: [],
             arenaDetails:{},
-            total_m_w_bet:0,
+            
             selectedbank:[],
             arena_id : '',
             form: new Form({
@@ -493,13 +493,52 @@ import XLSX from "xlsx";
                 }),
 
             bankaccount_id:'',
+            computation: {
+                totalMWBet: 0,
+                drawCancelled: 0,
+                draw: 0,
+                totalPayoutPaid: 0,
+                cdPaid: 0,
+                drawPaid: 0,
+                netWinLoss: 0,
+                totalMWBetPercent: 0
+
+            }
 
         
             }
         },
         methods: {
-           showData(){
-                axios.get("api/import").then((data) => ( this.arenaData = data));
+           async showData(){
+                const data = await axios.get("api/import");
+                // console.log('DATA',data.data)
+                let helper = {};
+
+                const duplicateObj = await data.data.reduce(function (r, obj) {
+                    const key = obj.arena_name;
+
+                    if (!helper[key]) {
+                        helper[key] = Object.assign({}, obj); // create a copy of o
+
+                        r.push(helper[key]);
+                        } else {
+                        // const {arenaName, ...o} = obj;
+                        helper[key].mobile = {
+                            ...obj,
+                            cashWithdrawMobile: 0,
+                            cashLoadMobile: 0,
+                        };
+                    }
+
+                    return r;
+                }, []);
+
+                
+                const obj = {
+                    data: duplicateObj
+                }
+
+                this.arenaData = obj;
             },
             updateModal(){
                 $('.computation').attr("disabled", false);
@@ -537,10 +576,18 @@ import XLSX from "xlsx";
                    
                 ));
             },
-            openModel(data){
+            handleCommissionPercent(e) {
+                console.log('TARGET',e.target.value)
+                this.commission_percent = e.target.value;
+                console.log(this.computation.netWinLoss)
+                this.computation.totalMWBetPercent = parseFloat(this.computation.netWinLoss) * parseFloat(e.target.value);
+                
+            },
+            openModel(data, commission){
+                console.log(commission)
                 this.form.reset();
                 $('#addNew').modal('show');
-                this.total_m_w_bet = data.total_meron_wala;
+              
                 this.form.fill(data.arena_details);
                 this.arenaDetails = data.arena_details;
                 this.arena_id = data.id;
@@ -549,6 +596,27 @@ import XLSX from "xlsx";
                 Fire.$emit('AfterCreate'),
                 axios.get('api/bankfilter/'+ data.arena_details.id).then(({data}) => ( this.bank = data));
             
+                const totalMWBet = data.total_meron_wala;
+                const drawCancelled = data.draw_cancelled;
+                const draw = data.draw;
+                const totalPayoutPaid = data.total_payout_paid;
+                const cdPaid = data.draw_cancelled_paid;
+                const drawPaid = data.draw_paid
+                const netWinLoss = parseFloat(totalMWBet) + parseFloat(drawCancelled) + parseFloat(draw) - parseFloat(totalPayoutPaid) - parseFloat(cdPaid) - parseFloat(drawPaid);
+                const totalMWBetPercent = parseFloat(totalMWBet) * parseFloat(this.commission_percent);
+                console.log(totalMWBetPercent)
+
+
+                this.computation = {
+                        totalMWBet,
+                        drawCancelled,
+                        draw,
+                        totalPayoutPaid,
+                        cdPaid,
+                        drawPaid,
+                        netWinLoss,
+                        totalMWBetPercent
+                    }
                
             },
         
