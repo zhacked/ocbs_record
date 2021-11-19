@@ -17,5 +17,6 @@ php artisan serve
 ## To Watch/dev
 npm run dev
 
-
+##seeder
+php artisan db:seed --class=UserSeeder
 
