@@ -27,7 +27,7 @@ class ImportController extends Controller
     public function index()
     {
         return import::with(['BankDetails','arenaDetails.BankDetails'])->get();
-       
+      
     }
 
     /**
@@ -44,7 +44,6 @@ class ImportController extends Controller
                 $arena->bank_id = $bankOwn->id;
                 $arena->update();
         }
-     
      
         return BankAccount::where('id',$arena->bank_id)->first();
     }
@@ -72,13 +71,12 @@ class ImportController extends Controller
     public function store(Request $request)
     {
         
-     
+        
         foreach ($request->all() as $data ){
         
         $arena= arena::where('arena', $data['arenaName'])->first();
             
            $import =  import::create([
-                'arena_id' =>  $arena == null ? null : $arena->id,
                 'arena_name' => $data['arenaName'],
                 'meron' => $data['meron'],
                 'wala' => $data['wala'],

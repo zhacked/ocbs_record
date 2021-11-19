@@ -18,14 +18,28 @@
 						</v-card-title>
 
                             <div class="card card-primary card-outline" style="overflow: auto; !important">
-                              
+                                
                                 <div class="card-body"  >
-                                    <v-data-table
+                                    <v-card-title>
+                                        SOA Report
+                                        <v-spacer></v-spacer>
+                                   
+                                        <v-text-field
+                                            v-model="search"
+                                            append-icon="mdi-magnify"
+                                            label="Search"
+                                            class="mx-4"
+                                        ></v-text-field>
+                                
+                                    </v-card-title>
+                                <v-data-table
                                         :headers="headers"
                                         :items="arenaData.data"
                                         :items-per-page="10"
+                                        :search="search"
                                         class="elevation-1 text-center"
                                     >
+                                 
                                 <template v-slot:[`item.actions`]="{ item }">
                                         <button class="btn btn-primary" @click="openModel(item)">
                                             <i class="fa fa-eye"></i> View
@@ -39,15 +53,18 @@
 			</v-row>
 
             		<!-- Modal -->
+        <v-dialog v-model="dialog" scrollablemax-width="300px">
 			<div class="modal fade "    id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true"  >
-				<div class="modal-dialog modal-xl modal-dialog-centered " role="document"  >
-					<div class="modal-content   h-100 "  style="padding:80px 100px;" >
+				<div class="modal-dialog modal-xl modal-dialog-centered overflow-auto" role="document"  >
+					<div class="modal-content"  style="padding:80px 100px;" >
                         <div class="text-align-center" >
-                            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button> -->
+                                 <div class="modal-header mb-4">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                       <i class="fas fa-window-close text-danger"></i>
+                                    </button>
+                                </div>
                             <h1 class="modal-title w-100 text-center">Statement of Account</h1>
-
+                            
                             <div class="modal-body" style="overflow-y: auto;">
                                 <div class="text-right ">
                                         <v-row class=" mb-1  no-gutters" >
@@ -451,7 +468,7 @@
                  
                         
 			</div>
-
+        </v-dialog>
             
         
 		</v-container>
@@ -473,6 +490,7 @@ import XLSX from "xlsx";
             ocbsArray: [],
             ocbsArrayFiltered: [],
             editmode: false,
+            search: '',
             commission_percent:'0.02',
             status:'Deposit',
             ocbs: {},
@@ -498,6 +516,7 @@ import XLSX from "xlsx";
             }
         },
         methods: {
+            
            showData(){
                 axios.get("api/import").then((data) => ( this.arenaData = data));
             },
@@ -539,7 +558,9 @@ import XLSX from "xlsx";
             },
             openModel(data){
                 this.form.reset();
-                $('#addNew').modal('show');
+                this.dialog = true;
+                // $('#addNew').modal({backdrop: 'static', keyboard: false}, 'show');
+                
                 this.total_m_w_bet = data.total_meron_wala;
                 this.form.fill(data.arena_details);
                 this.arenaDetails = data.arena_details;
