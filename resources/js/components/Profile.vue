@@ -15,6 +15,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 mt-3">
+                
                 <div class="card card-widget widget-user">
                 <div class="widget-user-header text-bold text-white" style="background-image:url('./image/user-cover.jpg')">
                     <h1 class="widget-user-username ">{{this.form.name}}</h1>
@@ -22,9 +23,16 @@
                 </div>
 
                 <div class="widget-user-image">
-                       <img class="img-circle"  alt="User Avatar">
+                    <v-i
+                        max-height="150"
+                        max-width="250"
+                        src="image/employee.png"
+                        class="img-circle"
+                        alt="user"
+                        ></v-i>
+                      
                 </div>
-                <div class="card-footer">
+                <div class="card-footer"  v-if="this.$gate.isAdmin()">
                     <div class="row">
                     <div class="col-sm-4 border-right">
                         <div class="description-block">
@@ -35,7 +43,7 @@
                     <div class="col-sm-4 border-right">
                         <div class="description-block">
                         <h5 class="description-header">0</h5>
-                        <span class="description-text">Pending</span>
+                        <span class="description-text">Arena</span>
                         </div>
                     </div>
                     <div class="col-sm-4">
