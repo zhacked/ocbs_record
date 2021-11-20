@@ -5,53 +5,67 @@
 				<v-col class="col-md-12">
 					<v-card >
 						<v-card-title class="card-header">
-							<strong> User Management</strong>
-                            <v-spacer></v-spacer>
+                             User Management
+                             <v-spacer></v-spacer>
 							<v-card-actions class="card-tools">
 								<v-btn color="success"
-                                    elevation="2"  @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></v-btn>
+                                    elevation="2"  @click="newModal">Add New User <i class="fas fa-user-plus fa-fw"></i></v-btn>
 							</v-card-actions>
 						</v-card-title>
 
-
-							<v-simple-table class=" table-hover elevation-1">
-								<thead >
-									<tr class="text-center ">
-										<td>ID</td>
-										<td>Name</td>
-										<td>Email</td>
-										<td>Type</td>
-										<td>Modify</td>
-                                        <td>Action</td>
-									</tr>
-								</thead>
-								<tbody>
-									<!-- <tr v-if="users.data.length == 0">
-										<td colspan="7" class="text-center"> <h3>No Data Available</h3> </td>
-									</tr> -->
-									<tr  v-for="user in users.data" :key="user.id" class="text-center">
-										<td>{{user.id}}</td>
-										<td>{{user.name}}</td>
-										<td>{{user.email}}</td>
-										<td>{{user.type | upText}}</td>
-										<td>{{user.created_at | myDate}}</td>
-
-										<td>
-											<button class="btn btn-primary"  @click="editModal(user)">
-												<i class="fa fa-edit"></i> Update
-											</button>
-
-												<button class="btn btn-danger"  @click="deleteUser(user.id)">
-												<i class="fa fa-trash"></i> Delete
-											</button>
-										</td>
-									</tr>
-								</tbody>
-							</v-simple-table>
-
-						<v-card-title class="ma-0">
-							<pagination  :data="users" @pagination-change-page="getResults"></pagination>
-						</v-card-title>
+                      
+                            <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="Search"
+                                class="mx-4"
+                            ></v-text-field>
+                   
+                            <v-data-table
+                                    :headers="headers"
+                                    :items="users.data"
+                                    :items-per-page="10"
+                                    :search="search"
+                                    class="elevation-1 text-center"
+                                >
+                                
+                            <template v-slot:[`item.actions`]="{ item }">
+                                    <v-tooltip bottom>
+                                        <template v-slot:activator="{ on, attrs }">
+                                                <v-btn
+                                                color="primary"
+                                                class="mx-2"
+                                                icon
+                                                dark
+                                                v-bind="attrs"
+                                                v-on="on"
+                                                @click="editModal(item)"
+                                                >
+                                                <i class="fas fa-edit"></i>
+                                                </v-btn>
+                                        </template>
+                                    <span>Edit User Info</span>
+                                    </v-tooltip>
+                                    |
+                                     <v-tooltip bottom>
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-btn
+                                            color="red"
+                                            dark
+                                            icon
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            class="mx-2"
+                                            @click="deleteUser(item.id)"
+                                            >
+                                            <i class="fa fa-trash"></i>
+                                            </v-btn>
+                                        </template>
+                                    <span>Delete info User</span>
+                                    </v-tooltip>
+                            </template>
+                            </v-data-table>
+						
 					</v-card>
 				</v-col>
 			</v-row>
@@ -128,9 +142,17 @@
     export default {
         data() {
             return {
+                headers: [
+                    { text: 'Name', value: 'name' },
+                    { text: 'Email', value: 'email' },
+                    { text: 'Type', value: 'type'},
+                    { text: 'Modify', value: 'created_at'},
+                    { text: '', value: 'actions', sortable: false },
+                ],
                 editmode: false,
                 users : {},
                 length: '',
+                search: '',
                 form: new Form({
                     id:'',
                     name : '',
@@ -224,15 +246,6 @@
             }
         },
         created() {
-            Fire.$on('searching',() => {
-                let query = this.$parent.search;
-                axios.get('api/findUser?q=' + query)
-                .then((data) => {
-                    this.users = data.data
-                })
-                .catch(() => {
-                })
-            })
            this.loadUsers();
            Fire.$on('AfterCreate',() => {
                this.loadUsers();
