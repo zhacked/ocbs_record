@@ -35,10 +35,26 @@
                             style="overflow: auto; !important"
                         >
                             <div class="card-body">
+                                 <v-row>
+                                    <v-col>
+
+                                    </v-col>
+                                    <v-col>
+                                        <v-text-field
+                                            v-model="search"
+                                            append-icon="mdi-magnify"
+                                            label="Search"
+                                    
+                                            color="primary darken-2"
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
+                     
                                 <v-data-table
                                     :headers="headers"
                                     :items="arenaData.data"
                                     :items-per-page="10"
+                                    :search="search"
                                     class="elevation-1 text-center"
                                 >
                                     <template
@@ -1103,7 +1119,7 @@ export default {
                 { text: "Contact", value: "arena_details.contact_number" },
                 { text: "", value: "actions", sortable: false },
             ],
-
+            search:'',
             ocbsArray: [],
             ocbsArrayFiltered: [],
             editmode: false,
@@ -1212,7 +1228,8 @@ export default {
                         $("#importData").val(""),
                         Fire.$emit("AfterCreate"),
                         swal.fire("Successfully!", "Excel Imported", "success"),
-                        this.$Progress.finish()
+                        this.$Progress.finish(),
+                        location.reload()
                     )
                 );
         },

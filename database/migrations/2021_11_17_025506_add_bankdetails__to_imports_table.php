@@ -14,7 +14,7 @@ class AddBankdetailsToImportsTable extends Migration
     public function up()
     {
         Schema::table('imports', function (Blueprint $table) {
-            $table->string('bank_id')->after('arena_id')->nullable();
+            $table->string('bank_id')->after('arena_name')->nullable();
         });
     }
 

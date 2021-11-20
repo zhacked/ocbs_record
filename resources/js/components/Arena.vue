@@ -12,47 +12,49 @@
                                     elevation="2"  @click="openModal">Add Arena<i class="fas fa-plus fa-fw"></i></v-btn>
 							</v-card-actions>
 						</v-card-title>
+                        <v-row>
+                            <v-col>
 
-
-							<v-simple-table class=" table-hover elevation-1">
-								<thead >
-									<tr class="text-center text-bold">
-										<td>Arena Name</td>
-										<td>Address</td>
-										<td>Operator</td>
-                                        <td>Contact</td>
-										<td>Modify</td>
-                                        <td>Action</td>
-
-									</tr>
-								</thead>
-								<tbody>
-									<!-- <tr v-if="users.data.length == 0">
-										<td colspan="7" class="text-center"> <h3>No Data Available</h3> </td>
-									</tr> -->
-									<tr  v-for="arenas in arena.data" :key="arenas.id" class="text-center">
-										<td>{{arenas.arena}}</td>
-										<td>{{arenas.address}}</td>
-										<td>{{arenas.operator}}</td>
-										<td>{{arenas.contact_number}}</td>
-										<td>{{arenas.email}}</td>
-
-										<td>
-											<button class="btn btn-primary"  @click="editModal(arenas)">
-												<i class="fa fa-edit"></i> Update
-											</button>
-
-												<button class="btn btn-danger"  @click="deleteUser(arenas.id)">
-												<i class="fa fa-trash"></i> Delete
-											</button>
-										</td>
-									</tr>
-								</tbody>
-							</v-simple-table>
-
-						<v-card-title class="ma-0">
-							<pagination  :data="arena" @pagination-change-page="getResults"></pagination>
-						</v-card-title>
+                            </v-col>
+                            <v-col>
+                                <v-text-field
+                                    v-model="search"
+                                    append-icon="mdi-magnify"
+                                    label="Search"
+                            
+                                     color="primary darken-2"
+                                ></v-text-field>
+                            </v-col>
+                        </v-row>
+                     
+                        <v-data-table
+                            :headers="headers"
+                            :items="arena.data"
+                            :items-per-page="10"
+                            :search="search"
+                            class="elevation-1 text-center"
+                        >
+                            <template v-slot:[`item.actions`]="{ item }" >
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn icon  v-bind="attrs" v-on="on"  color="primary"  @click="editModal(item)">
+                                            <v-icon small>fa fa-edit</v-icon>
+                                        </v-btn>
+                                     </template>
+                                    <span>Update Arena</span>
+                                </v-tooltip>
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn icon  v-bind="attrs" v-on="on"  color="red" @click="deleteUser(item.id)">
+                                          <v-icon small>fas fa-trash</v-icon>
+                                        </v-btn>
+                                     </template>
+                                    <span>Delete Arena</span>
+                                </v-tooltip>
+                             
+                            </template>
+                        </v-data-table>
+						
 					</v-card>
 				</v-col>
 			</v-row>
@@ -171,11 +173,17 @@
                     bank_name: null,
                     bank_number: null,
                 }],
+                headers: [
+                    { text: "Arena Name", value: "arena" },
+                    { text: "Address", value: "address" },
+                    { text: "Operator", value: "operator" },
+                    { text: "", value: "actions", sortable: false },
+                ],
                 errorMessages: '',
                 formHasErrors: false,
                 editmode: false,
                 arena : {},
-                length: '',
+                search: '',
                 input: '',
                 form: new Form({
                     id:'',

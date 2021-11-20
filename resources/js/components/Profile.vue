@@ -23,14 +23,8 @@
                 </div>
 
                 <div class="widget-user-image">
-                    <v-i
-                        max-height="150"
-                        max-width="250"
-                        src="image/employee.png"
-                        class="img-circle"
-                        alt="user"
-                        ></v-i>
-                      
+                   
+                       <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">
                 </div>
                 <div class="card-footer"  v-if="this.$gate.isAdmin()">
                     <div class="row">
@@ -70,8 +64,14 @@
                     <div class="card-body">
                         <div class="tab-content">
 
-                            <div class="tab-pane" id="activity">
-                                <h3 class="text-center">Display User Activity   </h3>
+                            <div class="tab-pane  w-100" id="activity">
+                                    <v-img
+                                        class="mx-auto"
+                                        lazy-src="https://picsum.photos/id/11/10/6"
+                                        max-height="500"
+                                        max-width="2500"
+                                        :src="getcomming()"
+                                    ></v-img>
                             </div>
 
                             <div class="tab-pane active show" id="settings">
@@ -157,20 +157,26 @@
             }
         },
         methods:{
-            // getProfilePhoto(){
-            //     let photo = (this.form.photo.length > 200) ? this.form.photo : "image/profile/"+ this.form.photo ;
-            //     return photo;
-            // },
-            updateInfo(){
+            getProfilePhoto(){
+                if(this.form.photo != null){
+                    return (this.form.photo.length > 200) ? this.form.photo : "/image/profile/"+ this.form.photo ;
+                }else{
+                    return "image/profile.png"
+                }
+                
+            },
+            getcomming(){
+                  return "image/coming.jpg"
+            },
 
+            updateInfo(){
                 this.$Progress.start();
                 if(this.form.password == ''){
                     this.form.password = undefined;
                 }
                 this.form.put('api/profile')
-                .then(({data})=>{
-
-                    Fire.$emit('AfterCreate');
+                .then(()=>{
+                     Fire.$emit('AfterCreate');
                     this.$Progress.finish();
                 })
                 .catch(() => {
@@ -181,9 +187,8 @@
                 let file = e.target.files[0];
                 let reader = new FileReader();
                 let limit = 1024 * 1024 * 2;
-
                 if(file['size'] > limit){
-                    swal.fire({
+                    swal({
                         type: 'error',
                         title: 'Oops...',
                         text: 'You are uploading a large file',
@@ -197,10 +202,8 @@
             }
         },
         created() {
-            axios.get("api/profile")
-            .then(({ data }) => (
-                this.form.fill(data))
-            );
+             axios.get("api/profile")
+            .then(({ data }) => (this.form.fill(data)));
         }
     }
 </script>

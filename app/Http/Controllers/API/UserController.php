@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
+use view;
 use App\Models\User;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
-
-
 
 class UserController extends Controller
 {
@@ -30,6 +30,8 @@ class UserController extends Controller
 
         return User::latest()->paginate(10);
     }
+
+    
 
     /**
      * Store a newly created resource in storage.
@@ -72,26 +74,26 @@ class UserController extends Controller
         $currentPhoto = $user->photo;
 
 
-        if($request->photo != $currentPhoto){
-            $name = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
+            if($request->photo != $currentPhoto){
+                $name = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
 
-            Image::make($request->photo)->save(public_path('image/profile/').$name);
-            $request->merge(['photo' => $name]);
+                Image::make($request->photo)->save(public_path('image/profile/').$name);
+                $request->merge(['photo' => $name]);
 
-            $userPhoto = public_path('image/profile/').$currentPhoto;
-            if(file_exists($userPhoto)){
-                @unlink($userPhoto);
+                $userPhoto = public_path('image/profile/').$currentPhoto;
+                if(file_exists($userPhoto)){
+                    @unlink($userPhoto);
+                }
+
             }
 
-        }
+
+            if(!empty($request->password)){
+                $request->merge(['password' => Hash::make($request['password'])]);
+            }
 
 
-        if(!empty($request->password)){
-            $request->merge(['password' => Hash::make($request['password'])]);
-        }
-
-
-    
+        $user->update($request->all());
         return ['message' => "Success"];
     }
 

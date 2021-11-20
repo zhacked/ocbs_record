@@ -15,7 +15,6 @@ class CreateImportsTable extends Migration
     {
         Schema::create('imports', function (Blueprint $table) {
             $table->id();
-            $table->string('arena_id');
             $table->string('arena_name');
             $table->string('meron');
             $table->string('wala');

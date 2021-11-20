@@ -12,38 +12,68 @@
                                     elevation="2"  @click="openModal">Add Bank Information<i class="fas fa-plus fa-fw"></i></v-btn>
 							</v-card-actions>
 						</v-card-title>
+                            <v-row>
+                                <v-col>
+
+                                </v-col>
+                                <v-col class="pr-5">
+                                    <v-text-field
+                                        v-model="search"
+                                        append-icon="mdi-magnify"
+                                        label="Search"
+                                
+                                        color="primary darken-2"
+                                    ></v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-data-table
+                                :headers="headers"
+                                :items="account.data"
+                                :items-per-page="10"
+                                :search="search"
+                                class="elevation-1 text-center"
+                            >
+                                
+                            <template v-slot:[`item.actions`]="{ item }">
+                                    <v-tooltip top>
+                                        <template v-slot:activator="{ on, attrs }">
+                                                <v-btn
+                                                color="primary"
+                                                class="mx-2"
+                                                icon
+                                                dark
+                                                v-bind="attrs"
+                                                v-on="on"
+                                                @click="editModal(item)"
+                                                >
+                                                <i class="fas fa-edit"></i>
+                                                </v-btn>
+                                        </template>
+                                    <span>Edit User Info</span>
+                                    </v-tooltip>
+                                    |
+                                     <v-tooltip top>
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-btn
+                                            color="red"
+                                            dark
+                                            icon
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            class="mx-2"
+                                            @click="deleteAccount(item.id)"
+                                            >
+                                            <i class="fa fa-trash"></i>
+                                            </v-btn>
+                                        </template>
+                                    <span>Delete info User</span>
+                                    </v-tooltip>
+                            </template>
+                            </v-data-table>
 
 
-							<v-simple-table class=" table-hover elevation-1">
-								<thead >
-									<tr class="text-center text-bold">
-									
-										<td>Bank Name</td>
-                                        <td>Bank Account</td>
-                                        <td>Action</td>
+				
 
-									</tr>
-								</thead>
-								<tbody>
-									<tr  v-for="accounts in account.data" :key="accounts.id" class="text-center">
-										<td>{{accounts.bank_name}}</td>
-										<td>{{accounts.bank_number}}</td>
-										<td>
-											<button class="btn btn-primary"  @click="editModal(accounts)">
-												<i class="fa fa-edit"></i> Update
-											</button>
-
-												<button class="btn btn-danger"  @click="deleteAccount(accounts.id)">
-												<i class="fa fa-trash"></i> Delete
-											</button>
-										</td>
-									</tr>
-								</tbody>
-							</v-simple-table>
-
-						<v-card-title class="ma-0 pt-1">
-							<pagination  :data="account" @pagination-change-page="getResults"></pagination>
-						</v-card-title>
 					</v-card>
 				</v-col>
 			</v-row>
@@ -106,10 +136,16 @@
     export default {
         data() {
             return {
+                headers: [
+                    { text: 'Bank Name', value: 'bank_name' },
+                    { text: 'Bank Account', value: 'bank_number' },
+                    { text: '', value: 'actions', sortable: false },
+                ],
                 editmode: false,
                 account : {},
                 length: '',
                 arena_id:{},
+                search:'',
                 form: new Form({
                     id:'',
                    arena_id:'',
