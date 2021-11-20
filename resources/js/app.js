@@ -28,6 +28,8 @@ import swal from 'sweetalert2'
 
 import VueProgressBar from 'vue-progressbar'
 
+import numbro from 'numbro';
+
 
 const toast = swal.mixin({
     toast: true,
@@ -43,6 +45,14 @@ Vue.filter('upText', function(text){
 Vue.filter('myDate',function(created){
     return moment(created).format('MMMM Do YYYY');
 });
+
+Vue.filter('numbro', function(number){
+    return numbro(number).format({
+        thousandSeparated: true,
+        mantissa: 2
+    })
+})
+
 Vue.prototype.$gate = new Gate(window.user)
 
 Vue.use(VueCompositionAPI);
