@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-container>
+        <v-container :class="{'blur-content': dialog}">
             <v-row class="mt-5">
                 <v-col class="col-md-12">
                     <v-card>
@@ -62,6 +62,7 @@
                                     >
                                         <button
                                             class="btn btn-primary"
+                                            id="dialog-mask"
                                             @click="openModel(item)"
                                         >
                                             <i class="fa fa-eye"></i> View
@@ -72,444 +73,162 @@
                         </div>
                     </v-card>
                 </v-col>
-            </v-row>
 
-            <!-- Modal -->
-            <div
-                class="modal fade"
-                id="addNew"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="addNewLabel"
-                aria-hidden="true"
-            >
-                <div
-                    class="modal-dialog modal-xl modal-dialog-centered"
-                    role="document"
-                >
-                    <div
-                        class="modal-content h-100"
-                        style="padding: 80px 100px"
-                    >
-                        <div class="text-align-center">
-                            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button> -->
+                <v-col class="col-md-12">
+             
+                    <v-dialog
+                        v-model="dialog"
+                        hide-overlay
+                        transition="dialog-bottom-transition"
+                        content-class="my-custom-dialog"
+                        scrollable
+                        persistent
+                        >
+                   
+                    <v-card>        
+                        <v-toolbar dark color="primary" >
                             <h1 class="modal-title w-100 text-center">
                                 {{ depositReplenishTxt.title || "State of Account" }}
                             </h1>
-
-                            <div class="modal-body" style="overflow-y: auto">
-                                <div class="text-right">
-                                    <v-row class="mb-1 no-gutters">
-                                        <v-col class="col-sm-10 mt-2">
-                                            {{ depositReplenishTxt.dateText || "SOA" }} # : &nbsp;
-                                        </v-col>
-                                        <v-col class="col-sm-2">
-                                            <input
-                                                type="text"
-                                                readonly
-                                                class="
-                                                    form-control form-control-sm
-                                                "
-                                                id="inputName"
-                                                placeholder="SOA-xxxxxxx"
-                                            />
-                                        </v-col>
-                                    </v-row>
-                                    <v-row class="mb-1 no-gutters">
-                                        <v-col class="col-sm-10 mt-2">
-                                            Date of  {{ depositReplenishTxt.dateText || "SOA" }} : &nbsp;
-                                        </v-col>
-                                        <v-col class="col-sm-2">
-                                            <input
-                                                type="text"
-                                                readonly
-                                                class="
-                                                    form-control form-control-sm
-                                                "
-                                                id="inputName"
-                                                placeholder=""
-                                            />
-                                        </v-col>
-                                    </v-row>
-                                    <v-row class="mb-1 no-gutters">
-                                        <v-col class="col-sm-10 mt-2">
-                                            Date of Event : &nbsp;
-                                        </v-col>
-                                        <v-col class="col-sm-2">
-                                            <input
-                                                type="text"
-                                                readonly
-                                                class="
-                                                    form-control form-control-sm
-                                                "
-                                                id="inputName"
-                                                placeholder=""
-                                            />
-                                        </v-col>
-                                    </v-row>
-                                </div>
-
-                                <div class="mt-5 pt-5">
-                                    <v-row class="mb-1 no-gutters">
-                                        <v-col class="col-sm-2 mt-2">
-                                            Arena / OCBS Name :
-                                        </v-col>
-                                        <v-col class="col-sm-10">
-                                            <input
-                                                type="text"
-                                                readonly
-                                                v-model="form.arena"
-                                                class="
-                                                    form-control form-control-sm
-                                                "
-                                                id="inputName"
-                                                placeholder="Enter OCBS Name"
-                                                :class="{
-                                                    'is-invalid':
-                                                        form.errors.has(
-                                                            'arena'
-                                                        ),
-                                                }"
-                                            />
-                                            <has-error
-                                                :form="form"
-                                                field="arena"
-                                            ></has-error>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row class="mb-1 no-gutters">
-                                        <v-col class="col-sm-2 mt-2">
-                                            Address :
-                                        </v-col>
-                                        <v-col class="col-sm-10">
-                                            <input
-                                                type="text"
-                                                readonly
-                                                v-model="form.address"
-                                                class="
-                                                    form-control form-control-sm
-                                                "
-                                                id="inputName"
-                                                placeholder="Enter address"
-                                                :class="{
-                                                    'is-invalid':
-                                                        form.errors.has(
-                                                            'address'
-                                                        ),
-                                                }"
-                                            />
-                                            <has-error
-                                                :form="form"
-                                                field="address"
-                                            ></has-error>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row class="mb-1 no-gutters">
-                                        <v-col class="col-sm-2 mt-2">
-                                            Operator :
-                                        </v-col>
-                                        <v-col class="col-sm-10">
-                                            <input
-                                                type="text"
-                                                readonly
-                                                v-model="form.operator"
-                                                class="
-                                                    form-control form-control-sm
-                                                "
-                                                id="inputName"
-                                                placeholder="Enter Operator Name"
-                                                :class="{
-                                                    'is-invalid':
-                                                        form.errors.has(
-                                                            'operator'
-                                                        ),
-                                                }"
-                                            />
-                                            <has-error
-                                                :form="form"
-                                                field="operator"
-                                            ></has-error>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row class="mb-1 no-gutters">
-                                        <v-col class="col-sm-2 mt-2">
-                                            Contact Number :
-                                        </v-col>
-                                        <v-col class="col-sm-10">
-                                            <input
-                                                type="text"
-                                                readonly
-                                                v-model="form.contact_number"
-                                                class="
-                                                    form-control form-control-sm
-                                                "
-                                                id="inputName"
-                                                placeholder="0912-345-7894"
-                                                :class="{
-                                                    'is-invalid':
-                                                        form.errors.has(
-                                                            'contact_number'
-                                                        ),
-                                                }"
-                                            />
-                                            <has-error
-                                                :form="form"
-                                                field="contact_number"
-                                            ></has-error>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row class="mb-1 no-gutters">
-                                        <v-col class="col-sm-2 mt-2">
-                                            Email Address :
-                                        </v-col>
-                                        <v-col class="col-sm-10">
-                                            <input
-                                                readonly
-                                                v-model="form.email"
-                                                type="email"
-                                                name="email"
-                                                placeholder="sample@gmail.com"
-                                                class="form-control"
-                                                :class="{
-                                                    'is-invalid':
-                                                        form.errors.has(
-                                                            'email'
-                                                        ),
-                                                }"
-                                            />
-                                            <has-error
-                                                :form="form"
-                                                field="email"
-                                            ></has-error>
-                                        </v-col>
-                                    </v-row>
-                                </div>
-
-                                <!-- computation -->
-                                <div
-                                    style="border: 1px solid black"
-                                    class="mt-5"
+                            <v-spacer></v-spacer>
+                            <v-toolbar-items>
+                                <v-btn
+                                dark
+                                text
+                                @click="dialog = false"
                                 >
-                                    <h5 class="w-100 text-center pt-1">
-                                        Computation
-                                    </h5>
-                                </div>
-
-                                <div class="mt-5">
-                                    <v-row>
-                                        <!-- left -->
-                                        <v-col class="text-right">
-                                            <p
-                                                class="
-                                                    w-100
-                                                    text-center
-                                                    pa-0
-                                                    mx-0
-                                                "
-                                            >
-                                                (Kiosk)
-                                            </p>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Total M/W Bets : &nbsp;
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.totalMWBet
-                                                        "
-                                                        @blur="handleFormatted"
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Total Cancelled Bets :
-                                                    <span
-                                                        class="
-                                                            text-success
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        + </span
-                                                    >&nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.drawCancelled
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Total Draw Bets :
-                                                    <span
-                                                        class="
-                                                            text-success
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        +
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.draw
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Total Payout Paid :
-                                                    <span
-                                                        class="
-                                                            text-danger
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        -
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.totalPayoutPaid
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Total C/D Paid :
-                                                    <span
-                                                        class="
-                                                            text-danger
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        -
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.cdPaid
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Total Draw Paid :
-                                                    <span
-                                                        class="
-                                                            text-danger
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        -
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.drawPaid
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <hr />
-                                            <v-row class="mb-1 no-gutters pb-5">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Net Win/Loss :
-                                                    <span
-                                                        class="
-                                                            text-primary
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        =
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.netWinLoss
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder=""
-                                                    />
-                                                </v-col>
-                                            </v-row>
-
-                                            <!-- mobile -->
-                                            <div class="mt-5 pt-4">
+                                <v-icon>mdi-close</v-icon>
+                                </v-btn>
+                            </v-toolbar-items>
+                        </v-toolbar>
+                        <v-row >
+                            <v-col  class="col-lg-6 col-md-12 col-sm-12">
+                              <v-card  style="padding:10px 100px 100px 100px;" >
+                                    <div class="text-right" >
+                                        <v-row class="mb-1 no-gutters">
+                                            <v-col class="col-sm-10 ">
+                                                SOA # : &nbsp;
+                                            </v-col>
+                                            <v-col class="col-sm-2 text-left ">
+                                                <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                            </v-col>
+                                            <v-col class="col-sm-10 ">
+                                                Date of SOA : &nbsp;
+                                            </v-col>
+                                            <v-col class="col-sm-1 text-left ">
+                                                <v-chip   class="pa-2 " x-small color="gray" label> test</v-chip>
+                                            </v-col>
+                                            <v-col class="col-sm-10 ">
+                                                Date of Event : &nbsp;
+                                            </v-col>
+                                            <v-col class="col-sm-1 text-left">
+                                                <v-chip   class="pa-2"  x-small color="gray" label> test</v-chip>
+                                            </v-col>
+                                        </v-row>
+                                    </div>
+                                    <!-- personal details -->
+                                    <div>
+                                        <v-row class="mb-1 no-gutters">
+                                            <v-col class="col-sm-2 ">
+                                                Arean/OCBS Name : &nbsp;
+                                            </v-col>
+                                            <v-col class="col-sm-10 ">
+                                                <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                            </v-col>
+                                            <v-col class="col-sm-2 ">
+                                                Address : : &nbsp;
+                                            </v-col>
+                                            <v-col class="col-sm-10 ">
+                                                <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                            </v-col>
+                                            <v-col class="col-sm-2 ">
+                                                Operator : &nbsp;
+                                            </v-col>
+                                            <v-col class="col-sm-10 ">
+                                                <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                            </v-col>
+                                            <v-col class="col-sm-2 ">
+                                                Contact Number : &nbsp;
+                                            </v-col>
+                                            <v-col class="col-sm-10 ">
+                                                <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                            </v-col>
+                                            <v-col class="col-sm-2 ">
+                                                 Email Address : &nbsp;
+                                            </v-col>
+                                            <v-col class="col-sm-10 ">
+                                                <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                            </v-col>
+                                        </v-row>
+                                    </div>
+                                      <!-- computation -->
+                                    <div
+                                        style="border: 1px solid black"
+                                        class="mt-2"
+                                    >
+                                        <h5 class="w-100 text-center pt-1">
+                                            Computation
+                                        </h5>
+                                    </div>
+                                    <div class="mt-5">
+                                        <v-row>
+                                            <v-col >
+                                                <p
+                                                    class="
+                                                        w-100
+                                                        text-center
+                                                        pa-0
+                                                        mx-0
+                                                    "
+                                                >
+                                                    (Kiosk)
+                                                </p>
+                                                <v-row class="mb-1 no-gutters">
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Total M/W Bets :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left ">
+                                                    <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Total Cancelled Bets : &nbsp;
+                                                        
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-success text-bold">+ </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Total Draw Bets :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-success text-bold">+ </span>   <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Total Payout Paid :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left ">
+                                                        <span class="text-danger text-bold"> - </span>   <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Total C/D Paid :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left ">
+                                                        <span class="text-danger text-bold"> - </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Total Draw Paid :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-danger text-bold"> - </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Net Win/Loss :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                </v-row>
+                                                <div class="mt-5 pt-4">
                                                 <p
                                                     class="
                                                         w-100
@@ -521,404 +240,125 @@
                                                     (Mobile)
                                                 </p>
                                                 <v-row class="mb-1 no-gutters">
-                                                    <v-col
-                                                        class="col-sm-6 mt-2"
-                                                    >
-                                                        Total M/W Bets : &nbsp;
-                                                        &nbsp;
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Total M/W Bets :  &nbsp;
                                                     </v-col>
-                                                    <v-col class="col-sm-6">
-                                                        <input
-                                                            type="text"
-                                                            v-model="
-                                                                computation
-                                                                    .mobile
-                                                                    .totalMWBet
-                                                            "
-                                                            class="
-                                                                form-control
-                                                                form-control-sm
-                                                                computation
-                                                            "
-                                                            id="inputName"
-                                                            placeholder="0"
-                                                        />
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Total Draw Bets :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                         <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
                                                     </v-col>
                                                 </v-row>
+                                                </div>
+                                                
+                                            </v-col>
+                                            <v-col>
                                                 <v-row class="mb-1 no-gutters">
-                                                    <v-col
-                                                        class="col-sm-6 mt-2"
-                                                    >
-                                                        Total Draw Bets : &nbsp;
-                                                        &nbsp;
+                                                  <v-col class="col-sm-6 text-right">
+                                                       M/W * 2% (kiosk) :  &nbsp;
                                                     </v-col>
-                                                    <v-col class="col-sm-6">
-                                                        <input
-                                                            type="text"
-                                                            v-model="
-                                                                computation
-                                                                    .mobile
-                                                                    .totalDrawBet
-                                                            "
-                                                            class="
-                                                                form-control
-                                                                form-control-sm
-                                                                computation
-                                                            "
-                                                            id="inputName"
-                                                            placeholder="0"
-                                                        />
+                                                    <v-col class="col-sm-6 text-left ">
+                                                    <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                          Draw * 2% (kiosk)  : &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                         <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                         M/W * 2% (mobile) :   &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                         <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                          Draw * 2% (kiosk)  :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left ">
+                                                        <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Total Unclaimed :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left ">
+                                                         <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Total C Paid :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                         <span class="text-primary text-bold"> = </span>   <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Sales Deduction :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                       <b>Net Operator's Commission</b>  :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                     <v-col class="col-sm-6 text-right">
+                                                        Other's Commisison - M :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Consolidator's Commisison :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                     <v-col class="col-sm-6 text-right">
+                                                       Safety Fund :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Payment for outstading balance :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                     <v-col class="col-sm-6 text-right">
+                                                      <b>Total Commisison </b> :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        Cash Load from Mobile :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                     <v-col class="col-sm-6 text-right">
+                                                        Cash Withdrawal from Mobile :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-right">
+                                                        For Deposit :  &nbsp;
+                                                    </v-col>
+                                                    <v-col class="col-sm-6 text-left  ">
+                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
                                                     </v-col>
                                                 </v-row>
-                                            </div>
-                                        </v-col>
-
-                                        <!-- right -->
-                                        <v-col class="text-right">
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Net Win/Loss : &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.netWinLoss
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <hr />
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    M/W *
-                                                    {{
-                                                        this.commission_percent
-                                                    }}
-                                                    (kiosk) : &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computedAve.mwTotalPercent
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Draw *
-                                                    {{
-                                                        this.commission_percent
-                                                    }}
-                                                    (kiosk) :
-                                                    <span
-                                                        class="
-                                                            text-success
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        +
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computedAve.drawTotalPercent
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    M/W *
-                                                    {{
-                                                        this.commission_percent
-                                                    }}
-                                                    (mobile) :
-                                                    <span
-                                                        class="
-                                                            text-success
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        +
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computedAve.mwMobileTotalPercent
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Draw *
-                                                    {{
-                                                        this.commission_percent
-                                                    }}
-                                                    (mobile) :
-                                                    <span
-                                                        class="
-                                                            text-success
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        +
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computedAve.drawMobileTotalPercent
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Total Unclaimed :
-                                                    <span
-                                                        class="
-                                                            text-success
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        +
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.unclaimed
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col> </v-row
-                                            ><v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Total C unpaid : &nbsp;
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.cUnpaid
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Operator Expenses : &nbsp;
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.operatorExpenses
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Net operator's Commission :
-                                                    <span
-                                                        class="
-                                                            text-primary
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        =
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computedAve.netOpCommission
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Cash Load from Mobile :
-                                                    <span
-                                                        class="
-                                                            text-success
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        +
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.mobile
-                                                                .cashLoad
-                                                        "
-                                                        name="cashLoad"
-                                                        @blur="handleFormatted"
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    Cash Withdraw from Mobile :
-                                                    <span
-                                                        class="
-                                                            text-danger
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        -
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computation.mobile
-                                                                .cashWithdraw
-                                                        "
-                                                        name="cashWithdraw"
-                                                        @blur="handleFormatted"
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <hr />
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6 mt-2">
-                                                    For {{ depositReplenishTxt.totalText || "Deposit" }} :
-                                                    <span
-                                                        class="
-                                                            text-primary
-                                                            text-bold
-                                                        "
-                                                    >
-                                                        =
-                                                    </span>
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    <input
-                                                        type="text"
-                                                        v-model="
-                                                            computedAve.depositReplenish
-                                                        "
-                                                        class="
-                                                            form-control
-                                                            form-control-sm
-                                                            computation
-                                                        "
-                                                        id="inputName"
-                                                        placeholder="0"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-                                            <hr />
-                                            <hr />
-                                        </v-col>
-                                    </v-row>
-                                </div>
-
-                                <!-- kindly deposit -->
+                                            </v-col>
+                                        </v-row>
+                                    </div>
+                                         <!-- kindly deposit -->
                                 <v-row>
                                     <v-col class="col-sm-9">
                                         <div
@@ -1003,8 +443,8 @@
                                     <v-col class="col-sm-3"> </v-col>
                                 </v-row>
 
-                                <!-- signiture -->
-                                <div class="mt-5 pl-5">
+                                 <!-- signiture -->
+                                <div class="pb-5">
                                     <v-row>
                                         <!-- left -->
                                         <v-col>
@@ -1046,57 +486,25 @@
                                         </v-col>
                                     </v-row>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer w-100">
-                            <div class="text-left">
-                                <v-row class="no-gutters">
-                                    <v-col class="col-md-8">
-                                        <span>Select commission % : </span>
-                                    </v-col>
-                                    <v-col class="col-md-4">
-                                        <input
-                                            type="text"
-                                            v-model="commission_percent"
-                                            class="
-                                                form-control form-control-sm
-                                                computation
-                                            "
-                                            id="inputName"
-                                            placeholder="0"
-                                        />
-                                    </v-col>
-                                </v-row>
-                            </div>
-                            <v-spacer></v-spacer>
-                            <div class="text-right">
-                                <button
-                                    type="button"
-                                    v-show="editmode"
-                                    class="btn btn-outline-primary"
-                                    @click="updateModal()"
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    type="button"
-                                    v-show="!editmode"
-                                    class="btn btn-outline-primary"
-                                    @click="saveModal()"
-                                >
-                                    Save
-                                </button>
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-success"
-                                >
-                                    Save as PDF
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                       
+                              </v-card>
+                            </v-col>
+                            <v-space></v-space>
+                            <v-col class="col-lg-6 col-md-12 col-sm-12">
+                                test 2
+                            </v-col>
+                        </v-row>
+                        
+                                 
+                     </v-card>
+                 
+                    </v-dialog>
+            
+               
+                </v-col>
+            </v-row>
+          
+
         </v-container>
     </v-app>
 </template>
@@ -1119,6 +527,10 @@ export default {
                 { text: "Contact", value: "arena_details.contact_number" },
                 { text: "", value: "actions", sortable: false },
             ],
+            dialog: true,
+            notifications: false,
+            sound: true,
+            widgets: false,
             search:'',
             ocbsArray: [],
             ocbsArrayFiltered: [],
@@ -1221,17 +633,29 @@ export default {
         },
         proceedAction() {
             this.$Progress.start();
-            axios
+            if($('#importData').val() === ''){
+                    Fire.$emit("AfterCreate");
+                    swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            footer: '<a href="">Please contact developer</a>'
+                            });
+            }else{
+               axios
                 .post("api/import", this.ocbsArrayFiltered)
                 .then(
                     ({ data }) => (
                         $("#importData").val(""),
                         Fire.$emit("AfterCreate"),
                         swal.fire("Successfully!", "Excel Imported", "success"),
-                        this.$Progress.finish(),
-                        location.reload()
+                        this.$Progress.finish()
+                        // location.reload()
                     )
                 );
+            }
+             
+            
         },
         // handleCommissionPercent(e) {
         //     this.commission_percent = e.target.value;
@@ -1239,6 +663,7 @@ export default {
         openModel(data) {
             console.log(data);
             this.form.reset();
+            this.dialog =true;
             $("#addNew").modal("show");
 
             this.form.fill(data.arena_details);

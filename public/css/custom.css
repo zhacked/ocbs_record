@@ -57,5 +57,15 @@
   margin-bottom: 1.2em;
 }
 
+.blur-content{
+  filter: blur(5px); 
+}
+#dialog-mask {
+   transition: opacity .3s ease;
+}
+.my-custom-dialog {
+  margin-left: 100px !important;
 
+  overflow: hidden !important;
+ }
 /*# sourceMappingURL=custom.css.map */

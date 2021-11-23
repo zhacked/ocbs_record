@@ -71,13 +71,13 @@ class ImportController extends Controller
     public function store(Request $request)
     {
         
-        
         foreach ($request->all() as $data ){
         
         $arena= arena::where('arena', $data['arenaName'])->first();
             
            $import =  import::create([
                 'arena_name' => $data['arenaName'],
+                'date_of_soa'=> $data['eventCreated'],
                 'meron' => $data['meron'],
                 'wala' => $data['wala'],
                 'total_meron_wala' => $data['total'],

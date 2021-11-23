@@ -16,6 +16,7 @@ class CreateImportsTable extends Migration
         Schema::create('imports', function (Blueprint $table) {
             $table->id();
             $table->string('arena_name');
+            $table->string('date_of_soa');
             $table->string('meron');
             $table->string('wala');
             $table->string('total_meron_wala');

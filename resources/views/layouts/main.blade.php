@@ -16,7 +16,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
 
 </head>
-<body class="hold-transition sidebar-mini" >
+<body class="hold-transition sidebar-mini sidebar-collapse" >
 <div class="wrapper" id="app">
 
     @include('layouts.components.navbar')
