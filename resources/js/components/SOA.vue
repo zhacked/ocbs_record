@@ -263,8 +263,36 @@
                                                     </div>
                                                 </v-row>
                                                 <v-row>
-                                                    <v-col>hey</v-col>
-                                                    <v-col>hi</v-col>
+                                                    <v-col>
+                                                        <div class="d-flex align-center">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                                    
+                                                                "
+                                                                >Operator:</span
+                                                            >
+                                                           <div class="custom-span d-flex align-center">
+                                                            <span>dasdsdsdsdsdasd</span>
+                                                           </div>
+                                                        </div>
+                                                    </v-col>
+                                                    <v-col>
+                                                         <div class="d-flex align-center">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                                    
+                                                                "
+                                                                >Operator:</span
+                                                            >
+                                                           <div class="custom-span d-flex align-center">
+                                                            <span>dasdsdsdsdsdasd</span>
+                                                           </div>
+                                                        </div>
+                                                    </v-col>
                                                 </v-row>
 
                                             </v-card-text>
