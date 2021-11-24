@@ -58,14 +58,77 @@
 }
 
 .blur-content{
-  filter: blur(5px); 
+  /* filter: blur(5px);  */
 }
 #dialog-mask {
-   transition: opacity .3s ease;
+   /* transition: opacity .3s ease; */
 }
 .my-custom-dialog {
-  margin-left: 100px !important;
-
-  overflow: hidden !important;
+  /* margin-left: 100px !important;*/
+  padding: 0;
  }
+
+.vuehtmlpdf{
+  /* display: flex; */
+  /* justify-content: start; */
+  /* align-items: center; */
+}
+.content-wrapper{
+  margin-left: 18px;
+}
+
+.custom-span{
+  border: 1px solid rgba(204, 204, 204, 0.7);
+  width: 150px;
+  height: 25px;
+  padding: 1px 4px;
+  margin-left: 1rem;
+  margin-bottom: 3px;
+  font-size: 11px;
+  border-radius: 3px;
+}
+
+.fullspan{
+  width: 100%;
+}
+
+.pdf-title{
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+.pdf-title span{
+  font-weight: 500;
+}
+.custom-label{
+  font-size: 9px;
+  white-space: nowrap;
+}
+.fieldDateNumber {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.arenaInfo{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arenaLabel{
+  width: 180px;
+}
+
+.computation-banner{
+  border: 1px solid rgba(61, 61, 61, 0.473);
+  border-radius: 3px;
+  width: 95%;
+  padding: 2px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  margin: 0 auto;
+}
+
 /*# sourceMappingURL=custom.css.map */

@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-container :class="{'blur-content': dialog}">
+        <v-container :class="{ 'blur-content': dialog }">
             <v-row class="mt-5">
                 <v-col class="col-md-12">
                     <v-card>
@@ -35,21 +35,17 @@
                             style="overflow: auto; !important"
                         >
                             <div class="card-body">
-                                 <v-row>
-                                    <v-col>
-
-                                    </v-col>
+                                <v-row>
                                     <v-col>
                                         <v-text-field
                                             v-model="search"
                                             append-icon="mdi-magnify"
                                             label="Search"
-                                    
                                             color="primary darken-2"
                                         ></v-text-field>
                                     </v-col>
                                 </v-row>
-                     
+
                                 <v-data-table
                                     :headers="headers"
                                     :items="arenaData.data"
@@ -74,437 +70,248 @@
                     </v-card>
                 </v-col>
 
-                <v-col class="col-md-12">
-             
-                    <v-dialog
-                        v-model="dialog"
-                        hide-overlay
-                        transition="dialog-bottom-transition"
-                        content-class="my-custom-dialog"
-                        scrollable
-                        persistent
-                        >
-                   
-                    <v-card>        
-                        <v-toolbar dark color="primary" >
-                            <h1 class="modal-title w-100 text-center">
-                                {{ depositReplenishTxt.title || "State of Account" }}
-                            </h1>
-                            <v-spacer></v-spacer>
-                            <v-toolbar-items>
-                                <v-btn
-                                dark
-                                text
-                                @click="dialog = false"
+                <!-- <v-col class="col-md-12"> -->
+                <v-dialog
+                    v-model="dialog"
+                    transition="dialog-bottom-transition"
+                    content-class="my-custom-dialog"
+                    scrollable
+                    persistent
+                    max-width="90%"
+                    width="50%"
+                    style="z-index: 9999999999 !important"
+                >
+                    <v-card class="overflow-hidden">
+                        <v-row>
+                            <v-col class="cols-6 pa-0">
+                                <v-card
+                                    class="pa-10 overflow-auto report-preview"
+                                    rounded="false"
+                                    style="height: 90vh"
                                 >
-                                <v-icon>mdi-close</v-icon>
-                                </v-btn>
-                            </v-toolbar-items>
-                        </v-toolbar>
-                        <v-row >
-                            <v-col  class="col-lg-6 col-md-12 col-sm-12">
-                              <v-card  style="padding:10px 100px 100px 100px;" >
-                                    <div class="text-right" >
-                                        <v-row class="mb-1 no-gutters">
-                                            <v-col class="col-sm-10 ">
-                                                SOA # : &nbsp;
-                                            </v-col>
-                                            <v-col class="col-sm-2 text-left ">
-                                                <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                            </v-col>
-                                            <v-col class="col-sm-10 ">
-                                                Date of SOA : &nbsp;
-                                            </v-col>
-                                            <v-col class="col-sm-1 text-left ">
-                                                <v-chip   class="pa-2 " x-small color="gray" label> test</v-chip>
-                                            </v-col>
-                                            <v-col class="col-sm-10 ">
-                                                Date of Event : &nbsp;
-                                            </v-col>
-                                            <v-col class="col-sm-1 text-left">
-                                                <v-chip   class="pa-2"  x-small color="gray" label> test</v-chip>
-                                            </v-col>
-                                        </v-row>
-                                    </div>
-                                    <!-- personal details -->
-                                    <div>
-                                        <v-row class="mb-1 no-gutters">
-                                            <v-col class="col-sm-2 ">
-                                                Arean/OCBS Name : &nbsp;
-                                            </v-col>
-                                            <v-col class="col-sm-10 ">
-                                                <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                            </v-col>
-                                            <v-col class="col-sm-2 ">
-                                                Address : : &nbsp;
-                                            </v-col>
-                                            <v-col class="col-sm-10 ">
-                                                <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                            </v-col>
-                                            <v-col class="col-sm-2 ">
-                                                Operator : &nbsp;
-                                            </v-col>
-                                            <v-col class="col-sm-10 ">
-                                                <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                            </v-col>
-                                            <v-col class="col-sm-2 ">
-                                                Contact Number : &nbsp;
-                                            </v-col>
-                                            <v-col class="col-sm-10 ">
-                                                <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                            </v-col>
-                                            <v-col class="col-sm-2 ">
-                                                 Email Address : &nbsp;
-                                            </v-col>
-                                            <v-col class="col-sm-10 ">
-                                                <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                            </v-col>
-                                        </v-row>
-                                    </div>
-                                      <!-- computation -->
-                                    <div
-                                        style="border: 1px solid black"
-                                        class="mt-2"
+                                    <vue-html2pdf
+                                        :show-layout="false"
+                                        :float-layout="false"
+                                        :enable-download="true"
+                                        :preview-modal="false"
+                                        :paginate-elements-by-height="2000"
+                                        filename="hee hee"
+                                        :pdf-quality="2"
+                                        :manual-pagination="false"
+                                        pdf-format="a4"
+                                        pdf-orientation="portrait"
+                                        pdf-content-width="90%"
+                                        ref="html2Pdf"
+                                        class="vuehtmlpdf"
                                     >
-                                        <h5 class="w-100 text-center pt-1">
-                                            Computation
-                                        </h5>
-                                    </div>
-                                    <div class="mt-5">
-                                        <v-row>
-                                            <v-col >
-                                                <p
-                                                    class="
-                                                        w-100
-                                                        text-center
-                                                        pa-0
-                                                        mx-0
-                                                    "
-                                                >
-                                                    (Kiosk)
-                                                </p>
-                                                <v-row class="mb-1 no-gutters">
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Total M/W Bets :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left ">
-                                                    <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Total Cancelled Bets : &nbsp;
-                                                        
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-success text-bold">+ </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Total Draw Bets :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-success text-bold">+ </span>   <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Total Payout Paid :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left ">
-                                                        <span class="text-danger text-bold"> - </span>   <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Total C/D Paid :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left ">
-                                                        <span class="text-danger text-bold"> - </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Total Draw Paid :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-danger text-bold"> - </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Net Win/Loss :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                </v-row>
-                                                <div class="mt-5 pt-4">
-                                                <p
-                                                    class="
-                                                        w-100
-                                                        text-center
-                                                        pa-0
-                                                        mx-0
-                                                    "
-                                                >
-                                                    (Mobile)
-                                                </p>
-                                                <v-row class="mb-1 no-gutters">
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Total M/W Bets :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Total Draw Bets :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                         <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                </v-row>
-                                                </div>
-                                                
-                                            </v-col>
-                                            <v-col>
-                                                <v-row class="mb-1 no-gutters">
-                                                  <v-col class="col-sm-6 text-right">
-                                                       M/W * 2% (kiosk) :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left ">
-                                                    <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                          Draw * 2% (kiosk)  : &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                         <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                         M/W * 2% (mobile) :   &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                         <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                          Draw * 2% (kiosk)  :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left ">
-                                                        <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Total Unclaimed :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left ">
-                                                         <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Total C Paid :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                         <span class="text-primary text-bold"> = </span>   <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Sales Deduction :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                       <b>Net Operator's Commission</b>  :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                     <v-col class="col-sm-6 text-right">
-                                                        Other's Commisison - M :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Consolidator's Commisison :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                     <v-col class="col-sm-6 text-right">
-                                                       Safety Fund :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Payment for outstading balance :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                     <v-col class="col-sm-6 text-right">
-                                                      <b>Total Commisison </b> :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        Cash Load from Mobile :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                     <v-col class="col-sm-6 text-right">
-                                                        Cash Withdrawal from Mobile :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-right">
-                                                        For Deposit :  &nbsp;
-                                                    </v-col>
-                                                    <v-col class="col-sm-6 text-left  ">
-                                                        <span class="text-primary text-bold"> = </span>  <v-chip  class="pa-2" x-small color="gray" label> test</v-chip>
-                                                    </v-col>
-                                                </v-row>
-                                            </v-col>
-                                        </v-row>
-                                    </div>
-                                         <!-- kindly deposit -->
-                                <v-row>
-                                    <v-col class="col-sm-9">
-                                        <div
-                                            style="border: 1px solid black"
-                                            class="mt-5 pl-5 text-left"
+                                        <section
+                                            slot="pdf-content"
+                                            class="pdf-content"
                                         >
-                                            <v-row class="no-gutters">
-                                                <v-col class="col-sm-3">
-                                                    Kindly Deposit To : &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-9">
-                                                    <span>
-                                                        {{
-                                                            this.status ==
-                                                            "Deposit"
-                                                                ? "LUCKY 8 STAR QUEST INC"
-                                                                : ""
-                                                        }}</span
-                                                    >
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="no-gutters pa-0">
-                                                <v-col class="col-sm-3">
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col
-                                                    class="col-sm-9 no-gutters"
-                                                >
-                                                    <v-col class="col-sm-6">
-                                                        <span v-if="editmode">{{
-                                                            selectedbank.bank_name
-                                                        }}</span>
+                                            <v-card-title
+                                                class="
+                                                    text-h5 text-center
+                                                    font-weight-medium
+                                                    d-flex
+                                                    justify-center
+                                                    align-center
+                                                    pdf-title
+                                                "
+                        
+                                            >
+                                                <span>Statement of Account</span>
+                                            </v-card-title>
+                                            <v-card-text class="text-sm-body-2">
+                                                <v-row>
+                                                    <v-spacer></v-spacer>
+                                                    <v-spacer></v-spacer>
+                                                    <v-col >
 
-                                                        <select
-                                                            v-else
-                                                            name="type"
-                                                            v-model="
-                                                                bankaccount_id
-                                                            "
-                                                            id="arena_id"
-                                                            class="
-                                                                form-control
-                                                                form-control-sm
-                                                                pa-0
-                                                            "
+                                                        <div
+                                                            class="d-flex align-center fieldDateNumber"
+                                                         
                                                         >
-                                                            <option
-                                                                v-for="banks in bank"
-                                                                :key="banks.id"
-                                                                :value="
-                                                                    banks.id
+                                                            <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
                                                                 "
+                                                                >SOA&nbsp;#</span
                                                             >
-                                                                {{
-                                                                    banks.bank_name
-                                                                }}
-                                                            </option>
-                                                        </select>
+                                                           <div class="custom-span d-flex align-center">
+                                                            <span>dasdsdsdsdsdasd</span>
+                                                           </div>
+                                                        </div>
+                                                         <div
+                                                            class="d-flex align-center fieldDateNumber"
+                                                        >
+                                                            <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                                "
+                                                                >Date&nbsp;of&nbsp;SOA:</span
+                                                            >
+                                                           <div class="custom-span d-flex align-center">
+                                                            <span>dasdasd</span>
+                                                           </div>
+                                                        </div>
+                                                         <div
+                                                            class="d-flex align-center fieldDateNumber"
+                                                        >
+                                                            <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                                "
+                                                                >Date&nbsp;of&nbsp;Event:</span
+                                                            >
+                                                           <div class="custom-span d-flex align-center">
+                                                            <span>dasdasd</span>
+                                                           </div>
+                                                        </div>
                                                     </v-col>
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters pa-0">
-                                                <v-col class="col-sm-3">
-                                                    &nbsp;
-                                                </v-col>
-                                                <v-col
-                                                    class="col-sm-9 no-gutters"
-                                                >
-                                                    <v-col class="col-sm-6">
-                                                        <span v-if="editmode">{{
-                                                            selectedbank.bank_number
-                                                        }}</span>
-
-                                                        <!-- <select  name="type" id="arena_id" class="form-control form-control-sm" >
-                                                            <option v-for="bank in bankDetails" :key="bank.id"  :value="bank.id" >{{bank.bank_number}}</option>
-                                                        </select> -->
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col>
+                                                        <div
+                                                            class="d-flex align-center arenaInfo"
+                                                         
+                                                        >
+                                                            <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                                    arenaLabel
+                                                                "
+                                                                >Arena / OCBS Name:</span
+                                                            >
+                                                           <div class="custom-span fullspan d-flex align-center">
+                                                            <span>dasdsdsdsdsdasd</span>
+                                                           </div>
+                                                        </div>
+                                                        <div
+                                                            class="d-flex align-center arenaInfo"
+                                                         
+                                                        >
+                                                            <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                                    arenaLabel
+                                                                "
+                                                                >Address:</span
+                                                            >
+                                                           <div class="custom-span fullspan d-flex align-center">
+                                                            <span>dasdsdsdsdsdasd</span>
+                                                           </div>
+                                                        </div>
+                                                         <div
+                                                            class="d-flex align-center arenaInfo"
+                                                         
+                                                        >
+                                                            <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                                    arenaLabel
+                                                                "
+                                                                >Operator:</span
+                                                            >
+                                                           <div class="custom-span fullspan d-flex align-center">
+                                                            <span>dasdsdsdsdsdasd</span>
+                                                           </div>
+                                                        </div>
+                                                         <div
+                                                            class="d-flex align-center arenaInfo"
+                                                         
+                                                        >
+                                                            <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                                    arenaLabel
+                                                                "
+                                                                >Contact Number:</span
+                                                            >
+                                                           <div class="custom-span fullspan d-flex align-center">
+                                                            <span>dasdsdsdsdsdasd</span>
+                                                           </div>
+                                                        </div>
+                                                         <div
+                                                            class="d-flex align-center arenaInfo"
+                                                         
+                                                        >
+                                                            <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                                    arenaLabel
+                                                                "
+                                                                >Email Address:</span
+                                                            >
+                                                           <div class="custom-span fullspan d-flex align-center">
+                                                            <span>dasdsdsdsdsdasd</span>
+                                                           </div>
+                                                        </div>
                                                     </v-col>
-                                                </v-col>
-                                            </v-row>
-                                        </div>
-                                    </v-col>
-                                    <v-col class="col-sm-3"> </v-col>
-                                </v-row>
 
-                                 <!-- signiture -->
-                                <div class="pb-5">
-                                    <v-row>
-                                        <!-- left -->
-                                        <v-col>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6">
-                                                    Computed by : &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    name here
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6">
-                                                    Prepared by : &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                </v-col>
-                                            </v-row>
-                                        </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <div class="computation-banner">
+                                                        Computation
+                                                    </div>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col>hey</v-col>
+                                                    <v-col>hi</v-col>
+                                                </v-row>
 
-                                        <!-- right -->
-                                        <v-col>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6">
-                                                    Checked by : &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    name here
-                                                </v-col>
-                                            </v-row>
-                                            <v-row class="mb-1 no-gutters">
-                                                <v-col class="col-sm-6">
-                                                    Checked by : &nbsp;
-                                                </v-col>
-                                                <v-col class="col-sm-6">
-                                                    name here
-                                                </v-col>
-                                            </v-row>
-                                        </v-col>
-                                    </v-row>
-                                </div>
-                       
-                              </v-card>
+                                            </v-card-text>
+                                        </section>
+                                    </vue-html2pdf>
+                                </v-card>
                             </v-col>
-                            <v-space></v-space>
-                            <v-col class="col-lg-6 col-md-12 col-sm-12">
-                                test 2
+                            <v-col class="cols-6 pa-0">
+                                <v-card
+                                    class="pa-2"
+                                    rounded="false"
+                                    style="height: 90vh"
+                                >
+                                    <v-card-title class="text-h5">
+                                        Use Google's location service?
+                                    </v-card-title>
+                                    <v-card-text
+                                        >Let Google help apps determine
+                                        location. This means sending anonymous
+                                        location data to Google, even when no
+                                        apps are running.</v-card-text
+                                    >
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                            color="green darken-1"
+                                            text
+                                            @click="generateReport"
+                                        >
+                                            PDF
+                                        </v-btn>
+                                        <v-btn
+                                            color="green darken-1"
+                                            text
+                                            @click="dialog = false"
+                                        >
+                                            Agree
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
                             </v-col>
                         </v-row>
-                        
-                                 
-                     </v-card>
-                 
-                    </v-dialog>
-            
-               
-                </v-col>
-            </v-row>
-          
+                    </v-card>
+                </v-dialog>
 
+                <!-- </v-col> -->
+            </v-row>
         </v-container>
     </v-app>
 </template>
@@ -517,8 +324,12 @@ import {
     mergeObject,
     valueSplit,
 } from "../utility";
+import VueHtml2pdf from "vue-html2pdf";
 
 export default {
+    components: {
+        VueHtml2pdf,
+    },
     data() {
         return {
             headers: [
@@ -527,11 +338,11 @@ export default {
                 { text: "Contact", value: "arena_details.contact_number" },
                 { text: "", value: "actions", sortable: false },
             ],
-            dialog: true,
+            dialog: false,
             notifications: false,
             sound: true,
             widgets: false,
-            search:'',
+            search: "",
             ocbsArray: [],
             ocbsArrayFiltered: [],
             editmode: false,
@@ -633,18 +444,16 @@ export default {
         },
         proceedAction() {
             this.$Progress.start();
-            if($('#importData').val() === ''){
-                    Fire.$emit("AfterCreate");
-                    swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong!',
-                            footer: '<a href="">Please contact developer</a>'
-                            });
-            }else{
-               axios
-                .post("api/import", this.ocbsArrayFiltered)
-                .then(
+            if ($("#importData").val() === "") {
+                Fire.$emit("AfterCreate");
+                swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!",
+                    footer: '<a href="">Please contact developer</a>',
+                });
+            } else {
+                axios.post("api/import", this.ocbsArrayFiltered).then(
                     ({ data }) => (
                         $("#importData").val(""),
                         Fire.$emit("AfterCreate"),
@@ -654,8 +463,6 @@ export default {
                     )
                 );
             }
-             
-            
         },
         // handleCommissionPercent(e) {
         //     this.commission_percent = e.target.value;
@@ -663,7 +470,7 @@ export default {
         openModel(data) {
             console.log(data);
             this.form.reset();
-            this.dialog =true;
+            this.dialog = true;
             $("#addNew").modal("show");
 
             this.form.fill(data.arena_details);
@@ -821,11 +628,14 @@ export default {
                 ),
             };
         },
+
+        generateReport() {
+            this.$refs.html2Pdf.generatePdf();
+        },
     },
 
     computed: {
         computedAve: function () {
-            
             const mwTotalPercent = numberFormat(
                 parseFloat(this.commission_percent) *
                     numberUnformat(this.computation.totalMWBet)
@@ -857,9 +667,6 @@ export default {
                     numberUnformat(cashLoad) -
                     numberUnformat(cashWithdraw)
             );
-
-
-
 
             const depositReplenishText =
                 numberUnformat(depositReplenish) < 0
