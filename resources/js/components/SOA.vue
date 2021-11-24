@@ -812,6 +812,7 @@
                                             color="green"
                                             v-bind="attrs"
                                             v-on="on"
+                                            @click="generateReport"
                                         >
                                             <v-icon>mdi-download</v-icon>
                                         </v-btn>
@@ -1083,23 +1084,7 @@
 
                                        
                                     </v-card-text>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn
-                                            color="green darken-1"
-                                            text
-                                            @click="generateReport"
-                                        >
-                                            PDF
-                                        </v-btn>
-                                        <v-btn
-                                            color="green darken-1"
-                                            text
-                                            @click="dialog = false"
-                                        >
-                                            Agree
-                                        </v-btn>
-                                    </v-card-actions>
+                        
                                 </v-card>
                             </v-col>
                         </v-row>
