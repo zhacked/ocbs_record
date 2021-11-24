@@ -78,7 +78,7 @@
                     scrollable
                     persistent
                     max-width="90%"
-                    width="50%"
+                    width="70%"
                     style="z-index: 9999999999 !important"
                 >
                     <v-card class="overflow-hidden">
@@ -126,7 +126,6 @@
                                                     <v-spacer></v-spacer>
                                                     <v-spacer></v-spacer>
                                                     <v-col >
-
                                                         <div
                                                             class="d-flex align-center fieldDateNumber"
                                                          
@@ -138,8 +137,8 @@
                                                                 "
                                                                 >SOA&nbsp;#</span
                                                             >
-                                                           <div class="custom-span d-flex align-center">
-                                                            <span>dasdsdsdsdsdasd</span>
+                                                           <div class="custom-span caption d-flex align-center">
+                                                            <span>000,000.00</span>
                                                            </div>
                                                         </div>
                                                          <div
@@ -152,7 +151,7 @@
                                                                 "
                                                                 >Date&nbsp;of&nbsp;SOA:</span
                                                             >
-                                                           <div class="custom-span d-flex align-center">
+                                                           <div class="custom-span caption d-flex align-center">
                                                             <span>dasdasd</span>
                                                            </div>
                                                         </div>
@@ -166,7 +165,7 @@
                                                                 "
                                                                 >Date&nbsp;of&nbsp;Event:</span
                                                             >
-                                                           <div class="custom-span d-flex align-center">
+                                                           <div class="custom-span caption d-flex align-center">
                                                             <span>dasdasd</span>
                                                            </div>
                                                         </div>
@@ -186,8 +185,8 @@
                                                                 "
                                                                 >Arena / OCBS Name:</span
                                                             >
-                                                           <div class="custom-span fullspan d-flex align-center">
-                                                            <span>dasdsdsdsdsdasd</span>
+                                                           <div class="custom-span caption fullspan d-flex align-center">
+                                                            <span>000,000.00</span>
                                                            </div>
                                                         </div>
                                                         <div
@@ -202,8 +201,8 @@
                                                                 "
                                                                 >Address:</span
                                                             >
-                                                           <div class="custom-span fullspan d-flex align-center">
-                                                            <span>dasdsdsdsdsdasd</span>
+                                                           <div class="custom-span caption fullspan d-flex align-center">
+                                                            <span>000,000.00</span>
                                                            </div>
                                                         </div>
                                                          <div
@@ -218,8 +217,8 @@
                                                                 "
                                                                 >Operator:</span
                                                             >
-                                                           <div class="custom-span fullspan d-flex align-center">
-                                                            <span>dasdsdsdsdsdasd</span>
+                                                           <div class="custom-span caption fullspan d-flex align-center">
+                                                            <span>000,000.00</span>
                                                            </div>
                                                         </div>
                                                          <div
@@ -234,8 +233,8 @@
                                                                 "
                                                                 >Contact Number:</span
                                                             >
-                                                           <div class="custom-span fullspan d-flex align-center">
-                                                            <span>dasdsdsdsdsdasd</span>
+                                                           <div class="custom-span caption fullspan d-flex align-center">
+                                                            <span>000,000.00</span>
                                                            </div>
                                                         </div>
                                                          <div
@@ -250,8 +249,8 @@
                                                                 "
                                                                 >Email Address:</span
                                                             >
-                                                           <div class="custom-span fullspan d-flex align-center">
-                                                            <span>dasdsdsdsdsdasd</span>
+                                                           <div class="custom-span caption fullspan d-flex align-center">
+                                                            <span>000,000.00</span>
                                                            </div>
                                                         </div>
                                                     </v-col>
@@ -263,8 +262,517 @@
                                                     </div>
                                                 </v-row>
                                                 <v-row>
-                                                    <v-col>hey</v-col>
-                                                    <v-col>hi</v-col>
+                                                    <v-col>
+                                                                <div class="d-flex justify-center align-center kiosk-mobile_text">
+                                                                    <span>( Kiosk )</span>
+                                                                </div>
+                                                                <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                                    <span
+                                                                        class="
+                                                                            text-caption
+                                                                            custom-label"
+                                                                        >Total M/W Bets:</span
+                                                                    >
+                                                                <div class="custom-span caption computation-span d-flex align-center">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                                </div>
+                                                                <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                                    <span
+                                                                        class="
+                                                                            text-caption
+                                                                            custom-label
+                                                                            
+                                                                        "
+                                                                        >Total Cancelled Bets:</span
+                                                                    >
+                                                                    <div class="d-flex align-center computation-container_field">
+                                                                        <span class="operation">+</span>
+                                                                        <div class="custom-span caption computation-span d-flex align-center">
+                                                                            <span>000,000.00</span>
+                                                                        </div>
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                                <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                                    <span
+                                                                        class="
+                                                                            text-caption
+                                                                            custom-label
+                                                                            
+                                                                        "
+                                                                        >Total Draw Bets:</span
+                                                                    >
+                                                                    <div class="d-flex align-center computation-container_field">
+                                                                        <span class="operation">+</span>
+                                                                        <div class="custom-span caption computation-span d-flex align-center">
+                                                                            <span>000,000.00</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                                    <span
+                                                                        class="
+                                                                            text-caption
+                                                                            custom-label
+                                                                            
+                                                                        "
+                                                                        >Total Payout Paid:</span
+                                                                    >
+                                                                <div class="d-flex align-center computation-container_field">
+                                                                        <span class="operation">-</span>
+                                                                        <div class="custom-span caption computation-span d-flex align-center">
+                                                                            <span>000,000.00</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                                    <span
+                                                                        class="
+                                                                            text-caption
+                                                                            custom-label
+                                                                            
+                                                                        "
+                                                                        >Total C/D Paid:</span
+                                                                    >
+
+                                                                <div class="d-flex align-center computation-container_field">
+                                                                        <span class="operation">-</span>
+                                                                        <div class="custom-span caption computation-span d-flex align-center">
+                                                                            <span>000,000.00</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                                    <span
+                                                                        class="
+                                                                            text-caption
+                                                                            custom-label
+                                                                            
+                                                                        "
+                                                                        >Total Draw Paid:</span
+                                                                    >
+                                                                    <div class="d-flex align-center computation-container_field">
+                                                                        <span class="operation">-</span>
+                                                                        <div class="custom-span caption computation-span d-flex align-center">
+                                                                            <span>000,000.00</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            
+                                                                <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                                    <span
+                                                                        class="
+                                                                            text-caption
+                                                                            font-weight-bold
+                                                                            custom-label
+                                                                            ctotal-label
+                                                                        "
+                                                                        >Net Win/Loss:</span
+                                                                    >
+                                                                <div class="d-flex align-center computation-container_field bordertop">
+                                                                    
+                                                                        <span class="operation">=</span>
+                                                                        <div class="custom-span caption computation-span d-flex align-center computation-total">
+                                                                            <span class="ctotal-text">000,000.00</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                       
+                                                      
+                                                    </v-col>
+                                                  
+                                                    <v-col>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    font-weight-bold
+                                                                    custom-label
+                                                                    ctotal-label
+                                                                "
+                                                                >Net Win/Loss:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field borderbottom">
+                                                                <span class="operation">=</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center computation-total">
+                                                                    <span class="ctotal-text">000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >M/W*2% (kiosk):</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">+</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Draw*2% (kiosk):</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">+</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >M/W*2% (mobile):</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">+</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Draw*2% (mobile):</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">+</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Total Unclaimed:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">+</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Total C Unpaid:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">+</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                         <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Sales Deduction:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">-</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                         <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    font-weight-bold
+                                                                    custom-label
+                                                                    ctotal-label
+                                                                "
+                                                                >Net Operator's Commission:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">=</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Other Commission - M:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">+</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Consolidator's Commission:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">-</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Safety Fund:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">-</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Payment for outstanding balance:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">-</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    font-weight-bold
+                                                                    custom-label
+                                                                    ctotal-label
+                                                                    
+                                                                "
+                                                                >Total Commission:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field bordertop">
+                                                                <span class="operation">=</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center computation-total">
+                                                                    <span class="ctotal-text">000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row class="ma-0 pa-0" style="margin: 0; padding: 0;">
+
+                                                    <v-col class="ma-0 pa-0" style="margin: 0; padding: 0;">
+                                                        <div class="d-flex justify-center align-center kiosk-mobile_text">
+                                                                    <span>(Mobile)</span>
+                                                        </div>
+                                                         <div class="d-flex align-center justify-end computation-wrapper_field" style="margin-right: 2rem;">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Total M/W Bets:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field" style="margin-right: 2rem;">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Total Draw Bets:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </v-col>
+                                                    <v-col class="ma-0 pa-0" style="margin: 0; padding: 0;">
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Cash Load from Mobile:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">+</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    custom-label
+                                                
+                                                                "
+                                                                >Cash Withdrawal from Mobile:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field">
+                                                                <span class="operation">-</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center ">
+                                                                    <span>000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-center justify-end computation-wrapper_field">
+                                                             <span
+                                                                class="
+                                                                    text-caption
+                                                                    font-weight-bold
+                                                                    custom-label
+                                                                    ctotal-label
+                                                                    
+                                                                "
+                                                                >For Deposit:</span
+                                                            >
+                                                             <div class="d-flex align-center computation-container_field bordertop">
+                                                                <span class="operation">=</span>
+                                                                <div class="custom-span caption computation-span d-flex align-center overtotal">
+                                                                    <span class="ctotal-text">000,000.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </v-col>
+                                                </v-row>
+                                                 <v-row>
+                                                    <div class="bank-wrapper" >
+                                                        <div class="bank-headline">
+                                                            <span>Kindly deposit to:</span>
+                                                        </div>
+                                                        <div class="bank-container">
+                                                            <div class="bank bank1">
+                                                                <span>LUCKY 8 STAR QUEST INC.</span>
+                                                                <span>PBB</span>
+                                                                <span>0050-1001-5156</span>
+                                                            </div>
+                                                            <div class="or">OR</div>
+                                                            <div class="bank bank2">
+                                                                <span>LUCKY 8 STAR QUEST INC.</span>
+                                                                <span>PBB</span>
+                                                                <span>123-1232-1232</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col>
+                                                        <v-row>
+                                                            <div class="sign-wrapper" >
+                                                                <span>Computed by:</span>
+                                                                <div class="sign-container">
+                                                                    <span class="sign-name">Billy Joe Isidoro</span>
+                                                                    
+                                                                    <span>Quality Assurance Staff</span>
+                                                                </div>
+                                                            </div>
+                                                        </v-row>
+                                                        <v-row>
+                                                            <div class="sign-wrapper scbottom">
+                                                                <span>Computed by:</span>
+                                                                <div class="sign-container">
+                                                                    <span class="sign-name">Billy Joe Isidoro</span>
+                                                                   
+                                                                    <span>Quality Assurance Staff</span>
+                                                                </div>
+                                                            </div>
+                                                        </v-row>
+                                                    </v-col>
+                                                    <v-col>
+                                                        <v-row>
+                                                            <div class="sign-wrapper" >
+                                                                 <span>Computed by:</span>
+                                                                <div class="sign-container">
+                                                                    <span class="sign-name">Billy Joe Isidoro</span>
+                                                                   
+                                                                    <span>Quality Assurance Staff</span>
+                                                                </div>
+                                                            </div>
+                                                        </v-row>
+                                                        <v-row>
+                                                            <div class="sign-wrapper scbottom">
+                                                                <span>Computed by:</span>
+                                                                <div class="sign-container">
+                                                                    <span class="sign-name">Billy Joe Isidoro</span>
+                                                                    <span>Quality Assurance Staff</span>
+                                                                </div>
+                                                            </div>
+                                                        </v-row>
+                                                    </v-col>
+                                                
                                                 </v-row>
 
                                             </v-card-text>

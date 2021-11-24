@@ -67939,16 +67939,20 @@ readers do not read off random characters that represent icons */
 .custom-span{
   border: 1px solid rgba(204, 204, 204, 0.7);
   width: 150px;
-  height: 25px;
-  padding: 1px 4px;
-  margin-left: 1rem;
+  height: 23px;
   margin-bottom: 3px;
-  font-size: 11px;
+  font-size: 9px;
   border-radius: 3px;
+  padding: 0.3px 2px;
+
 }
 
 .fullspan{
   width: 100%;
+}
+
+.computation-span{
+  width: 150px;
 }
 
 .pdf-title{
@@ -67960,8 +67964,9 @@ readers do not read off random characters that represent icons */
   font-weight: 500;
 }
 .custom-label{
-  font-size: 9px;
+  font-size: 11px;
   white-space: nowrap;
+  margin-right: 1rem;
 }
 .fieldDateNumber {
   display: flex;
@@ -67978,3 +67983,126 @@ readers do not read off random characters that represent icons */
 .arenaLabel{
   width: 180px;
 }
+
+.computation-banner{
+  border: 1px solid rgba(61, 61, 61, 0.473);
+  border-radius: 3px;
+  width: 95%;
+  padding: 1px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  margin: 0 auto;
+}
+
+.computation-wrapper_field{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.computation-container_field{
+  display: flex;
+  align-items: center;
+}
+.computation-container_field .operation{
+  margin-right: 0.2rem;
+  font-weight: 500;
+}
+
+.bordertop{
+  border-top: 1px solid rgba(61, 61, 61, 0.473);  
+}
+
+.borderbottom {
+  border-bottom: 1px solid rgba(61, 61, 61, 0.473); 
+}
+
+.computation-total{
+  background-color: #ccc;
+}
+
+.ctotal-text,.ctotal-label{
+  font-weight: 700;
+}
+
+.overtotal{
+  background-color: rgba(255, 228, 94, 0.8);
+}
+.kiosk-mobile_text {
+  color: #111;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bank-wrapper{
+  border: 1px solid rgba(61, 61, 61, 0.473);
+  border-radius: 3px;
+  width: 80%;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  background-color: #ccc;
+  margin-bottom: 50px;
+}
+
+.bank-headline{
+  margin-right: 1px;
+}
+
+.bank-container{
+  display: flex;
+  width: 100%;
+}
+
+.bank{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 11px;
+}
+
+.bank1{
+  flex: 5.5;
+
+}
+.or{
+  flex: 1;
+  height: 100%;
+  text-align: center;
+  margin: 0 auto;
+  font-weight: 700;
+}
+
+.bank2{
+  flex: 5.5;
+}
+
+.sign-wrapper{
+  height: 100px;
+
+  width: 100%;
+  display: flex;
+ 
+}
+
+.sign-container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.sign-name{
+  text-align: center;
+  width: 100%;
+  border-bottom: 1px solid rgba(0,0,0,0.6);
+}
+
+.scbottom{
+  height: auto;
+}
+
+
