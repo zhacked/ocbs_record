@@ -263,36 +263,8 @@
                                                     </div>
                                                 </v-row>
                                                 <v-row>
-                                                    <v-col>
-                                                        <div class="d-flex align-center">
-                                                             <span
-                                                                class="
-                                                                    text-caption
-                                                                    custom-label
-                                                                    
-                                                                "
-                                                                >Operator:</span
-                                                            >
-                                                           <div class="custom-span d-flex align-center">
-                                                            <span>dasdsdsdsdsdasd</span>
-                                                           </div>
-                                                        </div>
-                                                    </v-col>
-                                                    <v-col>
-                                                         <div class="d-flex align-center">
-                                                             <span
-                                                                class="
-                                                                    text-caption
-                                                                    custom-label
-                                                                    
-                                                                "
-                                                                >Operator:</span
-                                                            >
-                                                           <div class="custom-span d-flex align-center">
-                                                            <span>dasdsdsdsdsdasd</span>
-                                                           </div>
-                                                        </div>
-                                                    </v-col>
+                                                    <v-col>hey</v-col>
+                                                    <v-col>hi</v-col>
                                                 </v-row>
 
                                             </v-card-text>
@@ -302,19 +274,307 @@
                             </v-col>
                             <v-col class="cols-6 pa-0">
                                 <v-card
-                                    class="pa-2"
+                                    class="pa-2 overflow-auto report-preview"
                                     rounded="false"
                                     style="height: 90vh"
+                                    
                                 >
                                     <v-card-title class="text-h5">
-                                        Use Google's location service?
+                                      <span class="text-center"> Computation</span>
+                                      <v-spacer></v-spacer>
+                                    <v-tooltip bottom>
+                                        <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            icon
+                                            color="blue"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                        
+                                            small     
+                                        >
+                                            <v-icon>fas fa-edit</v-icon>
+                                        </v-btn>
+                                        </template>
+                                        <span>Update Data</span>
+                                    </v-tooltip>
+                                    <v-tooltip bottom>
+                                        <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            icon
+                                            color="green"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                        >
+                                            <v-icon>mdi-download</v-icon>
+                                        </v-btn>
+                                        </template>
+                                        <span>Download Data</span>
+                                    </v-tooltip>
+                                     <v-tooltip bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            icon
+                                            color="pink"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            >
+                                            <v-icon>mdi-close</v-icon>
+                                        </v-btn>
+                                    </template>
+                                        <span @click="this.dialog === false">Close</span>
+                                    </v-tooltip>
                                     </v-card-title>
-                                    <v-card-text
-                                        >Let Google help apps determine
-                                        location. This means sending anonymous
-                                        location data to Google, even when no
-                                        apps are running.</v-card-text
-                                    >
+                                    <v-card-text>
+                                        
+                                        <v-row>
+                                            <v-col>
+                                               <v-text-field
+                                                label="Commission"
+                                                placeholder="Enter Percentage"
+                                                outlined
+                                                prefix="₱"
+                                                dense
+                                                small
+                                                clearable
+                                                class="mb-0"
+                                                ></v-text-field>
+                                                <v-text-field
+                                                label="Total M/W Bets"
+                                                placeholder="0"
+                                                outlined
+                                                clearable
+                                                prefix="₱"
+                                                dense
+                                                ></v-text-field>
+                                                  <v-text-field
+                                                label="Total Cacelled Bets"
+                                                placeholder="0"
+                                                outlined
+                                                clearable
+                                                prefix="₱"
+                                                dense
+                                                ></v-text-field>
+                                                <v-text-field
+                                                label="Total Draw Bets"
+                                                placeholder="0"
+                                                outlined
+                                                clearable
+                                                prefix="₱"
+                                                dense
+                                                ></v-text-field>
+                                                <v-text-field
+                                                label="Total Payout Paid"
+                                                placeholder="0"
+                                                outlined
+                                                clearable
+                                                prefix="₱"
+                                                dense
+                                                ></v-text-field>
+                                                <v-text-field
+                                                label="Total C/D Paid"
+                                                placeholder="0"
+                                                outlined
+                                                clearable
+                                                dense
+                                                prefix="₱"
+                                                ></v-text-field>
+                                                  <v-text-field
+                                                label="Total Draw Paid"
+                                                placeholder="0"
+                                                outlined
+                                                prefix="₱"
+                                                clearable
+                                                dense
+                                                ></v-text-field>
+                                                <v-text-field
+                                                label="Total Unclaimed"
+                                                placeholder="0"
+                                                outlined
+                                                clearable
+                                                prefix="₱"
+                                                dense
+                                                ></v-text-field>
+                                                  <v-text-field
+                                                label="Total C Unpaid"
+                                                placeholder="Enter Percentage"
+                                                outlined
+                                                clearable
+                                                prefix="₱"
+                                                dense
+                                                ></v-text-field>
+                                                <v-text-field
+                                                label="Sales Deduction"
+                                                placeholder="0"
+                                                outlined
+                                                clearable
+                                                prefix="₱"
+                                                dense
+                                                ></v-text-field>
+                                            </v-col>
+                                            <!-- right side -->
+                                             <v-col>
+                                                <v-text-field
+                                                label="Other's Commission - M"
+                                                placeholder="0"
+                                                outlined
+                                                clearable
+                                                dense
+                                                ></v-text-field>
+                                                <v-text-field
+                                                label="Consolidator's Commission"
+                                                placeholder="0"
+                                                outlined
+                                                prefix="₱"
+                                                clearable
+                                                dense
+                                                ></v-text-field>
+                                                  <v-text-field
+                                                label="Safety Fund"
+                                                placeholder="0"
+                                                outlined
+                                                prefix="₱"
+                                                clearable
+                                                dense
+                                                ></v-text-field>
+                                                <v-text-field
+                                                label="Payment for outstading balance"
+                                                placeholder="0"
+                                                outlined
+                                                prefix="₱"
+                                                clearable
+                                                dense
+                                                ></v-text-field>
+
+
+                                                <h4 class="mt-4 pt-4">M O B I L E</h4>
+                                                <v-text-field
+                                                label="Total M/W Bets"
+                                                placeholder="0"
+                                                outlined
+                                                clearable
+                                                dense
+                                                prefix="₱"
+                                                ></v-text-field>
+                                                <v-text-field
+                                                label="Total CDraw Bets"
+                                                placeholder="0"
+                                                outlined
+                                                clearable
+                                                prefix="₱"
+                                                dense
+                                                ></v-text-field>
+                                                  <v-text-field
+                                                label="Cash Load"
+                                                placeholder="0"
+                                                outlined
+                                                clearable
+                                                prefix="₱"
+                                                dense
+                                                ></v-text-field>
+                                                <v-text-field
+                                                label="Cash Withdraw"
+                                                placeholder="0"
+                                                outlined
+                                                clearable
+                                                prefix="₱"
+                                                dense
+                                                ></v-text-field>
+                                                
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col>
+                                                <h4>B A N K</h4>
+                                                <span class="no-gutters">Text Name</span>
+                                                <v-autocomplete
+                                                    ref="country"
+                                                    v-model="bank_account"
+                                                    outlined
+                                                    dense      
+                
+                                                    hide-details
+                                                    hide-no-data
+                                                    hide-selected                
+                                                    :rules="[() => !!bank_account || 'This field is required']"
+                                                    :items="bank_account"
+                                                    label="Bank Details"
+                                                    placeholder="Select..."
+                                                    required
+                                                ></v-autocomplete>
+                                                <p>bank number</p>
+                                            </v-col>
+                                            <v-col></v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col>
+                                                <label>Computed By:</label>
+                                                <v-autocomplete
+                                                    v-model="bank_account"
+                                                    outlined
+                                                    dense                                                        :rules="[() => !!bank_account || 'This field is required']"
+                                                
+                                                    hide-details
+                                                    hide-no-data
+                                                    clearable
+                                                    hide-selected   
+                                                    :items="bank_account"
+                                                    label="Bank Details"
+                                                    placeholder="Select..."
+                                                    required
+                                                ></v-autocomplete>
+                                                <label>Prepared By:</label>
+                                                <v-autocomplete
+                                                    v-model="bank_account"
+                                                    outlined
+                                                    dense  
+                                                   
+                                                    clearable
+                                                    hide-details
+                                                    hide-no-data
+                                                    hide-selected                                                         :rules="[() => !!bank_account || 'This field is required']"
+                                                    :items="bank_account"
+                                                    label="Bank Details"
+                                                    placeholder="Select..."
+                                                    required
+                                                ></v-autocomplete>
+                                            </v-col>
+                                            <v-col>
+                                                 <label>Checked By:</label>
+                                                <v-autocomplete
+                                                    v-model="bank_account"
+                                                    outlined
+                                                    dense   
+                                                    
+                                                    clearable
+                                                    hide-details
+                                                    hide-no-data
+                                                    hide-selected                                                        :rules="[() => !!bank_account || 'This field is required']"
+                                                    :items="bank_account"
+                                                    label="Bank Details"
+                                                    placeholder="Select..."
+                                                    required
+                                                ></v-autocomplete>
+                                                <label>Checked By:</label>
+                                                <v-autocomplete
+                                                    v-model="bank_account"
+                                                    outlined
+                                                    dense 
+                                                  
+                                                    clearable
+                                                    hide-details
+                                                    hide-no-data
+                                                    hide-selected                                                          :rules="[() => !!bank_account || 'This field is required']"
+                                                    :items="bank_account"
+                                                    label="Bank Details"
+                                                    placeholder="Select..."
+                                                    required
+                                                ></v-autocomplete>
+                                            </v-col>
+                                        </v-row>
+
+
+                                       
+                                    </v-card-text>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
                                         <v-btn
@@ -365,6 +625,10 @@ export default {
                 { text: "Operator", value: "arena_details.operator" },
                 { text: "Contact", value: "arena_details.contact_number" },
                 { text: "", value: "actions", sortable: false },
+            ],
+            bank_account:[
+                'test1',
+                'test2'
             ],
             dialog: false,
             notifications: false,
