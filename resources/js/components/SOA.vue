@@ -56,13 +56,24 @@
                                     <template
                                         v-slot:[`item.actions`]="{ item }"
                                     >
-                                        <button
-                                            class="btn btn-primary"
-                                            id="dialog-mask"
-                                            @click="openModel(item)"
-                                        >
-                                            <i class="fa fa-eye"></i> View
-                                        </button>
+                                    <v-tooltip top>
+                                        <template v-slot:activator="{ on, attrs, hover  }">
+                                            <v-btn
+                                                    icon
+                                                    color="primary"
+                                                    dark
+                                                    small
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    @click="openModel(item)"
+                                                    :class="{ 'on-hover': hover }"
+                                                >
+                                                <v-icon>mdi-eye</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>View Account</span>
+                                    </v-tooltip>
+                                       
                                     </template>
                                 </v-data-table>
                             </div>
@@ -83,7 +94,7 @@
                 >
                     <v-card class="overflow-hidden">
                         <v-row>
-                            <v-col class="cols-6 pa-0">
+                            <v-col class="cols-6 pa-0 col-md-6">
                                 <v-card
                                     class="pa-10 overflow-auto report-preview"
                                     rounded="false"
@@ -780,7 +791,7 @@
                                     </vue-html2pdf>
                                 </v-card>
                             </v-col>
-                            <v-col class="cols-6 pa-0">
+                            <v-col class="cols-6 pa-0 col-md-6">
                                 <v-card
                                     class="pa-2 overflow-auto report-preview"
                                     rounded="false"
@@ -826,11 +837,12 @@
                                             color="pink"
                                             v-bind="attrs"
                                             v-on="on"
+                                            @click="closeDialog()"
                                             >
                                             <v-icon>mdi-close</v-icon>
                                         </v-btn>
                                     </template>
-                                        <span @click="this.dialog === false">Close</span>
+                                        <span >Close</span>
                                     </v-tooltip>
                                     </v-card-title>
                                     <v-card-text>
@@ -1206,6 +1218,9 @@ export default {
         updateModal() {
             $(".computation").attr("disabled", false);
             this.editmode = false;
+        },
+        closeDialog(){
+            this.dialog = false 
         },
         saveModal() {
             $(".computation").attr("disabled", true);

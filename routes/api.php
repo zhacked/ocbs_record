@@ -23,7 +23,7 @@ Route::apiResources(['user' => App\Http\Controllers\API\UserController::class]);
 Route::apiResources(['arena' => App\Http\Controllers\API\ArenaController::class]);
 Route::apiResources(['import' => App\Http\Controllers\API\ImportController::class]);
 Route::apiResources(['bankaccount' => App\Http\Controllers\API\BankDetailsController::class]);
-
+Route::apiResources(['employees' => App\Http\Controllers\API\EmployeeController::class]);
 
 Route::get('profile', [App\Http\Controllers\API\UserController::class, 'profile'])->name('profile');
 Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');

@@ -93,6 +93,9 @@ let routes = [
         path: '/users', component: require('./components/Users.vue').default
     },
     {
+        path: '/employee', component: require('./components/Employee.vue').default
+    },
+    {
         path: '/profile', component: require('./components/Profile.vue').default
     },
     {
