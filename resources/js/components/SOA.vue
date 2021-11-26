@@ -1779,133 +1779,44 @@
                                                     <v-row>
                                                         <v-col>
                                                             <v-row>
-                                                                <div
-                                                                    class="
-                                                                        sign-wrapper
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >Computed
-                                                                        by:</span
-                                                                    >
-                                                                    <div
-                                                                        class="
-                                                                            sign-container
-                                                                        "
-                                                                    >
-                                                                        <span
-                                                                            class="
-                                                                                sign-name
-                                                                            "
-                                                                            >Billy
-                                                                            Joe
-                                                                            Isidoro</span
-                                                                        >
-
-                                                                        <span
-                                                                            >Quality
-                                                                            Assurance
-                                                                            Staff</span
-                                                                        >
+                                                                <div class="sign-wrapper" >
+                                                                    <span>Computed by:</span>
+                                                                    <div class="sign-container">
+                                                                        <span class="sign-name">{{computed_by.name ? computed_by.name : 'Select data'}}</span>
+                                                                        
+                                                                        <span>{{computed_by.position ? computed_by.position : 'QA Staff' }}</span>
                                                                     </div>
                                                                 </div>
                                                             </v-row>
                                                             <v-row>
-                                                                <div
-                                                                    class="
-                                                                        sign-wrapper
-                                                                        scbottom
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >Prepared
-                                                                        by:</span
-                                                                    >
-                                                                    <div
-                                                                        class="
-                                                                            sign-container
-                                                                        "
-                                                                    >
-                                                                        <span
-                                                                            class="
-                                                                                sign-name
-                                                                            "
-                                                                            >Billy
-                                                                            Joe
-                                                                            Isidoro</span
-                                                                        >
-
-                                                                        <span
-                                                                            >Quality
-                                                                            Assurance
-                                                                            Staff</span
-                                                                        >
+                                                                <div class="sign-wrapper scbottom">
+                                                                    <span>Prepared by:</span>
+                                                                    <div class="sign-container">
+                                                                        <span class="sign-name">{{prepared_by.name ? prepared_by.name : 'Select data'}}</span>
+                                                                    
+                                                                        <span>{{prepared_by.position ? prepared_by.position : 'Finance Assistant-Kiosk Operation'}}</span>
                                                                     </div>
                                                                 </div>
                                                             </v-row>
                                                         </v-col>
                                                         <v-col>
                                                             <v-row>
-                                                                <div
-                                                                    class="
-                                                                        sign-wrapper
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >Checked
-                                                                        by:</span
-                                                                    >
-                                                                    <div
-                                                                        class="
-                                                                            sign-container
-                                                                        "
-                                                                    >
-                                                                        <span
-                                                                            class="
-                                                                                sign-name
-                                                                            "
-                                                                            >Billy
-                                                                            Joe
-                                                                            Isidoro</span
-                                                                        >
-
-                                                                        <span
-                                                                            >Quality
-                                                                            Assurance
-                                                                            Staff</span
-                                                                        >
+                                                                <div class="sign-wrapper" >
+                                                                    <span>Checked by:</span>
+                                                                    <div class="sign-container">
+                                                                        <span class="sign-name">{{checked_by_1.name ? checked_by_1.name : 'Select data '}}</span>
+                                                                    
+                                                                        <span>{{checked_by_1.position ? checked_by_1.position : 'Team Leader'}}</span>
                                                                     </div>
                                                                 </div>
                                                             </v-row>
-                                                            <v-row>
-                                                                <div
-                                                                    class="
-                                                                        sign-wrapper
-                                                                        scbottom
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >Checked
-                                                                        by:</span
-                                                                    >
-                                                                    <div
-                                                                        class="
-                                                                            sign-container
-                                                                        "
-                                                                    >
-                                                                        <span
-                                                                            class="
-                                                                                sign-name
-                                                                            "
-                                                                            >Billy
-                                                                            Joe
-                                                                            Isidoro</span
-                                                                        >
-                                                                        <span
-                                                                            >Quality
-                                                                            Assurance
-                                                                            Staff</span
-                                                                        >
+                                                             <v-row>
+                                                                <div class="sign-wrapper" >
+                                                                    <span>Checked by:</span>
+                                                                    <div class="sign-container">
+                                                                        <span class="sign-name">{{checked_by_2.name ? checked_by_1.name : 'Select data '}}</span>
+                                                                    
+                                                                        <span>{{checked_by_2.position ? checked_by_1.position : 'Team Leader'}}</span>
                                                                     </div>
                                                                 </div>
                                                             </v-row>
@@ -2230,111 +2141,106 @@
                                         <v-row>
                                             <v-col>
                                                 <h4>B A N K</h4>
-                                                <span class="no-gutters"
-                                                    >Text Name</span
-                                                >
-                                                <v-autocomplete
-                                                    ref="country"
-                                                    v-model="bank_account"
-                                                    outlined
-                                                    dense
-                                                    hide-details
-                                                    hide-no-data
-                                                    hide-selected
-                                                    :rules="[
-                                                        () =>
-                                                            !!bank_account ||
-                                                            'This field is required',
-                                                    ]"
-                                                    :items="bank_account"
-                                                    label="Bank Details"
-                                                    placeholder="Select..."
-                                                    required
-                                                ></v-autocomplete>
-                                                <p>bank number</p>
+                                                <span class="no-gutters">Text Name</span>
+                                                 <select name="type" v-model="bank_details" id="arena_id" class="form-control" :class="{ 'is-invalid': form.errors.has('arena_id') }">
+                                                            <option value="">Select Name</option>
+                                                            <option v-for="(val,index) in bank" :key="index"  :value="val" >{{val.bank_name}}</option>
+                                                        
+                                                    </select>
+                                                <p>{{bank_details.bank_number}}</p>
                                             </v-col>
                                             <v-col></v-col>
                                         </v-row>
                                         <v-row>
                                             <v-col>
                                                 <label>Computed By:</label>
-                                                <v-autocomplete
-                                                    v-model="bank_account"
+                                                  	<div class="form-group">
+                                                        <select name="type" v-model="computed_by" id="arena_id" class="form-control" :class="{ 'is-invalid': form.errors.has('arena_id') }">
+                                                            <option value="">Select Name</option>
+                                                            <option v-for="val in computed" :key="val.id"  :value="val" >{{val.name}}</option>
+                                                        
+                                                        </select>
+                
+                                                    </div>
+                                                <!-- <v-autocomplete
+                                                  
                                                     outlined
-                                                    dense
-                                                    :rules="[
-                                                        () =>
-                                                            !!bank_account ||
-                                                            'This field is required',
-                                                    ]"
+                                                    dense                                                        :rules="[() => !!bank_account || 'This field is required']"
+
                                                     hide-details
                                                     hide-no-data
                                                     clearable
-                                                    hide-selected
-                                                    :items="bank_account"
+                                                    hide-selected   
+                                                    :items="employee"
                                                     label="Bank Details"
                                                     placeholder="Select..."
                                                     required
-                                                ></v-autocomplete>
+                                                ></v-autocomplete> -->
                                                 <label>Prepared By:</label>
-                                                <v-autocomplete
-                                                    v-model="bank_account"
+                                                <div class="form-group">
+                                                        <select name="type" v-model="prepared_by" id="arena_id" class="form-control" :class="{ 'is-invalid': form.errors.has('arena_id') }">
+                                                            <option value="">Select Name</option>
+                                                            <option v-for="val in prepared" :key="val.id"  :value="val" >{{val.name}}</option>
+                                                        
+                                                        </select>
+                                                </div>
+                                                <!-- <v-autocomplete
+                                                  
                                                     outlined
                                                     dense
                                                     clearable
                                                     hide-details
                                                     hide-no-data
-                                                    hide-selected
-                                                    :rules="[
-                                                        () =>
-                                                            !!bank_account ||
-                                                            'This field is required',
-                                                    ]"
-                                                    :items="bank_account"
+                                                    hide-selected                                                         :rules="[() => !!bank_account || 'This field is required']"
+                                                    :items="employee.data"
                                                     label="Bank Details"
                                                     placeholder="Select..."
                                                     required
-                                                ></v-autocomplete>
+                                                ></v-autocomplete> -->
                                             </v-col>
                                             <v-col>
-                                                <label>Checked By:</label>
-                                                <v-autocomplete
-                                                    v-model="bank_account"
+                                                 <label>Checked By:</label>
+                                                <div class="form-group">
+                                                        <select name="type" v-model="checked_by_1" id="arena_id" class="form-control" :class="{ 'is-invalid': form.errors.has('arena_id') }">
+                                                            <option value="">Select Name</option>
+                                                            <option v-for="val in checked" :key="val.id"  :value="val" >{{val.name}}</option>
+                                                        
+                                                        </select>
+                                                </div>
+                                                <!-- <v-autocomplete
+                                                   
                                                     outlined
                                                     dense
                                                     clearable
                                                     hide-details
                                                     hide-no-data
-                                                    hide-selected
-                                                    :rules="[
-                                                        () =>
-                                                            !!bank_account ||
-                                                            'This field is required',
-                                                    ]"
-                                                    :items="bank_account"
+                                                    hide-selected                                                        :rules="[() => !!bank_account || 'This field is required']"
+                                                    :items="employee.data"
                                                     label="Bank Details"
                                                     placeholder="Select..."
                                                     required
-                                                ></v-autocomplete>
+                                                ></v-autocomplete> -->
                                                 <label>Checked By:</label>
-                                                <v-autocomplete
-                                                    v-model="bank_account"
+                                                 <div class="form-group">
+                                                        <select name="type" v-model="checked_by_2" id="arena_id" class="form-control" :class="{ 'is-invalid': form.errors.has('arena_id') }">
+                                                            <option value="">Select Name</option>
+                                                            <option v-for="val in checked" :key="val.id"  :value="val" >{{val.name}}</option>
+                                                        
+                                                        </select>
+                                                </div>
+                                                <!-- <v-autocomplete
+                                               
                                                     outlined
                                                     dense
                                                     clearable
                                                     hide-details
                                                     hide-no-data
-                                                    hide-selected
-                                                    :rules="[
-                                                        () =>
-                                                            !!bank_account ||
-                                                            'This field is required',
-                                                    ]"
-                                                    :items="bank_account"
+                                                    hide-selected                                                          :rules="[() => !!bank_account || 'This field is required']"
+                                                    :items="employee.data"
                                                     label="Bank Details"
                                                     placeholder="Select..."
                                                     required
-                                                ></v-autocomplete>
+                                                ></v-autocomplete> -->
                                             </v-col>
                                         </v-row>
                                     </v-card-text>
@@ -2374,7 +2280,14 @@ export default {
                 { text: "Contact", value: "arena_details.contact_number" },
                 { text: "", value: "actions", sortable: false },
             ],
-            bank_account: ["test1", "test2"],
+            computed:{},
+            checked:{},
+            prepared:{},
+            computed_by:'',
+            checked_by_1:'',
+            checked_by_2:'',
+            prepared_by:'',
+            bank_details:'',
             dialog: false,
             notifications: false,
             sound: true,
@@ -2387,7 +2300,7 @@ export default {
             status: "Deposit",
             ocbs: {},
             bankDetails: {},
-            bank: {},
+            bank:{},
             arenaData: [],
             arenaDetails: {},
 
@@ -2401,7 +2314,6 @@ export default {
                 contact_number: "",
                 email: "",
             }),
-
             bankaccount_id: "",
             computation: {
                 totalMWBet: 0,
@@ -2427,6 +2339,21 @@ export default {
         };
     },
     methods: {
+        loadEmployee(){
+         
+            axios.get("api/employees").then(({data}) => (
+
+                this.computed = data.computed,
+                this.checked = data.checked,
+                this.prepared = data.prepared
+               
+               ));
+        },
+        loadbank(){
+            axios.get("api/bankaccount").then(({data}) => (
+                    this.bank = data
+                ));
+        },
         async showData() {
             const data = await axios.get("api/import");
             // console.log('DATA',data.data)
@@ -2467,6 +2394,10 @@ export default {
             this.editmode = false;
             this.dialog = false;
         },
+        closeDialog(){
+            this.dialog = false 
+        },
+      
         saveModal() {
             $(".computation").attr("disabled", true);
             this.editmode = true;
@@ -2764,7 +2695,8 @@ export default {
     },
     created() {
         this.showData();
-
+        this.loadEmployee();
+        this.loadbank();
         Fire.$on("AfterCreate", () => {
             this.showData();
             this.test();

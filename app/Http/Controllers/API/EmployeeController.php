@@ -14,7 +14,16 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return employee::all();
+        $computed =  employee::where('group','computed')->get();
+        $prepared = employee::where('group','prepared')->get();
+        $checked = employee::where('group','checked')->get();
+        $employee = employee::all();
+        return response()->json([
+            'computed' => $computed,
+            'prepared' => $prepared,
+            'checked' => $checked,
+            'employee' => $employee
+        ]);
     }
 
     /**
