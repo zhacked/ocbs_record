@@ -1779,44 +1779,153 @@
                                                     <v-row>
                                                         <v-col>
                                                             <v-row>
-                                                                <div class="sign-wrapper" >
-                                                                    <span>Computed by:</span>
-                                                                    <div class="sign-container">
-                                                                        <span class="sign-name">{{computed_by.name ? computed_by.name : 'Select data'}}</span>
-                                                                        
-                                                                        <span>{{computed_by.position ? computed_by.position : 'QA Staff' }}</span>
+                                                                <div
+                                                                    class="
+                                                                        sign-wrapper
+                                                                    "
+                                                                >
+                                                                    <span
+                                                                        >Computed
+                                                                        by:</span
+                                                                    >
+                                                                    <div
+                                                                        class="
+                                                                            sign-container
+                                                                        "
+                                                                    >
+                                                                       <span class="select-field_container" :class="{'editmode-span': editmode}">
+                                                                            <select class="
+                                                                                    sign-name
+                                                                                    select-field_report
+                                                                                    
+                                                                                ">
+                                                                                <option>Billy
+                                                                                Joe
+                                                                                Isidoro</option>
+                                                                                 <option>Billy
+                                                                                Joesdsad
+                                                                                Isidoro</option>
+                                                                                 <option>Billy
+                                                                                Joe
+                                                                                Isidadsdsoro</option>
+                                                                            </select>
+                                                                        </span>
+
+
+                                                                        <span class="signed-title"
+                                                                            >Quality
+                                                                            Assurance
+                                                                            Staff</span
+                                                                        >
                                                                     </div>
                                                                 </div>
                                                             </v-row>
                                                             <v-row>
-                                                                <div class="sign-wrapper scbottom">
-                                                                    <span>Prepared by:</span>
-                                                                    <div class="sign-container">
-                                                                        <span class="sign-name">{{prepared_by.name ? prepared_by.name : 'Select data'}}</span>
-                                                                    
-                                                                        <span>{{prepared_by.position ? prepared_by.position : 'Finance Assistant-Kiosk Operation'}}</span>
+                                                                <div
+                                                                    class="
+                                                                        sign-wrapper
+                                                                        scbottom
+                                                                    "
+                                                                >
+                                                                    <span
+                                                                        >Prepared
+                                                                        by:</span
+                                                                    >
+                                                                    <div
+                                                                        class="
+                                                                            sign-container
+                                                                        "
+                                                                    >
+                                                                        <span class="select-field_container" :class="{'editmode-span': editmode}">
+                                                                            <select class="
+                                                                                    sign-name
+                                                                                    select-field_report
+                                                                                ">
+                                                                                <option>Billy
+                                                                                Joe
+                                                                                Isidoro</option>
+                                                                            </select>
+                                                                        </span>
+
+
+                                                                        <span class="signed-title"
+                                                                            >Quality
+                                                                            Assurance
+                                                                            Staff</span
+                                                                        >
                                                                     </div>
                                                                 </div>
                                                             </v-row>
                                                         </v-col>
                                                         <v-col>
                                                             <v-row>
-                                                                <div class="sign-wrapper" >
-                                                                    <span>Checked by:</span>
-                                                                    <div class="sign-container">
-                                                                        <span class="sign-name">{{checked_by_1.name ? checked_by_1.name : 'Select data '}}</span>
-                                                                    
-                                                                        <span>{{checked_by_1.position ? checked_by_1.position : 'Team Leader'}}</span>
+                                                                <div
+                                                                    class="
+                                                                        sign-wrapper
+                                                                    "
+                                                                >
+                                                                    <span class="mr-2"
+                                                                        >Checked
+                                                                        by:</span
+                                                                    >
+                                                                    <div
+                                                                        class="
+                                                                            sign-container
+                                                                            
+                                                                        "
+                                                                    >
+                                                                        <span class="select-field_container" :class="{'editmode-span': editmode}">
+                                                                            <select class="
+                                                                                    sign-name
+                                                                                    select-field_report
+                                                                                ">
+                                                                                <option>Billy
+                                                                                Joe
+                                                                                Isidoro</option>
+                                                                            </select>
+                                                                        </span>
+
+
+                                                                        <span class="signed-title"
+                                                                            >Quality
+                                                                            Assurance
+                                                                            Staff</span
+                                                                        >
                                                                     </div>
                                                                 </div>
                                                             </v-row>
-                                                             <v-row>
-                                                                <div class="sign-wrapper" >
-                                                                    <span>Checked by:</span>
-                                                                    <div class="sign-container">
-                                                                        <span class="sign-name">{{checked_by_2.name ? checked_by_1.name : 'Select data '}}</span>
-                                                                    
-                                                                        <span>{{checked_by_2.position ? checked_by_1.position : 'Team Leader'}}</span>
+                                                            <v-row>
+                                                                <div
+                                                                    class="
+                                                                        sign-wrapper
+                                                                        scbottom
+                                                                    "
+                                                                >
+                                                                    <span
+                                                                        >Checked
+                                                                        by:</span
+                                                                    >
+                                                                    <div
+                                                                        class="
+                                                                            sign-container
+                                                                        "
+                                                                    >
+                                                                       <span class="select-field_container" :class="{'editmode-span': editmode}">
+                                                                            <select class="
+                                                                                    sign-name
+                                                                                    select-field_report
+                                                                                ">
+                                                                                <option>Billy
+                                                                                Joe
+                                                                                Isidoro</option>
+                                                                            </select>
+                                                                        </span>
+
+                                                                        <span class="signed-title"
+                                                                            >Quality
+                                                                            Assurance
+                                                                            Staff</span
+                                                                        >
                                                                     </div>
                                                                 </div>
                                                             </v-row>
@@ -1893,6 +2002,7 @@
                                     </v-card-actions>
                                 </v-card>
                             </v-col>
+                        
                         </v-row>
                     </v-card>
                 </v-dialog>
@@ -2032,9 +2142,9 @@ export default {
             this.dialog = false;
         },
         updateModal() {
-            $(".computation").attr("disabled", false);
-              $(".computation").addClass("input-show")
-            this.editmode = !this.editmode;
+            $(".computation").attr("disabled", true);
+            $(".computation").addClass("input-show")
+            this.editmode =  !this.editmode;
         },
         closeDialog() {
             this.editmode = false;
@@ -2045,19 +2155,9 @@ export default {
         },
       
         saveModal() {
-            $(".computation").attr("disabled", true);
-            this.editmode = true;
-            axios
-                .get(
-                    "api/updateBank/" +
-                        this.arena_id +
-                        "/" +
-                        this.bankaccount_id
-                )
-                .then((data) => {
-                    Fire.$emit("AfterCreate");
-                    swal.fire("Successfully!", "Updated", "success");
-                });
+            $(".computation").attr("disabled", false);
+            this.editmode = !this.editmode;
+            
         },
         test() {
             axios
@@ -2099,7 +2199,7 @@ export default {
             this.arenaDetails = data.arena_details;
             this.arena_id = data.id;
             $(".computation").attr("disabled", true);
-            // this.editmode = false;
+            this.editmode = false;
             Fire.$emit("AfterCreate"),
                 axios
                     .get("api/bankfilter/" + data.arena_details.id)

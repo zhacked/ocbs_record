@@ -73331,6 +73331,12 @@ readers do not read off random characters that represent icons */
   border: 1px solid #081C15;
 }
 
+.select-field_container {
+  padding: 2px 1px;
+  width: 100%;
+  border-radius: 5px;
+}
+
 .fullspan {
   width: 100%;
 }
@@ -73506,6 +73512,25 @@ readers do not read off random characters that represent icons */
 
 .input-field_report:focus {
   outline: 0;
+}
+
+.select-field_report {
+  outline: 0;
+  border: 0;
+  width: 100%;
+  cursor: pointer;
+}
+
+.select-field_report:focus {
+  outline: 0;
+}
+
+select:disabled {
+  color: #000 !important;
+}
+
+.signed-title {
+  border-top: 1px solid #000;
 }
 
 @media (max-width: 1400px) {
