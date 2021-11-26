@@ -23,8 +23,8 @@
                    
                             <v-data-table
                                     :headers="headers"
-                                    :items="employee.data"
-                                    :items-per-page="10"
+                                    :items="employee"
+                               
                                     :search="search"
                                     class="elevation-1 text-center"
                                 >
@@ -202,9 +202,9 @@
                 length: '',
                 search: '',
                 groups:[
-                    'Computed',
-                    'Checkked',
-                    'Prepared'
+                    'computed',
+                    'checked',
+                    'crepared'
                 ],
                 position:[
                     'QA Staff',
@@ -278,7 +278,7 @@
             },
             loadUsers(){
                 if(this.$gate.isAdmin()){
-                    axios.get("api/employees").then((data ) => (this.employee = data));
+                    axios.get("api/employees").then((data) => (this.employee = data.data.employee));
                 }
             },
             createUser(){
