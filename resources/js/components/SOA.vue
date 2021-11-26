@@ -113,7 +113,7 @@
                                     <div>
                                         <v-spacer></v-spacer>
                                    
-                                       <div style="position: absolute; right: 10px; top: 15px;">
+                                       <!-- <div style="position: absolute; right: 10px; top: 15px;">
                                         <v-tooltip bottom>
                                             <template
                                                 v-slot:activator="{ on, attrs }"
@@ -131,7 +131,7 @@
                                             </template>
                                             <span>Close</span>
                                         </v-tooltip>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div style="padding: 1px" ref="soaReport">
                                         <vue-html2pdf
@@ -2036,7 +2036,14 @@ export default {
                 { text: "Contact", value: "arena_details.contact_number" },
                 { text: "", value: "actions", sortable: false },
             ],
-            bank_account: ["test1", "test2"],
+            computed:{},
+            checked:{},
+            prepared:{},
+            computed_by:'',
+            checked_by_1:'',
+            checked_by_2:'',
+            prepared_by:'',
+            bank_details:'',
             dialog: false,
             notifications: false,
             sound: true,
@@ -2049,7 +2056,7 @@ export default {
             status: "Deposit",
             ocbs: {},
             bankDetails: {},
-            bank: {},
+            bank:{},
             arenaData: [],
             arenaDetails: {},
 
@@ -2063,7 +2070,6 @@ export default {
                 contact_number: "",
                 email: "",
             }),
-
             bankaccount_id: "",
             computation: {
                 totalMWBet: 0,
@@ -2089,6 +2095,21 @@ export default {
         };
     },
     methods: {
+        loadEmployee(){
+         
+            axios.get("api/employees").then(({data}) => (
+
+                this.computed = data.computed,
+                this.checked = data.checked,
+                this.prepared = data.prepared
+               
+               ));
+        },
+        loadbank(){
+            axios.get("api/bankaccount").then(({data}) => (
+                    this.bank = data
+                ));
+        },
         async showData() {
             const data = await axios.get("api/import");
             // console.log('DATA',data.data)
@@ -2129,6 +2150,10 @@ export default {
             this.editmode = false;
             this.dialog = false;
         },
+        closeDialog(){
+            this.dialog = false 
+        },
+      
         saveModal() {
             $(".computation").attr("disabled", false);
             this.editmode = !this.editmode;
@@ -2416,7 +2441,8 @@ export default {
     },
     created() {
         this.showData();
-
+        this.loadEmployee();
+        this.loadbank();
         Fire.$on("AfterCreate", () => {
             this.showData();
             this.test();
