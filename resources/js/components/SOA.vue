@@ -113,7 +113,7 @@
                                     <div>
                                         <v-spacer></v-spacer>
                                    
-                                       <div style="position: absolute; right: 10px; top: 15px;">
+                                       <!-- <div style="position: absolute; right: 10px; top: 15px;">
                                         <v-tooltip bottom>
                                             <template
                                                 v-slot:activator="{ on, attrs }"
@@ -131,7 +131,7 @@
                                             </template>
                                             <span>Close</span>
                                         </v-tooltip>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div style="padding: 1px" ref="soaReport">
                                         <vue-html2pdf
@@ -1779,133 +1779,44 @@
                                                     <v-row>
                                                         <v-col>
                                                             <v-row>
-                                                                <div
-                                                                    class="
-                                                                        sign-wrapper
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >Computed
-                                                                        by:</span
-                                                                    >
-                                                                    <div
-                                                                        class="
-                                                                            sign-container
-                                                                        "
-                                                                    >
-                                                                        <span
-                                                                            class="
-                                                                                sign-name
-                                                                            "
-                                                                            >Billy
-                                                                            Joe
-                                                                            Isidoro</span
-                                                                        >
-
-                                                                        <span
-                                                                            >Quality
-                                                                            Assurance
-                                                                            Staff</span
-                                                                        >
+                                                                <div class="sign-wrapper" >
+                                                                    <span>Computed by:</span>
+                                                                    <div class="sign-container">
+                                                                        <span class="sign-name">{{computed_by.name ? computed_by.name : 'Select data'}}</span>
+                                                                        
+                                                                        <span>{{computed_by.position ? computed_by.position : 'QA Staff' }}</span>
                                                                     </div>
                                                                 </div>
                                                             </v-row>
                                                             <v-row>
-                                                                <div
-                                                                    class="
-                                                                        sign-wrapper
-                                                                        scbottom
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >Prepared
-                                                                        by:</span
-                                                                    >
-                                                                    <div
-                                                                        class="
-                                                                            sign-container
-                                                                        "
-                                                                    >
-                                                                        <span
-                                                                            class="
-                                                                                sign-name
-                                                                            "
-                                                                            >Billy
-                                                                            Joe
-                                                                            Isidoro</span
-                                                                        >
-
-                                                                        <span
-                                                                            >Quality
-                                                                            Assurance
-                                                                            Staff</span
-                                                                        >
+                                                                <div class="sign-wrapper scbottom">
+                                                                    <span>Prepared by:</span>
+                                                                    <div class="sign-container">
+                                                                        <span class="sign-name">{{prepared_by.name ? prepared_by.name : 'Select data'}}</span>
+                                                                    
+                                                                        <span>{{prepared_by.position ? prepared_by.position : 'Finance Assistant-Kiosk Operation'}}</span>
                                                                     </div>
                                                                 </div>
                                                             </v-row>
                                                         </v-col>
                                                         <v-col>
                                                             <v-row>
-                                                                <div
-                                                                    class="
-                                                                        sign-wrapper
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >Checked
-                                                                        by:</span
-                                                                    >
-                                                                    <div
-                                                                        class="
-                                                                            sign-container
-                                                                        "
-                                                                    >
-                                                                        <span
-                                                                            class="
-                                                                                sign-name
-                                                                            "
-                                                                            >Billy
-                                                                            Joe
-                                                                            Isidoro</span
-                                                                        >
-
-                                                                        <span
-                                                                            >Quality
-                                                                            Assurance
-                                                                            Staff</span
-                                                                        >
+                                                                <div class="sign-wrapper" >
+                                                                    <span>Checked by:</span>
+                                                                    <div class="sign-container">
+                                                                        <span class="sign-name">{{checked_by_1.name ? checked_by_1.name : 'Select data '}}</span>
+                                                                    
+                                                                        <span>{{checked_by_1.position ? checked_by_1.position : 'Team Leader'}}</span>
                                                                     </div>
                                                                 </div>
                                                             </v-row>
-                                                            <v-row>
-                                                                <div
-                                                                    class="
-                                                                        sign-wrapper
-                                                                        scbottom
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >Checked
-                                                                        by:</span
-                                                                    >
-                                                                    <div
-                                                                        class="
-                                                                            sign-container
-                                                                        "
-                                                                    >
-                                                                        <span
-                                                                            class="
-                                                                                sign-name
-                                                                            "
-                                                                            >Billy
-                                                                            Joe
-                                                                            Isidoro</span
-                                                                        >
-                                                                        <span
-                                                                            >Quality
-                                                                            Assurance
-                                                                            Staff</span
-                                                                        >
+                                                             <v-row>
+                                                                <div class="sign-wrapper" >
+                                                                    <span>Checked by:</span>
+                                                                    <div class="sign-container">
+                                                                        <span class="sign-name">{{checked_by_2.name ? checked_by_1.name : 'Select data '}}</span>
+                                                                    
+                                                                        <span>{{checked_by_2.position ? checked_by_1.position : 'Team Leader'}}</span>
                                                                     </div>
                                                                 </div>
                                                             </v-row>
@@ -1982,365 +1893,6 @@
                                     </v-card-actions>
                                 </v-card>
                             </v-col>
-                            <!--
-                            <v-col class="cols-5 pa-0">
-                                <v-card
-                                    class="pa-4 overflow-auto report-preview"
-                                    rounded="false"
-                                    style="height: 100%"
-                                    width="100%"
-                                >
-                                    <v-card-title class="text-h5 my-5">
-                                        <span
-                                            class="
-                                                text-center
-                                                font-weight-medium
-                                            "
-                                            >Computation</span
-                                        >
-                                        <v-spacer></v-spacer>
-
-                                        <v-tooltip bottom>
-                                            <template
-                                                v-slot:activator="{ on, attrs }"
-                                            >
-                                                <v-btn
-                                                    icon
-                                                    color="green"
-                                                    v-bind="attrs"
-                                                    v-on="on"
-                                                    @click="downloadImg"
-                                                >
-                                                    <v-icon>mdi-image</v-icon>
-                                                </v-btn>
-                                            </template>
-                                            <span>Download as PNG</span>
-                                        </v-tooltip>
-                                        <v-tooltip bottom>
-                                            <template
-                                                v-slot:activator="{ on, attrs }"
-                                            >
-                                                <v-btn
-                                                    icon
-                                                    color="red darken-2"
-                                                    v-bind="attrs"
-                                                    v-on="on"
-                                                    @click="generateReport"
-                                                >
-                                                    <v-icon
-                                                        >mdi-file-pdf-box</v-icon
-                                                    >
-                                                </v-btn>
-                                            </template>
-                                            <span>Download as PDF</span>
-                                        </v-tooltip>
-                                        <v-divider vertical></v-divider>
-                                        <v-tooltip bottom>
-                                            <template
-                                                v-slot:activator="{ on, attrs }"
-                                            >
-                                                <v-btn
-                                                    icon
-                                                    color="blue"
-                                                    v-bind="attrs"
-                                                    v-on="on"
-                                                >
-                                                    <v-icon size="22px"
-                                                        >mdi-pencil-outline</v-icon
-                                                    >
-                                                </v-btn>
-                                            </template>
-                                            <span>Update Data</span>
-                                        </v-tooltip>
-                                        <v-tooltip bottom>
-                                            <template
-                                                v-slot:activator="{ on, attrs }"
-                                            >
-                                                <v-btn
-                                                    icon
-                                                    color="pink"
-                                                    v-bind="attrs"
-                                                    v-on="on"
-                                                    @click="closeDialog"
-                                                >
-                                                    <v-icon>mdi-close</v-icon>
-                                                </v-btn>
-                                            </template>
-                                            <span>Close</span>
-                                        </v-tooltip>
-                                    </v-card-title>
-                                    <v-card-text>
-                                        <v-row>
-                                            <v-col>
-                                                <v-text-field
-                                                    label="Commission"
-                                                    placeholder="Enter Percentage"
-                                                    outlined
-                                                    
-                                                    dense
-                                                    clearable
-                                                    class="mb-0"
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Total M/W Bets"
-                                                    placeholder="0"
-                                                    outlined
-                                                    clearable
-                                                    
-                                                    dense
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Total Cacelled Bets"
-                                                    placeholder="0"
-                                                    outlined
-                                                    clearable
-                                                    
-                                                    dense
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Total Draw Bets"
-                                                    placeholder="0"
-                                                    outlined
-                                                    clearable
-                                                    
-                                                    dense
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Total Payout Paid"
-                                                    placeholder="0"
-                                                    outlined
-                                                    clearable
-                                                    
-                                                    dense
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Total C/D Paid"
-                                                    placeholder="0"
-                                                    outlined
-                                                    clearable
-                                                    dense
-                                                    
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Total Draw Paid"
-                                                    placeholder="0"
-                                                    outlined
-                                                    
-                                                    clearable
-                                                    dense
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Total Unclaimed"
-                                                    placeholder="0"
-                                                    outlined
-                                                    clearable
-                                                    
-                                                    dense
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Total C Unpaid"
-                                                    placeholder="Enter Percentage"
-                                                    outlined
-                                                    clearable
-                                                    
-                                                    dense
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Sales Deduction"
-                                                    placeholder="0"
-                                                    outlined
-                                                    clearable
-                                                    
-                                                    dense
-                                                ></v-text-field>
-                                            </v-col>
-                                          
-                                          
-                                            <v-col>
-                                                <v-text-field
-                                                    label="Other's Commission - M"
-                                                    placeholder="0"
-                                                    outlined
-                                                    clearable
-                                                    dense
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Consolidator's Commission"
-                                                    placeholder="0"
-                                                    outlined
-                                                    
-                                                    clearable
-                                                    dense
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Safety Fund"
-                                                    placeholder="0"
-                                                    outlined
-                                                    
-                                                    clearable
-                                                    dense
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Payment for outstading balance"
-                                                    placeholder="0"
-                                                    outlined
-                                                    
-                                                    clearable
-                                                    dense
-                                                ></v-text-field>
-
-                                                <h4 class="mt-4 pt-4">
-                                                    M O B I L E
-                                                </h4>
-                                                <v-text-field
-                                                    label="Total M/W Bets"
-                                                    placeholder="0"
-                                                    outlined
-                                                    clearable
-                                                    dense
-                                                    
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Total Draw Bets"
-                                                    placeholder="0"
-                                                    outlined
-                                                    clearable
-                                                    
-                                                    dense
-                                                    value="0"
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Cash Load"
-                                                    placeholder="0"
-                                                    outlined
-                                                    clearable
-                                                    
-                                                    dense
-                                                ></v-text-field>
-                                                <v-text-field
-                                                    label="Cash Withdraw"
-                                                    placeholder="0"
-                                                    outlined
-                                                    clearable
-                                                    
-                                                    dense
-                                                ></v-text-field>
-                                            </v-col>
-                                        </v-row>
-                                        <v-row>
-                                            <v-col>
-                                                <h4>B A N K</h4>
-                                                <span class="no-gutters"
-                                                    >Text Name</span
-                                                >
-                                                <v-autocomplete
-                                                    ref="country"
-                                                    v-model="bank_account"
-                                                    outlined
-                                                    dense
-                                                    hide-details
-                                                    hide-no-data
-                                                    hide-selected
-                                                    :rules="[
-                                                        () =>
-                                                            !!bank_account ||
-                                                            'This field is required',
-                                                    ]"
-                                                    :items="bank_account"
-                                                    label="Bank Details"
-                                                    placeholder="Select..."
-                                                    required
-                                                ></v-autocomplete>
-                                                <p>bank number</p>
-                                            </v-col>
-                                            <v-col></v-col>
-                                        </v-row>
-                                        <v-row>
-                                            <v-col>
-                                                <label>Computed By:</label>
-                                                <v-autocomplete
-                                                    v-model="bank_account"
-                                                    outlined
-                                                    dense
-                                                    :rules="[
-                                                        () =>
-                                                            !!bank_account ||
-                                                            'This field is required',
-                                                    ]"
-                                                    hide-details
-                                                    hide-no-data
-                                                    clearable
-                                                    hide-selected
-                                                    :items="bank_account"
-                                                    label="Bank Details"
-                                                    placeholder="Select..."
-                                                    required
-                                                ></v-autocomplete>
-                                                <label>Prepared By:</label>
-                                                <v-autocomplete
-                                                    v-model="bank_account"
-                                                    outlined
-                                                    dense
-                                                    clearable
-                                                    hide-details
-                                                    hide-no-data
-                                                    hide-selected
-                                                    :rules="[
-                                                        () =>
-                                                            !!bank_account ||
-                                                            'This field is required',
-                                                    ]"
-                                                    :items="bank_account"
-                                                    label="Bank Details"
-                                                    placeholder="Select..."
-                                                    required
-                                                ></v-autocomplete>
-                                            </v-col>
-                                            <v-col>
-                                                <label>Checked By:</label>
-                                                <v-autocomplete
-                                                    v-model="bank_account"
-                                                    outlined
-                                                    dense
-                                                    clearable
-                                                    hide-details
-                                                    hide-no-data
-                                                    hide-selected
-                                                    :rules="[
-                                                        () =>
-                                                            !!bank_account ||
-                                                            'This field is required',
-                                                    ]"
-                                                    :items="bank_account"
-                                                    label="Bank Details"
-                                                    placeholder="Select..."
-                                                    required
-                                                ></v-autocomplete>
-                                                <label>Checked By:</label>
-                                                <v-autocomplete
-                                                    v-model="bank_account"
-                                                    outlined
-                                                    dense
-                                                    clearable
-                                                    hide-details
-                                                    hide-no-data
-                                                    hide-selected
-                                                    :rules="[
-                                                        () =>
-                                                            !!bank_account ||
-                                                            'This field is required',
-                                                    ]"
-                                                    :items="bank_account"
-                                                    label="Bank Details"
-                                                    placeholder="Select..."
-                                                    required
-                                                ></v-autocomplete>
-                                            </v-col>
-                                        </v-row>
-                                    </v-card-text>
-                                </v-card>
-                            </v-col>
-                            -->
                         </v-row>
                     </v-card>
                 </v-dialog>
@@ -2374,7 +1926,14 @@ export default {
                 { text: "Contact", value: "arena_details.contact_number" },
                 { text: "", value: "actions", sortable: false },
             ],
-            bank_account: ["test1", "test2"],
+            computed:{},
+            checked:{},
+            prepared:{},
+            computed_by:'',
+            checked_by_1:'',
+            checked_by_2:'',
+            prepared_by:'',
+            bank_details:'',
             dialog: false,
             notifications: false,
             sound: true,
@@ -2387,7 +1946,7 @@ export default {
             status: "Deposit",
             ocbs: {},
             bankDetails: {},
-            bank: {},
+            bank:{},
             arenaData: [],
             arenaDetails: {},
 
@@ -2401,7 +1960,6 @@ export default {
                 contact_number: "",
                 email: "",
             }),
-
             bankaccount_id: "",
             computation: {
                 totalMWBet: 0,
@@ -2427,6 +1985,21 @@ export default {
         };
     },
     methods: {
+        loadEmployee(){
+         
+            axios.get("api/employees").then(({data}) => (
+
+                this.computed = data.computed,
+                this.checked = data.checked,
+                this.prepared = data.prepared
+               
+               ));
+        },
+        loadbank(){
+            axios.get("api/bankaccount").then(({data}) => (
+                    this.bank = data
+                ));
+        },
         async showData() {
             const data = await axios.get("api/import");
             // console.log('DATA',data.data)
@@ -2467,6 +2040,10 @@ export default {
             this.editmode = false;
             this.dialog = false;
         },
+        closeDialog(){
+            this.dialog = false 
+        },
+      
         saveModal() {
             $(".computation").attr("disabled", true);
             this.editmode = true;
@@ -2764,7 +2341,8 @@ export default {
     },
     created() {
         this.showData();
-
+        this.loadEmployee();
+        this.loadbank();
         Fire.$on("AfterCreate", () => {
             this.showData();
             this.test();
