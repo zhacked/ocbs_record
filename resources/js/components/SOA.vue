@@ -124,6 +124,8 @@
                                                     close
                                                     color="red"
                                                     text-color="white"
+                                                      v-bind="attrs"
+                                                    v-on="on"
                                                    @click="closeDialog"
                                                     >
                                                     Close
