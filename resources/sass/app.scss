@@ -67966,8 +67966,15 @@ readers do not read off random characters that represent icons */
 	font-size: 9px;
 	border-radius: 3px;
 	padding: 0.3px 2px;
-  
   }
+  .editmode-span {
+	border: 1px solid #1B4332;
+  }
+  .editmode-span:focus-within{
+	  border: 1px solid #081C15;
+  }
+
+
   
   .fullspan{
 	width: 100%;
@@ -68125,17 +68132,28 @@ readers do not read off random characters that represent icons */
   
   .scbottom{
 	height: auto;
+	margin-bottom: 5px;
   }
 
   .dialogCard:hover{
 	  background: #000;
   }
 
- 
-  @media (max-width: 800px) {
-	// .dialogCard {
-	// background-color: #000;
-	//   overflow-y: auto !important;
-	// }
+  .input-field_report{
+	  outline: 0;
+	  border: 0;
+	  width: 100%;
   }
-  
+  .input-field_report:focus{
+	  outline: 0
+  }
+
+
+  @media (max-width: 1400px){
+	//  .dialog-custom{
+	// 	 width: 90% !important;
+	//  }
+	.my-custom-dialog{
+		width: 100% !important;
+	}
+  }
