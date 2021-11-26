@@ -113,7 +113,7 @@
                                     <div>
                                         <v-spacer></v-spacer>
                                    
-                                       <!-- <div style="position: absolute; right: 10px; top: 15px;">
+                                     <div style="position: absolute; right: 10px; top: 15px;">
                                         <v-tooltip bottom>
                                             <template
                                                 v-slot:activator="{ on, attrs }"
@@ -131,7 +131,7 @@
                                             </template>
                                             <span>Close</span>
                                         </v-tooltip>
-                                        </div> -->
+                                        </div>
                                     </div>
                                     <div style="padding: 1px" ref="soaReport">
                                         <vue-html2pdf
@@ -296,7 +296,7 @@
                                                                     "
                                                                     :class="{'editmode-span': editmode}"
                                                                 >
-                                                                    <input type="text" disabled class="input-field_report computation" placeholder="0"/>
+                                                                    <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.arena"/>
                                                                 </div>
                                                             </div>
                                                             <div
@@ -324,7 +324,7 @@
                                                                     "
                                                                     :class="{'editmode-span': editmode}"
                                                                 >
-                                                                    <input type="text" disabled class="input-field_report computation" placeholder="0"/>
+                                                                    <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.address"/>
                                                                 </div>
                                                             </div>
                                                             <div
@@ -352,7 +352,7 @@
                                                                     "
                                                                     :class="{'editmode-span': editmode}"
                                                                 >
-                                                                    <input type="text" disabled class="input-field_report computation" placeholder="0"/>
+                                                                    <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.operator"/>
                                                                 </div>
                                                             </div>
                                                             <div
@@ -381,7 +381,7 @@
                                                                     "
                                                                     :class="{'editmode-span': editmode}"
                                                                 >
-                                                                    <input type="text" disabled class="input-field_report computation" placeholder="0"/>
+                                                                    <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.contact_number"/>
                                                                 </div>
                                                             </div>
                                                             <div
@@ -410,7 +410,7 @@
                                                                     "
                                                                     :class="{'editmode-span': editmode}"
                                                                 >
-                                                                    <input type="text" disabled class="input-field_report computation" placeholder="0"/>
+                                                                    <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.email"/>
                                                                 </div>
                                                             </div>
                                                         </v-col>
@@ -479,8 +479,8 @@
                                                                         :class="{'editmode-span': editmode}"
                                                                     >
                                                                     
-                                                                        <input type="text" disabled class="input-field_report computation" v-model="this
-                                                                                .computation
+                                                                        <input type="text" disabled="disabled" class="input-field_report computation" v-model="
+                                                                                computation
                                                                                 .totalMWBet"/>
                                                                     </div>
                                                                 </div>
@@ -847,7 +847,7 @@
                                                                             text-caption
                                                                             custom-label
                                                                         "
-                                                                        >M/W*2%
+                                                                        >M/W*{{commission_percent*100}}%
                                                                         (kiosk):</span
                                                                     >
                                                                     <div
@@ -893,7 +893,7 @@
                                                                             text-caption
                                                                             custom-label
                                                                         "
-                                                                        >Draw*2%
+                                                                        >Draw*{{commission_percent*100}}%
                                                                         (kiosk):</span
                                                                     >
                                                                     <div
@@ -939,7 +939,7 @@
                                                                             text-caption
                                                                             custom-label
                                                                         "
-                                                                        >M/W*2%
+                                                                        >M/W*{{commission_percent*100}}%
                                                                         (mobile):</span
                                                                     >
                                                                     <div
@@ -985,7 +985,7 @@
                                                                             text-caption
                                                                             custom-label
                                                                         "
-                                                                        >Draw*2%
+                                                                        >Draw*{{commission_percent*100}}%
                                                                         (mobile):</span
                                                                     >
                                                                     <div
@@ -1057,16 +1057,8 @@
                                                                             "
                                                                             :class="{'editmode-span': editmode}"
                                                                         >
-                                                                            <span
-                                                                                >{{
-                                                                                    this
-                                                                                        .computation
-                                                                                        .unclaimed
-                                                                                }}</span
-                                                                            >
-                                                                             <input type="text" disabled class="input-field_report computation" v-model="this
-                                                                                        .computation
-                                                                                        .unclaimed"/>
+                                                                           
+                                                                             <input type="text" disabled class="input-field_report computation" v-model="this.computation.unclaimed"/>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1604,7 +1596,7 @@
                                                                         "
                                                                        :class="{'editmode-span': editmode}"
                                                                     >
-                                                                         <input type="text" disabled class="input-field_report computation" v-model="computedAve.cashLoad"/>
+                                                                         <input type="text" disabled class="input-field_report computation" v-model="computation.mobile.cashLoad"/>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1649,7 +1641,7 @@
                                                                         "
                                                                       :class="{'editmode-span': editmode}"
                                                                     >
-                                                                         <input type="text" disabled class="input-field_report computation" v-model="computedAve.cashWithdraw"/>
+                                                                         <input type="text" disabled class="input-field_report computation" v-model="computation.mobile.cashWithdraw"/>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1936,7 +1928,35 @@
                                         </vue-html2pdf>
                                     </div>
                                     <v-card-actions>
-                                        <v-spacer></v-spacer>
+                                     <v-spacer></v-spacer>
+                                     <div
+                                            v-if="editmode"
+                                            class="
+                                                    d-flex
+                                                    align-center
+                                                    computation-container_field
+                                                    mr-2
+                                                    "
+                                                    
+                                                                >
+                                                                 <label class="mr-2">Commission Percent ({{commission_percent*100}}%) :</label>
+                                                                    <div
+                                                                        class="
+                                                                            custom-span
+                                                                            caption
+                                                                            computation-span
+                                                                            d-flex
+                                                                            align-center
+                                                                        "
+                                                                       :class="{'editmode-span': editmode}"
+                                                                    >
+                                                                       
+
+                                                                         <input type="text" class="input-field_report" v-model="commission_percent"/>
+                                                                    </div>
+                                                                </div>
+                                                                  <v-spacer></v-spacer>
+                                       
                                        <v-tooltip  bottom>
                                             <template
                                             
@@ -1975,6 +1995,7 @@
                                             </template>
                                             <span>Download as PDF</span>
                                         </v-tooltip>
+                                        
                                         <v-divider vertical></v-divider>
                                         <v-tooltip bottom>
                                             <template
@@ -1988,7 +2009,7 @@
                                                     outlined
                                                     v-bind="attrs"
                                                     v-on="on"
-                                                   @click="editmode ? updateModal() : saveModal()"
+                                                   @click="!editmode ? updateModal() : saveModal()"
                                                     >
                                                     {{editmode ? 'Save': 'Update'}}
                                                     
@@ -2142,21 +2163,65 @@ export default {
             this.dialog = false;
         },
         updateModal() {
-            $(".computation").attr("disabled", true);
+            $(".computation").attr("disabled", false);
             $(".computation").addClass("input-show")
-            this.editmode =  !this.editmode;
+            
+              this.computation = {
+                totalMWBet: numberUnformat(this.computation.totalMWBet),
+                drawCancelled: numberUnformat(this.computation.drawCancelled),
+                draw: numberUnformat(this.computation.draw),
+                totalPayoutPaid: numberUnformat(this.computation.totalPayoutPaid),
+                cdPaid: numberUnformat(this.computation.cdPaid),
+                drawPaid: numberUnformat(this.computation.drawPaid),
+                netWinLoss: numberFormat(this.computation.netWinLoss),
+                unclaimed: numberUnformat(this.computation.unclaimed),
+                cUnpaid: numberUnformat(this.computation.cUnpaid),
+                totalMWBetPercent: numberUnformat(this.computation.totalMWBetPercent),
+                operatorExpenses: numberUnformat(
+                    this.computation.operatorExpenses
+                ),
+                mobile: {
+                    cashLoad: numberUnformat(this.computation.mobile.cashLoad),
+                    cashWithdraw: numberUnformat(this.computation.mobile.cashWithdraw),
+                    totalMWBet: numberUnformat(this.computation.totalMobileMWBets || "0.00"),
+                    totalDrawBet: numberUnformat(this.computation.totalMobileDrawBets || "0.00"),
+                },
+              }
+
+              this.editmode =  !this.editmode;
+
         },
         closeDialog() {
-            this.editmode = false;
+            this.editmode = !this.editmode;
             this.dialog = false;
-        },
-        closeDialog(){
-            this.dialog = false 
         },
       
         saveModal() {
-            $(".computation").attr("disabled", false);
+            $(".computation").attr("disabled", true);
             this.editmode = !this.editmode;
+            console.log(this.editmode)
+
+             this.computation = {
+                totalMWBet: numberFormat(this.computation.totalMWBet),
+                drawCancelled: numberFormat(this.computation.drawCancelled),
+                draw: numberFormat(this.computation.draw),
+                totalPayoutPaid: numberFormat(this.computation.totalPayoutPaid),
+                cdPaid: numberFormat(this.computation.cdPaid),
+                drawPaid: numberFormat(this.computation.drawPaid),
+                netWinLoss: numberFormat(this.computation.netWinLoss),
+                unclaimed: numberFormat(this.computation.unclaimed),
+                cUnpaid: numberFormat(this.computation.cUnpaid),
+                totalMWBetPercent: numberFormat(this.computation.totalMWBetPercent),
+                operatorExpenses: numberFormat(
+                    this.computation.operatorExpenses
+                ),
+                mobile: {
+                   cashLoad: numberFormat(this.computation.mobile.cashLoad),
+                    cashWithdraw: numberFormat(this.computation.mobile.cashWithdraw),
+                    totalMWBet: numberFormat(this.computation.totalMobileMWBets || 0),
+                    totalDrawBet: numberFormat(this.computation.totalMobileDrawBets || 0),
+                },
+              }
             
         },
         test() {
@@ -2194,12 +2259,13 @@ export default {
             this.form.reset();
             this.dialog = true;
             $("#addNew").modal("show");
+            //  $(".computation").attr("disabled", false);
+            // this.editmode = !this.editmode;
 
             this.form.fill(data.arena_details);
             this.arenaDetails = data.arena_details;
             this.arena_id = data.id;
-            $(".computation").attr("disabled", true);
-            this.editmode = false;
+           
             Fire.$emit("AfterCreate"),
                 axios
                     .get("api/bankfilter/" + data.arena_details.id)
@@ -2243,11 +2309,14 @@ export default {
                     this.computation.operatorExpenses
                 ),
                 mobile: {
-                    ...this.computation.mobile,
+                    cashLoad: numberFormat(this.computation.mobile.cashLoad),
+                    cashWithdraw: numberFormat(this.computation.mobile.cashWithdraw),
                     totalMWBet: numberFormat(totalMobileMWBets),
                     totalDrawBet: numberFormat(totalMobileDrawBets),
                 },
             };
+
+        
         },
 
         onFileChange(event) {
@@ -2382,19 +2451,19 @@ export default {
         computedAve: function () {
             const mwTotalPercent = numberFormat(
                 parseFloat(this.commission_percent) *
-                    numberUnformat(this.computation.totalMWBet)
+                    numberUnformat(this.computation.totalMWBet) || 0
             );
             const drawTotalPercent = numberFormat(
                 parseFloat(this.commission_percent) *
-                    numberUnformat(this.computation.draw)
+                    numberUnformat(this.computation.draw) || 0
             );
             const mwMobileTotalPercent = numberFormat(
                 parseFloat(this.commission_percent) *
-                    numberUnformat(this.computation.mobile.totalMWBet)
+                    numberUnformat(this.computation.mobile.totalMWBet) || 0
             );
             const drawMobileTotalPercent = numberFormat(
                 parseFloat(this.commission_percent) *
-                    numberUnformat(this.computation.mobile.totalDrawBet)
+                    numberUnformat(this.computation.mobile.totalDrawBet) || 0
             );
             const netOpCommTotal =
                 numberUnformat(mwTotalPercent) +
@@ -2403,13 +2472,13 @@ export default {
                 numberUnformat(this.computation.cUnpaid) +
                 numberUnformat(this.computation.operatorExpenses);
             const netOpCommission = numberFormat(netOpCommTotal);
-            const cashLoad = this.computation.mobile.cashLoad;
-            const cashWithdraw = this.computation.mobile.cashWithdraw;
+            const cashLoad = this.computation.mobile.cashLoad || 0;
+            const cashWithdraw = this.computation.mobile.cashWithdraw || 0;
             const depositReplenish = numberFormat(
                 numberUnformat(this.computation.netWinLoss) -
                     numberUnformat(netOpCommission) +
                     numberUnformat(cashLoad) -
-                    numberUnformat(cashWithdraw)
+                    numberUnformat(cashWithdraw) || 0
             );
 
             const depositReplenishText =
