@@ -1,7 +1,7 @@
 <template >
     <v-app>
 		<v-container>
-			<v-row class="mt-5">
+			<v-row class="mt-5 is-blurred">
 				<v-col class="col-md-12">
 					<v-card >
 						<v-card-title class="card-header">
@@ -80,7 +80,7 @@
 
 
 					<!-- Modal -->
-			<div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+			<div class="modal fade" id="addNew" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered" role="document">
 					<div class="modal-content">
 					<div class="modal-header">
