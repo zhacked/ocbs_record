@@ -26,9 +26,16 @@ class ImportController extends Controller
      */
     public function index()
     {
-        return import::with(['BankDetails','arenaDetails.BankDetails'])->get();
+        return import::with(['BankDetails','arenaDetails.BankDetails'])->whereNull('status')->get();
       
     }
+
+    public function withstatus()
+    {
+        return import::with(['BankDetails','arenaDetails.BankDetails'])->whereNotNull('status')->get();
+        
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -49,18 +56,14 @@ class ImportController extends Controller
     }
     public function bankaccountfilter($id)
     {
-        return BankAccount::where('arenas_id',$id)->get();
+        return BankAccount::where('id',$id)->first();
     }
-    public function updatebankaccount($id,$bank_id){
+    // public function updatebankaccount($id,$bank_id){
      
-       return  arena::where('id',$id)->update([
-            'bank_id' => $bank_id
-        ]); 
-
-
-        
-
-    }
+    //    return  arena::where('id',$id)->update([
+    //         'bank_id' => $bank_id
+    //     ]); 
+    // }
     
     /**
      * Store a newly created resource in storage.
@@ -119,9 +122,11 @@ class ImportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function arenastatus($arena_name)
     {
-        //
+          return  import::where('arena_name',$arena_name)->update([
+            'status' => 'done'
+        ]); 
     }
 
     /**

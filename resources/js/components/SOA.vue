@@ -13,7 +13,6 @@
                                         class="form-control-label"
                                         for="input-file-import"
                                     ></label>
-                                    <!--<input type="file" class="form-control" :class="{ ' is-invalid' : error.message }" id="input-file-import" name="file_import" ref="import_file"  @change="onFileChange"> -->
                                     <input
                                         type="file"
                                         id="importData"
@@ -30,65 +29,139 @@
                             </form>
                         </v-card-title>
 
-                        <div
-                            class="card card-primary card-outline"
-                            style="overflow: auto; !important"
-                        >
-                            <div class="card-body">
-                                <v-row>
-                                    <v-col>
-                                        <v-text-field
-                                            v-model="search"
-                                            append-icon="mdi-magnify"
-                                            label="Search"
-                                            color="primary darken-2"
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
+                        <div class="card card-primary card-outline card-tabs" style="overflow: auto; !important">
+                                <div class="card-header p-0 pt-1 border-bottom-0">
+                                    <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true">On Going</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Back up</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content" id="custom-tabs-three-tabContent active show">
+                                        <v-row>
+                                                <v-col>
+                                                    <v-btn
+                                                        :loading="loading"
+                                                        :disabled="loading"
+                                                        @click="loader = 'loading'"
+                                                        color="light-blue lighten-1"
+                                                        class="ma-2 white--text"
+                                                    
+                                                        >
+                                                        Archive 
+                                                            <v-icon
+                                                                right
+                                                                dark
+                                                            >
+                                                                mdi-archive-arrow-down
+                                                            </v-icon>
+                                                        </v-btn>
 
-                                <v-data-table
-                                    :headers="headers"
-                                    :items="arenaData.data"
-                                    :items-per-page="10"
-                                    :search="search"
-                                    class="elevation-1 text-center"
-                                >
-                                    <template
-                                        v-slot:[`item.actions`]="{ item }"
-                                    >
-                                        <v-tooltip top>
-                                            <template
-                                                v-slot:activator="{
-                                                    on,
-                                                    attrs,
-                                                    hover,
-                                                }"
-                                            >
-                                                <v-btn
-                                                    icon
-                                                    color="primary"
-                                                    dark
-                                                    small
-                                                    v-bind="attrs"
-                                                    v-on="on"
-                                                    @click="openModel(item)"
-                                                    :class="{
-                                                        'on-hover': hover,
-                                                    }"
+                                                </v-col>
+                                                <v-spacer></v-spacer>
+                                                <v-col>
+                                                    <v-text-field
+                                                        v-model="search"
+                                                        append-icon="mdi-magnify"
+                                                        label="Search"
+                                                        color="primary darken-2"
+                                                    ></v-text-field>
+                                                </v-col>
+                                            </v-row>
+
+                                    <div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                                            <v-data-table
+                                                    :headers="headers"
+                                                    :items="arenaData.data"
+                                                    :items-per-page="10"
+                                                    :search="search"
+                                                    class="elevation-1 text-center"
                                                 >
-                                                    <v-icon>mdi-eye</v-icon>
-                                                </v-btn>
-                                            </template>
-                                            <span>View Account</span>
-                                        </v-tooltip>
-                                    </template>
-                                </v-data-table>
-                            </div>
+                                                    <template
+                                                        v-slot:[`item.actions`]="{ item }"
+                                                    >
+                                                        <v-tooltip top>
+                                                            <template
+                                                                v-slot:activator="{
+                                                                    on,
+                                                                    attrs,
+                                                                    hover,
+                                                                }"
+                                                            >
+                                                                <v-btn
+                                                                    icon
+                                                                    color="primary"
+                                                                    dark
+                                                                    small
+                                                                    v-bind="attrs"
+                                                                    v-on="on"
+                                                                    @click="openModel(item)"
+                                                                    :class="{
+                                                                        'on-hover': hover,
+                                                                    }"
+                                                                >
+                                                                    <v-icon>mdi-eye</v-icon>
+                                                                </v-btn>
+                                                            </template>
+                                                            <span>View Account</span>
+                                                        </v-tooltip>
+                                                    </template>
+                                                </v-data-table>
+                                        </div>
+
+
+                                        <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
+                                        <v-data-table
+                                                    :headers="headers"
+                                                    :items="arenaDatastatus.data"
+                                                    :items-per-page="10"
+                                                    :search="search"
+                                                    class="elevation-1 text-center"
+                                                >
+                                                    <template
+                                                        v-slot:[`item.actions`]="{ item }"
+                                                    >
+                                                        <v-tooltip top>
+                                                            <template
+                                                                v-slot:activator="{
+                                                                    on,
+                                                                    attrs,
+                                                                    hover,
+                                                                }"
+                                                            >
+                                                                <v-btn
+                                                                    icon
+                                                                    color="primary"
+                                                                    dark
+                                                                    small
+                                                                    v-bind="attrs"
+                                                                    v-on="on"
+                                                                    @click="openModel(item)"
+                                                                    :class="{
+                                                                        'on-hover': hover,
+                                                                    }"
+                                                                >
+                                                                    <v-icon>mdi-eye</v-icon>
+                                                                </v-btn>
+                                                            </template>
+                                                            <span>View Account</span>
+                                                        </v-tooltip>
+                                                    </template>
+                                                </v-data-table>
+                                        </div>
+                                </div>                     
+                                </div>
                         </div>
                     </v-card>
+
+                    
                 </v-col>
 
-                <!-- <v-col class="col-md-12"> -->
+                
                 <v-dialog
                     v-model="dialog"
                     transition="dialog-bottom-transition"
@@ -124,7 +197,7 @@
                                                     close
                                                     color="red"
                                                     text-color="white"
-                                                      v-bind="attrs"
+                                                    v-bind="attrs"
                                                     v-on="on"
                                                    @click="closeDialog"
                                                     >
@@ -205,7 +278,8 @@
                                                                     "
                                                                 >
                                                                     <span
-                                                                        >000,000.00</span
+                                                                        >{{ computedAve
+                                                                            .depositReplenishText.number}}</span
                                                                     >
                                                                 </div>
                                                             </div>
@@ -236,7 +310,7 @@
                                                                     "
                                                                 >
                                                                     <span
-                                                                        >dasdasd</span
+                                                                        >{{date_created}}</span
                                                                     >
                                                                 </div>
                                                             </div>
@@ -263,7 +337,7 @@
                                                                     "
                                                                 >
                                                                     <span
-                                                                        >dasdasd</span
+                                                                        >{{date_event}}</span
                                                                     >
                                                                 </div>
                                                             </div>
@@ -1707,67 +1781,41 @@
                                                         </v-col>
                                                     </v-row>
                                                     <v-row>
-                                                        <div
-                                                            class="bank-wrapper"
-                                                        >
-                                                            <div
-                                                                class="
-                                                                    bank-headline
-                                                                "
-                                                            >
-                                                                <span
-                                                                    >Kindly
-                                                                    deposit
-                                                                    to:</span
-                                                                >
+                                                        <div class="bank-wrapper">
+                                                            <div class="bank-headline">
+                                                                <span>Kindly deposit to:</span>
                                                             </div>
-                                                            <div
-                                                                class="
-                                                                    bank-container
-                                                                "
-                                                            >
-                                                                <div
-                                                                    class="
-                                                                        bank
-                                                                        bank1
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >LUCKY 8
-                                                                        STAR
-                                                                        QUEST
-                                                                        INC.</span
-                                                                    >
-                                                                    <span
-                                                                        >PBB</span
-                                                                    >
-                                                                    <span
-                                                                        >0050-1001-5156</span
-                                                                    >
+
+                                                            
+                                                            <div class="bank-container" v-if="status=='Deposit'">
+                                                                <div class="bank bank1">
+                                                                    <span>LUCKY 8STAR QUEST INC.</span>
+                                                                    <span>PBB</span>
+                                                                    <span>0050-1001-5156</span>
                                                                 </div>
                                                                 <div class="or">
                                                                     OR
                                                                 </div>
-                                                                <div
-                                                                    class="
-                                                                        bank
-                                                                        bank2
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >LUCKY 8
-                                                                        STAR
-                                                                        QUEST
-                                                                        INC.</span
-                                                                    >
-                                                                    <span
-                                                                        >PBB</span
-                                                                    >
-                                                                    <span
-                                                                        >123-1232-1232</span
-                                                                    >
+                                                                <div  class="bank bank2">
+                                                                    <span>LUCKY 8 STAR QUEST INC.</span>
+                                                                    <span>PBB</span>
+                                                                    <span>123-1232-1232</span>
                                                                 </div>
                                                             </div>
+                                                            <div class="bank-container" v-else>
+                                                                <div class="bank bank1">
+                                                                    <span>{{operator_name}}</span>
+                                                                    <span v-if="bank_id == '' && editmode == false " > {{bank_name}}</span>
+                                                                    <span  v-else class="select-field_container" :class="{'editmode-span': editmode}">
+                                                                        <select class="small sign-name select-field_report" v-model="bank_id" @change="filterbank()" >
+                                                                            <option selected v-for="banks in bank" :key="banks.id"  :value="banks.id" >{{banks.bank_name}}</option>
+                                                                        </select>
+                                                                    </span>
+                                                                    <span>{{bank_number}}</span>
+                                                                </div>
+                                                                
+                                                            </div>
+
                                                         </div>
                                                     </v-row>
                                                     <v-row>
@@ -1787,30 +1835,18 @@
                                                                             sign-container
                                                                         "
                                                                     >
-                                                                       <span class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                            <select class="
-                                                                                    sign-name
-                                                                                    select-field_report
-                                                                                    
-                                                                                ">
-                                                                                <option>Billy
-                                                                                Joe
-                                                                                Isidoro</option>
-                                                                                 <option>Billy
-                                                                                Joesdsad
-                                                                                Isidoro</option>
-                                                                                 <option>Billy
-                                                                                Joe
-                                                                                Isidadsdsoro</option>
+                                                                       <span class="select-field_container  " :class="{'editmode-span': editmode}">
+                                                                            <select class="sign-name select-field_report computation " disabled>
+                                                                                <option v-for="computed_by in computed" :key="computed_by.id">{{computed_by.name}}</option>
                                                                             </select>
                                                                         </span>
 
 
-                                                                        <span class="signed-title"
-                                                                            >Quality
-                                                                            Assurance
-                                                                            Staff</span
-                                                                        >
+                                                                        <span class="signed-title">
+                                                                            <select class="sign-name select-field_report">
+                                                                                <option v-for="computed_by in computed" :key="computed_by.id">{{computed_by.position}}</option>
+                                                                            </select>
+                                                                        </span >
                                                                     </div>
                                                                 </div>
                                                             </v-row>
@@ -1825,28 +1861,19 @@
                                                                         >Prepared
                                                                         by:</span
                                                                     >
-                                                                    <div
-                                                                        class="
-                                                                            sign-container
-                                                                        "
-                                                                    >
-                                                                        <span class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                            <select class="
-                                                                                    sign-name
-                                                                                    select-field_report
-                                                                                ">
-                                                                                <option>Billy
-                                                                                Joe
-                                                                                Isidoro</option>
+                                                                    <div class="sign-container">
+                                                                         <span class="select-field_container" :class="{'editmode-span': editmode}">
+                                                                            <select class="sign-name select-field_report computation" disabled>
+                                                                                <option v-for="prepared_by in prepared" :key="prepared_by.id">{{prepared_by.name}}</option>
                                                                             </select>
                                                                         </span>
+                                                                        
 
-
-                                                                        <span class="signed-title"
-                                                                            >Quality
-                                                                            Assurance
-                                                                            Staff</span
-                                                                        >
+                                                                        <span class="signed-title">
+                                                                            <select class="sign-name select-field_report">
+                                                                                <option v-for="prepared_by in prepared" :key="prepared_by.id">{{prepared_by.position}}</option>
+                                                                            </select>
+                                                                        </span >
                                                                     </div>
                                                                 </div>
                                                             </v-row>
@@ -1862,64 +1889,38 @@
                                                                         >Checked
                                                                         by:</span
                                                                     >
-                                                                    <div
-                                                                        class="
-                                                                            sign-container
-                                                                            
-                                                                        "
-                                                                    >
-                                                                        <span class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                            <select class="
-                                                                                    sign-name
-                                                                                    select-field_report
-                                                                                ">
-                                                                                <option>Billy
-                                                                                Joe
-                                                                                Isidoro</option>
+                                                                    <div class="sign-container">
+                                                                         <span class="select-field_container" :class="{'editmode-span': editmode}">
+                                                                            <select class="sign-name select-field_report computation" disabled>
+                                                                                <option v-for="checked_by in checked" :key="checked_by.id">{{checked_by.name}}</option>
                                                                             </select>
                                                                         </span>
+                                                                        
 
-
-                                                                        <span class="signed-title"
-                                                                            >Quality
-                                                                            Assurance
-                                                                            Staff</span
-                                                                        >
+                                                                        <span class="signed-title">
+                                                                            <select class="sign-name select-field_report">
+                                                                                <option v-for="checked_by in checked" :key="checked_by.id">{{checked_by.position}}</option>
+                                                                            </select>
+                                                                        </span >
                                                                     </div>
                                                                 </div>
                                                             </v-row>
                                                             <v-row>
-                                                                <div
-                                                                    class="
-                                                                        sign-wrapper
-                                                                        scbottom
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >Checked
-                                                                        by:</span
-                                                                    >
-                                                                    <div
-                                                                        class="
-                                                                            sign-container
-                                                                        "
-                                                                    >
-                                                                       <span class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                            <select class="
-                                                                                    sign-name
-                                                                                    select-field_report
-                                                                                ">
-                                                                                <option>Billy
-                                                                                Joe
-                                                                                Isidoro</option>
+                                                                <div class="sign-wrapper scbottom">
+                                                                    <span>Checked by:</span>
+                                                                    <div class="sign-container">
+                                                                         <span class="select-field_container" :class="{'editmode-span': editmode}">
+                                                                            <select class="sign-name select-field_report computation" disabled>
+                                                                                <option v-for="checked_by in checked" :key="checked_by.id">{{checked_by.name}}</option>
                                                                             </select>
                                                                         </span>
+                                                                        
 
-                                                                        <span class="signed-title"
-                                                                            >Quality
-                                                                            Assurance
-                                                                            Staff</span
-                                                                        >
+                                                                        <span class="signed-title">
+                                                                            <select class="sign-name select-field_report">
+                                                                                <option v-for="checked_by in checked" :key="checked_by.id">{{checked_by.position}}</option>
+                                                                            </select>
+                                                                        </span >
                                                                     </div>
                                                                 </div>
                                                             </v-row>
@@ -1988,6 +1989,8 @@
                                                     color="red darken-2"
                                                     v-bind="attrs"
                                                     v-on="on"
+                                                    :loading="loading"
+                                                    :disabled="loading"
                                                     @click="generateReport"
                                                 >
                                                     <v-icon
@@ -2046,7 +2049,7 @@ import {
 } from "../utility";
 import VueHtml2pdf from "vue-html2pdf";
 import html2canvas from "html2canvas";
-
+import moment from 'moment';
 export default {
     components: {
         VueHtml2pdf
@@ -2076,15 +2079,23 @@ export default {
             ocbsArrayFiltered: [],
             editmode: false,
             commission_percent: 0.02,
-            status: "Deposit",
+            status: "Reflenish",
             ocbs: {},
             bankDetails: {},
             bank:{},
+            bank_id:'',
+            bank_name:'',
+            bank_number:'',
+            operator_name:'',
+            randomNumber:0,
             arenaData: [],
+            arenaDatastatus:[],
             arenaDetails: {},
-
             selectedbank: [],
             arena_id: "",
+            arena_name:'',
+            loading: false,
+            loader: null,
             form: new Form({
                 id: "",
                 arena: "",
@@ -2114,12 +2125,13 @@ export default {
                 },
             },
             soa: true,
+            date_created:'',
+            date_event:'',
             depositReplenishTxt: {},
         };
     },
     methods: {
         loadEmployee(){
-         
             axios.get("api/employees").then(({data}) => (
 
                 this.computed = data.computed,
@@ -2133,9 +2145,42 @@ export default {
                     this.bank = data
                 ));
         },
+        filterbank(){
+              axios.get("api/selectedbank/"+ this.bank_id).then(({data}) => (
+                    this.bank_name = data.bank_name,
+                    this.bank_number = data.bank_number
+                ));
+        },
+   
+        async importwithstatus() {
+            const data = await axios.get("api/importwithstatus");
+            let helper = {};
+
+            const duplicateObj = await data.data.reduce(function (r, obj) {
+                const key = obj.arena_name;
+
+                if (!helper[key]) {
+                    helper[key] = Object.assign({}, obj); // create a copy of o
+
+                    r.push(helper[key]);
+                } else {
+                    // const {arenaName, ...o} = obj;
+                    helper[key].mobile = {
+                        ...obj,
+                    };
+                }
+
+                return r;
+            }, []);
+
+            const obj = {
+                data: duplicateObj,
+            };
+
+            this.arenaDatastatus = obj;
+        },
         async showData() {
             const data = await axios.get("api/import");
-            // console.log('DATA',data.data)
             let helper = {};
 
             const duplicateObj = await data.data.reduce(function (r, obj) {
@@ -2165,7 +2210,7 @@ export default {
             this.dialog = false;
         },
         updateModal() {
-            $(".computation").attr("disabled", false);
+            $(".computation").removeAttr("disabled");
             $(".computation").addClass("input-show")
             
               this.computation = {
@@ -2194,14 +2239,15 @@ export default {
 
         },
         closeDialog() {
-            this.editmode = !this.editmode;
+            this.editmode = false;
             this.dialog = false;
+            this.form.reset();
+             $(".computation").attr("disabled", true);
         },
       
         saveModal() {
             $(".computation").attr("disabled", true);
             this.editmode = !this.editmode;
-            console.log(this.editmode)
 
              this.computation = {
                 totalMWBet: numberFormat(this.computation.totalMWBet),
@@ -2223,23 +2269,18 @@ export default {
                     totalMWBet: numberFormat(this.computation.totalMobileMWBets || 0),
                     totalDrawBet: numberFormat(this.computation.totalMobileDrawBets || 0),
                 },
-              }
-            
+              } 
         },
-        test() {
-            axios
-                .get("api/savePrimaryBank/" + this.arena_id)
-                .then(({ data }) => (this.selectedbank = data));
-        },
+     
         proceedAction() {
             this.$Progress.start();
             if ($("#importData").val() === "") {
                 Fire.$emit("AfterCreate");
                 swal.fire({
-                    icon: "error",
+                    icon: "waarning",
                     title: "Oops...",
-                    text: "Something went wrong!",
-                    footer: '<a href="">Please contact developer</a>',
+                    text: "Make sure you insert correct excel data!",
+             
                 });
             } else {
                 axios.post("api/import", this.ocbsArrayFiltered).then(
@@ -2253,26 +2294,30 @@ export default {
                 );
             }
         },
-        // handleCommissionPercent(e) {
-        //     this.commission_percent = e.target.value;
-        // },
+    
         openModel(data) {
-            console.log(data);
+            if(data.arena_details == null){
+                swal.fire({
+                    icon: "warning",
+                    title: "Missing",
+                    text: "Add Arena Details",
+                    footer: '<a href="/arena">Click here to Add Arena</a>',
+                });
+            }else{
+            this.operator_name = data.arena_details.operator;
+            this.bank_name = data.bank_details.length != 0 ? data.bank_details[0].bank_name : 'No Bank Name found !' ;
+            this.bank_number = data.bank_details.length != 0 ? data.bank_details[0].bank_number : 'No Bank Number found !' ;
             this.form.reset();
             this.dialog = true;
-            $("#addNew").modal("show");
-            //  $(".computation").attr("disabled", false);
+            this.date_created = moment(data.date_of_soa).format('ll');
+            this.date_event = moment().format('ll');
+            this.randomNumber =Math.floor(Math.random() * (1000 + 1) + 1);
             // this.editmode = !this.editmode;
-
+            
             this.form.fill(data.arena_details);
             this.arenaDetails = data.arena_details;
             this.arena_id = data.id;
-           
-            Fire.$emit("AfterCreate"),
-                axios
-                    .get("api/bankfilter/" + data.arena_details.id)
-                    .then(({ data }) => (this.bank = data));
-
+            this.arena_name = data.arena_name;
             const totalMWBet = data.total_meron_wala;
             const drawCancelled = data.draw_cancelled;
             const draw = data.draw;
@@ -2316,9 +2361,9 @@ export default {
                     totalMWBet: numberFormat(totalMobileMWBets),
                     totalDrawBet: numberFormat(totalMobileDrawBets),
                 },
-            };
-
-        
+             };
+            }
+           
         },
 
         onFileChange(event) {
@@ -2421,9 +2466,17 @@ export default {
                 ),
             };
         },
-
+ 
         generateReport() {
+            console.log("generating pdf..");
+            
             this.$refs.html2Pdf.generatePdf();
+
+            axios.get('api/arenaStatus/'+ this.arena_name).then((data)=>(
+                Fire.$emit("AfterCreate"),
+                this.dialog = false,
+                swal.fire("convert to pdf!", "successfully", "success")
+            ));
         },
         async downloadImg() {
             console.log("printing..");
@@ -2444,7 +2497,11 @@ export default {
                     .replace("image/png", "image/octet-stream")
             );
             link.click();
-
+            axios.get('api/arenaStatus/'+ this.arena_name).then((data)=>(
+                Fire.$emit("AfterCreate"),
+                this.dialog = false,
+                swal.fire("convert to png!", "successfully", "success")
+            ));
             console.log("done");
         },
     },
@@ -2489,11 +2546,15 @@ export default {
                           title: "For Replenishment",
                           dateText: "FR",
                           totalText: "Replenish",
+                          number:'FR'+moment().format('MMDYY')+this.randomNumber,
+                        
                       }
                     : {
                           title: "Statement of Account",
                           dateText: "SOA",
                           totalText: "Deposit",
+                          number:'SOA'+moment().format('MMDYY')+this.randomNumber,
+                         
                       };
             this.depositReplenishTxt = depositReplenishText;
 
@@ -2510,13 +2571,25 @@ export default {
             };
         },
     },
+    watch: {
+      loader () {
+        const l = this.loader
+        this[l] = !this[l]
+
+        setTimeout(() => (this[l] = false), 3000)
+
+        this.loader = null
+      },
+    },
     created() {
         this.showData();
+        this.importwithstatus();
         this.loadEmployee();
         this.loadbank();
         Fire.$on("AfterCreate", () => {
             this.showData();
-            this.test();
+            this.importwithstatus();
+           
         });
     },
 };
