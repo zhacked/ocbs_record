@@ -18,10 +18,14 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+// Route::get('/register', function () {
+//   return view('register');
+// });
+
 // Auth::routes();
 
 Auth::routes([
-    'register' => false, // Registration Routes...
+    'register' => true, // Registration Routes...
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
   ]);

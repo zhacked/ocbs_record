@@ -1,0 +1,101 @@
+<template>
+           <v-col>
+                                                            <div
+                                                                class="
+                                                                    d-flex
+                                                                    align-center
+                                                                    fieldDateNumber
+                                                                "
+                                                            >
+                                                                <span
+                                                                    class="
+                                                                        text-caption
+                                                                        custom-label
+                                                                    "
+                                                                    >{{
+                                                                        depositReplenishText
+                                                                            .dateText
+                                                                    }}&nbsp;#</span
+                                                                >
+                                                                <div
+                                                                    class="
+                                                                        custom-span
+                                                                        caption
+                                                                        d-flex
+                                                                        align-center
+                                                                    "
+                                                                >
+                                                                    <span
+                                                                        >{{ depositReplenishText.number}}</span
+                                                                    >
+                                                                </div>
+                                                            </div>
+                                                            <div
+                                                                class="
+                                                                    d-flex
+                                                                    align-center
+                                                                    fieldDateNumber
+                                                                "
+                                                            >
+                                                                <span
+                                                                    class="
+                                                                        text-caption
+                                                                        custom-label
+                                                                    "
+                                                                    >Date&nbsp;of&nbsp;{{
+                                                                       depositReplenishText
+                                                                            .dateText
+                                                                    }}:</span
+                                                                >
+                                                                <div
+                                                                    class="
+                                                                        custom-span
+                                                                        caption
+                                                                        d-flex
+                                                                        align-center
+                                                                    "
+                                                                >
+                                                                    <span
+                                                                        >{{dateSoa}}</span
+                                                                    >
+                                                                </div>
+                                                            </div>
+                                                            <div
+                                                                class="
+                                                                    d-flex
+                                                                    align-center
+                                                                    fieldDateNumber
+                                                                "
+                                                            >
+                                                                <span
+                                                                    class="
+                                                                        text-caption
+                                                                        custom-label
+                                                                    "
+                                                                    >Date&nbsp;of&nbsp;Event:</span
+                                                                >
+                                                                <div
+                                                                    class="
+                                                                        custom-span
+                                                                        caption
+                                                                        d-flex
+                                                                        align-center
+                                                                    "
+                                                                >
+                                                                    <span
+                                                                        >{{dateEvent}}</span
+                                                                    >
+                                                                </div>
+                                                            </div>
+                                                        </v-col>
+</template>
+<script>
+    export default {
+        name: "date-soa",
+        props: {
+            depositReplenishText: Object,
+            dateEvent: String,
+            dateSoa: String
+        }
+    }
+</script>
