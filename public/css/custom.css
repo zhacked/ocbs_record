@@ -64,6 +64,11 @@
    /* transition: opacity .3s ease; */
 }
 
+body.modal-open .is-blurred {
+  filter: blur(8px);
+  -webkit-filter: blur(2px);
+
+}
 
 
 /*# sourceMappingURL=custom.css.map */

@@ -22,7 +22,7 @@ class BankDetailsController extends Controller
     }
     public function index()
     {
-        return BankAccount::latest()->paginate(10);
+        return BankAccount::latest()->get();
     }
 
     public function show_arena()

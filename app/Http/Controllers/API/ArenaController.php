@@ -108,21 +108,21 @@ class ArenaController extends Controller
    
         $arenas = arena::with('BankDetails')->findOrFail($id);
        
-        // $this->validate($request,[
-        //     'arena' => 'required|string',
-        //     'address' => 'required|string|max:191',
-        //     'operator' => 'required|string',
-        //     'contact_number' => 'required|numeric',
-        //     'email' => 'required|string|email|max:191',
-        // ]);
+        $this->validate($request,[
+            'arena' => 'required|string',
+            'address' => 'required|string|max:191',
+            'operator' => 'required|string',
+            'contact_number' => 'required|numeric',
+            'email' => 'required|string|email|max:191',
+        ]);
 
-        // $arena = arena::with('BankDetails')->where('id',$id)->update([
-        //     'arena' => $request['arena'],
-        //     'address' => $request['address'],
-        //     'operator' => $request['operator'],
-        //     'contact_number' => $request['contact_number'],
-        //     'email' => $request['email'],
-        // ]);
+        $arena = arena::with('BankDetails')->where('id',$id)->update([
+            'arena' => $request['arena'],
+            'address' => $request['address'],
+            'operator' => $request['operator'],
+            'contact_number' => $request['contact_number'],
+            'email' => $request['email'],
+        ]);
        
         
         

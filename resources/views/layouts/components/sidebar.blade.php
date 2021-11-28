@@ -38,7 +38,7 @@
 					<i class="nav-icon fas fa-file "></i>
 					<p>Accounts &nbsp; </p>
 				
-					<span class="badge badge-danger right">	{{App\Models\import::count()}}</span>
+					<span class="badge badge-danger right">	{{App\Models\import::whereNull('status')->count()}}</span>
 				</router-link>
 			</li>
 

@@ -27,11 +27,9 @@ Route::apiResources(['employees' => App\Http\Controllers\API\EmployeeController:
 
 Route::get('profile', [App\Http\Controllers\API\UserController::class, 'profile'])->name('profile');
 Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');
-Route::get('findUser', [App\Http\Controllers\API\UserController::class, 'search']);
 Route::get('arenaId', [App\Http\Controllers\API\BankDetailsController::class, 'show_arena'])->name('arenaId');
-
-
+Route::get('importwithstatus', [App\Http\Controllers\API\ImportController::class, 'withstatus']);
 Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);
-Route::get('bankfilter/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
-Route::get('savePrimaryBank/{id}', [App\Http\Controllers\API\ImportController::class, 'SavePrimaryBank']);
+Route::get('selectedbank/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
+Route::get('arenaStatus/{id}', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
 
