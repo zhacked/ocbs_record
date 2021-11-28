@@ -47,6 +47,7 @@
                                     type="submit">
                                     {{ __('Sign in') }}</button>
                             </div>
+                            
                         </form>
                     </div>
                 </div>

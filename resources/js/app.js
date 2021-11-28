@@ -4,7 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
- require('./bootstrap');
+require('./bootstrap');
 
 window.Vue = require('vue').default;
 import moment from 'moment';
@@ -19,11 +19,13 @@ import {
     AlertError,
     AlertErrors,
     AlertSuccess
-  } from 'vform/src/components/bootstrap5'
+} from 'vform/src/components/bootstrap5'
 import Gate from './gate';
 
 
 import VueRouter from 'vue-router'
+import { Plugin } from 'vue-fragment'
+
 import swal from 'sweetalert2'
 
 import VueProgressBar from 'vue-progressbar'
@@ -36,17 +38,17 @@ const toast = swal.mixin({
     position: 'top-end',
     showConfirmButton: false,
     timer: 3000
-  });
+});
 
-Vue.filter('upText', function(text){
+Vue.filter('upText', function (text) {
     return text.charAt(0).toUpperCase() + text.slice(1)
 });
 
-Vue.filter('myDate',function(created){
+Vue.filter('myDate', function (created) {
     return moment(created).format('MMMM Do YYYY');
 });
 
-Vue.filter('numbro', function(number){
+Vue.filter('numbro', function (number) {
     return numbro(number).format({
         thousandSeparated: true,
         mantissa: 2
@@ -56,18 +58,19 @@ Vue.filter('numbro', function(number){
 Vue.prototype.$gate = new Gate(window.user)
 
 Vue.use(VueCompositionAPI);
+Vue.use(Plugin)
 Vue.use(VueRouter)
 Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
     failedColor: 'red',
     height: '3px'
-  })
+})
 
 
 window.swal = swal;
 window.Form = Form;
 
-window.Fire =  new Vue();
+window.Fire = new Vue();
 
 
 window.toast = toast;
@@ -107,6 +110,7 @@ let routes = [
     {
         path: '/bankaccount', component: require('./components/BankAccount.vue').default
     },
+
     {
 
         path: '*', component: require('./components/NotFound.vue').default
@@ -126,13 +130,13 @@ const app = new Vue({
     el: '#app',
     vuetify,
     router,
-    data:{
+    data: {
         search: ''
     },
-    methods:{
+    methods: {
         searchit: _.debounce(() => {
             Fire.$emit('searching');
-        },1000)
+        }, 1000)
 
         // printme() {
         //     window.print();
