@@ -73487,6 +73487,7 @@ readers do not read off random characters that represent icons */
   display: flex;
   align-items: center;
   flex-direction: column;
+  min-width: 200px;
 }
 
 .sign-name {
@@ -73529,7 +73530,13 @@ select:disabled {
   color: #000 !important;
 }
 
+.sign-wrapper .signedBy {
+  margin-right: 3px;
+}
+
 .signed-title {
+  width: 100%;
+  text-align: center;
   border-top: 1px solid #000;
 }
 
