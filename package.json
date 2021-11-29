@@ -21,6 +21,8 @@
     "numbro": "^2.3.5",
     "pug": "^3.0.2",
     "sweetalert2": "^11.1.4",
+    "urix": "^0.1.0",
+    "uuid": "^3.4.0",
     "vform": "^2.1.1",
     "vue-fragment": "^1.5.2",
     "vue-html2pdf": "^1.8.0",

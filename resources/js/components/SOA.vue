@@ -269,6 +269,7 @@
                                                         <ComputeBox :computation="computation" :commissionPercent="commission_percent" :editmode="editmode" :computedAve="computedAve" />
                                                  
                                                     <v-row>
+                                                        
                                                         <!--<div class="bank-wrapper">
                                                             <div class="bank-headline">
                                                                 <span>Kindly deposit to:</span>
@@ -535,7 +536,7 @@ import {
     mergeObject,
     valueSplit,
 } from "../utility";
-import VueHtml2pdf from "vue-html2pdf";
+import VueHtml2pdf from 'vue-html2pdf'
 import html2canvas from "html2canvas";
 import moment from 'moment';
 import DateSOA from "./DialogPreview/DateSoa.vue"
@@ -591,6 +592,7 @@ export default {
             arena_name:'',
             loading: false,
             loader: null,
+            checkfilename:'',
             form: new Form({
                 id: "",
                 arena: "",
@@ -769,10 +771,10 @@ export default {
      
         proceedAction() {
             this.$Progress.start();
-            if ($("#importData").val() === "") {
+            if ($("#importData").val() === "" || this.checkfilename[1] != 'xlsx') {
                 Fire.$emit("AfterCreate");
                 swal.fire({
-                    icon: "waarning",
+                    icon: "warning",
                     title: "Oops...",
                     text: "Make sure you insert correct excel data!",
              
@@ -863,7 +865,8 @@ export default {
 
         onFileChange(event) {
             const file = event.target.files ? event.target.files[0] : null;
-            if (file) {
+            this.checkfilename  = file.name.split('.');
+            if (file && this.checkfilename[1] == 'xlsx') {
                 const reader = new FileReader();
                 let arrayData = [];
                 let reportCombined = [];
@@ -891,7 +894,7 @@ export default {
                     // const data = XLSX.utils.sheet_to_json(ws, {header: 1});
 
                     arrayData[0].map((r) => {
-                        // console.log(Object.assign({}, dataSplit(r)))
+                       
                         if (Object.keys(r).length >= 17)
                             reportCombined.push(Object.assign({}, r));
                         if (Object.keys(r).length === 1) {
@@ -950,6 +953,14 @@ export default {
                     console.log(removeKeyReportObject);
                 };
                 reader.readAsBinaryString(file);
+            }else{
+                Fire.$emit("AfterCreate"),
+                swal.fire({
+                    icon: "warning",
+                    title: "Oops...",
+                    text: "Make sure you insert correct excel data!",
+             
+                })
             }
         },
 
