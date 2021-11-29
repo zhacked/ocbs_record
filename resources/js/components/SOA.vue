@@ -267,153 +267,11 @@
                                                         </div>
                                                     </v-row>
                                                         <ComputeBox :computation="computation" :commissionPercent="commission_percent" :editmode="editmode" :computedAve="computedAve" />
-                                                 
-                                                    <v-row>
-                                                        <!--<div class="bank-wrapper">
-                                                            <div class="bank-headline">
-                                                                <span>Kindly deposit to:</span>
-                                                            </div>
-
-                                                            
-                                                            <div class="bank-container" v-if="status=='Deposit'">
-                                                                <div class="bank bank1">
-                                                                    <span>LUCKY 8STAR QUEST INC.</span>
-                                                                    <span>PBB</span>
-                                                                    <span>0050-1001-5156</span>
-                                                                </div>
-                                                                <div class="or">
-                                                                    OR
-                                                                </div>
-                                                                <div  class="bank bank2">
-                                                                    <span>LUCKY 8 STAR QUEST INC.</span>
-                                                                    <span>PBB</span>
-                                                                    <span>123-1232-1232</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="bank-container" v-else>
-                                                                <div class="bank bank1">
-                                                                    <span>{{operator_name}}</span>
-                                                                    <span v-if="bank_id == '' && editmode == false " > {{bank_name}}</span>
-                                                                    <span  v-else class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                        <select class="small sign-name select-field_report" v-model="bank_id" @change="filterbank()" >
-                                                                            <option selected v-for="banks in bank" :key="banks.id"  :value="banks.id" >{{banks.bank_name}}</option>
-                                                                        </select>
-                                                                    </span>
-                                                                    <span>{{bank_number}}</span>
-                                                                </div>
-                                                                
-                                                            </div>
-
-                                                        </div>-->
-                                                    </v-row>
-                                                    <v-row>
-                                                        <v-col>
-                                                            <v-row>
-                                                                <div
-                                                                    class="
-                                                                        sign-wrapper
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >Computed
-                                                                        by:</span
-                                                                    >
-                                                                    <div
-                                                                        class="
-                                                                            sign-container
-                                                                        "
-                                                                    >
-                                                                       <span class="select-field_container  " :class="{'editmode-span': editmode}">
-                                                                            <select class="sign-name select-field_report computation " disabled>
-                                                                                <option v-for="computed_by in computed" :key="computed_by.id">{{computed_by.name}}</option>
-                                                                            </select>
-                                                                        </span>
-
-
-                                                                        <span class="signed-title">
-                                                                            <select class="sign-name select-field_report">
-                                                                                <option v-for="computed_by in computed" :key="computed_by.id">{{computed_by.position}}</option>
-                                                                            </select>
-                                                                        </span >
-                                                                    </div>
-                                                                </div>
-                                                            </v-row>
-                                                            <v-row>
-                                                                <div
-                                                                    class="
-                                                                        sign-wrapper
-                                                                        scbottom
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        >Prepared
-                                                                        by:</span
-                                                                    >
-                                                                    <div class="sign-container">
-                                                                         <span class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                            <select class="sign-name select-field_report computation" disabled>
-                                                                                <option v-for="prepared_by in prepared" :key="prepared_by.id">{{prepared_by.name}}</option>
-                                                                            </select>
-                                                                        </span>
-                                                                        
-
-                                                                        <span class="signed-title">
-                                                                            <select class="sign-name select-field_report">
-                                                                                <option v-for="prepared_by in prepared" :key="prepared_by.id">{{prepared_by.position}}</option>
-                                                                            </select>
-                                                                        </span >
-                                                                    </div>
-                                                                </div>
-                                                            </v-row>
-                                                        </v-col>
-                                                        <v-col>
-                                                            <v-row>
-                                                                <div
-                                                                    class="
-                                                                        sign-wrapper
-                                                                    "
-                                                                >
-                                                                    <span class="mr-2"
-                                                                        >Checked
-                                                                        by:</span
-                                                                    >
-                                                                    <div class="sign-container">
-                                                                         <span class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                            <select class="sign-name select-field_report computation" disabled>
-                                                                                <option v-for="checked_by in checked" :key="checked_by.id">{{checked_by.name}}</option>
-                                                                            </select>
-                                                                        </span>
-                                                                        
-
-                                                                        <span class="signed-title">
-                                                                            <select class="sign-name select-field_report">
-                                                                                <option v-for="checked_by in checked" :key="checked_by.id">{{checked_by.position}}</option>
-                                                                            </select>
-                                                                        </span >
-                                                                    </div>
-                                                                </div>
-                                                            </v-row>
-                                                            <v-row>
-                                                                <div class="sign-wrapper scbottom">
-                                                                    <span>Checked by:</span>
-                                                                    <div class="sign-container">
-                                                                         <span class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                            <select class="sign-name select-field_report computation" disabled>
-                                                                                <option v-for="checked_by in checked" :key="checked_by.id">{{checked_by.name}}</option>
-                                                                            </select>
-                                                                        </span>
-                                                                        
-
-                                                                        <span class="signed-title">
-                                                                            <select class="sign-name select-field_report">
-                                                                                <option v-for="checked_by in checked" :key="checked_by.id">{{checked_by.position}}</option>
-                                                                            </select>
-                                                                        </span >
-                                                                    </div>
-                                                                </div>
-                                                            </v-row>
-                                                        </v-col>
-                                                    </v-row>
+                                                                                                    
+                                                        <BankBox :bank="bank" :operatorName="operator_name" :editmode="editmode" :depositReplenishText="computedAve.depositReplenishText" />
+                                                                                                           
+                                                        <PreparedChecked :userPrepared="userPrepared" :editmode="editmode" />
+                                                   
                                                 </v-card-text>
                                             </section>
                                         </vue-html2pdf>
@@ -527,7 +385,7 @@
     </v-app>
 </template>
 <script>
-import { camelCase } from "lodash";
+import {camelCase, mapKeys, groupBy, map, spread, values, assign } from "lodash";
 import XLSX from "xlsx";
 import {
     numberFormat,
@@ -541,13 +399,17 @@ import moment from 'moment';
 import DateSOA from "./DialogPreview/DateSoa.vue"
 import ArenaDetails from "./DialogPreview/ArenaDetails.vue"
 import ComputeBox from "./DialogPreview/ComputeBox.vue"
+import BankBox from "./DialogPreview/BankBox.vue"
+import PreparedChecked from "./DialogPreview/PreparedChecked.vue"
 
 export default {
     components: {
         VueHtml2pdf,
         DateSOA,
         ArenaDetails,
-        ComputeBox
+        ComputeBox,
+        BankBox,
+        PreparedChecked
     },
     data() {
         return {
@@ -557,14 +419,17 @@ export default {
                 { text: "Contact", value: "arena_details.contact_number" },
                 { text: "", value: "actions", sortable: false },
             ],
-            computed:{},
-            checked:{},
-            prepared:{},
-            computed_by:'',
-            checked_by_1:'',
-            checked_by_2:'',
-            prepared_by:'',
-            bank_details:'',
+            userPrepared: {
+                computed:{},
+                checked:{},
+                prepared:{},
+            },
+           
+            // computed_by:'',
+            // checked_by_1:'',
+            // checked_by_2:'',
+            // prepared_by:'',
+            // bank_details:'',
             dialog: false,
             notifications: false,
             sound: true,
@@ -577,16 +442,20 @@ export default {
             status: "Reflenish",
             ocbs: {},
             bankDetails: {},
-            bank:{},
-            bank_id:'',
-            bank_name:'',
-            bank_number:'',
+            bank:{
+                all: {},
+                bank_id:'',
+                bank_name:'',
+                bank_number:'',
+                selected: []
+            },
+          
             operator_name:'',
             randomNumber:0,
             arenaData: [],
             arenaDatastatus:[],
             arenaDetails: {},
-            selectedbank: [],
+            // selectedbank: [],
             arena_id: "",
             arena_name:'',
             loading: false,
@@ -599,7 +468,7 @@ export default {
                 contact_number: "",
                 email: "",
             }),
-            bankaccount_id: "",
+         
             computation: {
                 totalMWBet: 0,
                 drawCancelled: 0,
@@ -629,23 +498,23 @@ export default {
         loadEmployee(){
             axios.get("api/employees").then(({data}) => (
 
-                this.computed = data.computed,
-                this.checked = data.checked,
-                this.prepared = data.prepared
+                this.userPrepared.computed = data.computed,
+                this.userPrepared.checked = data.checked,
+                this.userPrepared.prepared = data.prepared
                
                ));
         },
         loadbank(){
             axios.get("api/bankaccount").then(({data}) => (
-                    this.bank = data
+                    this.bank.all = data
                 ));
         },
-        filterbank(){
-              axios.get("api/selectedbank/"+ this.bank_id).then(({data}) => (
-                    this.bank_name = data.bank_name,
-                    this.bank_number = data.bank_number
-                ));
-        },
+        // filterbank(){
+        //       axios.get("api/selectedbank/"+ this.bank.bank_id).then(({data}) => (
+        //             this.bank.bank_name = data.bank_name,
+        //             this.bank.bank_number = data.bank_number
+        //         ));
+        // },
    
         async importwithstatus() {
             const data = await axios.get("api/importwithstatus");
@@ -800,12 +669,12 @@ export default {
                 });
             }else{
             this.operator_name = data.arena_details.operator;
-            this.bank_name = data.bank_details.length != 0 ? data.bank_details[0].bank_name : 'No Bank Name found !' ;
-            this.bank_number = data.bank_details.length != 0 ? data.bank_details[0].bank_number : 'No Bank Number found !' ;
+            this.bank.bank_name = data.bank_details.length != 0 ? data.bank_details[0].bank_name : 'No Bank Name found !' ;
+            this.bank.bank_number = data.bank_details.length != 0 ? data.bank_details[0].bank_number : 'No Bank Number found !' ;
             this.form.reset();
             this.dialog = true;
-            this.date_created = moment(data.date_of_soa).format('ll');
-            this.date_event = moment().format('ll');
+            this.date_created = moment().format('ll');
+            this.date_event = moment(data.date_of_soa).format('ll');
             this.randomNumber =Math.floor(Math.random() * (1000 + 1) + 1);
             // this.editmode = !this.editmode;
             
@@ -868,7 +737,8 @@ export default {
                 let arrayData = [];
                 let reportCombined = [];
                 let eventsCombined = [];
-                let objectKeyReplacedArray = [];
+                let summaryReport = []
+                // let objectKeyReplacedArray = [];
 
                 reader.onload = (e) => {
                     // eslint-disable-next-line no-unused-vars
@@ -880,31 +750,54 @@ export default {
                     // const wsname = wb.SheetNames;
                     // const ws = wb.Sheets[wsname];
                     const ws = wb.SheetNames;
-
-                    ws.forEach((w) => {
-                        const singleSheet = wb.Sheets[w];
-                        arrayData.push(
-                            XLSX.utils.sheet_to_json(singleSheet, { header: 1 })
-                        );
+                    // console.log(wb.Sheets['Accounts Report (Combined)', 'Summary Report'])
+                    const  filteredWS = ws.filter(function(value, index, arr){ 
+                                return value === 'Accounts Report (Combined)' || value === "Summary Report"
+                            });
+                    // console.log(filtered)
+                    filteredWS.forEach((w) => {
+                            console.log(w)
+                            const singleSheet = wb.Sheets[w];
+                            arrayData.push(
+                                XLSX.utils.sheet_to_json(singleSheet, { header: "A" })
+                            );
+                        
+                        
                     });
+
+                //    console.log(arrayData)
+
+                 
+
+                    // const newResult = mapKeys(arrayData, (v, k) => camelCase(k));
+
+                    // console.log(newResult);
                     /* Convert array of arrays */
                     // const data = XLSX.utils.sheet_to_json(ws, {header: 1});
 
                     arrayData[0].map((r) => {
                         // console.log(Object.assign({}, dataSplit(r)))
                         if (Object.keys(r).length >= 17)
-                            reportCombined.push(Object.assign({}, r));
+                            reportCombined.push(r);
                         if (Object.keys(r).length === 1) {
                             // assign new key and delete oldkey
-                            const newObject = {};
-                            delete Object.assign(newObject, r, {
-                                ["A"]: r[0],
-                            })[0];
+                            // const newObject = {};
+                            // delete Object.assign(newObject, r, {
+                            //     ["A"]: r[0],
+                            // })[0];
+
+                          
                             eventsCombined.push(
-                                Object.assign({}, valueSplit(newObject.A))
+                               valueSplit(r.A)
                             );
                         }
                     });
+
+                    arrayData[1].map((sr) => {
+                         if(Object.keys(sr).length >= 35) summaryReport.push(sr)
+                    })
+
+               
 
                     // Merge Object
                     const mergeObj = mergeObject(eventsCombined);
@@ -917,23 +810,47 @@ export default {
                     },
                     {});
 
-                    const [, ...headKey] = Object.values(reportCombined[0]);
-                    const headK = ["key", ...headKey];
+                    const objectKeyed = (array) => {
+                        let objectKeyReplacedArray = [];
+                        const [, ...headKey] = Object.values(array[0]);
+                        const headK = ["key",...headKey]
+                        // console.log(["key",...headKey]);
+                        array.map((data) => {
+                            data = Object.assign({}, ...Object.entries(data)
+                            .map(([, prop], index) => ({[camelCase(headK[index])]: prop})));
+                            
+                            objectKeyReplacedArray.push({ eventCreated: mergeObj.dateCreated, ...data})
+                        })
 
-                    reportCombined.map((data) => {
-                        data = Object.assign(
-                            {},
-                            ...Object.entries(data).map(([, prop], index) => ({
-                                [camelCase(headK[index])]: prop,
-                            }))
-                        );
-                        objectKeyReplacedArray.push({
-                            eventCreated: mergeObj.dateCreated,
-                            ...data,
-                        });
-                    });
+                        return objectKeyReplacedArray
+                    }
 
-                    const filterObjectHeader = objectKeyReplacedArray.filter(
+
+
+                    // const [, ...headKey] = Object.values(reportCombined[0]);
+                    // const headK = ["key", ...headKey];
+
+                    // reportCombined.map((data) => {
+                    //     data = Object.assign(
+                    //         {},
+                    //         ...Object.entries(data).map(([, prop], index) => ({
+                    //             [camelCase(headK[index])]: prop,
+                    //         }))
+                    //     );
+                    //     objectKeyReplacedArray.push({
+                    //         eventCreated: mergeObj.dateCreated,
+                    //         ...data,
+                    //     });
+                    // });
+
+                    const objKeyRep = objectKeyed(reportCombined);
+                    const objKeySummary = objectKeyed(summaryReport);
+                    const accountsReportSummaryCombined = [ ...objKeyRep, ...objKeySummary];
+
+                   const arsc = values(map(groupBy(accountsReportSummaryCombined, 'arenaName'), spread(assign)))
+                    
+
+                    const filterObjectHeader = arsc.filter(
                         (obk) => {
                             if (
                                 obk.arenaName !== "OCBS NAME" &&
@@ -942,6 +859,10 @@ export default {
                                 return obk;
                         }
                     );
+
+
+
+                    
 
                     const removeKeyReportObject = filterObjectHeader.map(
                         ({ key, ...rest }) => ({ ...rest })
@@ -1042,6 +963,7 @@ export default {
                           dateText: "FR",
                           totalText: "Replenish",
                           number:'FR'+moment().format('MMDYY')+this.randomNumber,
+                          bankTitle: "We will replenish to" 
                         
                       }
                     : {
@@ -1049,7 +971,7 @@ export default {
                           dateText: "SOA",
                           totalText: "Deposit",
                           number:'SOA'+moment().format('MMDYY')+this.randomNumber,
-                         
+                          bankTitle: "Kindly Deposit to"                         
                       };
             this.depositReplenishTxt = depositReplenishText;
 
