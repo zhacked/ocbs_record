@@ -52,7 +52,7 @@
                                                         class="ma-2 white--text"
                                                     
                                                         >
-                                                        Archive 
+                                                        Clear Record 
                                                             <v-icon
                                                                 right
                                                                 dark
