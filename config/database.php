@@ -66,12 +66,12 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'url' => env('DATABASE_URL'),
-            'host' => $DATABASE_URL['Host'],
-            'port' => $DATABASE_URL['Port'],
+            'url' => 'postgres://rpncudqiayjsho:970028094bb1fc6f45558809f2a14d05e546c7aa27d2ef8a5edf9c24fb62a309@ec2-54-198-213-75.compute-1.amazonaws.com:5432/dk67vj89ugsii',
+            'host' => 'ec2-54-198-213-75.compute-1.amazonaws.com',
+            'port' =>'5432',
             'database' => 'dk67vj89ugsii',
-            'username' => $DATABASE_URL['User'],
-            'password' => $DATABASE_URL['Password'],
+            'username' => 'rpncudqiayjsho',
+            'password' => '970028094bb1fc6f45558809f2a14d05e546c7aa27d2ef8a5edf9c24fb62a309',
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
