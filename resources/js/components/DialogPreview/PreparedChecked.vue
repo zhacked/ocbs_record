@@ -18,6 +18,7 @@
                                                                     >
                                                                        <span class="select-field_container  " :class="{'editmode-span': editmode}">
                                                                             <select class="sign-name select-field_report computation" name="computed" disabled @change="handlePreparedBy($event)">
+                                                                                <option>Ralph Redoquerio</option>
                                                                                 <option v-for="computed_by in userPrepared.computed" :value="`${computed_by.name} | ${computed_by.position}`" :key="computed_by.id">{{computed_by.name}}</option>
                                                                             </select>
                                                                         </span>
@@ -25,7 +26,7 @@
 
                                                                         <span class="signed-title">
                                                                             
-                                                                           {{computedPosition || userPrepared.computed[0].position}}
+                                                                           {{computedPosition || "Quality Assurance Staff" }}
                                                                            
                                                                         </span >
                                                                     </div>
@@ -45,14 +46,14 @@
                                                                     <div class="sign-container">
                                                                          <span class="select-field_container" :class="{'editmode-span': editmode}">
                                                                             <select class="sign-name select-field_report computation" name="prepared" disabled @change="handlePreparedBy($event)">
-                                                                               
+                                                                                <option>Clarise A. Valles</option>
                                                                                 <option v-for="prepared_by in userPrepared.prepared"  :value="`${prepared_by.name} | ${prepared_by.position}`" :key="prepared_by.id">{{prepared_by.name}}</option>
                                                                             </select>
                                                                         </span>
                                                                         
 
                                                                         <span class="signed-title">
-                                                                           {{preparedPosition || userPrepared.prepared[0].position }}
+                                                                           {{preparedPosition || " Finance Assistant - Kiosk" }}
                                                                         </span>
                                                                     </div>
                                                                 </div>
@@ -132,16 +133,14 @@
                  const positionCheckedTwo = fin.checkedTwo && fin.checkedTwo.split(" | ");
             
               
-                this.preparedPosition = positionPrepared && positionPrepared[1];
-                this.computedPosition = positionComputed && positionComputed[1];
-                this.checkedOnePosition = positionCheckedOne && positionCheckedOne[1];
-                this.checkedTwoPosition = positionCheckedTwo && positionCheckedTwo[1];
+                this.preparedPosition =  positionPrepared[1] || "";
+                this.computedPosition = positionComputed[1] || "";
+                this.checkedOnePosition = positionCheckedOne[1] || "";
+                this.checkedTwoPosition = positionCheckedTwo[1] || "";
                 
             }
-        },
-        mounted(){
-            
         }
+        
         
     }
 </script>
