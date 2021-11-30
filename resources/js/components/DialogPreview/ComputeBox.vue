@@ -2,7 +2,7 @@
     <fragment>
         <v-row>
             <div
-                class="d-flex my-2 px-1 py-1 flex-lg-row flex-md-column"
+                class="d-flex my-2 px-1 py-1"
                 style="
                     margin-right: 7px;
                     width: 100%;
@@ -834,7 +834,15 @@
             </div>
         </v-row>
         <v-row class="ma-0 pa-0" style="margin: 0; padding: 0">
-            <v-col class="ma-0 pa-0" style="margin: 0; padding: 0">
+          <div
+                class="d-flex my-2 py-1"
+                style="
+                    margin-right: 0px;
+                    width: 100%;
+                    justify-content: space-between;
+                "
+            >
+            <div>
                 <div
                     class="d-flex justify-center align-center kiosk-mobile_text"
                 >
@@ -912,8 +920,8 @@
                         </div>
                     </div>
                 </div>
-            </v-col>
-            <v-col class="ma-0 pa-0" style="margin: 0; padding: 0">
+            </div>
+            <div class="ma-0 pa-0" style="margin: 0; padding: 0">
                 <div
                     class="
                         d-flex
@@ -1029,7 +1037,8 @@
                         </div>
                     </div>
                 </div>
-            </v-col>
+            </div>
+            </div>
         </v-row>
     </fragment>
 </template>
