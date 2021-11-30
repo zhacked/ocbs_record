@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\API\ImportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,3 +33,5 @@ Auth::routes([
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('{path}', [App\Http\Controllers\HomeController::class, 'index'])->where('path', '([A-z]+)?');
+
+Route::get('importwithstatus', [ImportController::class, 'withstatus']);
