@@ -73,7 +73,7 @@ class ImportController extends Controller
      */
     public function store(Request $request)
     {
-        
+     
         foreach ($request->all() as $data ){
         
         $arena= arena::where('arena', $data['arenaName'])->first();
@@ -97,6 +97,16 @@ class ImportController extends Controller
                 'draw_gain_loss' => $data['drawGainLoss'],
                 'draw_2_percent' => $data['draw2'],
                 'type' => $data['type'],
+                'totalOthers'=> $data['totalOthers'],
+                'salesDeductionTablet'=> $data['saleDeductionTablet'],
+                'netOperatorsCommission'=> $data['netOperatorsCommission'],
+                'otherCommissionIntel05' => $data['otherCommissionIntel05'],
+                'consolidatorsCommission'=> $data['consolidatorsCommission'],
+                'safetyFund'=> $data['safetyFund'],
+                'paymentForOutstandingBalance'=> $data['paymentForOutstandingBalance'],
+                'systemErrorCOArmsi'=> $data['systemErrorCOArmsi'],
+                'cashLoad'=> $data['cashLoad'],
+                'cashWithdrawal'=> $data['cashWithdrawal'],
             ]);
         }
         
