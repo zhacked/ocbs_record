@@ -91,7 +91,7 @@
 </template>
 <script>
     export default {
-        name: "date-soa",
+        name: "DateSOA",
         props: {
             depositReplenishText: Object,
             dateEvent: String,

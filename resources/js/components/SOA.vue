@@ -396,7 +396,7 @@ import {
 import VueHtml2pdf from 'vue-html2pdf'
 import html2canvas from "html2canvas";
 import moment from 'moment';
-import DateSOA from "./DialogPreview/DateSoa.vue"
+import DateSOA from "./DialogPreview/DateSOA.vue"
 import ArenaDetails from "./DialogPreview/ArenaDetails.vue"
 import ComputeBox from "./DialogPreview/ComputeBox.vue"
 import BankBox from "./DialogPreview/BankBox.vue"
@@ -482,6 +482,14 @@ export default {
                 operatorExpenses: 0,
                 unclaimed: 0,
                 cUnpaid: 0,
+                otherCommissionIntel05: 0,
+                consolidatorsCommission: 0,
+                paymentForOutstandingBalance: 0,
+                safetyFund: 0,
+                salesDeductionTablet: 0,
+                systemErrorCOArmsi: 0,
+                totalOthers: 0,
+                totalCommission: 0,
                 mobile: {
                     totalMWBet: 0,
                     totalDrawBet: 0,
@@ -592,6 +600,14 @@ export default {
                 operatorExpenses: numberUnformat(
                     this.computation.operatorExpenses
                 ),
+                otherCommissionIntel05: numberUnformat(this.computation.otherCommissionIntel05),
+                consolidatorsCommission: numberUnformat(this.computation.consolidatorsCommission),
+                paymentForOutstandingBalance: numberUnformat(this.computation.paymentForOutstandingBalance),
+                safetyFund: numberUnformat(this.computation.safetyFund),
+                salesDeductionTablet: numberUnformat(this.computation.salesDeductionTablet),
+                systemErrorCOArmsi: numberUnformat(this.computation.systemErrorCOArmsi),
+                totalOthers: numberUnformat(this.computation.totalOthers),
+              
                 mobile: {
                     cashLoad: numberUnformat(this.computation.mobile.cashLoad),
                     cashWithdraw: numberUnformat(this.computation.mobile.cashWithdraw),
@@ -628,6 +644,14 @@ export default {
                 operatorExpenses: numberFormat(
                     this.computation.operatorExpenses
                 ),
+                otherCommissionIntel05: numberFormat(this.computation.otherCommissionIntel05),
+                consolidatorsCommission: numberFormat(this.computation.consolidatorsCommission),
+                paymentForOutstandingBalance: numberFormat(this.computation.paymentForOutstandingBalance),
+                safetyFund: numberFormat(this.computation.safetyFund),
+                salesDeductionTablet: numberFormat(this.computation.salesDeductionTablet),
+                systemErrorCOArmsi: numberFormat(this.computation.systemErrorCOArmsi),
+                totalOthers: numberFormat(this.computation.totalOthers),
+                totalCommission:  numberFormat(this.computation.totalCommission),
                 mobile: {
                    cashLoad: numberFormat(this.computation.mobile.cashLoad),
                     cashWithdraw: numberFormat(this.computation.mobile.cashWithdraw),
@@ -661,6 +685,7 @@ export default {
         },
     
         openModel(data) {
+            console.log(data)
             if(data.arena_details == null){
                 swal.fire({
                     icon: "warning",
@@ -720,6 +745,14 @@ export default {
                 operatorExpenses: numberFormat(
                     this.computation.operatorExpenses
                 ),
+                otherCommissionIntel05: numberFormat(this.computation.otherCommissionIntel05),
+                consolidatorsCommission: numberFormat(this.computation.consolidatorsCommission),
+                paymentForOutstandingBalance: numberFormat(this.computation.paymentForOutstandingBalance),
+                safetyFund: numberFormat(this.computation.safetyFund),
+                salesDeductionTablet: numberFormat(this.computation.salesDeductionTablet),
+                systemErrorCOArmsi: numberFormat(this.computation.systemErrorCOArmsi),
+                totalOthers: numberFormat(this.computation.totalOthers),
+                totalCommission:  numberFormat(this.computation.totalCommission),
                 mobile: {
                     cashLoad: numberFormat(this.computation.mobile.cashLoad),
                     cashWithdraw: numberFormat(this.computation.mobile.cashWithdraw),
@@ -782,13 +815,7 @@ export default {
                         if (Object.keys(r).length >= 17)
                             reportCombined.push(r);
                         if (Object.keys(r).length === 1) {
-                            // assign new key and delete oldkey
-                            // const newObject = {};
-                            // delete Object.assign(newObject, r, {
-                            //     ["A"]: r[0],
-                            // })[0];
-
-                          
+                           
                             eventsCombined.push(
                                valueSplit(r.A)
                             );
@@ -826,24 +853,6 @@ export default {
 
                         return objectKeyReplacedArray
                     }
-
-
-
-                    // const [, ...headKey] = Object.values(reportCombined[0]);
-                    // const headK = ["key", ...headKey];
-
-                    // reportCombined.map((data) => {
-                    //     data = Object.assign(
-                    //         {},
-                    //         ...Object.entries(data).map(([, prop], index) => ({
-                    //             [camelCase(headK[index])]: prop,
-                    //         }))
-                    //     );
-                    //     objectKeyReplacedArray.push({
-                    //         eventCreated: mergeObj.dateCreated,
-                    //         ...data,
-                    //     });
-                    // });
 
                     const objKeyRep = objectKeyed(reportCombined);
                     const objKeySummary = objectKeyed(summaryReport);
@@ -884,14 +893,7 @@ export default {
             }
         },
 
-        handleFormatted() {
-            this.computation.mobile = {
-                cashLoad: numberFormat(this.computation.mobile.cashLoad),
-                cashWithdraw: numberFormat(
-                    this.computation.mobile.cashWithdraw
-                ),
-            };
-        },
+     
  
         generateReport() {
             console.log("generating pdf..");
@@ -956,7 +958,7 @@ export default {
                 numberUnformat(this.computation.unclaimed) +
                 numberUnformat(this.computation.cUnpaid) +
                 numberUnformat(this.computation.operatorExpenses);
-            const netOpCommission = numberFormat(netOpCommTotal);
+            const netOpCommission = numberFormat(netOpCommTotal) || 0;
             const cashLoad = this.computation.mobile.cashLoad || 0;
             const cashWithdraw = this.computation.mobile.cashWithdraw || 0;
             const depositReplenish = numberFormat(
