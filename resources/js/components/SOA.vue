@@ -75,7 +75,7 @@
                                             <v-btn
                                                 :loading="loading"
                                                 :disabled="loading"
-                                                @click="loader = 'loading'"
+                                                @click="truncate"
                                                 color="light-blue lighten-1"
                                                 class="ma-2 white--text"
                                             >
@@ -636,6 +636,32 @@ export default {
             axios
                 .get("api/bankaccount")
                 .then(({ data }) => (this.bank.all = data));
+        },
+        truncate(){
+             swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Clear All!'
+                    }).then((result) => {
+                      
+                         if (result.value) {
+                                axios.get("api/truncate").then(()=>{
+                                        swal.fire(
+                                        'Deleted!',
+                                        'Your file has been deleted.',
+                                        'success'
+                                        )
+                                    Fire.$emit('AfterCreate');
+                                }).catch((error)=> {
+                                    console.log(error)
+                                });
+                         }
+                    })
+            
         },
         // filterbank(){
         //       axios.get("api/selectedbank/"+ this.bank.bank_id).then(({data}) => (

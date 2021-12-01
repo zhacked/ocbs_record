@@ -161,4 +161,8 @@ class ImportController extends Controller
     {
         //
     }
+
+    public function truncate_data(){
+        $import =  import::truncate();
+    }
 }

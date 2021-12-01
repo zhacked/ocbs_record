@@ -33,3 +33,4 @@ Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportControll
 Route::get('selectedbank/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
 Route::get('arenaStatus/{id}', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
 
+Route::get('truncate', [App\Http\Controllers\API\ImportController::class, 'truncate_data']);
