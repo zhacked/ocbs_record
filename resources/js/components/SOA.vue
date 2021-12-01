@@ -79,9 +79,9 @@
                                                 color="light-blue lighten-1"
                                                 class="ma-2 white--text"
                                             >
-                                                Archive
+                                                Clear Data
                                                 <v-icon right dark>
-                                                    mdi-archive-arrow-down
+                                                    mdi-backspace
                                                 </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -92,6 +92,7 @@
                                                 append-icon="mdi-magnify"
                                                 label="Search"
                                                 color="primary darken-2"
+
                                             ></v-text-field>
                                         </v-col>
                                     </v-row>
