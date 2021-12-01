@@ -14,12 +14,12 @@ class BankDetailsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct()
-    {
+    // public function __construct()
+    // {
 
-        $this->middleware('auth:api');
+    //     $this->middleware('auth:api');
 
-    }
+    // }
     public function index()
     {
         return BankAccount::latest()->get();

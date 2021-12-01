@@ -1215,7 +1215,7 @@ export default {
             this.loader = null;
         },
     },
-    mounted() {
+    created() {
         this.showData();
         this.importwithstatus();
         this.loadEmployee();
