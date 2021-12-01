@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\ImportController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,10 +26,11 @@ Route::apiResources(['import' => App\Http\Controllers\API\ImportController::clas
 Route::apiResources(['bankaccount' => App\Http\Controllers\API\BankDetailsController::class]);
 Route::apiResources(['employees' => App\Http\Controllers\API\EmployeeController::class]);
 
+
 Route::get('profile', [App\Http\Controllers\API\UserController::class, 'profile'])->name('profile');
 Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');
 Route::get('arenaId', [App\Http\Controllers\API\BankDetailsController::class, 'show_arena'])->name('arenaId');
-Route::get('importwithstatus', [ImportController::class, 'withstatus']);
+Route::get('importwithstatus', [App\Http\Controllers\API\ImportController::class, 'withstatus']);
 Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);
 Route::get('selectedbank/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
 Route::get('arenaStatus/{id}', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
