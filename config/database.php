@@ -64,22 +64,6 @@ return [
             ]) : [],
         ],
 
-<<<<<<< HEAD
-        'pgsql' => [
-            'driver' => 'pgsql',
-            'url' => 'postgres://rpncudqiayjsho:970028094bb1fc6f45558809f2a14d05e546c7aa27d2ef8a5edf9c24fb62a309@ec2-54-198-213-75.compute-1.amazonaws.com:5432/dk67vj89ugsii',
-            'host' => 'ec2-54-198-213-75.compute-1.amazonaws.com',
-            'port' =>'5432',
-            'database' => 'dk67vj89ugsii',
-            'username' => 'rpncudqiayjsho',
-            'password' => '970028094bb1fc6f45558809f2a14d05e546c7aa27d2ef8a5edf9c24fb62a309',
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'schema' => 'public',
-            'sslmode' => 'prefer',
-        ],
-=======
         // 'pgsql' => [
         //     'driver' => 'pgsql',
         //     'url' => env('DATABASE_URL'),
@@ -94,7 +78,6 @@ return [
         //     'schema' => 'public',
         //     'sslmode' => 'prefer',
         // ],
->>>>>>> main
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
