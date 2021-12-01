@@ -64,6 +64,7 @@ return [
             ]) : [],
         ],
 
+<<<<<<< HEAD
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => 'postgres://rpncudqiayjsho:970028094bb1fc6f45558809f2a14d05e546c7aa27d2ef8a5edf9c24fb62a309@ec2-54-198-213-75.compute-1.amazonaws.com:5432/dk67vj89ugsii',
@@ -78,6 +79,22 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+=======
+        // 'pgsql' => [
+        //     'driver' => 'pgsql',
+        //     'url' => env('DATABASE_URL'),
+        //     'host' => $DATABASE_URL['host'],
+        //     'port' => $DATABASE_URL['post'],
+        //     'database' => ltrim($DATABASE_URL['path'],"/"),
+        //     'username' => $DATABASE_URL['user'],
+        //     'password' => $DATABASE_URL['pass'],
+        //     'charset' => 'utf8',
+        //     'prefix' => '',
+        //     'prefix_indexes' => true,
+        //     'schema' => 'public',
+        //     'sslmode' => 'prefer',
+        // ],
+>>>>>>> main
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',

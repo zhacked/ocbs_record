@@ -795,43 +795,43 @@ export default {
             this.editmode = !this.editmode;
 
             this.computation = {
-                totalMWBet: numberFormat(this.computation.totalMWBet),
-                drawCancelled: numberFormat(this.computation.drawCancelled),
+                totalMWBet: numberFormat(this.computation.totalMWBet || 0),
+                drawCancelled: numberFormat(this.computation.drawCancelled || 0),
                 draw: numberFormat(this.computation.draw),
-                totalPayoutPaid: numberFormat(this.computation.totalPayoutPaid),
-                cdPaid: numberFormat(this.computation.cdPaid),
-                drawPaid: numberFormat(this.computation.drawPaid),
-                netWinLoss: numberFormat(this.computation.netWinLoss),
-                unclaimed: numberFormat(this.computation.unclaimed),
-                cUnpaid: numberFormat(this.computation.cUnpaid),
+                totalPayoutPaid: numberFormat(this.computation.totalPayoutPaid || 0),
+                cdPaid: numberFormat(this.computation.cdPaid || 0),
+                drawPaid: numberFormat(this.computation.drawPaid || 0),
+                netWinLoss: numberFormat(this.computation.netWinLoss || 0),
+                unclaimed: numberFormat(this.computation.unclaimed || 0),
+                cUnpaid: numberFormat(this.computation.cUnpaid || 0),
                 totalMWBetPercent: numberFormat(
-                    this.computation.totalMWBetPercent
+                    this.computation.totalMWBetPercent || 0
                 ),
                 operatorExpenses: numberFormat(
-                    this.computation.operatorExpenses
+                    this.computation.operatorExpenses || 0
                 ),
                 otherCommissionIntel05: numberFormat(
-                    this.computation.otherCommissionIntel05
+                    this.computation.otherCommissionIntel05 || 0
                 ),
                 consolidatorsCommission: numberFormat(
-                    this.computation.consolidatorsCommission
+                    this.computation.consolidatorsCommission || 0
                 ),
                 paymentForOutstandingBalance: numberFormat(
-                    this.computation.paymentForOutstandingBalance
+                    this.computation.paymentForOutstandingBalance || 0
                 ),
-                safetyFund: numberFormat(this.computation.safetyFund),
+                safetyFund: numberFormat(this.computation.safetyFund || 0),
                 salesDeductionTablet: numberFormat(
-                    this.computation.salesDeductionTablet
+                    this.computation.salesDeductionTablet || 0
                 ),
                 systemErrorCOArmsi: numberFormat(
-                    this.computation.systemErrorCOArmsi
+                    this.computation.systemErrorCOArmsi || 0
                 ),
-                totalOthers: numberFormat(this.computation.totalOthers),
-                totalCommission: numberFormat(this.computation.totalCommission),
+                totalOthers: numberFormat(this.computation.totalOthers || 0),
+                totalCommission: numberFormat(this.computation.totalCommission || 0),
                 mobile: {
-                    cashLoad: numberFormat(this.computation.mobile.cashLoad),
+                    cashLoad: numberFormat(this.computation.mobile.cashLoad || 0),
                     cashWithdraw: numberFormat(
-                        this.computation.mobile.cashWithdraw
+                        this.computation.mobile.cashWithdraw || 0
                     ),
                     totalMWBet: numberFormat(
                         this.computation.totalMobileMWBets || 0
@@ -906,6 +906,16 @@ export default {
                 const drawPaid = data.draw_paid;
                 const unclaimed = data.unclaimed;
                 const cUnpaid = data.cancelled_unpaid;
+                const salesDeduction = data.salesDeductionTablet;
+                const otherCommissionIntel05 = data.otherCommissionIntel05;
+                const systemErrorCOArmsi = data.systemErrorCOArmsi;
+                const consolidatorsCommission = data.consolidatorsCommission;
+                const safetyFund = data.safetyFund;
+                const paymentForOutstandingBalance = data.paymentForOutstandingBalance;
+                const cashLoad = data.cashLoad;
+                const cashWithdrawal = data.cashWithdrawal;
+
+
                 const netWinLoss =
                     parseFloat(totalMWBet) +
                     parseFloat(drawCancelled) +
@@ -921,6 +931,7 @@ export default {
                     ? data.mobile.total_meron_wala
                     : 0;
                 const totalMobileDrawBets = data.mobile ? data.mobile.draw : 0;
+                const totalCommission = 
 
                 this.computation = {
                     totalMWBet: numberFormat(totalMWBet),
@@ -937,31 +948,31 @@ export default {
                         this.computation.operatorExpenses
                     ),
                     otherCommissionIntel05: numberFormat(
-                        this.computation.otherCommissionIntel05
+                        otherCommissionIntel05
                     ),
                     consolidatorsCommission: numberFormat(
-                        this.computation.consolidatorsCommission
+                       consolidatorsCommission
                     ),
                     paymentForOutstandingBalance: numberFormat(
-                        this.computation.paymentForOutstandingBalance
+                       paymentForOutstandingBalance
                     ),
-                    safetyFund: numberFormat(this.computation.safetyFund),
+                    safetyFund: numberFormat(safetyFund),
                     salesDeductionTablet: numberFormat(
-                        this.computation.salesDeductionTablet
+                       salesDeduction
                     ),
                     systemErrorCOArmsi: numberFormat(
-                        this.computation.systemErrorCOArmsi
+                       systemErrorCOArmsi
                     ),
                     totalOthers: numberFormat(this.computation.totalOthers),
                     totalCommission: numberFormat(
-                        this.computation.totalCommission
+                       totalCommission
                     ),
                     mobile: {
                         cashLoad: numberFormat(
-                            this.computation.mobile.cashLoad
+                           cashLoad
                         ),
                         cashWithdraw: numberFormat(
-                            this.computation.mobile.cashWithdraw
+                           cashWithdrawal
                         ),
                         totalMWBet: numberFormat(totalMobileMWBets),
                         totalDrawBet: numberFormat(totalMobileDrawBets),
@@ -1184,13 +1195,20 @@ export default {
                 numberUnformat(drawTotalPercent) +
                 numberUnformat(this.computation.unclaimed) +
                 numberUnformat(this.computation.cUnpaid) +
-                numberUnformat(this.computation.operatorExpenses);
+                numberUnformat(this.computation.salesDeductionTablet);
+            const totalComm = numberUnformat(netOpCommTotal) - numberUnformat(this.computation.paymentForOutstandingBalance || "0.00") - numberUnformat(this.computation.consolidatorsCommission || "0.00") - numberUnformat(this.computation.safetyFund || "0.00") + numberUnformat(this.computation.otherCommissionIntel05 || "0.00")
+           
+
             const netOpCommission = numberFormat(netOpCommTotal) || 0;
+            const totalCommission = numberFormat(totalComm) || 0;
+
+
             const cashLoad = this.computation.mobile.cashLoad || 0;
             const cashWithdraw = this.computation.mobile.cashWithdraw || 0;
+
             const depositReplenish = numberFormat(
                 numberUnformat(this.computation.netWinLoss) -
-                    numberUnformat(netOpCommission) +
+                    numberUnformat(totalCommission) +
                     numberUnformat(cashLoad) -
                     numberUnformat(cashWithdraw) || 0
             );
@@ -1225,6 +1243,7 @@ export default {
                 mwMobileTotalPercent,
                 drawMobileTotalPercent,
                 netOpCommission,
+                totalCommission,
                 cashLoad,
                 cashWithdraw,
                 depositReplenish,

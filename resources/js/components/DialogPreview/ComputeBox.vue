@@ -826,7 +826,7 @@
                                     computation-total
                                 "
                             >
-                                <span class="ctotal-text">{{computation.totalCommission}}</span>
+                                <span class="ctotal-text">{{computedAve.totalCommission}}</span>
                             </div>
                         </div>
                     </div>
@@ -1054,12 +1054,13 @@ export default {
     },
     methods: {
         handleCleanZeroOnFocus(event) {
+            const targetEvent = {[event.target.name]: event.target.value};
             if(event.target.value === "0")
                 event.target.value = ""
         },
         handleCleanZeroOnBlur(event) {
             if(event.target.value === "")
-                event.target.value = "0"
+                event.target.value = 0
         },
     }
 };
