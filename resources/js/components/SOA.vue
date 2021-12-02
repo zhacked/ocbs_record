@@ -542,11 +542,7 @@ export default {
                 prepared: {},
             },
 
-            // computed_by:'',
-            // checked_by_1:'',
-            // checked_by_2:'',
-            // prepared_by:'',
-            // bank_details:'',
+           
             dialog: false,
             notifications: false,
             sound: true,
@@ -572,7 +568,7 @@ export default {
             arenaData: [],
             arenaDatastatus: [],
             arenaDetails: {},
-            // selectedbank: [],
+      
             arena_id: "",
             arena_name: "",
             loading: false,
@@ -663,13 +659,7 @@ export default {
                     })
             
         },
-        // filterbank(){
-        //       axios.get("api/selectedbank/"+ this.bank.bank_id).then(({data}) => (
-        //             this.bank.bank_name = data.bank_name,
-        //             this.bank.bank_number = data.bank_number
-        //         ));
-        // },
-
+  
         async importwithstatus() {
             const data = await axios.get("api/importwithstatus");
             let helper = {};
@@ -855,6 +845,8 @@ export default {
                     title: "Oops...",
                     text: "Make sure you insert correct excel data!",
                 });
+                console.log($('#importData').val())
+                
             } else {
                 axios.post("api/import", this.ocbsArrayFiltered).then(
                     ({ data }) => (

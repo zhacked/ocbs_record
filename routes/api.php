@@ -19,25 +19,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
-    Route::apiResources(['user' => App\Http\Controllers\API\UserController::class]);
-    Route::apiResources(['arena' => App\Http\Controllers\API\ArenaController::class]);
-    Route::apiResources(['import' => App\Http\Controllers\API\ImportController::class]);
-    Route::apiResources(['bankaccount' => App\Http\Controllers\API\BankDetailsController::class]);
-    Route::apiResources(['employees' => App\Http\Controllers\API\EmployeeController::class]);
-    
-    
-    Route::get('profile', [App\Http\Controllers\API\UserController::class, 'profile'])->name('profile');
-    Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');
-    Route::get('arenaId', [App\Http\Controllers\API\BankDetailsController::class, 'show_arena'])->name('arenaId');
-    Route::get('importwithstatus', [App\Http\Controllers\API\ImportController::class, 'withstatus']);
-    Route::get('count', [App\Http\Controllers\API\ImportController::class, 'countdata']);
-    Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);
-    Route::get('selectedbank/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
-    Route::get('arenaStatus/{id}', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
-    
-    Route::get('truncate', [App\Http\Controllers\API\ImportController::class, 'truncate_data']);
-});
+Route::apiResources(['user' => App\Http\Controllers\API\UserController::class]);
+Route::apiResources(['arena' => App\Http\Controllers\API\ArenaController::class]);
+Route::apiResources(['import' => App\Http\Controllers\API\ImportController::class]);
+Route::apiResources(['bankaccount' => App\Http\Controllers\API\BankDetailsController::class]);
+Route::apiResources(['employees' => App\Http\Controllers\API\EmployeeController::class]);
 
 
+Route::get('profile', [App\Http\Controllers\API\UserController::class, 'profile'])->name('profile');
+Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');
+Route::get('arenaId', [App\Http\Controllers\API\BankDetailsController::class, 'show_arena'])->name('arenaId');
+Route::get('importwithstatus', [App\Http\Controllers\API\ImportController::class, 'withstatus']);
+Route::get('count', [App\Http\Controllers\API\ImportController::class, 'countdata']);
+Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);
+Route::get('selectedbank/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
+Route::get('arenaStatus/{id}', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
 
+Route::get('truncate', [App\Http\Controllers\API\ImportController::class, 'truncate_data']);
