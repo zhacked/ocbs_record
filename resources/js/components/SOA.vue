@@ -835,9 +835,10 @@ export default {
 
         proceedAction() {
             this.$Progress.start();
+            var result = $('#importData').val().split('.');
             if (
                 $("#importData").val() === "" ||
-                this.checkfilename[1] != "xlsx"
+                this.checkfilename[1] != "xlsx" || result[1] != "xlsx"
             ) {
                 Fire.$emit("AfterCreate");
                 swal.fire({
@@ -845,7 +846,8 @@ export default {
                     title: "Oops...",
                     text: "Make sure you insert correct excel data!",
                 });
-                console.log($('#importData').val())
+                
+                console.log(result)
                 
             } else {
                 axios.post("api/import", this.ocbsArrayFiltered).then(
