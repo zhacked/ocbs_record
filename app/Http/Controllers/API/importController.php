@@ -169,9 +169,19 @@ class ImportController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+
+       
     }
 
+    public function depositedata(){
+        $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereGroup('deposit')->whereNotNull('status')->get();
+        $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereGroup('reflenish')->whereNotNull('status')->get();
+        return Response()->json([
+            'rf' => $reflenish,
+            'dp' => $deposit
+        ]);
+    }
     public function truncate_data(){
         $import =  import::truncate();
     }

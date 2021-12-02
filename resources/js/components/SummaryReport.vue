@@ -1,0 +1,218 @@
+<template>
+    <v-app>
+        <v-container >
+            <v-row class="mt-5">
+                <v-col class="col-md-12">
+                    <v-card>
+                        <v-card-title class="card-header">
+                            <strong>Statement of Account</strong>
+                            <v-spacer></v-spacer>
+                        </v-card-title>
+
+                        <div
+                            class="card card-primary card-outline card-tabs"
+                            style="overflow: auto; !important"
+                        >
+                            <div class="card-header p-0 pt-1 border-bottom-0">
+                                <ul
+                                    class="nav nav-tabs"
+                                    id="custom-tabs-three-tab"
+                                    role="tablist"
+                                >
+                                    <li class="nav-item">
+                                        <a
+                                            class="nav-link active"
+                                            id="custom-tabs-three-home-tab"
+                                            data-toggle="pill"
+                                            href="#custom-tabs-three-home"
+                                            role="tab"
+                                            aria-controls="custom-tabs-three-home"
+                                            aria-selected="true"
+                                            >Deposit</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            class="nav-link"
+                                            id="custom-tabs-three-profile-tab"
+                                            data-toggle="pill"
+                                            href="#custom-tabs-three-profile"
+                                            role="tab"
+                                            aria-controls="custom-tabs-three-profile"
+                                            aria-selected="false"
+                                            >Reflenish</a
+                                        >
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <div
+                                    class="tab-content"
+                                    id="custom-tabs-three-tabContent active show"
+                                >
+                                    <v-row>
+                                       
+                                        <v-spacer></v-spacer>
+                                        <v-col>
+                                            <v-text-field
+                                                v-model="search"
+                                                append-icon="mdi-magnify"
+                                                label="Search"
+                                                color="primary darken-2"
+
+                                            ></v-text-field>
+                                        </v-col>
+                                    </v-row>
+
+                                    <div
+                                        class="tab-pane fade active show"
+                                        id="custom-tabs-three-home"
+                                        role="tabpanel"
+                                        aria-labelledby="custom-tabs-three-home-tab"
+                                    >
+                                        <v-data-table
+                                            :headers="headers"
+                                            :items="deposit"
+                                            :items-per-page="10"
+                                            :search="search"
+                                            class="elevation-1 text-center"
+                                        >
+                                            <template
+                                                v-slot:[`item.actions`]="{
+                                                    item,
+                                                }"
+                                            >
+                                                <v-tooltip top>
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on,
+                                                            attrs,
+                                                            hover,
+                                                        }"
+                                                    >
+                                                        <v-btn
+                                                            icon
+                                                            color="primary"
+                                                            dark
+                                                            small
+                                                            v-bind="attrs"
+                                                            v-on="on"
+                                                            @click="
+                                                                openModel(item)
+                                                            "
+                                                            :class="{
+                                                                'on-hover':
+                                                                    hover,
+                                                            }"
+                                                        >
+                                                            <v-icon
+                                                                >mdi-eye</v-icon
+                                                            >
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>View Account</span>
+                                                </v-tooltip>
+                                            </template>
+                                        </v-data-table>
+                                    </div>
+
+                                    <div
+                                        class="tab-pane fade"
+                                        id="custom-tabs-three-profile"
+                                        role="tabpanel"
+                                        aria-labelledby="custom-tabs-three-profile-tab"
+                                    >
+                                        <v-data-table
+                                            :headers="headers"
+                                            :items="reflenish"
+                                            :items-per-page="10"
+                                            :search="search"
+                                            class="elevation-1 text-center"
+                                        >
+                                            <template
+                                                v-slot:[`item.actions`]="{
+                                                    item,
+                                                }"
+                                            >
+                                                <v-tooltip top>
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on,
+                                                            attrs,
+                                                            hover,
+                                                        }"
+                                                    >
+                                                        <v-btn
+                                                            icon
+                                                            color="primary"
+                                                            dark
+                                                            small
+                                                            v-bind="attrs"
+                                                            v-on="on"
+                                                            @click="
+                                                                openModel(item)
+                                                            "
+                                                            :class="{
+                                                                'on-hover':
+                                                                    hover,
+                                                            }"
+                                                        >
+                                                            <v-icon
+                                                                >mdi-eye</v-icon
+                                                            >
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>View Account</span>
+                                                </v-tooltip>
+                                            </template>
+                                        </v-data-table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </v-card>
+                </v-col>
+
+              
+                <!-- </v-col> -->
+            </v-row>
+        </v-container>
+    </v-app>
+</template>
+<script>
+
+export default {
+    data() {
+        return {
+            headers: [
+                { text: "#", value: "" },
+                { text: "SAO#", value: "" },
+                { text: "OCBS Name", value: "" },
+                { text: "Amount", value: "" },
+                { text: "", value: "actions", sortable: false },
+            ],
+            deposit:[],
+            reflenish:[],
+            search:''
+        };  
+    },
+    methods: {
+      
+        loadSummary() {
+            axios
+                .get("api/depositeandreflenish")
+                .then(({ data }) => (
+                    console.log(data.dp),
+                    this.deposit = data.dp,
+                    this.reflenish = data.rf
+                ));
+        },
+      
+       
+       
+    },
+    created() {
+        this.loadSummary();
+    }
+};
+</script>

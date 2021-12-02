@@ -51,6 +51,14 @@
 				</router-link>
 			</li>
 
+			<li class="nav-item">
+				<router-link to="/summary" class="nav-link ">
+					<i class="nav-icon fab fa-angular"></i>
+					<p>Summary Report</p>
+				</router-link>
+			</li>
+
+
 			
 
 

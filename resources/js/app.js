@@ -110,6 +110,10 @@ let routes = [
     {
         path: '/bankaccount', component: require('./components/BankAccount.vue').default
     },
+    {
+        path: '/summary', component: require('./components/SummaryReport.vue').default
+    },
+    
 
     {
 
