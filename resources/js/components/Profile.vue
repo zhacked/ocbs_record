@@ -30,19 +30,19 @@
                     <div class="row">
                     <div class="col-sm-4 border-right">
                         <div class="description-block">
-                        <h5 class="description-header">0</h5>
-                        <span class="description-text">Activity</span>
+                        <h5 class="description-header">{{import_count}}</h5>
+                        <span class="description-text">On Going</span>
                         </div>
                     </div>
                     <div class="col-sm-4 border-right">
                         <div class="description-block">
-                        <h5 class="description-header">0</h5>
+                        <h5 class="description-header">{{arena}}</h5>
                         <span class="description-text">Arena</span>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="description-block">
-                        <h5 class="description-header">0</h5>
+                        <h5 class="description-header">{{user}}</h5>
                         <span class="description-text">Users</span>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                         <li class="nav-item"><a class="nav-link active show" href="#settings" data-toggle="tab">Settings</a></li>
                         </ul>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="background-color: #BFBFBF;">
                         <div class="tab-content">
 
                             <div class="tab-pane  w-100" id="activity">
@@ -88,7 +88,7 @@
                                     <label for="inputEmail" class="col-sm-2 control-label">Email</label>
 
                                     <div class="col-sm-12">
-                                    <input type="email" v-model="form.email" class="form-control" id="inputEmail" placeholder="Email"  :class="{ 'is-invalid': form.errors.has('email') }">
+                                    <input type="text" v-model="form.email" class="form-control" id="inputEmail" placeholder="Email"  :class="{ 'is-invalid': form.errors.has('email') }">
                                      <has-error :form="form" field="email"></has-error>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@
                                 <div class="form-group">
                                     <label for="photo" class="col-sm-2 control-label">Profile Photo</label>
                                     <div class="col-sm-12">
-                                        <input type="file" @change="updateProfile" name="photo" class="form-input">
+                                        <input type="file" style="color:white; border:1px solid black"  @change="updateProfile" name="photo" class="form-input">
                                     </div>
 
                                 </div>
@@ -145,7 +145,10 @@
     export default {
         data(){
             return {
-                 form: new Form({
+                arena:'',
+                import_count:'',
+                user:'',
+                form: new Form({
                     id:'',
                     name : '',
                     email: '',
@@ -168,7 +171,14 @@
             getcomming(){
                   return "image/coming.jpg"
             },
-
+            count(){
+                  axios.get("api/count").then(({ data }) => (
+                      this.arena = data.arena,
+                      this.import_count = data.import,
+                      this.user = data.user
+                     ));
+              
+            },
             updateInfo(){
                 this.$Progress.start();
                 if(this.form.password == ''){
@@ -202,8 +212,10 @@
             }
         },
         created() {
-             axios.get("api/profile")
-            .then(({ data }) => (this.form.fill(data)));
+            axios.get("api/profile")
+                .then(({ data }) => (this.form.fill(data)));
+            this.count();
+           
         }
     }
 </script>

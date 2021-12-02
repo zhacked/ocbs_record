@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\API;
+use App\Models\User;
 use App\Models\arena;
 use App\Models\import;
 use App\Models\BankAccount;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -146,9 +148,17 @@ class ImportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function countdata()
     {
-        //
+        $arena = arena::count();
+        $user = User::count();
+        $import = Import::whereNull('status')->count();
+
+        return Response()->json([
+            'arena' => $arena,
+            'user' => $user,
+            'import' => $import
+        ]);
     }
 
     /**
