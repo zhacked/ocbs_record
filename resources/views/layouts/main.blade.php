@@ -7,8 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
-	<title>{{ config('app.name', 'Laravel') }}</title>
-	<link rel="shortcut icon" href="{{ asset('image/favicon.ico') }}">
+	<title>{{ config('app.name', 'OCBS Report') }}</title>
+	<link rel="shortcut icon" href="{{ asset('image/icons8-calculator-48.png') }}">
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
