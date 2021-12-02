@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+
 use Laravel\Passport\Passport;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,8 +25,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-       
+        // $this->configureRateLimiting();
 
-        Passport::routes();
+        // $this->routes(function () {
+        //     Route::middleware('web')
+        //         ->namespace($this->namespace)
+        //         ->group(base_path('routes/web.php'));
+    
+        //     Route::prefix('api')
+        //         ->middleware('api')
+        //         ->namespace($this->namespace)
+        //         ->group(base_path('routes/api.php'));
+        // });
     }
 }
