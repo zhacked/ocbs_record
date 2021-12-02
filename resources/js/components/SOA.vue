@@ -847,7 +847,7 @@ export default {
                     text: "Make sure you insert correct excel data!",
                 });
                 
-                console.log(result)
+             
                 
             } else {
                 axios.post("api/import", this.ocbsArrayFiltered).then(
