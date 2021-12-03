@@ -1059,9 +1059,10 @@ export default {
                                     })
                                 )
                             );
-
+                          
                             objectKeyReplacedArray.push({
-                                eventCreated: mergeObj.dateCreated,
+                                eventCreated: mergeObj.dateCreated || moment(),
+                                type: data.type ? data.type : data.classification ? data.classification : null,
                                 totalCommission: 0,
                                 totalOthers: 0,
                                 salesDeductionTablet: 0,
