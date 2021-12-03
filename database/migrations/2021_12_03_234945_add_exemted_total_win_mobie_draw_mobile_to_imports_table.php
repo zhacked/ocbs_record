@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCashloadformmbileAndCashwithdrawalformmobileToImportsTable extends Migration
+class AddExemtedTotalWinMobieDrawMobileToImportsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,9 @@ class AddCashloadformmbileAndCashwithdrawalformmobileToImportsTable extends Migr
     public function up()
     {
         Schema::table('imports', function (Blueprint $table) {
-            $table->string('cashload_mobile')->after('draw_2_percent')->nullable();
-            $table->string('cashwithdrawal_mobile')->after('cashload_mobile')->nullable();
+            $table->string('excemted');
+            $table->string('total_win_mobile');
+            $table->string('draw_mobile');
         });
     }
 
