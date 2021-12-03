@@ -290,7 +290,7 @@
                                 "
                             >
                                 <span class="ctotal-text">{{
-                                    computation.netWinLoss
+                                    computedAve.netWinLoss
                                 }}</span>
                             </div>
                         </div>
@@ -335,7 +335,7 @@
                                 "
                             >
                                 <span class="ctotal-text">{{
-                                    computation.netWinLoss
+                                     computedAve.netWinLoss
                                 }}</span>
                             </div>
                         </div>

@@ -266,7 +266,7 @@
                                             :enable-download="true"
                                             :preview-modal="false"
                                             :paginate-elements-by-height="2000"
-                                            filename="hee hee"
+                                            :filename="arenaDetails.arena"
                                             :pdf-quality="2"
                                             :manual-pagination="false"
                                             pdf-format="a4"
@@ -411,7 +411,7 @@
                                                     color="green"
                                                     v-bind="attrs"
                                                     v-on="on"
-                                                    @click="downloadImg"
+                                                    @click="downloadImg(arenaDetails)"
                                                 >
                                                     <v-icon>mdi-image</v-icon>
                                                 </v-btn>
@@ -910,13 +910,13 @@ export default {
                 const cashWithdrawal = data.cashWithdrawal;
 
 
-                const netWinLoss =
-                    parseFloat(totalMWBet) +
-                    parseFloat(drawCancelled) +
-                    parseFloat(draw) -
-                    parseFloat(totalPayoutPaid) -
-                    parseFloat(cdPaid) -
-                    parseFloat(drawPaid);
+                // const netWinLoss =
+                //     parseFloat(totalMWBet) +
+                //     parseFloat(drawCancelled) +
+                //     parseFloat(draw) -
+                //     parseFloat(totalPayoutPaid) -
+                //     parseFloat(cdPaid) -
+                //     parseFloat(drawPaid);
                 const totalMWBetPercent =
                     parseFloat(totalMWBet) *
                     parseFloat(this.commission_percent);
@@ -934,7 +934,7 @@ export default {
                     totalPayoutPaid: numberFormat(totalPayoutPaid),
                     cdPaid: numberFormat(cdPaid),
                     drawPaid: numberFormat(drawPaid),
-                    netWinLoss: numberFormat(netWinLoss),
+                    // netWinLoss: numberFormat(netWinLoss),
                     unclaimed: numberFormat(unclaimed),
                     cUnpaid: numberFormat(cUnpaid),
                     totalMWBetPercent: numberFormat(totalMWBetPercent),
@@ -1134,7 +1134,8 @@ export default {
                     )
                 );
         },
-        async downloadImg() {
+        async downloadImg(details) {
+            console.log(details)
             console.log("printing..");
             const el = this.$refs.soaReport;
 
@@ -1145,7 +1146,7 @@ export default {
             const printCanvas = await html2canvas(el, options);
 
             const link = document.createElement("a");
-            link.setAttribute("download", "soa.png");
+            link.setAttribute("download", `${details.arena}.png`);
             link.setAttribute(
                 "href",
                 printCanvas
@@ -1168,8 +1169,16 @@ export default {
 
     computed: {
         computedAve: function () {
+            const netWinLoss =
+                    numberFormat(numberUnformat(this.computation.totalMWBet) +
+                    numberUnformat(this.computation.drawCancelled) +
+                    numberUnformat(this.computation.draw) -
+                    numberUnformat(this.computation.totalPayoutPaid) -
+                    numberUnformat(this.computation.cdPaid) -
+                    numberUnformat(this.computation.drawPaid) || 0);
+            
             const mwTotalPercent = numberFormat(
-                parseFloat(this.commission_percent) *
+                numberUnformat(this.commission_percent) *
                     numberUnformat(this.computation.totalMWBet) || 0
             );
             const drawTotalPercent = numberFormat(
@@ -1177,11 +1186,11 @@ export default {
                     numberUnformat(this.computation.draw) || 0
             );
             const mwMobileTotalPercent = numberFormat(
-                parseFloat(this.commission_percent) *
+                numberUnformat(this.commission_percent) *
                     numberUnformat(this.computation.mobile.totalMWBet) || 0
             );
             const drawMobileTotalPercent = numberFormat(
-                parseFloat(this.commission_percent) *
+                numberUnformat(this.commission_percent) *
                     numberUnformat(this.computation.mobile.totalDrawBet) || 0
             );
             const netOpCommTotal =
@@ -1190,7 +1199,7 @@ export default {
                 numberUnformat(this.computation.unclaimed) +
                 numberUnformat(this.computation.cUnpaid) +
                 numberUnformat(this.computation.salesDeductionTablet);
-            const totalComm = numberUnformat(netOpCommTotal) - numberUnformat(this.computation.paymentForOutstandingBalance || "0.00") - numberUnformat(this.computation.consolidatorsCommission || "0.00") - numberUnformat(this.computation.safetyFund || "0.00") + numberUnformat(this.computation.otherCommissionIntel05 || "0.00")
+            const totalComm = numberUnformat(netOpCommTotal) + numberUnformat(this.computation.otherCommissionIntel05 || "0.00") - numberUnformat(this.computation.consolidatorsCommission || "0.00") - numberUnformat(this.computation.safetyFund || "0.00")  - numberUnformat(this.computation.paymentForOutstandingBalance || "0.00")  
            
 
             const netOpCommission = numberFormat(netOpCommTotal) || 0;
@@ -1201,7 +1210,7 @@ export default {
             const cashWithdraw = this.computation.mobile.cashWithdraw || 0;
 
             const depositReplenish = numberFormat(
-                numberUnformat(this.computation.netWinLoss) -
+                numberUnformat(netWinLoss) -
                     numberUnformat(totalCommission) +
                     numberUnformat(cashLoad) -
                     numberUnformat(cashWithdraw) || 0
@@ -1232,6 +1241,7 @@ export default {
             this.depositReplenishTxt = depositReplenishText;
 
             return {
+                netWinLoss,
                 mwTotalPercent,
                 drawTotalPercent,
                 mwMobileTotalPercent,
