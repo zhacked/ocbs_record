@@ -53,15 +53,13 @@
 
 			<li class="nav-item">
 				<router-link to="/summary" class="nav-link ">
-					<i class="nav-icon fab fa-angular"></i>
+					<i class="nav-icon fas fa-book-reader"></i>
 					<p>Summary Report</p>
 				</router-link>
 			</li>
 
 
 			
-
-
             @can('isAdmin')
                 <li class="nav-item has-treeview menu-close">
                     <a href="#" class="nav-link">
