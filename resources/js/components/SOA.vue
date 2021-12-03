@@ -674,6 +674,28 @@ export default {
   
         async importwithstatus() {
             const data = await axios.get("api/importwithstatus");
+
+            // let output = [];
+
+            // data.data.forEach(function(item) {
+            //     const existing = output.filter((v, i) => {
+            //         if (v.arenaName == item.arenaName) console.log(v);
+            //         if (v.classification === 'KIOSK' && v.arenaName == item.arenaName) return v.arenaName == item.arenaName;
+
+            //     });
+
+            //     if (existing.length) {
+            //     const m = item.classification.toLowerCase();
+            //     const existingIndex = output.indexOf(existing[0]);
+            //     output[existingIndex][`${m}`] = ({...item})
+            //     } else {
+            //     if (typeof item.value == 'string')
+            //         item.value = [item.value];
+            //     output.push(item);
+            //     }
+            // });
+
+
             let helper = {};
 
             const duplicateObj = await data.data.reduce(function (r, obj) {
@@ -696,6 +718,8 @@ export default {
             const obj = {
                 data: duplicateObj,
             };
+
+            console.log(obj.data)
 
             this.arenaDatastatus = obj;
         },
@@ -1058,6 +1082,8 @@ export default {
                     },
                     {});
 
+
+
                     const objectKeyed = (array) => {
                         let objectKeyReplacedArray = [];
                         const [, ...headKey] = Object.values(array[0]);
@@ -1074,19 +1100,20 @@ export default {
                             );
                           
                             objectKeyReplacedArray.push({
-                                eventCreated: mergeObj.dateCreated || moment(),
+                                eventCreated: mergeObj.dateCreated || moment().format("LLL"),
                                 type: data.type ? data.type : data.classification ? data.classification : null,
-                                totalCommission: 0,
-                                totalOthers: 0,
-                                salesDeductionTablet: 0,
-                                netOperatorsCommission: 0,
-                                otherCommissionIntel05: 0,
-                                consolidatorsCommission: 0,
-                                safetyFund: 0,
-                                paymentForOutstandingBalance: 0,
-                                systemErrorCOArmsi: 0,
-                                cashLoad: 0,
-                                cashWithdrawal: 0,
+                                totalCommission: data.totalCommission || 0,
+                                totalOthers: data.totalOthers || 0,
+                                salesDeductionTablet: data.salesDeductionTablet || 0,
+                                otherCommissionInteldata05: data.otherCommissionInteldata05,
+                                consolidatorsCommission: data.consolidatorsCommission || 0,
+                                safetyFund: data.safetyFund || 0,
+                                paymentForOutstandingBalance: data.paymentForOutstandingBalance || 0,
+                                systemErrorCOArmsi: data.systemErrorCOArmsi || 0,
+                                cashLoad: data.cashLoad || 0,
+                                cashWithdrawal: data.cashWithdrawal || 0,
+                                netOperatorsCommission: data.netOperatorsCommission || 0,
+                                otherCommissionIntel05: data.otherCommissionIntel05 || 0,
                                 ...data,
                             });
                         });
@@ -1096,10 +1123,66 @@ export default {
 
                     const objKeyRep = objectKeyed(reportCombined);
                     const objKeySummary = objectKeyed(summaryReport);
+
+
+                    let objMobileKiosk = [];
+
+                    objKeyRep.forEach(function(item) {
+                        const existing = objMobileKiosk.filter((v, i) => {
+                            if (v.arenaName == item.arenaName) console.log(v);
+                            if (v.type === 'KIOSK' && v.arenaName == item.arenaName) return v.arenaName == item.arenaName;
+
+                        });
+
+                        if (existing.length) {
+                        const m = item.type.toLowerCase();
+                        const existingIndex = objMobileKiosk.indexOf(existing[0]);
+                        objMobileKiosk[existingIndex][`${m}`] = ({...item})
+                        } else {
+                        if (typeof item.value == 'string')
+                            item.value = [item.value];
+                        objMobileKiosk.push(item);
+                        }
+                    });
+
+
+                    let helper = {};
+                    const result = objMobileKiosk.reduce(function (r, o) {
+                    let key = o.arenaName;
+                   
+                    if (!helper[key]) {
+                    
+                            helper[key] = Object.assign({}, o); // create a copy of o
+                        
+                        r.push(helper[key]);
+                        
+                    } else {
+                       
+                        helper[key].mobile = {
+                            totalMW: o.total,
+                            draw: o.draw
+                        }
+                        
+                    
+                    }
+                    
+                    return r;
+                    }, []);
+
+
+                    console.log('MOBILEKIOSK',result)
+
+                
+
                     const accountsReportSummaryCombined = [
-                        ...objKeyRep,
+                         ...result,
                         ...objKeySummary,
+                       
+                      
                     ];
+
+
+                   
 
                     const arsc = values(
                         map(
@@ -1156,7 +1239,7 @@ export default {
 
             const options = {
                 type: "dataURL",
-                backgroundColor: "#f1f1f1",
+                backgroundColor: "#fafafa",
             };
             const printCanvas = await html2canvas(el, options);
 
@@ -1219,11 +1302,14 @@ export default {
             const netOpCommTotal =
                 numberUnformat(mwTotalPercent) +
                 numberUnformat(drawTotalPercent) +
+                numberUnformat(mwMobileTotalPercent) +
+                numberUnformat(drawMobileTotalPercent) +
                 numberUnformat(this.computation.unclaimed) +
-                numberUnformat(this.computation.cUnpaid) +
+                numberUnformat(this.computation.cUnpaid) -
                 numberUnformat(this.computation.salesDeductionTablet);
+
             const totalComm = numberUnformat(netOpCommTotal) + numberUnformat(this.computation.otherCommissionIntel05 || "0.00") - numberUnformat(this.computation.consolidatorsCommission || "0.00") - numberUnformat(this.computation.safetyFund || "0.00")  - numberUnformat(this.computation.paymentForOutstandingBalance || "0.00")  
-           
+            console.log(totalComm)
 
             const netOpCommission = numberFormat(netOpCommTotal) || 0;
             const totalCommission = numberFormat(totalComm) || 0;
@@ -1231,6 +1317,8 @@ export default {
 
             const cashLoad = this.computation.mobile.cashLoad || 0;
             const cashWithdraw = this.computation.mobile.cashWithdraw || 0;
+
+
 
             const depositReplenish = numberFormat(
                 numberUnformat(netWinLoss) -

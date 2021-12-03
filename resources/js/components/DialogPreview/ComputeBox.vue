@@ -44,7 +44,7 @@
                             <input
                                 type="text"
                                 disabled="disabled"
-                                class="input-field_report computation"
+                                class="input-field_report computation comp"
                                 v-model="computation.totalMWBet"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
@@ -83,7 +83,7 @@
                                 <input
                                     type="text"
                                     disabled
-                                    class="input-field_report computation"
+                                    class="input-field_report computation comp"
                                     v-model="computation.drawCancelled"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
@@ -123,7 +123,7 @@
                                 <input
                                     type="text"
                                     disabled
-                                    class="input-field_report computation"
+                                    class="input-field_report computation comp"
                                     v-model="computation.draw"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
@@ -163,7 +163,7 @@
                                 <input
                                     type="text"
                                     disabled
-                                    class="input-field_report computation"
+                                    class="input-field_report computation comp"
                                     v-model="computation.totalPayoutPaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
@@ -204,7 +204,7 @@
                                 <input
                                     type="text"
                                     disabled
-                                    class="input-field_report computation"
+                                    class="input-field_report computation comp"
                                     v-model="computation.cdPaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
@@ -244,7 +244,7 @@
                                 <input
                                     type="text"
                                     disabled
-                                    class="input-field_report computation"
+                                    class="input-field_report computation comp"
                                     v-model="computation.drawPaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
@@ -504,7 +504,7 @@
                                 <input
                                     type="text"
                                     disabled
-                                    class="input-field_report computation"
+                                    class="input-field_report computation comp"
                                     v-model="computation.unclaimed"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
@@ -544,7 +544,7 @@
                                 <input
                                     type="text"
                                     disabled
-                                    class="input-field_report computation"
+                                    class="input-field_report computation comp"
                                     v-model="computation.cUnpaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
@@ -584,7 +584,7 @@
                                 <input
                                     type="text"
                                     disabled
-                                    class="input-field_report computation"
+                                    class="input-field_report computation comp"
                                     v-model="computation.salesDeductionTablet"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
@@ -662,7 +662,7 @@
                                 <input
                                     type="text"
                                     disabled
-                                    class="input-field_report computation"
+                                    class="input-field_report computation comp"
                                     v-model="computation.otherCommissionIntel05"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
@@ -702,7 +702,7 @@
                                 <input
                                     type="text"
                                     disabled
-                                    class="input-field_report computation"
+                                    class="input-field_report computation comp"
                                     v-model="computation.consolidatorsCommission"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
@@ -742,7 +742,7 @@
                                 <input
                                     type="text"
                                     disabled
-                                    class="input-field_report computation"
+                                    class="input-field_report computation comp"
                                     v-model="computation.safetyFund"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
@@ -782,7 +782,7 @@
                                 <input
                                     type="text"
                                     disabled
-                                    class="input-field_report computation"
+                                    class="input-field_report computation comp"
                                     v-model="computation.paymentForOutstandingBalance"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
@@ -876,7 +876,7 @@
                             <input
                                 type="text"
                                 disabled
-                                class="input-field_report computation"
+                                class="input-field_report computation comp"
                                 v-model="computation.mobile.totalMWBet"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
@@ -912,7 +912,7 @@
                             <input
                                 type="text"
                                 disabled
-                                class="input-field_report computation"
+                                class="input-field_report computation comp"
                                 v-model="computation.mobile.totalDrawBet"
                                  @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
@@ -950,7 +950,7 @@
                             <input
                                 type="text"
                                 disabled
-                                class="input-field_report computation"
+                                class="input-field_report computation comp"
                                 v-model="computation.mobile.cashLoad"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
@@ -986,7 +986,7 @@
                             <input
                                 type="text"
                                 disabled
-                                class="input-field_report computation"
+                                class="input-field_report computation comp"
                                 v-model="computation.mobile.cashWithdraw"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
