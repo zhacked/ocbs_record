@@ -47,6 +47,9 @@ Vue.filter('upText', function (text) {
 Vue.filter('myDate', function (created) {
     return moment(created).format('MMMM Do YYYY');
 });
+Vue.filter('myDateSummary', function (updated) {
+    return moment(updated).format('MMM D,YYYY');
+});
 
 Vue.filter('numbro', function (number) {
     return numbro(number).format({

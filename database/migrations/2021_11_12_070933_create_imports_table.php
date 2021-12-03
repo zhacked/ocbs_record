@@ -15,24 +15,24 @@ class CreateImportsTable extends Migration
     {
         Schema::create('imports', function (Blueprint $table) {
             $table->id();
-            $table->string('arena_name');
-            $table->string('date_of_soa');
-            $table->string('meron');
-            $table->string('wala');
-            $table->string('total_meron_wala');
-            $table->string('total_payout_paid');
-            $table->string('unclaimed');
-            $table->string('rake');
-            $table->string('draw_cancelled');
-            $table->string('draw_cancelled_paid');
-            $table->string('draw_paid');
-            $table->string('draw_unpaid');
-            $table->string('cancelled_unpaid');
-            $table->string('draw');
-            $table->string('draw_unclaimed');
-            $table->string('draw_gain_loss');
-            $table->string('draw_2_percent');
-            $table->string('type');
+            $table->string('arena_name')->nullable();
+            $table->string('date_of_soa')->nullable();
+            $table->string('meron')->nullable();
+            $table->string('wala')->nullable();
+            $table->string('total_meron_wala')->nullable();
+            $table->string('total_payout_paid')->nullable();
+            $table->string('unclaimed')->nullable();
+            $table->string('rake')->nullable();
+            $table->string('draw_cancelled')->nullable();
+            $table->string('draw_cancelled_paid')->nullable();
+            $table->string('draw_paid')->nullable();
+            $table->string('draw_unpaid')->nullable();
+            $table->string('cancelled_unpaid')->nullable();
+            $table->string('draw')->nullable();
+            $table->string('draw_unclaimed')->nullable();
+            $table->string('draw_gain_loss')->nullable();
+            $table->string('draw_2_percent')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

@@ -113,11 +113,20 @@
                                         role="tabpanel"
                                         aria-labelledby="custom-tabs-three-home-tab"
                                     >
+                                     <template >
+                                        <v-switch
+                                            v-model="singleSelect"
+                                            label="Single select"
+                                            class="pa-3"
+                                        ></v-switch>
+                                        </template>
                                         <v-data-table
                                             :headers="headers"
                                             :items="arenaData.data"
                                             :items-per-page="10"
                                             :search="search"
+                                            show-select
+                                            :single-select="singleSelect"
                                             class="elevation-1 text-center"
                                         >
                                             <template
@@ -553,7 +562,7 @@ export default {
                 prepared: {},
             },
 
-           
+           singleSelect:false,
             dialog: false,
             notifications: false,
             sound: true,

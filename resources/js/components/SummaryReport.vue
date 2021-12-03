@@ -73,50 +73,44 @@
                                         <v-data-table
                                             :headers="headers"
                                             :items="deposit"
-                                         
                                             :items-per-page="10"
                                             :search="search"
-                                            sort-by="created_at"
-                                            group-by="created_at"
-                                          
+                                            sort-by="updated_at"
+                                            group-by="updated_at"
                                             class="elevation-1 text-center"
                                         >
-                                            <template
-                                                v-slot:[`item.actions`]="{
-                                                    item,
-                                                }"
-                                            >
-                                                <v-tooltip top>
-                                                    <template
-                                                        v-slot:activator="{
-                                                            on,
-                                                            attrs,
-                                                            hover,
-                                                        }"
-                                                    >
-                                                        <v-btn
-                                                            icon
-                                                            color="primary"
-                                                            dark
-                                                            small
-                                                            v-bind="attrs"
-                                                            v-on="on"
-                                                            @click="
-                                                                openModel(item)
-                                                            "
-                                                            :class="{
-                                                                'on-hover':
-                                                                    hover,
-                                                            }"
-                                                        >
-                                                            <v-icon
-                                                                >mdi-eye</v-icon
-                                                            >
-                                                        </v-btn>
-                                                    </template>
-                                                    <span>View Account</span>
-                                                </v-tooltip>
-                                            </template>
+                                      <template v-slot:[`group.header`]="{ group, headers, toggle, isOpen }">
+                                    
+                                        <td :colspan="headers.length">
+                                                <v-row>
+                                                    <v-col class="mt-2 ">
+                                                        <div class=" float-left">
+                                                            <v-btn @click="toggle" x-small icon :ref="group" >
+                                                                <v-icon v-if="isOpen">mdi-plus</v-icon>
+                                                                <v-icon v-else>mdi-minus</v-icon>
+                                                            </v-btn>
+                                                            <span class="mx-5 font-weight-bold">{{ group | myDateSummary }}</span>
+                                                        </div>  
+                                                     
+                                                    </v-col>
+                                                    <v-col>
+                                                      <div class=" float-right">
+                                                           <v-btn 
+                                                            small  
+                                                        
+                                                            outlined
+                                                            color="green" 
+                                                           >
+                                                               <v-icon left>
+                                                                    mdi-download
+                                                                </v-icon>  Download
+                                                            </v-btn>
+                                                      </div>
+                                                    </v-col>
+                                                </v-row>
+                                              
+                                        </td>
+                                        </template>
                                         </v-data-table>
                                     </div>
 
@@ -193,8 +187,10 @@ export default {
                 { text: "SAO#", value: "Soa_number" },
                 { text: "OCBS Name", value: "arena_name" },
                 { text: "Amount", value: "for_total" },
-                { text: "", value: "created_at" ,align: 'right'},
-                
+
+                { text: "date", value: "updated_at" },
+         
+              
             ],
             deposit:[],
             reflenish:[],
