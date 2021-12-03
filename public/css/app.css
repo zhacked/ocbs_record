@@ -73343,6 +73343,9 @@ readers do not read off random characters that represent icons */
 
 .computation-span {
   width: 140px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .pdf-title {
@@ -73375,6 +73378,10 @@ readers do not read off random characters that represent icons */
 
 .arenaLabel {
   width: 180px;
+}
+
+.comp {
+  text-align: right;
 }
 
 .computation-banner {
