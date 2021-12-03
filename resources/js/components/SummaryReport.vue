@@ -73,8 +73,12 @@
                                         <v-data-table
                                             :headers="headers"
                                             :items="deposit"
+                                         
                                             :items-per-page="10"
                                             :search="search"
+                                            sort-by="created_at"
+                                            group-by="created_at"
+                                          
                                             class="elevation-1 text-center"
                                         >
                                             <template
@@ -185,11 +189,12 @@ export default {
     data() {
         return {
             headers: [
-                { text: "#", value: "" },
+                { text: "#", value: "id" },
                 { text: "SAO#", value: "Soa_number" },
                 { text: "OCBS Name", value: "arena_name" },
                 { text: "Amount", value: "for_total" },
-                { text: "", value: "actions", sortable: false },
+                { text: "", value: "created_at" ,align: 'right'},
+                
             ],
             deposit:[],
             reflenish:[],
