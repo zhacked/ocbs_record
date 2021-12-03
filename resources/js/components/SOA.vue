@@ -18,6 +18,7 @@
                                         id="importData"
                                         class="form-control"
                                         @change="onFileChange"
+                                         accept=".xlsx, .xls, .csv"
                                     />
                                     <v-btn
                                         type="submit"
@@ -33,6 +34,15 @@
                             class="card card-primary card-outline card-tabs"
                             style="overflow: auto; !important"
                         >
+                         <v-btn
+                                                    v-show="!editmode"
+                                                    icon
+                                                    color="green"
+                                                  
+                                                    @click="multiDownloads()"
+                                                >
+                                                    <v-icon>mdi-image</v-icon>
+                                                </v-btn>
                             <div class="card-header p-0 pt-1 border-bottom-0">
                                 <ul
                                     class="nav nav-tabs"
@@ -256,6 +266,7 @@
                                                     </v-chip>
                                                 </template>
                                                 <span>Close</span>
+                                                
                                             </v-tooltip>
                                         </div>
                                     </div>
@@ -564,7 +575,7 @@ export default {
             },
 
             operator_name: "",
-            randomNumber: 0,
+            sofrNumSeq: 0,
             arenaData: [],
             arenaDatastatus: [],
             arenaDetails: {},
@@ -573,7 +584,8 @@ export default {
             arena_name: "",
             loading: false,
             loader: null,
-            checkfilename: "",
+            
+            fileUpload: "",
             form: new Form({
                 id: "",
                 arena: "",
@@ -835,10 +847,10 @@ export default {
 
         proceedAction() {
             this.$Progress.start();
-            var result = $('#importData').val().split('.');
+            // var result = $('#importData').val().split('.');
+            
             if (
-                $("#importData").val() === "" ||
-                this.checkfilename[1] != "xlsx" || result[1] != "xlsx"
+                $("#importData").val() === "" || !this.fileUpload.name.includes("xlsx")
             ) {
                 Fire.$emit("AfterCreate");
                 swal.fire({
@@ -885,7 +897,7 @@ export default {
                 this.dialog = true;
                 this.date_created = moment().format("ll");
                 this.date_event = moment(data.date_of_soa).format("ll");
-                this.randomNumber = Math.floor(Math.random() * (1000 + 1) + 1);
+                 this.sofrNumSeq = ('00000'+ data.id).slice(-5);
                 // this.editmode = !this.editmode;
 
                 this.form.fill(data.arena_details);
@@ -977,8 +989,9 @@ export default {
 
         onFileChange(event) {
             const file = event.target.files ? event.target.files[0] : null;
-            this.checkfilename = file.name.split(".");
-            if (file && this.checkfilename[1] == "xlsx") {
+            this.fileUpload = file;
+            const checkfile = file.name.includes("xlsx") || file.name.includes("csv");
+            if (file && checkfile) {
                 const reader = new FileReader();
                 let arrayData = [];
                 let reportCombined = [];
@@ -1117,6 +1130,7 @@ export default {
                         title: "Oops...",
                         text: "Make sure you insert correct excel data!",
                     });
+                $('#importData').val("");
             }
         },
 
@@ -1170,6 +1184,10 @@ export default {
                 );
             console.log("done");
         },
+        multiDownloads(){
+            const el = this.$refs.soaReport;
+            console.log(el)
+        }
     },
 
     computed: {
@@ -1230,7 +1248,7 @@ export default {
                           number:
                               "FR" +
                               moment().format("MMDYY") +
-                              this.randomNumber,
+                              this.sofrNumSeq,
                           bankTitle: "We will replenish to",
                       }
                     : {
@@ -1240,7 +1258,7 @@ export default {
                           number:
                               "SOA" +
                               moment().format("MMDYY") +
-                              this.randomNumber,
+                              this.sofrNumSeq,
                           bankTitle: "Kindly Deposit to",
                       };
             this.depositReplenishTxt = depositReplenishText;
