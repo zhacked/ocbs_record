@@ -5,7 +5,7 @@
                 <v-col class="col-md-12">
                     <v-card>
                         <v-card-title class="card-header">
-                            <strong>Statement of Account</strong>
+                            <strong>Summary Report</strong>
                             <v-spacer></v-spacer>
                         </v-card-title>
 
@@ -186,9 +186,9 @@ export default {
         return {
             headers: [
                 { text: "#", value: "" },
-                { text: "SAO#", value: "" },
-                { text: "OCBS Name", value: "" },
-                { text: "Amount", value: "" },
+                { text: "SAO#", value: "Soa_number" },
+                { text: "OCBS Name", value: "arena_name" },
+                { text: "Amount", value: "for_total" },
                 { text: "", value: "actions", sortable: false },
             ],
             deposit:[],

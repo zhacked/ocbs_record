@@ -34,5 +34,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('count', [App\Http\Controllers\API\ImportController::class, 'countdata']);
     Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);
     Route::get('selectedbank/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
-    Route::get('arenaStatus/{id}', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
+    Route::put('arenaStatus/{id}', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
     Route::get('truncate', [App\Http\Controllers\API\ImportController::class, 'truncate_data']);

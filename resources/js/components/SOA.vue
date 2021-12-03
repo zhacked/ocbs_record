@@ -1135,7 +1135,7 @@ export default {
                 );
         },
         async downloadImg(details) {
-            console.log(details)
+         
             console.log("printing..");
             const el = this.$refs.soaReport;
 
@@ -1154,8 +1154,12 @@ export default {
                     .replace("image/png", "image/octet-stream")
             );
             link.click();
+       
             axios
-                .get("api/arenaStatus/" + this.arena_name)
+                .put("api/arenaStatus/" + this.arena_name,{
+                        data: this.computedAve,
+
+                    })
                 .then(
                     (data) => (
                         Fire.$emit("AfterCreate"),

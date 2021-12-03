@@ -134,10 +134,17 @@ class ImportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function arenastatus($arena_name)
-    {
+    public function arenastatus($arena_name,request $request)
+    {   
+        $amount = json_decode(json_encode($request->data));
+        $group =  json_decode(json_encode($amount));
+
           return  import::where('arena_name',$arena_name)->update([
-            'status' => 'done'
+            'status' => 'done',
+            'Soa_number'=> $group->depositReplenishText->number,
+            'group' => $group->depositReplenishText->totalText,
+            'for_total' => $amount->depositReplenish
+
         ]); 
     }
 
@@ -175,8 +182,8 @@ class ImportController extends Controller
     }
 
     public function depositedata(){
-        $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereGroup('deposit')->whereNotNull('status')->get();
-        $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereGroup('reflenish')->whereNotNull('status')->get();
+        $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereGroup('Deposit')->whereNotNull('status')->get();
+        $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereGroup('Reflenish')->whereNotNull('status')->get();
         return Response()->json([
             'rf' => $reflenish,
             'dp' => $deposit
