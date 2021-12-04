@@ -5,10 +5,14 @@ namespace App\Http\Controllers\API;
 use view;
 use App\Models\User;
 
+use App\Models\import;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Artisan;
 
 class UserController extends Controller
 {
@@ -108,9 +112,20 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function validate_user($password)
     {
-        //
+    
+        if (Hash::check($password, Auth::user()->password)) {
+            // $artisan = Artisan::call('backup:run',[
+            //     '--only-db' => true,
+            // ]);
+             $import =  import::truncate();
+             return 'success';
+        }else{
+            return 'error';
+        }
+        
+       
     }
 
     /**

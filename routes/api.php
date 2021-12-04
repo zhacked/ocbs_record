@@ -35,4 +35,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);
     Route::get('selectedbank/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
     Route::put('arenaStatus/{id}', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
-    Route::get('truncate', [App\Http\Controllers\API\ImportController::class, 'truncate_data']);
+   
+    Route::get('validate/{password}', [App\Http\Controllers\API\UserController::class, 'validate_user']);

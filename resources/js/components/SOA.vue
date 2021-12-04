@@ -655,30 +655,69 @@ export default {
                 .then(({ data }) => (this.bank.all = data));
         },
         truncate(){
-             swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, Clear All!'
-                    }).then((result) => {
-                      
-                         if (result.value) {
-                                axios.get("api/truncate").then(()=>{
-                                        swal.fire(
-                                        'Deleted!',
-                                        'Your file has been deleted.',
-                                        'success'
-                                        )
-                                    Fire.$emit('AfterCreate');
-                                }).catch((error)=> {
-                                    console.log(error)
-                                });
-                         }
-                    })
+            swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            input: 'password',
+            inputPlaceholder: "Enter Your Password",
+            customClass: {
+                input: 'form-control'
+            },
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            },
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Clear All!',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            showLoaderOnConfirm: true,
             
+            preConfirm: (login) => {
+             
+                if(login ==  ''){
+                    swal.fire({
+                        icon:'error',
+                        title: 'Oops...',
+                        text: 'Please Enter Valid Password',
+                    })
+                }
+               
+               
+            },
+            
+            }).then((result) => {
+
+            if (result.isConfirmed) {
+                axios.get('api/validate/'+ result.value)
+                    .then(response => {
+                        console.log(response)
+                        if(response.data=='success'){
+                              Toast.fire({
+                                icon: 'success',
+                                title: 'Successfully Deleted'
+                                })
+                        }else{
+                            swal.fire({
+                            icon:'error',
+                            title: 'Oops...',
+                            text: 'Password doesnt match in our database',
+                            })
+                        }
+                       
+                    })
+                    .catch(error => {
+                            console.log(error)
+                    })
+                }
+            })
+       
         },
   
         async importwithstatus() {

@@ -10,8 +10,10 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Support\Authorization\AuthorizationUserTrait;
 use  Spatie\DbDumper\Databases\MySql;
+use Illuminate\Support\Facades\Artisan;
+use App\Support\Authorization\AuthorizationUserTrait;
+
 class ImportController extends Controller
 {
 
@@ -75,9 +77,9 @@ class ImportController extends Controller
      */
     public function store(Request $request)
     {
-       
+       dd($request->all());
         foreach ($request->all() as $data ){
-      
+        
         $arena= arena::where('arena', $data['arenaName'])->first();
             
            $import =  import::create([
@@ -189,12 +191,5 @@ class ImportController extends Controller
             'dp' => $deposit
         ]);
     }
-    public function truncate_data(){
-        // $import =  import::truncate();
-        $dump =  MySql::create()
-        ->setDbName('finance')
-        ->setUserName('root')
-        ->setPassword('')
-        ->dumpToFile('dump.sql');;
-    }
+
 }
