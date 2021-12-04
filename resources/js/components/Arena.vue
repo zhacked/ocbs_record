@@ -249,8 +249,8 @@
                     $('#addNew').modal('hide');
                             Toast.fire({
                                 icon: 'success',
-                                title: 'Successfully Deleted',
-                                color: 'success'
+                                title: 'Successfully Deleted'
+                                
                                 })
                         this.$Progress.finish();
                          Fire.$emit('AfterCreate');
@@ -319,11 +319,12 @@
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
-                     swal.fire(
-                                'Save!',
-                                'You create new Arena.',
-                                'success'
-                        )
+                     Toast.fire({
+                                icon: 'success',
+                                title: 'Successfully Created'
+                                
+                                })
+                
                     this.$Progress.finish();
                 })
                 .catch((e)=>{

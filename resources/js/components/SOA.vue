@@ -551,6 +551,7 @@ export default {
     data() {
         return {
             headers: [
+                { text: "#", value: "id" },
                 { text: "Arena Name", value: "arena_name" },
                 { text: "Operator", value: "arena_details.operator" },
                 { text: "Contact", value: "arena_details.contact_number" },
@@ -661,6 +662,11 @@ export default {
             text: "You won't be able to revert this!",
             input: 'password',
             inputPlaceholder: "Enter Your Password",
+            inputAttributes: {
+             
+                autocapitalize: 'off',
+                autocorrect: 'off'
+            },
             customClass: {
                 input: 'form-control'
             },
@@ -799,6 +805,7 @@ export default {
             };
 
             this.arenaData = obj;
+            console.log(obj.data);
         },
         closeDialog() {
             this.dialog = false;
