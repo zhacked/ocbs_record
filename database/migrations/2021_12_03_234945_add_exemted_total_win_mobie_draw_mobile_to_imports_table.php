@@ -14,9 +14,9 @@ class AddExemtedTotalWinMobieDrawMobileToImportsTable extends Migration
     public function up()
     {
         Schema::table('imports', function (Blueprint $table) {
-            $table->string('excemted');
-            $table->string('total_win_mobile');
-            $table->string('draw_mobile');
+            $table->string('exempted')->nullable();
+            $table->string('total_win_mobile')->nullable();
+            $table->string('draw_mobile')->nullable();
         });
     }
 
