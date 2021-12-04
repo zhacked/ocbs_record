@@ -111,6 +111,10 @@ class ImportController extends Controller
                 'systemErrorCOArmsi'=> $data['systemErrorCOArmsi'],
                 'cashLoad'=> $data['cashLoad'],
                 'cashWithdrawal'=> $data['cashWithdrawal'],
+                'total_win_mobile'=> $data['totalMWMobile'],
+                'draw_mobile'=> $data['drawMobile'],
+                'exempted'=> $data['exempted'],
+
             ]);
         }
         
