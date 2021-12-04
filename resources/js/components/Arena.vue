@@ -247,11 +247,11 @@
                 this.form.put('api/arena/'+this.form.id)
                 .then(() => {
                     $('#addNew').modal('hide');
-                     swal.fire(
-                        'Updated!',
-                        'Information has been updated.',
-                        'success'
-                        )
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Successfully Deleted',
+                                color: 'success'
+                                })
                         this.$Progress.finish();
                          Fire.$emit('AfterCreate');
                 })

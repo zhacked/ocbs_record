@@ -77,7 +77,7 @@ class ImportController extends Controller
      */
     public function store(Request $request)
     {
-       dd($request->all());
+      
         foreach ($request->all() as $data ){
         
         $arena= arena::where('arena', $data['arenaName'])->first();

@@ -704,6 +704,7 @@ export default {
                                 icon: 'success',
                                 title: 'Successfully Deleted'
                                 })
+                                   Fire.$emit('AfterCreate');
                         }else{
                             swal.fire({
                             icon:'error',
