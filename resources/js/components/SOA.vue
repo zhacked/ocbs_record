@@ -1167,10 +1167,13 @@ export default {
                         
                     } else {
                        
-                        helper[key].mobile = {
-                            totalMW: o.total,
-                            draw: o.draw
-                        }
+                        // helper[key].mobile = {
+                        //     totalMW: o.total,
+                        //     draw: o.draw
+                        // }
+
+                          helper[key].totalMWMobile = o.total;
+                          helper[key].drawMobile = o.draw;
                         
                     
                     }
