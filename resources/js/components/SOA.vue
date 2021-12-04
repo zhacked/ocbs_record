@@ -516,7 +516,7 @@
 <script>
 import {
     camelCase,
-    mapKeys,
+    union,
     groupBy,
     map,
     spread,
@@ -624,6 +624,7 @@ export default {
                 systemErrorCOArmsi: 0,
                 totalOthers: 0,
                 totalCommission: 0,
+                exempted: "",
                 mobile: {
                     totalMWBet: 0,
                     totalDrawBet: 0,
@@ -728,7 +729,7 @@ export default {
                 data: duplicateObj,
             };
 
-            console.log(obj.data)
+            // console.log(obj.data)
 
             this.arenaDatastatus = obj;
         },
@@ -953,6 +954,9 @@ export default {
                 const paymentForOutstandingBalance = data.paymentForOutstandingBalance;
                 const cashLoad = data.cashLoad;
                 const cashWithdrawal = data.cashWithdrawal;
+                const totalMWMobile = data.total_win_mobile;
+                const drawMobile = data.draw_mobile;
+                const exempted = data.exempted;
 
 
                 // const netWinLoss =
@@ -966,11 +970,11 @@ export default {
                     parseFloat(totalMWBet) *
                     parseFloat(this.commission_percent);
                 // console.log(totalMWBetPercent)
-                const totalMobileMWBets = data.mobile
-                    ? data.mobile.total_meron_wala
-                    : 0;
-                const totalMobileDrawBets = data.mobile ? data.mobile.draw : 0;
-                const totalCommission = 
+                // const totalMobileMWBets = data.mobile
+                //     ? data.mobile.total_meron_wala
+                //     : 0;
+                // const totalMobileDrawBets = data.mobile ? data.mobile.draw : 0;
+                // const totalCommission = 
 
                 this.computation = {
                     totalMWBet: numberFormat(totalMWBet),
@@ -1002,10 +1006,11 @@ export default {
                     systemErrorCOArmsi: numberFormat(
                        systemErrorCOArmsi
                     ),
-                    totalOthers: numberFormat(this.computation.totalOthers),
-                    totalCommission: numberFormat(
-                       totalCommission
-                    ),
+                    exempted,
+                    // totalOthers: numberFormat(this.computation.totalOthers),
+                    // totalCommission: numberFormat(
+                    //    totalCommission
+                    // ),
                     mobile: {
                         cashLoad: numberFormat(
                            cashLoad
@@ -1013,8 +1018,8 @@ export default {
                         cashWithdraw: numberFormat(
                            cashWithdrawal
                         ),
-                        totalMWBet: numberFormat(totalMobileMWBets),
-                        totalDrawBet: numberFormat(totalMobileDrawBets),
+                        totalMWBet: numberFormat(totalMWMobile),
+                        totalDrawBet: numberFormat(drawMobile),
                     },
                 };
             }
@@ -1051,7 +1056,7 @@ export default {
                     });
                     // console.log(filtered)
                     filteredWS.forEach((w) => {
-                        console.log(w);
+                      
                         const singleSheet = wb.Sheets[w];
                         arrayData.push(
                             XLSX.utils.sheet_to_json(singleSheet, {
@@ -1076,20 +1081,27 @@ export default {
                     });
 
                     arrayData[1].map((sr) => {
-                        if (Object.keys(sr).length >= 35)
+                        if (Object.keys(sr).length >= 20)
                             summaryReport.push(sr);
                     });
 
+                    // const fn = spread(union);
+
+               
+
                     // Merge Object
                     const mergeObj = mergeObject(eventsCombined);
+                    // const mergeObj = mergeObject(eventsCombined);
 
-                    const combinedEvent = eventsCombined.reduce(function (
-                        result,
-                        current
-                    ) {
-                        return Object.assign(result, current);
-                    },
-                    {});
+                    // const combinedEvent = eventsCombined.reduce(function (
+                    //     result,
+                    //     current
+                    // ) {
+                    //     return Object.assign(result, current);
+                    // },
+                    // {});
+
+
 
 
 
@@ -1107,22 +1119,25 @@ export default {
                                     })
                                 )
                             );
-                          
+                            // console.log(data.arenaName,'>>>',data)
                             objectKeyReplacedArray.push({
                                 eventCreated: mergeObj.dateCreated || moment().format("LLL"),
                                 type: data.type ? data.type : data.classification ? data.classification : null,
-                                totalCommission: data.totalCommission || 0,
-                                totalOthers: data.totalOthers || 0,
-                                salesDeductionTablet: data.salesDeductionTablet || 0,
-                                otherCommissionInteldata05: data.otherCommissionInteldata05,
-                                consolidatorsCommission: data.consolidatorsCommission || 0,
-                                safetyFund: data.safetyFund || 0,
-                                paymentForOutstandingBalance: data.paymentForOutstandingBalance || 0,
-                                systemErrorCOArmsi: data.systemErrorCOArmsi || 0,
-                                cashLoad: data.cashLoad || 0,
-                                cashWithdrawal: data.cashWithdrawal || 0,
-                                netOperatorsCommission: data.netOperatorsCommission || 0,
-                                otherCommissionIntel05: data.otherCommissionIntel05 || 0,
+                                totalCommission: data.totalCommission ? data.totalCommission : 0,
+                                totalOthers: data.totalOthers ? data.totalOthers : 0,
+                                salesDeductionTablet: data.salesDeductionTablet ? data.salesDeductionTablet : 0,
+                                otherCommissionInteldata05: data.otherCommissionInteldata05 ? data.otherCommissionInteldata05 : 0,
+                                consolidatorsCommission: data.consolidatorsCommission ? data.consolidatorsCommission : 0,
+                                safetyFund: data.safetyFund ? data.safetyFund : 0,
+                                paymentForOutstandingBalance: data.paymentForOutstandingBalance ? data.paymentForOutstandingBalance : 0,
+                                systemErrorCOArmsi: data.systemErrorCOArmsi ? data.systemErrorCOArmsi : 0,
+                                cashLoad: data.cashLoad ? data.cashLoad : 0,
+                                cashWithdrawal:data.cashWithdrawal ? data.cashWithdrawal : 0,
+                                netOperatorsCommission: data.netOperatorsCommission ? data.netOperatorsCommission : 0,
+                                otherCommissionIntel05: data.otherCommissionIntel05 ? data.otherCommissionIntel05 : 0,
+                               
+                                drawMobile: 0,
+                                totalMWMobile: 0,
                                 ...data,
                             });
                         });
@@ -1130,15 +1145,23 @@ export default {
                         return objectKeyReplacedArray;
                     };
 
+                    // const mergeArr = fn(arrayData);
+
+                    // console.log('mergeArr>>>', objectKeyed(mergeArr))
+
                     const objKeyRep = objectKeyed(reportCombined);
                     const objKeySummary = objectKeyed(summaryReport);
+                    // const mergeArr = objKeyRep.concat(objKeySummary)
+
+                    // console.log(objKeySummary)
+
 
 
                     let objMobileKiosk = [];
 
-                    objKeyRep.forEach(function(item) {
+                    objKeySummary.forEach(function(item) {
                         const existing = objMobileKiosk.filter((v, i) => {
-                            if (v.arenaName == item.arenaName) console.log(v);
+                            // if (v.arenaName == item.arenaName) console.log(v);
                             if (v.type === 'KIOSK' && v.arenaName == item.arenaName) return v.arenaName == item.arenaName;
 
                         });
@@ -1146,13 +1169,16 @@ export default {
                         if (existing.length) {
                         const m = item.type.toLowerCase();
                         const existingIndex = objMobileKiosk.indexOf(existing[0]);
-                        objMobileKiosk[existingIndex][`${m}`] = ({...item})
+                        objMobileKiosk[existingIndex].totalMWMobile = item.total;
+                        objMobileKiosk[existingIndex].drawMobile = item.draw;
                         } else {
                         if (typeof item.value == 'string')
                             item.value = [item.value];
-                        objMobileKiosk.push(item);
+                            objMobileKiosk.push(item);
                         }
                     });
+
+                    // console.log('OBJMK>>>',objMobileKiosk)
 
 
                     let helper = {};
@@ -1182,16 +1208,19 @@ export default {
                     }, []);
 
 
-                    console.log('MOBILEKIOSK',result)
+                    // console.log('MOBILEKIOSK',result)
 
                 
 
                     const accountsReportSummaryCombined = [
-                         ...result,
-                        ...objKeySummary,
-                       
+                        //   ...objKeySummary,
+                        //   ...objKeyRep,
+                          ...result,
+                      
                       
                     ];
+
+                    // console.log(result)
 
 
                    
@@ -1203,10 +1232,12 @@ export default {
                         )
                     );
 
+                    // console.log(arsc)
+
                     const filterObjectHeader = arsc.filter((obk) => {
                         if (
                             obk.arenaName !== "OCBS NAME" &&
-                            obk.arenaName !== "ARENA NAME"
+                            obk.arenaName !== "ARENA NAME" && obk.key !== "Over All Total:" && obk.key !== "Grand Total:"
                         )
                             return obk;
                     });
@@ -1321,7 +1352,7 @@ export default {
                 numberUnformat(this.computation.salesDeductionTablet);
 
             const totalComm = numberUnformat(netOpCommTotal) + numberUnformat(this.computation.otherCommissionIntel05 || "0.00") - numberUnformat(this.computation.consolidatorsCommission || "0.00") - numberUnformat(this.computation.safetyFund || "0.00")  - numberUnformat(this.computation.paymentForOutstandingBalance || "0.00")  
-            console.log(totalComm)
+           
 
             const netOpCommission = numberFormat(netOpCommTotal) || 0;
             const totalCommission = numberFormat(totalComm) || 0;
@@ -1329,12 +1360,15 @@ export default {
 
             const cashLoad = this.computation.mobile.cashLoad || 0;
             const cashWithdraw = this.computation.mobile.cashWithdraw || 0;
+            const totalOthers = numberUnformat(this.computation.unclaimed) + numberUnformat(this.computation.cUnpaid)
+            const totalComputationOthers = this.computation.exempted === "NOT" ? numberFormat(totalOthers) : totalCommission;
+            console.log(this.computation.exempted)
 
 
 
             const depositReplenish = numberFormat(
                 numberUnformat(netWinLoss) -
-                    numberUnformat(totalCommission) +
+                    numberUnformat(totalComputationOthers) - numberUnformat(this.computation.systemErrorCOArmsi) +
                     numberUnformat(cashLoad) -
                     numberUnformat(cashWithdraw) || 0
             );
@@ -1370,6 +1404,7 @@ export default {
                 mwMobileTotalPercent,
                 drawMobileTotalPercent,
                 netOpCommission,
+                totalComputationOthers,
                 totalCommission,
                 cashLoad,
                 cashWithdraw,

@@ -109,6 +109,10 @@ class ImportController extends Controller
                 'systemErrorCOArmsi'=> $data['systemErrorCOArmsi'],
                 'cashLoad'=> $data['cashLoad'],
                 'cashWithdrawal'=> $data['cashWithdrawal'],
+                'total_win_mobile'=> $data['totalMWMobile'],
+                'draw_mobile'=> $data['drawMobile'],
+                'exempted'=> $data['exempted'],
+
             ]);
         }
         
@@ -190,11 +194,11 @@ class ImportController extends Controller
         ]);
     }
     public function truncate_data(){
-        // $import =  import::truncate();
-        $dump =  MySql::create()
-        ->setDbName('finance')
-        ->setUserName('root')
-        ->setPassword('')
-        ->dumpToFile('dump.sql');;
+        $import =  import::truncate();
+        // $dump =  MySql::create()
+        // ->setDbName('finance')
+        // ->setUserName('root')
+        // ->setPassword('')
+        // ->dumpToFile('dump.sql');;
     }
 }
