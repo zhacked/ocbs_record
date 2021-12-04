@@ -85,7 +85,7 @@
                                                 <v-row>
                                                     <v-col class="mt-2 ">
                                                         <div class=" float-left">
-                                                            <v-btn @click="toggle" x-small icon :ref="group" >
+                                                            <v-btn @click="toggle" x-small icon :ref="group" class="test" >
                                                                 <v-icon v-if="isOpen">mdi-plus</v-icon>
                                                                 <v-icon v-else>mdi-minus</v-icon>
                                                             </v-btn>
@@ -194,7 +194,7 @@ export default {
             ],
             deposit:[],
             reflenish:[],
-            search:''
+            search:'',
         };  
     },
     methods: {
