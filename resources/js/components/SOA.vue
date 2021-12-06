@@ -120,6 +120,7 @@
                                             class="pa-3"
                                         ></v-switch>
                                         </template>
+                                        <!-- <img class="ls-heart" src="your-loader-url"/> -->
                                         <v-data-table
                                             :headers="headers"
                                             :items="arenaData.data"
@@ -167,19 +168,21 @@
                                             </template>
                                         </v-data-table>
                                     </div>
-
+                
                                     <div
                                         class="tab-pane fade"
                                         id="custom-tabs-three-profile"
                                         role="tabpanel"
                                         aria-labelledby="custom-tabs-three-profile-tab"
                                     >
+                                    
                                         <v-data-table
                                             :headers="headers"
                                             :items="arenaDatastatus.data"
                                             :items-per-page="10"
                                             :search="search"
                                             class="elevation-1 text-center"
+                                            
                                         >
                                             <template
                                                 v-slot:[`item.actions`]="{
@@ -217,6 +220,7 @@
                                                     <span>View Account</span>
                                                 </v-tooltip>
                                             </template>
+                                          
                                         </v-data-table>
                                     </div>
                                 </div>
@@ -524,6 +528,7 @@ import {
     assign,
 } from "lodash";
 import XLSX from "xlsx";
+
 import {
     numberFormat,
     numberUnformat,
@@ -538,7 +543,7 @@ import ArenaDetails from "./DialogPreview/ArenaDetails.vue";
 import ComputeBox from "./DialogPreview/ComputeBox.vue";
 import BankBox from "./DialogPreview/BankBox.vue";
 import PreparedChecked from "./DialogPreview/PreparedChecked.vue";
-
+// import Spinner from "";
 export default {
     components: {
         VueHtml2pdf,
@@ -547,6 +552,7 @@ export default {
         ComputeBox,
         BankBox,
         PreparedChecked,
+        
     },
     data() {
         return {
@@ -651,11 +657,7 @@ export default {
                     )
                 );
         },
-        loadbank() {
-            axios
-                .get("api/bankaccount")
-                .then(({ data }) => (this.bank.all = data));
-        },
+    
         truncate(){
             swal.fire({
             title: 'Are you sure?',
@@ -731,26 +733,7 @@ export default {
         async importwithstatus() {
             const data = await axios.get("api/importwithstatus");
 
-            // let output = [];
-
-            // data.data.forEach(function(item) {
-            //     const existing = output.filter((v, i) => {
-            //         if (v.arenaName == item.arenaName) console.log(v);
-            //         if (v.classification === 'KIOSK' && v.arenaName == item.arenaName) return v.arenaName == item.arenaName;
-
-            //     });
-
-            //     if (existing.length) {
-            //     const m = item.classification.toLowerCase();
-            //     const existingIndex = output.indexOf(existing[0]);
-            //     output[existingIndex][`${m}`] = ({...item})
-            //     } else {
-            //     if (typeof item.value == 'string')
-            //         item.value = [item.value];
-            //     output.push(item);
-            //     }
-            // });
-
+          
 
             let helper = {};
 
@@ -811,6 +794,7 @@ export default {
             this.dialog = false;
         },
         updateModal() {
+           
             $(".computation").removeAttr("disabled");
             $(".computation").addClass("input-show");
 
@@ -863,7 +847,10 @@ export default {
                     ),
                 },
             };
-
+          
+              axios.get("api/selectedbank/" + this.arena_id).then(({data}) => (
+                  this.bank.all = data
+                ));
             this.editmode = !this.editmode;
         },
         closeDialog() {
@@ -874,6 +861,7 @@ export default {
         },
 
         saveModal() {
+
             $(".computation").attr("disabled", true);
             this.editmode = !this.editmode;
 
@@ -956,7 +944,7 @@ export default {
         },
 
         openModel(data) {
-            console.log(data);
+         
             if (data.arena_details == null) {
                 swal.fire({
                     icon: "warning",
@@ -966,14 +954,18 @@ export default {
                 });
             } else {
                 this.operator_name = data.arena_details.operator;
-                this.bank.bank_name =
-                    data.bank_details.length != 0
-                        ? data.bank_details[0].bank_name
-                        : "No Bank Name found !";
-                this.bank.bank_number =
-                    data.bank_details.length != 0
-                        ? data.bank_details[0].bank_number
-                        : "No Bank Number found !";
+            
+                // this.bank.bank_name =
+                //     data.bank_details.length != 0
+                //         ? "data.bank_details[0].bank_name"
+                //         : "No Bank Name found !";
+                // this.bank.bank_number =
+                //     data.bank_details.length != 0
+                //         ? "data.bank_details[0].bank_number"
+                //         : "No Bank Number found !";
+
+              
+
                 this.form.reset();
                 this.dialog = true;
                 this.date_created = moment().format("ll");
@@ -983,7 +975,7 @@ export default {
 
                 this.form.fill(data.arena_details);
                 this.arenaDetails = data.arena_details;
-                this.arena_id = data.id;
+                this.arena_id = data.arena_details.id;
                 this.arena_name = data.arena_name;
                 const totalMWBet = data.total_meron_wala;
                 const drawCancelled = data.draw_cancelled;
@@ -1405,21 +1397,22 @@ export default {
             const totalCommission = numberFormat(totalComm) || 0;
 
 
-            const cashLoad = this.computation.mobile.cashLoad || 0;
+            const cashLoad = this.computation.mobile.cashLoad;
             const cashWithdraw = this.computation.mobile.cashWithdraw || 0;
             const totalOthers = numberUnformat(this.computation.unclaimed) + numberUnformat(this.computation.cUnpaid)
-            const totalComputationOthers = this.computation.exempted === "NOT" ? numberFormat(totalOthers) : totalCommission;
+            const totalComputationOthers = this.computation.exempted === "NOT" ? numberFormat(totalOthers) : numberFormat(totalCommission);
             console.log(this.computation.exempted)
 
 
-
+         
             const depositReplenish = numberFormat(
-                numberUnformat(netWinLoss) -
-                    numberUnformat(totalComputationOthers) - numberUnformat(this.computation.systemErrorCOArmsi) +
-                    numberUnformat(cashLoad) -
-                    numberUnformat(cashWithdraw) || 0
+                (numberUnformat(netWinLoss)  -
+                    numberUnformat(totalComputationOthers) || 0  - 
+                    numberUnformat(this.computation.systemErrorCOArmsi ) || 0 ) +
+                (numberUnformat(cashLoad)  -
+                    numberUnformat(cashWithdraw) || 0)
             );
-
+           
             const depositReplenishText =
                 numberUnformat(depositReplenish) < 0
                     ? {
@@ -1474,7 +1467,7 @@ export default {
         this.showData();
         this.importwithstatus();
         this.loadEmployee();
-        this.loadbank();
+        // this.loadbank();
         Fire.$on("AfterCreate", () => {
             this.showData();
             this.importwithstatus();

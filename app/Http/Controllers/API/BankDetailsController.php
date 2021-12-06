@@ -35,9 +35,9 @@ class BankDetailsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function FilterBank($id)
     {
-      
+        return BankAccount::where('id',$id)->first();
     }
 
     /**

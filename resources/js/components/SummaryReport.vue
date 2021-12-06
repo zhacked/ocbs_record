@@ -97,7 +97,7 @@
                                                       <div class=" float-right">
                                                            <v-btn 
                                                             small  
-                                                        
+                                                            @click="convertToExcel(group )"
                                                             outlined
                                                             color="green" 
                                                            >
@@ -178,8 +178,9 @@
     </v-app>
 </template>
 <script>
-
+import moment from "moment";
 export default {
+    
     data() {
         return {
             headers: [
@@ -208,6 +209,14 @@ export default {
                     this.reflenish = data.rf
                 ));
         },
+        convertToExcel(data){
+            var value = moment(data).format("YYYY-MM-DD");
+    
+            axios.get("api/convertToExcel/"+ value).then(({ data }) => (
+                   console.log()
+                ));
+            
+        }
         
       
        

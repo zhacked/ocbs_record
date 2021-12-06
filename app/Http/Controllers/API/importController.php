@@ -6,14 +6,12 @@ use App\Models\arena;
 use App\Models\import;
 use App\Models\BankAccount;
 use Illuminate\Http\Request;
+use App\Exports\importExport;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use  Spatie\DbDumper\Databases\MySql;
-use Illuminate\Support\Facades\Artisan;
-use App\Support\Authorization\AuthorizationUserTrait;
 
+use Excel;
 class ImportController extends Controller
 {
 
@@ -60,14 +58,9 @@ class ImportController extends Controller
     }
     public function bankaccountfilter($id)
     {
-        return BankAccount::where('id',$id)->first();
+        return BankAccount::where('arenas_id',$id)->get();
     }
-    // public function updatebankaccount($id,$bank_id){
-     
-    //    return  arena::where('id',$id)->update([
-    //         'bank_id' => $bank_id
-    //     ]); 
-    // }
+   
     
     /**
      * Store a newly created resource in storage.
@@ -195,5 +188,10 @@ class ImportController extends Controller
             'dp' => $deposit
         ]);
     }
+    // public function ConvertToExcel($date){
+    //    return Excel::download(new importExport, 'text.xlsx');
+    // }
+
+    
 
 }

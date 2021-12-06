@@ -164,6 +164,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Cyberduck\LaravelExcel\ExcelServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        
         /*
          * Package Service Providers...
          */
