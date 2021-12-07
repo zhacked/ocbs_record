@@ -1064,7 +1064,7 @@ export default {
             }
         },
 
-        onFileChange(event) {
+      onFileChange(event) {
             const file = event.target.files ? event.target.files[0] : null;
             this.fileUpload = file;
             const checkfile = file.name.includes("xlsx") || file.name.includes("csv");
@@ -1097,14 +1097,27 @@ export default {
                     filteredWS.forEach((w) => {
                       
                         const singleSheet = wb.Sheets[w];
+                        // console.log(XLSX.utils.sheet_to_json(singleSheet, {
+                        //         header: "A",
+                        //         defval: 0
+                        //     }))
+                        const hhh = XLSX.utils.sheet_to_json(singleSheet, {
+                                header: "A",
+                                defval: 0
+                            });
+
+                        // console.log('HHH>>>>',hhh);
                         arrayData.push(
                             XLSX.utils.sheet_to_json(singleSheet, {
                                 header: "A",
+                                defval: 0
                             })
                         );
                     });
 
-                    //    console.log(arrayData)
+                    
+
+                       console.log('ARRAY DATA>>>',arrayData)
 
                     // const newResult = mapKeys(arrayData, (v, k) => camelCase(k));
 
@@ -1140,16 +1153,24 @@ export default {
                     // },
                     // {});
 
+                    console.log('REPORTSCOMBINED>>>>',reportCombined)
+                    console.log('SUMMARYCOMBINED>>>>',summaryReport)
 
 
 
 
-                    const objectKeyed = (array) => {
+
+                    const objectKeyed = (array, position) => {
+                        // console.log('OBJECTKEYEDARRAY>>>',array)
                         let objectKeyReplacedArray = [];
-                        const [, ...headKey] = Object.values(array[0]);
+                        const keysss = array.find(k => k.B === 'ARENA NAME');
+                        console.log('FINDING KEY>>>',keysss)
+                        const [, ...headKey] = Object.values(keysss);
                         const headK = ["key", ...headKey];
-                        // console.log(["key",...headKey]);
+                        
+                        // console.log('KEY>>>',headK);
                         array.map((data) => {
+                            
                             data = Object.assign(
                                 {},
                                 ...Object.entries(data).map(
@@ -1158,6 +1179,7 @@ export default {
                                     })
                                 )
                             );
+                            console.log('DATA>>>', data)
                             // console.log(data.arenaName,'>>>',data)
                             objectKeyReplacedArray.push({
                                 eventCreated: mergeObj.dateCreated || moment().format("LLL"),
@@ -1188,11 +1210,11 @@ export default {
 
                     // console.log('mergeArr>>>', objectKeyed(mergeArr))
 
-                    const objKeyRep = objectKeyed(reportCombined);
-                    const objKeySummary = objectKeyed(summaryReport);
+                    const objKeyRep = objectKeyed(reportCombined, 5);
+                    const objKeySummary = objectKeyed(summaryReport, 6);
                     // const mergeArr = objKeyRep.concat(objKeySummary)
 
-                    // console.log(objKeySummary)
+                    console.log('OBJKEYSUMMARY>>',objKeyRep)
 
 
 
@@ -1208,6 +1230,7 @@ export default {
                         if (existing.length) {
                         const m = item.type.toLowerCase();
                         const existingIndex = objMobileKiosk.indexOf(existing[0]);
+
                         objMobileKiosk[existingIndex].totalMWMobile = item.total;
                         objMobileKiosk[existingIndex].drawMobile = item.draw;
                         } else {
@@ -1259,7 +1282,7 @@ export default {
                       
                     ];
 
-                    // console.log(result)
+                    console.log('RESULT>>',result)
 
 
                    
@@ -1271,21 +1294,23 @@ export default {
                         )
                     );
 
-                    // console.log(arsc)
+                    console.log('ARSC',arsc)
 
                     const filterObjectHeader = arsc.filter((obk) => {
                         if (
                             obk.arenaName !== "OCBS NAME" &&
-                            obk.arenaName !== "ARENA NAME" && obk.key !== "Over All Total:" && obk.key !== "Grand Total:"
+                            obk.arenaName !== "ARENA NAME" && obk.arenaName !== "Over All Total:" && obk.arenaName !== "Grand Total:" && obk.arenaName !== 0
                         )
                             return obk;
                     });
+
+                    console.log('FILTEROBJ',filterObjectHeader)
 
                     const removeKeyReportObject = filterObjectHeader.map(
                         ({ key, ...rest }) => ({ ...rest })
                     );
                     this.ocbsArrayFiltered = removeKeyReportObject;
-                    console.log(removeKeyReportObject);
+                    console.log('REMOVEREPORTOBJ',removeKeyReportObject);
                 };
                 reader.readAsBinaryString(file);
             } else {
@@ -1298,7 +1323,6 @@ export default {
                 $('#importData').val("");
             }
         },
-
         generateReport() {
             console.log("generating pdf..");
 
