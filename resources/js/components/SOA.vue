@@ -34,15 +34,7 @@
                             class="card card-primary card-outline card-tabs"
                             style="overflow: auto; !important"
                         >
-                         <v-btn
-                                                    v-show="!editmode"
-                                                    icon
-                                                    color="green"
-                                                  
-                                                    @click="multiDownloads()"
-                                                >
-                                                    <v-icon>mdi-image</v-icon>
-                                                </v-btn>
+                    
                             <div class="card-header p-0 pt-1 border-bottom-0">
                                 <ul
                                     class="nav nav-tabs"
@@ -81,19 +73,21 @@
                                     id="custom-tabs-three-tabContent active show"
                                 >
                                     <v-row>
-                                        <v-col>
+                                        
+                                         <v-col>
                                             <v-btn
                                                 :loading="loading"
                                                 :disabled="loading"
-                                                @click="truncate"
-                                                color="light-blue lighten-1"
+                                                color="green lighten-1"
                                                 class="ma-2 white--text"
+                                                @click="multiDownloads(arenaData.data)"
                                             >
-                                                Clear Data
+                                                Convert all
                                                 <v-icon right dark>
-                                                    mdi-backspace
+                                                    mdi-account-convert
                                                 </v-icon>
                                             </v-btn>
+                                          
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col>
@@ -114,11 +108,8 @@
                                         aria-labelledby="custom-tabs-three-home-tab"
                                     >
                                      <template >
-                                        <v-switch
-                                            v-model="singleSelect"
-                                            label="Single select"
-                                            class="pa-3"
-                                        ></v-switch>
+                                       
+
                                         </template>
                                         <!-- <img class="ls-heart" src="your-loader-url"/> -->
                                         <v-data-table
@@ -167,6 +158,18 @@
                                                 </v-tooltip>
                                             </template>
                                         </v-data-table>
+                                         <v-btn
+                                                :loading="loading"
+                                                :disabled="loading"
+                                                @click="truncate"
+                                                color="light-blue lighten-1"
+                                                class="ma-2 white--text"
+                                            >
+                                                Clear Data
+                                                <v-icon right dark>
+                                                    mdi-backspace
+                                                </v-icon>
+                                            </v-btn>
                                     </div>
                 
                                     <div
@@ -1349,9 +1352,9 @@ export default {
                 );
             console.log("done");
         },
-        multiDownloads(){
-            const el = this.$refs.soaReport;
-            console.log(el)
+        multiDownloads(data){
+            // const el = this.$refs.soaReport;
+            // console.log(el)
         }
     },
 
