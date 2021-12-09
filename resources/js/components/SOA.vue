@@ -18,7 +18,7 @@
                                         id="importData"
                                         class="form-control"
                                         @change="onFileChange"
-                                         accept=".xlsx, .xls, .csv"
+                                        accept=".xlsx, .xls, .csv"
                                     />
                                     <v-btn
                                         type="submit"
@@ -34,7 +34,6 @@
                             class="card card-primary card-outline card-tabs"
                             style="overflow: auto; !important"
                         >
-                    
                             <div class="card-header p-0 pt-1 border-bottom-0">
                                 <ul
                                     class="nav nav-tabs"
@@ -73,21 +72,19 @@
                                     id="custom-tabs-three-tabContent active show"
                                 >
                                     <v-row>
-                                        
-                                         <v-col>
+                                        <v-col>
                                             <v-btn
                                                 :loading="loading"
                                                 :disabled="loading"
                                                 color="green lighten-1"
                                                 class="ma-2 white--text"
-                                                @click="multiDownloads(arenaData.data)"
+                                                @click="multiDownloads"
                                             >
                                                 Convert all
-                                                <v-icon right dark>
-                                                    mdi-account-convert
-                                                </v-icon>
+                                                <template v-slot:loader>
+                                                    <span>Preparing...</span>
+                                                </template>
                                             </v-btn>
-                                          
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col>
@@ -96,7 +93,6 @@
                                                 append-icon="mdi-magnify"
                                                 label="Search"
                                                 color="primary darken-2"
-
                                             ></v-text-field>
                                         </v-col>
                                     </v-row>
@@ -107,15 +103,18 @@
                                         role="tabpanel"
                                         aria-labelledby="custom-tabs-three-home-tab"
                                     >
-                                     <template >
-                                       
-
-                                        </template>
+                                        <template> </template>
                                         <!-- <img class="ls-heart" src="your-loader-url"/> -->
                                         <v-data-table
+                                            v-model="selected"
                                             :headers="headers"
                                             :items="arenaData.data"
                                             :items-per-page="10"
+                                            :footer-props="{
+                                                'items-per-page-options': [
+                                                    5, 10, 20,
+                                                ],
+                                            }"
                                             :search="search"
                                             show-select
                                             :single-select="singleSelect"
@@ -158,34 +157,32 @@
                                                 </v-tooltip>
                                             </template>
                                         </v-data-table>
-                                         <v-btn
-                                                :loading="loading"
-                                                :disabled="loading"
-                                                @click="truncate"
-                                                color="light-blue lighten-1"
-                                                class="ma-2 white--text"
-                                            >
-                                                Clear Data
-                                                <v-icon right dark>
-                                                    mdi-backspace
-                                                </v-icon>
-                                            </v-btn>
+                                        <v-btn
+                                            :loading="loading"
+                                            :disabled="loading"
+                                            @click="truncate"
+                                            color="light-blue lighten-1"
+                                            class="ma-2 white--text"
+                                        >
+                                            Clear Data
+                                            <v-icon right dark>
+                                                mdi-backspace
+                                            </v-icon>
+                                        </v-btn>
                                     </div>
-                
+
                                     <div
                                         class="tab-pane fade"
                                         id="custom-tabs-three-profile"
                                         role="tabpanel"
                                         aria-labelledby="custom-tabs-three-profile-tab"
                                     >
-                                    
                                         <v-data-table
                                             :headers="headers"
                                             :items="arenaDatastatus.data"
                                             :items-per-page="10"
                                             :search="search"
                                             class="elevation-1 text-center"
-                                            
                                         >
                                             <template
                                                 v-slot:[`item.actions`]="{
@@ -223,14 +220,81 @@
                                                     <span>View Account</span>
                                                 </v-tooltip>
                                             </template>
-                                          
                                         </v-data-table>
                                     </div>
                                 </div>
                             </div>
+
+                            <div
+                                v-for="item in selected"
+                                :key="item.id"
+                                style="
+                                    padding: 1px;
+                                    width: 800px;
+                                    display: none;
+                                "
+                                ref="soaReport"
+                                id="reportsoaoutput"
+                                class="reportsoaoutput"
+                            >
+                                <v-card-title
+                                    class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
+                                >
+                                    <span>{{ item.total_meron_wala }}</span>
+                                </v-card-title>
+                                <v-card-text class="text-sm-body-2">
+                                    <v-row>
+                                        <v-spacer></v-spacer>
+                                        <v-spacer></v-spacer>
+                                        <DateSOA
+                                            :depositReplenishText="
+                                                computedAve.depositReplenishText
+                                            "
+                                            :dateEvent="
+                                                moment(item.date_of_soa).format(
+                                                    'LL'
+                                                )
+                                            "
+                                            :dateSoa="moment().format('LL')"
+                                        />
+                                    </v-row>
+                                    <v-row>
+                                        <ArenaDetails
+                                            :arenaDetails="arenaDetails"
+                                            :editmode="editmode"
+                                        />
+                                    </v-row>
+                                    <v-row>
+                                        <div class="computation-banner">
+                                            Computation
+                                        </div>
+                                    </v-row>
+                                    <ComputeBox
+                                        :computation="computation"
+                                        :commissionPercent="commission_percent"
+                                        :editmode="editmode"
+                                        :computedAve="computedAve"
+                                    />
+
+                                    <BankBox
+                                        :bank="bank"
+                                        :operatorName="operator_name"
+                                        :editmode="editmode"
+                                        :depositReplenishText="
+                                            computedAve.depositReplenishText
+                                        "
+                                    />
+
+                                    <PreparedChecked
+                                        :userPrepared="userPrepared"
+                                        :editmode="editmode"
+                                    />
+                                </v-card-text>
+                            </div>
                         </div>
                     </v-card>
                 </v-col>
+                {{ this.selected }}
 
                 <v-dialog
                     v-model="dialog"
@@ -282,7 +346,6 @@
                                                     </v-chip>
                                                 </template>
                                                 <span>Close</span>
-                                                
                                             </v-tooltip>
                                         </div>
                                     </div>
@@ -307,14 +370,7 @@
                                                 class="pdf-content"
                                             >
                                                 <v-card-title
-                                                    class="
-                                                        text-h5 text-center
-                                                        font-weight-medium
-                                                        d-flex
-                                                        justify-center
-                                                        align-center
-                                                        pdf-title
-                                                    "
+                                                    class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
                                                 >
                                                     <span>{{
                                                         computedAve
@@ -333,10 +389,10 @@
                                                                 computedAve.depositReplenishText
                                                             "
                                                             :dateEvent="
-                                                                date_event
+                                                                dateEvent
                                                             "
                                                             :dateSoa="
-                                                                date_created
+                                                                dateCreated
                                                             "
                                                         />
                                                     </v-row>
@@ -350,9 +406,7 @@
                                                     </v-row>
                                                     <v-row>
                                                         <div
-                                                            class="
-                                                                computation-banner
-                                                            "
+                                                            class="computation-banner"
                                                         >
                                                             Computation
                                                         </div>
@@ -395,12 +449,7 @@
                                         <v-spacer></v-spacer>
                                         <div
                                             v-if="editmode"
-                                            class="
-                                                d-flex
-                                                align-center
-                                                computation-container_field
-                                                mr-2
-                                            "
+                                            class="d-flex align-center computation-container_field mr-2"
                                         >
                                             <label class="mr-2"
                                                 >Commission Percent ({{
@@ -408,13 +457,7 @@
                                                 }}%) :</label
                                             >
                                             <div
-                                                class="
-                                                    custom-span
-                                                    caption
-                                                    computation-span
-                                                    d-flex
-                                                    align-center
-                                                "
+                                                class="custom-span caption computation-span d-flex align-center"
                                                 :class="{
                                                     'editmode-span': editmode,
                                                 }"
@@ -438,7 +481,11 @@
                                                     color="green"
                                                     v-bind="attrs"
                                                     v-on="on"
-                                                    @click="downloadImg(arenaDetails)"
+                                                    @click="
+                                                        downloadImg(
+                                                            arenaDetails
+                                                        )
+                                                    "
                                                 >
                                                     <v-icon>mdi-image</v-icon>
                                                 </v-btn>
@@ -517,27 +564,22 @@
 
                 <!-- </v-col> -->
             </v-row>
+            <v-overlay :z-index="zIndex" :value="overlay"> </v-overlay>
         </v-container>
     </v-app>
 </template>
 <script>
-import {
-    camelCase,
-    union,
-    groupBy,
-    map,
-    spread,
-    values,
-    assign,
-} from "lodash";
+import { camelCase, groupBy, map, spread, values, assign, concat } from "lodash";
 import XLSX from "xlsx";
-
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 import {
     numberFormat,
     numberUnformat,
     mergeObject,
     valueSplit,
 } from "../utility";
+import fileChange from "../methods/onFileChange.js";
 import VueHtml2pdf from "vue-html2pdf";
 import html2canvas from "html2canvas";
 import moment from "moment";
@@ -555,7 +597,6 @@ export default {
         ComputeBox,
         BankBox,
         PreparedChecked,
-        
     },
     data() {
         return {
@@ -571,12 +612,12 @@ export default {
                 checked: {},
                 prepared: {},
             },
-
-           singleSelect:false,
+            overlay: false,
+            zIndex: 0,
+            perPageOptions: [10, 15, 20, 30],
+            singleSelect: false,
+            selected: [],
             dialog: false,
-            notifications: false,
-            sound: true,
-            widgets: false,
             search: "",
             ocbsArray: [],
             ocbsArrayFiltered: [],
@@ -598,12 +639,12 @@ export default {
             arenaData: [],
             arenaDatastatus: [],
             arenaDetails: {},
-      
+
             arena_id: "",
             arena_name: "",
             loading: false,
             loader: null,
-            
+
             fileUpload: "",
             form: new Form({
                 id: "",
@@ -613,6 +654,8 @@ export default {
                 contact_number: "",
                 email: "",
             }),
+
+            moment,
 
             computation: {
                 totalMWBet: 0,
@@ -643,9 +686,10 @@ export default {
                 },
             },
             soa: true,
-            date_created: "",
-            date_event: "",
+            dateCreated: "",
+            dateEvent: "",
             depositReplenishTxt: {},
+            pictures: [],
         };
     },
     methods: {
@@ -660,83 +704,74 @@ export default {
                     )
                 );
         },
-    
-        truncate(){
-            swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            input: 'password',
-            inputPlaceholder: "Enter Your Password",
-            inputAttributes: {
-             
-                autocapitalize: 'off',
-                autocorrect: 'off'
-            },
-            customClass: {
-                input: 'form-control'
-            },
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            },
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, Clear All!',
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            showLoaderOnConfirm: true,
-            
-            preConfirm: (login) => {
-             
-                if(login ==  ''){
-                    swal.fire({
-                        icon:'error',
-                        title: 'Oops...',
-                        text: 'Please Enter Valid Password',
-                    })
-                }
-               
-               
-            },
-            
-            }).then((result) => {
 
-            if (result.isConfirmed) {
-                axios.get('api/validate/'+ result.value)
-                    .then(response => {
-                        console.log(response)
-                        if(response.data=='success'){
-                              Toast.fire({
-                                icon: 'success',
-                                title: 'Successfully Deleted'
-                                })
-                                   Fire.$emit('AfterCreate');
-                        }else{
-                            swal.fire({
-                            icon:'error',
-                            title: 'Oops...',
-                            text: 'Password doesnt match in our database',
-                            })
-                        }
-                       
-                    })
-                    .catch(error => {
-                            console.log(error)
-                    })
+        truncate() {
+            swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                input: "password",
+                inputPlaceholder: "Enter Your Password",
+                inputAttributes: {
+                    autocapitalize: "off",
+                    autocorrect: "off",
+                },
+                customClass: {
+                    input: "form-control",
+                },
+                inputAttributes: {
+                    autocapitalize: "off",
+                },
+                showClass: {
+                    popup: "animate__animated animate__fadeInDown",
+                },
+                hideClass: {
+                    popup: "animate__animated animate__fadeOutUp",
+                },
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, Clear All!",
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                showLoaderOnConfirm: true,
+
+                preConfirm: (login) => {
+                    if (login == "") {
+                        swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Please Enter Valid Password",
+                        });
+                    }
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios
+                        .get("api/validate/" + result.value)
+                        .then((response) => {
+                            console.log(response);
+                            if (response.data == "success") {
+                                Toast.fire({
+                                    icon: "success",
+                                    title: "Successfully Deleted",
+                                });
+                                Fire.$emit("AfterCreate");
+                            } else {
+                                swal.fire({
+                                    icon: "error",
+                                    title: "Oops...",
+                                    text: "Password doesnt match in our database",
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
                 }
-            })
-       
+            });
         },
-  
+
         async importwithstatus() {
             const data = await axios.get("api/importwithstatus");
-
-          
 
             let helper = {};
 
@@ -791,13 +826,13 @@ export default {
             };
 
             this.arenaData = obj;
-            console.log(obj.data);
+
+            duplicateObj.forEach((item) => {});
         },
         closeDialog() {
             this.dialog = false;
         },
         updateModal() {
-           
             $(".computation").removeAttr("disabled");
             $(".computation").addClass("input-show");
 
@@ -850,10 +885,10 @@ export default {
                     ),
                 },
             };
-          
-              axios.get("api/selectedbank/" + this.arena_id).then(({data}) => (
-                  this.bank.all = data
-                ));
+
+            axios
+                .get("api/selectedbank/" + this.arena_id)
+                .then(({ data }) => (this.bank.all = data));
             this.editmode = !this.editmode;
         },
         closeDialog() {
@@ -864,15 +899,18 @@ export default {
         },
 
         saveModal() {
-
             $(".computation").attr("disabled", true);
             this.editmode = !this.editmode;
 
             this.computation = {
                 totalMWBet: numberFormat(this.computation.totalMWBet || 0),
-                drawCancelled: numberFormat(this.computation.drawCancelled || 0),
+                drawCancelled: numberFormat(
+                    this.computation.drawCancelled || 0
+                ),
                 draw: numberFormat(this.computation.draw),
-                totalPayoutPaid: numberFormat(this.computation.totalPayoutPaid || 0),
+                totalPayoutPaid: numberFormat(
+                    this.computation.totalPayoutPaid || 0
+                ),
                 cdPaid: numberFormat(this.computation.cdPaid || 0),
                 drawPaid: numberFormat(this.computation.drawPaid || 0),
                 netWinLoss: numberFormat(this.computation.netWinLoss || 0),
@@ -901,9 +939,13 @@ export default {
                     this.computation.systemErrorCOArmsi || 0
                 ),
                 totalOthers: numberFormat(this.computation.totalOthers || 0),
-                totalCommission: numberFormat(this.computation.totalCommission || 0),
+                totalCommission: numberFormat(
+                    this.computation.totalCommission || 0
+                ),
                 mobile: {
-                    cashLoad: numberFormat(this.computation.mobile.cashLoad || 0),
+                    cashLoad: numberFormat(
+                        this.computation.mobile.cashLoad || 0
+                    ),
                     cashWithdraw: numberFormat(
                         this.computation.mobile.cashWithdraw || 0
                     ),
@@ -920,9 +962,10 @@ export default {
         proceedAction() {
             this.$Progress.start();
             // var result = $('#importData').val().split('.');
-            
+
             if (
-                $("#importData").val() === "" || !this.fileUpload.name.includes("xlsx")
+                $("#importData").val() === "" ||
+                !this.fileUpload.name.includes("xlsx")
             ) {
                 Fire.$emit("AfterCreate");
                 swal.fire({
@@ -930,9 +973,6 @@ export default {
                     title: "Oops...",
                     text: "Make sure you insert correct excel data!",
                 });
-                
-             
-                
             } else {
                 axios.post("api/import", this.ocbsArrayFiltered).then(
                     ({ data }) => (
@@ -947,7 +987,6 @@ export default {
         },
 
         openModel(data) {
-         
             if (data.arena_details == null) {
                 swal.fire({
                     icon: "warning",
@@ -956,25 +995,13 @@ export default {
                     footer: '<a href="/arena">Click here to Add Arena</a>',
                 });
             } else {
-                this.operator_name = data.arena_details.operator;
-            
-                // this.bank.bank_name =
-                //     data.bank_details.length != 0
-                //         ? "data.bank_details[0].bank_name"
-                //         : "No Bank Name found !";
-                // this.bank.bank_number =
-                //     data.bank_details.length != 0
-                //         ? "data.bank_details[0].bank_number"
-                //         : "No Bank Number found !";
-
-              
+                this.dialog = true;
 
                 this.form.reset();
-                this.dialog = true;
-                this.date_created = moment().format("ll");
-                this.date_event = moment(data.date_of_soa).format("ll");
-                 this.sofrNumSeq = ('00000'+ data.id).slice(-5);
-                // this.editmode = !this.editmode;
+                this.operator_name = data.arena_details.operator;
+                this.dateCreated = moment().format("ll");
+                this.dateEvent = moment(data.date_of_soa).format("ll");
+                this.sofrNumSeq = ("00000" + data.id).slice(-5);
 
                 this.form.fill(data.arena_details);
                 this.arenaDetails = data.arena_details;
@@ -993,30 +1020,17 @@ export default {
                 const systemErrorCOArmsi = data.systemErrorCOArmsi;
                 const consolidatorsCommission = data.consolidatorsCommission;
                 const safetyFund = data.safetyFund;
-                const paymentForOutstandingBalance = data.paymentForOutstandingBalance;
+                const paymentForOutstandingBalance =
+                    data.paymentForOutstandingBalance;
                 const cashLoad = data.cashLoad;
                 const cashWithdrawal = data.cashWithdrawal;
                 const totalMWMobile = data.total_win_mobile;
                 const drawMobile = data.draw_mobile;
                 const exempted = data.exempted;
 
-
-                // const netWinLoss =
-                //     parseFloat(totalMWBet) +
-                //     parseFloat(drawCancelled) +
-                //     parseFloat(draw) -
-                //     parseFloat(totalPayoutPaid) -
-                //     parseFloat(cdPaid) -
-                //     parseFloat(drawPaid);
                 const totalMWBetPercent =
                     parseFloat(totalMWBet) *
                     parseFloat(this.commission_percent);
-                // console.log(totalMWBetPercent)
-                // const totalMobileMWBets = data.mobile
-                //     ? data.mobile.total_meron_wala
-                //     : 0;
-                // const totalMobileDrawBets = data.mobile ? data.mobile.draw : 0;
-                // const totalCommission = 
 
                 this.computation = {
                     totalMWBet: numberFormat(totalMWBet),
@@ -1036,30 +1050,19 @@ export default {
                         otherCommissionIntel05
                     ),
                     consolidatorsCommission: numberFormat(
-                       consolidatorsCommission
+                        consolidatorsCommission
                     ),
                     paymentForOutstandingBalance: numberFormat(
-                       paymentForOutstandingBalance
+                        paymentForOutstandingBalance
                     ),
                     safetyFund: numberFormat(safetyFund),
-                    salesDeductionTablet: numberFormat(
-                       salesDeduction
-                    ),
-                    systemErrorCOArmsi: numberFormat(
-                       systemErrorCOArmsi
-                    ),
+                    salesDeductionTablet: numberFormat(salesDeduction),
+                    systemErrorCOArmsi: numberFormat(systemErrorCOArmsi),
                     exempted,
-                    // totalOthers: numberFormat(this.computation.totalOthers),
-                    // totalCommission: numberFormat(
-                    //    totalCommission
-                    // ),
+
                     mobile: {
-                        cashLoad: numberFormat(
-                           cashLoad
-                        ),
-                        cashWithdraw: numberFormat(
-                           cashWithdrawal
-                        ),
+                        cashLoad: numberFormat(cashLoad),
+                        cashWithdraw: numberFormat(cashWithdrawal),
                         totalMWBet: numberFormat(totalMWMobile),
                         totalDrawBet: numberFormat(drawMobile),
                     },
@@ -1067,10 +1070,11 @@ export default {
             }
         },
 
-      onFileChange(event) {
+        onFileChange(event) {
             const file = event.target.files ? event.target.files[0] : null;
             this.fileUpload = file;
-            const checkfile = file.name.includes("xlsx") || file.name.includes("csv");
+            const checkfile =
+                file.name.includes("xlsx") || file.name.includes("csv");
             if (file && checkfile) {
                 const reader = new FileReader();
                 let arrayData = [];
@@ -1098,39 +1102,28 @@ export default {
                     });
                     // console.log(filtered)
                     filteredWS.forEach((w) => {
-                      
                         const singleSheet = wb.Sheets[w];
-                        // console.log(XLSX.utils.sheet_to_json(singleSheet, {
-                        //         header: "A",
-                        //         defval: 0
-                        //     }))
-                        const hhh = XLSX.utils.sheet_to_json(singleSheet, {
-                                header: "A",
-                                defval: 0
-                            });
 
-                        // console.log('HHH>>>>',hhh);
+                        const hhh = XLSX.utils.sheet_to_json(singleSheet, {
+                            header: "A",
+                            defval: 0,
+                        });
+
                         arrayData.push(
                             XLSX.utils.sheet_to_json(singleSheet, {
                                 header: "A",
-                                defval: 0
+                                defval: 0,
                             })
                         );
                     });
 
-                    
-
-                       console.log('ARRAY DATA>>>',arrayData)
-
-                    // const newResult = mapKeys(arrayData, (v, k) => camelCase(k));
-
-                    // console.log(newResult);
-                    /* Convert array of arrays */
-                    // const data = XLSX.utils.sheet_to_json(ws, {header: 1});
-
                     arrayData[0].map((r) => {
                         if (Object.keys(r).length >= 17) reportCombined.push(r);
-                        if (Object.keys(r).length === 1) {
+                        // console.log('>>>>',r)
+                        if (
+                            typeof r.A == "string" &&
+                            r.A.indexOf("Date") > -1
+                        ) {
                             eventsCombined.push(valueSplit(r.A));
                         }
                     });
@@ -1140,40 +1133,19 @@ export default {
                             summaryReport.push(sr);
                     });
 
-                    // const fn = spread(union);
-
-               
-
                     // Merge Object
                     const mergeObj = mergeObject(eventsCombined);
-                    // const mergeObj = mergeObject(eventsCombined);
 
-                    // const combinedEvent = eventsCombined.reduce(function (
-                    //     result,
-                    //     current
-                    // ) {
-                    //     return Object.assign(result, current);
-                    // },
-                    // {});
+                    console.log(eventsCombined);
 
-                    console.log('REPORTSCOMBINED>>>>',reportCombined)
-                    console.log('SUMMARYCOMBINED>>>>',summaryReport)
-
-
-
-
-
-                    const objectKeyed = (array, position) => {
-                        // console.log('OBJECTKEYEDARRAY>>>',array)
+                    const objectKeyed = (array) => {
                         let objectKeyReplacedArray = [];
-                        const keysss = array.find(k => k.B === 'ARENA NAME');
-                        console.log('FINDING KEY>>>',keysss)
+                        const keysss = array.find((k) => k.B === "ARENA NAME");
+                        console.log("FINDING KEY>>>", keysss);
                         const [, ...headKey] = Object.values(keysss);
                         const headK = ["key", ...headKey];
-                        
-                        // console.log('KEY>>>',headK);
+
                         array.map((data) => {
-                            
                             data = Object.assign(
                                 {},
                                 ...Object.entries(data).map(
@@ -1182,24 +1154,56 @@ export default {
                                     })
                                 )
                             );
-                            console.log('DATA>>>', data)
-                            // console.log(data.arenaName,'>>>',data)
+
                             objectKeyReplacedArray.push({
-                                eventCreated: mergeObj.dateCreated || moment().format("LLL"),
-                                type: data.type ? data.type : data.classification ? data.classification : null,
-                                totalCommission: data.totalCommission ? data.totalCommission : 0,
-                                totalOthers: data.totalOthers ? data.totalOthers : 0,
-                                salesDeductionTablet: data.salesDeductionTablet ? data.salesDeductionTablet : 0,
-                                otherCommissionInteldata05: data.otherCommissionInteldata05 ? data.otherCommissionInteldata05 : 0,
-                                consolidatorsCommission: data.consolidatorsCommission ? data.consolidatorsCommission : 0,
-                                safetyFund: data.safetyFund ? data.safetyFund : 0,
-                                paymentForOutstandingBalance: data.paymentForOutstandingBalance ? data.paymentForOutstandingBalance : 0,
-                                systemErrorCOArmsi: data.systemErrorCOArmsi ? data.systemErrorCOArmsi : 0,
+                                eventCreated:
+                                    mergeObj.dateCreated ||
+                                    moment().format("LL"),
+                                type: data.type
+                                    ? data.type
+                                    : data.classification
+                                    ? data.classification
+                                    : null,
+                                totalCommission: data.totalCommission
+                                    ? data.totalCommission
+                                    : 0,
+                                totalOthers: data.totalOthers
+                                    ? data.totalOthers
+                                    : 0,
+                                salesDeductionTablet: data.salesDeductionTablet
+                                    ? data.salesDeductionTablet
+                                    : 0,
+                                otherCommissionInteldata05:
+                                    data.otherCommissionInteldata05
+                                        ? data.otherCommissionInteldata05
+                                        : 0,
+                                consolidatorsCommission:
+                                    data.consolidatorsCommission
+                                        ? data.consolidatorsCommission
+                                        : 0,
+                                safetyFund: data.safetyFund
+                                    ? data.safetyFund
+                                    : 0,
+                                paymentForOutstandingBalance:
+                                    data.paymentForOutstandingBalance
+                                        ? data.paymentForOutstandingBalance
+                                        : 0,
+                                systemErrorCOArmsi: data.systemErrorCOArmsi
+                                    ? data.systemErrorCOArmsi
+                                    : 0,
                                 cashLoad: data.cashLoad ? data.cashLoad : 0,
-                                cashWithdrawal:data.cashWithdrawal ? data.cashWithdrawal : 0,
-                                netOperatorsCommission: data.netOperatorsCommission ? data.netOperatorsCommission : 0,
-                                otherCommissionIntel05: data.otherCommissionIntel05 ? data.otherCommissionIntel05 : 0,
-                               
+                                cashWithdrawal: data.cashWithdrawal
+                                    ? data.cashWithdrawal
+                                    : 0,
+                                netOperatorsCommission:
+                                    data.netOperatorsCommission
+                                        ? data.netOperatorsCommission
+                                        : 0,
+                                otherCommissionIntel05:
+                                    data.otherCommissionIntel05
+                                        ? data.otherCommissionIntel05
+                                        : 0,
+
                                 drawMobile: 0,
                                 totalMWMobile: 0,
                                 ...data,
@@ -1209,86 +1213,62 @@ export default {
                         return objectKeyReplacedArray;
                     };
 
-                    // const mergeArr = fn(arrayData);
-
-                    // console.log('mergeArr>>>', objectKeyed(mergeArr))
-
                     const objKeyRep = objectKeyed(reportCombined, 5);
                     const objKeySummary = objectKeyed(summaryReport, 6);
-                    // const mergeArr = objKeyRep.concat(objKeySummary)
-
-                    console.log('OBJKEYSUMMARY>>',objKeyRep)
-
-
 
                     let objMobileKiosk = [];
 
-                    objKeySummary.forEach(function(item) {
+                    objKeySummary.forEach(function (item) {
                         const existing = objMobileKiosk.filter((v, i) => {
                             // if (v.arenaName == item.arenaName) console.log(v);
-                            if (v.type === 'KIOSK' && v.arenaName == item.arenaName) return v.arenaName == item.arenaName;
-
+                            if (
+                                v.type === "KIOSK" &&
+                                v.arenaName == item.arenaName
+                            )
+                                return v.arenaName == item.arenaName;
                         });
 
                         if (existing.length) {
-                        const m = item.type.toLowerCase();
-                        const existingIndex = objMobileKiosk.indexOf(existing[0]);
+                            const m = item.type.toLowerCase();
+                            const existingIndex = objMobileKiosk.indexOf(
+                                existing[0]
+                            );
 
-                        objMobileKiosk[existingIndex].totalMWMobile = item.total;
-                        objMobileKiosk[existingIndex].drawMobile = item.draw;
+                            objMobileKiosk[existingIndex].totalMWMobile =
+                                item.total;
+                            objMobileKiosk[existingIndex].drawMobile =
+                                item.draw;
                         } else {
-                        if (typeof item.value == 'string')
-                            item.value = [item.value];
+                            if (typeof item.value == "string")
+                                item.value = [item.value];
                             objMobileKiosk.push(item);
                         }
                     });
 
                     // console.log('OBJMK>>>',objMobileKiosk)
 
-
                     let helper = {};
                     const result = objMobileKiosk.reduce(function (r, o) {
-                    let key = o.arenaName;
-                   
-                    if (!helper[key]) {
-                    
-                            helper[key] = Object.assign({}, o); // create a copy of o
-                        
-                        r.push(helper[key]);
-                        
-                    } else {
-                       
-                        // helper[key].mobile = {
-                        //     totalMW: o.total,
-                        //     draw: o.draw
-                        // }
+                        let key = o.arenaName;
 
-                          helper[key].totalMWMobile = o.total;
-                          helper[key].drawMobile = o.draw;
-                        
-                    
-                    }
-                    
-                    return r;
+                        if (!helper[key]) {
+                            helper[key] = Object.assign({}, o); // create a copy of o
+
+                            r.push(helper[key]);
+                        } else {
+                            // helper[key].mobile = {
+                            //     totalMW: o.total,
+                            //     draw: o.draw
+                            // }
+
+                            helper[key].totalMWMobile = o.total;
+                            helper[key].drawMobile = o.draw;
+                        }
+
+                        return r;
                     }, []);
 
-
-                    // console.log('MOBILEKIOSK',result)
-
-                
-
-                    const accountsReportSummaryCombined = [
-                        //   ...objKeySummary,
-                        //   ...objKeyRep,
-                          ...result,
-                      
-                      
-                    ];
-
-                    console.log('RESULT>>',result)
-
-
-                   
+                    const accountsReportSummaryCombined = [...result];
 
                     const arsc = values(
                         map(
@@ -1297,23 +1277,111 @@ export default {
                         )
                     );
 
-                    console.log('ARSC',arsc)
-
                     const filterObjectHeader = arsc.filter((obk) => {
                         if (
                             obk.arenaName !== "OCBS NAME" &&
-                            obk.arenaName !== "ARENA NAME" && obk.arenaName !== "Over All Total:" && obk.arenaName !== "Grand Total:" && obk.arenaName !== 0
+                            obk.arenaName !== "ARENA NAME" &&
+                            obk.arenaName !== "Over All Total:" &&
+                            obk.arenaName !== "Grand Total:" &&
+                            obk.arenaName !== 0
                         )
                             return obk;
                     });
 
-                    console.log('FILTEROBJ',filterObjectHeader)
-
                     const removeKeyReportObject = filterObjectHeader.map(
-                        ({ key, ...rest }) => ({ ...rest })
+                        ({ key, ...rest }) => {
+							
+							const type = rest.type || rest.classification;
+							const arenaName = rest.arenaName;
+							const exempted = rest.exempted;
+                            const totalMWBets = rest.meron + rest.wala;
+                            const totalCancelledBets = rest.drawCancelled;
+                            const totalDrawBets = rest.draw;
+                            const totalPayoutPaid = rest.payoutPaid;
+                            const totalCDPaid = rest.cDPaid;
+                            const totalDrawPaid = rest.drawPaid;
+                            const totalMWMobile = rest.totalMWMobile;
+                            const totalDrawMobile = rest.drawMobile;
+                            const netWinLoss = totalMWBets + totalCancelledBets + totalDrawBets - totalPayoutPaid - totalCDPaid - totalDrawPaid;
+                            const mwTwo = totalMWBets * 0.02;
+                            const drawTwo = totalDrawBets * 0.02;
+                            const mwTwoMobile = totalMWMobile * 0.02;
+                            const drawTwoMobile = totalDrawMobile * 0.02;
+                            const totalUnclaimed = rest.unclaimed;
+                            const totalCUnpaid = rest.cUnpaid;
+                            const salesDeduction = rest.salesDeductionTablet;
+                            const netOperatorsCommission = mwTwo + drawTwo + mwTwoMobile + drawTwoMobile + totalUnclaimed +totalCUnpaid - salesDeduction;
+                            const otherCommissionIntel = rest.otherCommissionIntel05;
+                            const consolidatorsCommission = rest.consolidatorsCommission;
+                            const safetyFund = rest.safetyFund;
+                            const paymentForOutstandingBalance = rest.paymentForOutstandingBalance;
+                            const totalCommission = netOperatorsCommission + otherCommissionIntel - consolidatorsCommission - safetyFund - paymentForOutstandingBalance;
+							const cashLoad = rest.cashLoad;
+							const cashWithdrawal = rest.cashWithdrawal;
+							const totalOthers = rest.totalOthers
+							const systemErrorCOArmsi = rest.systemErrorCOArmsi
+							const totalComputationOthers = exempted === "NOT" ? totalOthers : totalCommission;					
+							const depositReplenish = (netWinLoss - totalComputationOthers- systemErrorCOArmsi) + (cashLoad - cashWithdrawal);
+							const soaFr = parseFloat(depositReplenish) < 0 ? "fr" : "soa";
+
+                            rest = {
+								areaCode: rest.areaCode,
+								eventDate: rest.eventCreated,
+								arenaName,
+								type,
+								exempted,								
+                                totalMWBets,
+                                totalCancelledBets,
+                                totalDrawBets,
+                                totalPayoutPaid,
+                                totalCDPaid,
+                                totalDrawPaid,
+                                netWinLoss,
+                                mwTwo,
+                                drawTwo,
+								mwTwoMobile,
+								drawTwoMobile,
+								totalUnclaimed,
+								totalCUnpaid,
+								salesDeduction,
+								netOperatorsCommission,
+								otherCommissionIntel,
+								consolidatorsCommission,
+								safetyFund,
+								paymentForOutstandingBalance,
+								totalCommission,
+								totalMWMobile,
+								totalDrawMobile,
+								cashLoad,
+								cashWithdrawal,
+								depositReplenish,
+								totalOthers,
+								systemErrorCOArmsi,
+								soaFr
+							
+                            };
+
+                            return {...rest};
+                        }
                     );
-                    this.ocbsArrayFiltered = removeKeyReportObject;
-                    console.log('REMOVEREPORTOBJ',removeKeyReportObject);
+
+					// group fr and soa
+					 const groupSOAFR = removeKeyReportObject.reduce(function (r, a) {
+						r[a.soaFr] = r[a.soaFr] || [];
+						r[a.soaFr].push(a);
+						return r;
+					}, Object.create(null));
+					
+					const newsoa = groupSOAFR.soa.map((s, i) => ({refNo: "SOA"+moment().format("MMDYY")+(`00000${i+1}`).slice(-5), ...s}));
+					const newfr = groupSOAFR.fr.map((f, i) => ({refNo: "FR"+moment().format("MMDYY")+(`00000${i+1}`).slice(-5), ...f}));
+
+					const newSetReport = concat(newsoa, newfr);
+	
+					console.log('new set soafr>>>',newSetReport);
+					
+                    this.ocbsArrayFiltered = newSetReport;
+
+                   
                 };
                 reader.readAsBinaryString(file);
             } else {
@@ -1323,7 +1391,7 @@ export default {
                         title: "Oops...",
                         text: "Make sure you insert correct excel data!",
                     });
-                $('#importData').val("");
+                $("#importData").val("");
             }
         },
         generateReport() {
@@ -1342,7 +1410,6 @@ export default {
                 );
         },
         async downloadImg(details) {
-         
             console.log("printing..");
             const el = this.$refs.soaReport;
 
@@ -1361,12 +1428,11 @@ export default {
                     .replace("image/png", "image/octet-stream")
             );
             link.click();
-       
-            axios
-                .put("api/arenaStatus/" + this.arena_name,{
-                        data: this.computedAve,
 
-                    })
+            axios
+                .put("api/arenaStatus/" + this.arena_name, {
+                    data: this.computedAve,
+                })
                 .then(
                     (data) => (
                         Fire.$emit("AfterCreate"),
@@ -1376,22 +1442,127 @@ export default {
                 );
             console.log("done");
         },
-        multiDownloads(data){
-            // const el = this.$refs.soaReport;
-            // console.log(el)
-        }
+        multiDownloads() {
+            // this.overlay = true;
+            this.loading = true;
+
+            const divsss = document.querySelectorAll(".reportsoaoutput");
+
+            for (let i = 0; i < this.selected.length; i++) {
+                html2canvas(divsss[i], {
+                    onclone: function (clonedDoc) {
+                        const elems =
+                            clonedDoc.getElementsByClassName("reportsoaoutput");
+                        for (let i = 0; i < elems.length; i++) {
+                            elems[i].style.display = "block";
+                        }
+                    },
+                    type: "dataURL",
+                    backgroundColor: "#fafafa",
+                }).then((canvas) => {
+                    //your onrendered function code here
+                    if (
+                        navigator.userAgent.indexOf("MSIE ") > 0 ||
+                        navigator.userAgent.match(/Trident.*rv\:11\./)
+                    ) {
+                        const blob = canvas.msToBlob();
+
+                        window.navigator.msSaveBlob(
+                            blob,
+                            `${this.selected[i].arena_name}.png`
+                        );
+                    } else {
+                        const link = document.createElement("a");
+                        link.download = `${this.selected[i].arena_name}.png`;
+                        link.href = canvas.toDataURL("image/png");
+
+                        link.click();
+                        this.loading = false;
+                    }
+                });
+            }
+
+            // // // -----------ZIP--------------- // // //
+            //  const zip = new JSZip();
+            // const getBase64Image = (img) => {
+            // 	return img.replace(/^data:image\/(png|jpg);base64,/, "");
+            // }
+
+            //  const doSomeAsyncStuffWith = async(item, i) => {
+
+            // 	const aaa = await html2canvas(divsss[i],{
+            // 			onclone: function (clonedDoc) {
+            // 				const elems = clonedDoc.getElementsByClassName('reportsoaoutput');
+            // 				for(let i = 0; i < elems.length; i++) {
+            // 					elems[i].style.display = 'block';
+            // 				}
+
+            // 			},
+            // 			type: "dataURL",
+            // 			backgroundColor: "#fafafa"
+
+            // 		})
+
+            // 		const dataURL = await aaa.toDataURL("image/png");
+
+            // 		return Promise.resolve({arenaName: item.arena_name, dataURL});
+            // }
+
+            // const awaitAll = (list, asyncFn) => {
+            // 	const promises = [];
+
+            // 	list.forEach((value, index) => {
+
+            // 		promises.push(asyncFn(value, index));
+
+            // 	});
+
+            // 	return Promise.all(promises);
+            // }
+
+            // awaitAll(this.selected, doSomeAsyncStuffWith)
+            // 	.then((results) => {
+
+            // 			console.log(
+            // 				"doSomeStuffOnlyWhenTheAsyncStuffIsFinished",
+            // 				results
+            // 			)
+
+            // 			results.forEach((value) => {
+            // 				const arenaName = value.arenaName.indexOf('/') > -1 ? value.arenaName.replace(/\//g, '-') : value.arenaName;
+            // 				zip.file(`${arenaName}.png`, getBase64Image(value.dataURL), {base64: true})
+
+            // 			})
+
+            // 			zip.generateAsync({
+            // 				type: "blob"
+            // 			}).then(function(content) {
+            // 				saveAs(content, `soafr-${new Date().toLocaleDateString()}.zip`)
+            // 			})
+
+            // 			this.loading = false;
+            // 		}
+
+            // 	)
+            // 	.catch((e) => console.error(e));
+
+            console.log("done");
+        },
     },
 
     computed: {
         computedAve: function () {
-            const netWinLoss =
-                    numberFormat(numberUnformat(this.computation.totalMWBet) +
+            const netWinLoss = numberFormat(
+                numberUnformat(this.computation.totalMWBet) +
                     numberUnformat(this.computation.drawCancelled) +
                     numberUnformat(this.computation.draw) -
                     numberUnformat(this.computation.totalPayoutPaid) -
                     numberUnformat(this.computation.cdPaid) -
-                    numberUnformat(this.computation.drawPaid) || 0);
-            
+                    numberUnformat(this.computation.drawPaid) || 0
+            );
+
+            this.netWinLoss = netWinLoss;
+
             const mwTotalPercent = numberFormat(
                 numberUnformat(this.commission_percent) *
                     numberUnformat(this.computation.totalMWBet) || 0
@@ -1417,29 +1588,42 @@ export default {
                 numberUnformat(this.computation.cUnpaid) -
                 numberUnformat(this.computation.salesDeductionTablet);
 
-            const totalComm = numberUnformat(netOpCommTotal) + numberUnformat(this.computation.otherCommissionIntel05 || "0.00") - numberUnformat(this.computation.consolidatorsCommission || "0.00") - numberUnformat(this.computation.safetyFund || "0.00")  - numberUnformat(this.computation.paymentForOutstandingBalance || "0.00")  
-           
+            const totalComm =
+                numberUnformat(netOpCommTotal) +
+                numberUnformat(
+                    this.computation.otherCommissionIntel05 || "0.00"
+                ) -
+                numberUnformat(
+                    this.computation.consolidatorsCommission || "0.00"
+                ) -
+                numberUnformat(this.computation.safetyFund || "0.00") -
+                numberUnformat(
+                    this.computation.paymentForOutstandingBalance || "0.00"
+                );
 
             const netOpCommission = numberFormat(netOpCommTotal) || 0;
             const totalCommission = numberFormat(totalComm) || 0;
 
-
             const cashLoad = this.computation.mobile.cashLoad;
             const cashWithdraw = this.computation.mobile.cashWithdraw || 0;
-            const totalOthers = numberUnformat(this.computation.unclaimed) + numberUnformat(this.computation.cUnpaid)
-            const totalComputationOthers = this.computation.exempted === "NOT" ? numberFormat(totalOthers) : numberFormat(totalCommission);
-            console.log(this.computation.exempted)
+            const totalOthers =
+                numberUnformat(this.computation.unclaimed) +
+                numberUnformat(this.computation.cUnpaid);
+            const totalComputationOthers =
+                this.computation.exempted === "NOT"
+                    ? numberFormat(totalOthers)
+                    : numberFormat(totalCommission);
+            console.log(this.computation.exempted);
 
-
-         
             const depositReplenish = numberFormat(
-                (numberUnformat(netWinLoss)  -
-                    numberUnformat(totalComputationOthers) || 0  - 
-                    numberUnformat(this.computation.systemErrorCOArmsi ) || 0 ) +
-                (numberUnformat(cashLoad)  -
-                    numberUnformat(cashWithdraw) || 0)
+                (numberUnformat(netWinLoss) -
+                    numberUnformat(totalComputationOthers) ||
+                    0 - numberUnformat(this.computation.systemErrorCOArmsi) ||
+                    0) +
+                    (numberUnformat(cashLoad) - numberUnformat(cashWithdraw) ||
+                        0)
             );
-           
+
             const depositReplenishText =
                 numberUnformat(depositReplenish) < 0
                     ? {
@@ -1447,9 +1631,7 @@ export default {
                           dateText: "FR",
                           totalText: "Replenish",
                           number:
-                              "FR" +
-                              moment().format("MMDYY") +
-                              this.sofrNumSeq,
+                              "FR" + moment().format("MMDYY") + this.sofrNumSeq,
                           bankTitle: "We will replenish to",
                       }
                     : {

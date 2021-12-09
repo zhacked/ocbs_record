@@ -73546,3 +73546,25 @@ select:disabled {
   text-align: center;
   border-top: 1px solid #000;
 }
+
+.custom-loader {
+  -webkit-animation: loader 1s infinite;
+          animation: loader 1s infinite;
+  display: flex;
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
