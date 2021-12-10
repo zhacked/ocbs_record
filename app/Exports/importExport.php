@@ -3,8 +3,9 @@
 namespace App\Exports;
 
 use App\Models\import;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class importExport implements FromCollection,withHeadings
 {
@@ -21,7 +22,14 @@ class importExport implements FromCollection,withHeadings
     */
     public function collection()
     {
-        // return import::all();
-        return collect(import::getImport());
+        return new Collection([
+            [1, 2, 3],
+            [4, 5, 6]
+        ]);
     }
+    // public function collection()
+    // {
+    //     return import::all();
+    //     // return collect(import::getImport());
+    // }
 }

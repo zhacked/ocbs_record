@@ -40,7 +40,7 @@
                                             role="tab"
                                             aria-controls="custom-tabs-three-profile"
                                             aria-selected="false"
-                                            >Reflenish</a
+                                            >Replenish</a
                                         >
                                     </li>
                                 </ul>
@@ -125,44 +125,42 @@
                                             :items="reflenish"
                                             :items-per-page="10"
                                             :search="search"
+                                            sort-by="updated_at"
+                                            group-by="updated_at"
                                             class="elevation-1 text-center"
                                         >
-                                            <template
-                                                v-slot:[`item.actions`]="{
-                                                    item,
-                                                }"
-                                            >
-                                                <v-tooltip top>
-                                                    <template
-                                                        v-slot:activator="{
-                                                            on,
-                                                            attrs,
-                                                            hover,
-                                                        }"
-                                                    >
-                                                        <v-btn
-                                                            icon
-                                                            color="primary"
-                                                            dark
-                                                            small
-                                                            v-bind="attrs"
-                                                            v-on="on"
-                                                            @click="
-                                                                openModel(item)
-                                                            "
-                                                            :class="{
-                                                                'on-hover':
-                                                                    hover,
-                                                            }"
-                                                        >
-                                                            <v-icon
-                                                                >mdi-eye</v-icon
+
+                                        <template v-slot:[`group.header`]="{ group, headers, toggle, isOpen }">
+                                            <td :colspan="headers.length">
+                                                    <v-row>
+                                                        <v-col class="mt-2 ">
+                                                            <div class=" float-left">
+                                                                <v-btn @click="toggle" x-small icon :ref="group" class="test" >
+                                                                    <v-icon v-if="isOpen">mdi-plus</v-icon>
+                                                                    <v-icon v-else>mdi-minus</v-icon>
+                                                                </v-btn>
+                                                                <span class="mx-5 font-weight-bold">{{ group | myDateSummary }}</span>
+                                                            </div>  
+                                                        
+                                                        </v-col>
+                                                        <v-col>
+                                                        <div class=" float-right">
+                                                            <v-btn 
+                                                                small  
+                                                                @click="convertToExcel(group )"
+                                                                outlined
+                                                                color="green" 
                                                             >
-                                                        </v-btn>
-                                                    </template>
-                                                    <span>View Account</span>
-                                                </v-tooltip>
-                                            </template>
+                                                                <v-icon left>
+                                                                        mdi-download
+                                                                    </v-icon>  Download
+                                                                </v-btn>
+                                                        </div>
+                                                        </v-col>
+                                                    </v-row>
+                                                
+                                            </td>
+                                        </template>
                                         </v-data-table>
                                     </div>
                                 </div>
@@ -179,6 +177,7 @@
 </template>
 <script>
 import moment from "moment";
+import XLSX from "xlsx";
 export default {
     
     data() {
@@ -196,6 +195,8 @@ export default {
             deposit:[],
             reflenish:[],
             search:'',
+            myBlob:'',
+            filteredData:{},
         };  
     },
     methods: {
@@ -204,16 +205,41 @@ export default {
             axios
                 .get("api/depositeandreflenish")
                 .then(({ data }) => (
-                    console.log(data.dp),
+                
                     this.deposit = data.dp,
                     this.reflenish = data.rf
                 ));
         },
         convertToExcel(data){
+
             var value = moment(data).format("YYYY-MM-DD");
-    
+            var date = moment(data).format("MMMM-DD-YYYY");
+            var workbooks =  XLSX.utils.book_new();
+            var worksheet = '';
+            let aray = [];
             axios.get("api/convertToExcel/"+ value).then(({ data }) => (
-                   console.log()
+            
+                data.forEach((val) => {
+                    const test = {
+                       'ID': val.id,
+                       'Soa Number': val.Soa_number,
+                        'OCBS Name': val.arena_name,
+                        'Amount': val.for_total
+                    }
+                    aray.push(test);
+
+                }),
+
+               worksheet =  XLSX.utils.json_to_sheet(aray),
+               
+                XLSX.utils.book_append_sheet(workbooks,worksheet,date),
+
+                XLSX.write(workbooks,{bookType:'xlsx',type:'buffer'}),
+                XLSX.write(workbooks,{bookType:'xlsx',type:'binary'}),
+                
+                console.log(worksheet),
+                XLSX.writeFile(workbooks,date + ".xlsx")
+
                 ));
             
         }

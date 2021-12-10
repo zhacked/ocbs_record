@@ -13,7 +13,7 @@
                         <div class="col-lg-12 login-key">
                             <i class="fa fa-key" aria-hidden="true"></i>
                         </div>
-                        <h1 class="text-center text-white  login-title"> ADMIN PANEL</h1>
+                        <h1 class="text-center text-white  login-title"> FINANCE PANEL</h1>
                         <form method="POST" action="{{ route('login') }}" class="login-form">
                             @csrf
                             <div class="mb-3">

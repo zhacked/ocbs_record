@@ -20,6 +20,7 @@
     "moment": "^2.29.1",
     "numbro": "^2.3.5",
     "pug": "^3.0.2",
+    "sheetjs-style": "^0.15.8",
     "sweetalert2": "^11.1.4",
     "urix": "^0.1.0",
     "uuid": "^3.4.0",
@@ -31,7 +32,8 @@
     "vue-router": "^3.5.2",
     "vue-spinner": "^1.0.4",
     "vuetify": "^2.5.8",
-    "xlsx": "^0.17.3"
+    "xlsx": "^0.17.3",
+    "xlsx-js-style": "^1.0.0"
   },
   "devDependencies": {
     "axios": "^0.21.1",
