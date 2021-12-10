@@ -123,6 +123,7 @@
                                             :headers="headers"
                                             :items="arenaData.data"
                                             :items-per-page="10"
+                                             v-model="selected"
                                             :footer-props="{
                                                 'items-per-page-options': [
                                                     5, 10, 20,
@@ -1865,16 +1866,7 @@ export default {
             };
         },
     },
-    watch: {
-        loader() {
-            const l = this.loader;
-            this[l] = !this[l];
-
-            setTimeout(() => (this[l] = false), 3000);
-
-            this.loader = null;
-        },
-    },
+ 
     created() {
         this.showData();
         this.importwithstatus();
