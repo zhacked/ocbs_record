@@ -26,7 +26,7 @@
                     "
                 >
                     <span
-                        >{{ depositReplenishText.number}}</span
+                        >{{refNo}}</span
                     >
                 </div>
             </div>
@@ -95,7 +95,8 @@
         props: {
             depositReplenishText: Object,
             dateEvent: String,
-            dateSoa: String
+            dateSoa: String,
+            refNo: String
         }
     }
 </script>

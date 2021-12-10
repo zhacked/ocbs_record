@@ -45,7 +45,7 @@
                                 type="text"
                                 disabled="disabled"
                                 class="input-field_report computation comp"
-                                v-model="computation.totalMWBet"
+                                v-model="computedAve.totalMWBets"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
                             />
@@ -84,7 +84,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.drawCancelled"
+                                    v-model="computedAve.drawCancelled"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -124,7 +124,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.draw"
+                                    v-model="computedAve.draw"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -164,7 +164,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.totalPayoutPaid"
+                                    v-model="computedAve.totalPayoutPaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -205,7 +205,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.cdPaid"
+                                    v-model="computedAve.cdPaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -245,7 +245,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.drawPaid"
+                                    v-model="computedAve.drawPaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -290,7 +290,7 @@
                                 "
                             >
                                 <span class="ctotal-text">{{
-                                    computation.netWinLoss
+                                    computedAve.netWinLoss
                                 }}</span>
                             </div>
                         </div>
@@ -505,7 +505,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.unclaimed"
+                                    v-model="computedAve.unclaimed"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -545,7 +545,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.cUnpaid"
+                                    v-model="computedAve.cUnpaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -585,7 +585,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.salesDeductionTablet"
+                                    v-model="computedAve.salesDeduction"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -663,7 +663,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.otherCommissionIntel05"
+                                    v-model="computedAve.otherCommissionIntel05"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -703,7 +703,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.consolidatorsCommission"
+                                    v-model="computedAve.consolidatorsCommission"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -743,7 +743,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.safetyFund"
+                                    v-model="computedAve.safetyFund"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -783,7 +783,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.paymentForOutstandingBalance"
+                                    v-model="computedAve.paymentForOutstandingBalance"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -826,7 +826,7 @@
                                     computation-total
                                 "
                             >
-                                <span class="ctotal-text">{{computedAve.totalCommission}}</span>
+                                <span class="ctotal-text">{{computedAve.totalComputationOthers}}</span>
                             </div>
                         </div>
                     </div>
@@ -877,7 +877,7 @@
                                 type="text"
                                 disabled
                                 class="input-field_report computation comp"
-                                v-model="computation.mobile.totalMWBet"
+                                v-model="computedAve.totalMWMobile"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
                             />
@@ -913,7 +913,7 @@
                                 type="text"
                                 disabled
                                 class="input-field_report computation comp"
-                                v-model="computation.mobile.totalDrawBet"
+                                v-model="computedAve.totalDrawMobile"
                                  @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
                             />
@@ -951,7 +951,7 @@
                                 type="text"
                                 disabled
                                 class="input-field_report computation comp"
-                                v-model="computation.mobile.cashLoad"
+                                v-model="computedAve.cashLoad"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
                             />
@@ -987,7 +987,7 @@
                                 type="text"
                                 disabled
                                 class="input-field_report computation comp"
-                                v-model="computation.mobile.cashWithdraw"
+                                v-model="computedAve.cashWithdraw"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
                             />
@@ -1010,7 +1010,7 @@
                             ctotal-label
                         "
                         >For
-                        {{ computedAve.depositReplenishText.totalText }}:</span
+                        {{ depositReplenishTxt.totalText }}:</span
                     >
                     <div
                         class="
@@ -1047,10 +1047,12 @@
 export default {
     name: "ComputeBox",
     props: {
-        computedAve: Object,
+        
         computation: Object,
+        computedAve: Object,
         editmode: Boolean,
         commissionPercent: Number,
+        depositReplenishTxt: Object
     },
     methods: {
         handleCleanZeroOnFocus(event) {

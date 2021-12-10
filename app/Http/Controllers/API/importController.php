@@ -77,28 +77,30 @@ class importController extends Controller
         $arena= arena::where('arena', $data['arenaName'])->first();
             
            $import =  import::create([
+                'areaCode' => $data['areaCode'],
+                'refNo' => $data['refNo'],
                 'arena_name' => $data['arenaName'],
-                'date_of_soa'=> $data['eventCreated'],
+                'date_of_soa'=> $data['eventDate'],
                 'meron' => $data['meron'],
                 'wala' => $data['wala'],
-                'total_meron_wala' => $data['total'],
-                'total_payout_paid' => $data['payoutPaid'],
-                'unclaimed' => $data['unclaimed'],
+                'total_meron_wala' => $data['totalMWBets'],
+                'total_payout_paid' => $data['totalPayoutPaid'],
+                'unclaimed' => $data['totalUnclaimed'],
                 'rake' => $data['rake'],
-                'draw_cancelled' => $data['drawCancelled'],
-                'draw_cancelled_paid' => $data['cDPaid'],
-                'cancelled_unpaid' => $data['cUnpaid'],
-                'draw_paid' => $data['drawPaid'],
+                'draw_cancelled' => $data['totalCancelledBets'],
+                'draw_cancelled_paid' => $data['totalCDPaid'],
+                'cancelled_unpaid' => $data['totalCUnpaid'],
+                'draw_paid' => $data['totalDrawPaid'],
                 'draw_unpaid' => $data['dUnpaid'],
-                'draw' => $data['draw'],
+                'draw' => $data['totalDrawBets'],
                 'draw_unclaimed' => $data['drawUnclaimed'],
-                'draw_gain_loss' => $data['drawGainLoss'],
-                'draw_2_percent' => $data['draw2'],
+                'draw_unpaid' => $data['dUnpaid'],
+
                 'type' => $data['type'],
                 'totalOthers'=> $data['totalOthers'],
-                'salesDeductionTablet'=> $data['salesDeductionTablet'],
+                'salesDeductionTablet'=> $data['salesDeduction'],
                 'netOperatorsCommission'=> $data['netOperatorsCommission'],
-                'otherCommissionIntel05' => $data['otherCommissionIntel05'],
+                'otherCommissionIntel05' => $data['otherCommissionIntel'],
                 'consolidatorsCommission'=> $data['consolidatorsCommission'],
                 'safetyFund'=> $data['safetyFund'],
                 'paymentForOutstandingBalance'=> $data['paymentForOutstandingBalance'],
@@ -106,8 +108,17 @@ class importController extends Controller
                 'cashLoad'=> $data['cashLoad'],
                 'cashWithdrawal'=> $data['cashWithdrawal'],
                 'total_win_mobile'=> $data['totalMWMobile'],
-                'draw_mobile'=> $data['drawMobile'],
+                'draw_mobile'=> $data['totalDrawMobile'],
                 'exempted'=> $data['exempted'],
+                'netWinLoss' => $data['netWinLoss'],
+                'mwTwo' => $data['mwTwo'],
+                'drawTwo' => $data['drawTwo'],
+                'mwTwoMobile' => $data['mwTwoMobile'],
+                'drawTwoMobile' => $data['drawTwoMobile'],
+
+                'for_total' => $data['depositReplenish'],
+
+                'group' => $data['group']
 
             ]);
         }
@@ -134,18 +145,11 @@ class importController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function arenastatus($arena_name,request $request)
+    public function arenastatus($arena_name)
     {   
-        $amount = json_decode(json_encode($request->data));
-        $group =  json_decode(json_encode($amount));
-        
-
-          return  import::where('arena_name',$arena_name)->update([
+        dump($arena_name);
+        $import = import::where('arena_name',$arena_name)->update([
             'status' => 'done',
-            'Soa_number'=> $group->depositReplenishText->number,
-            'group' => $group->depositReplenishText->totalText,
-            'for_total' => $amount->depositReplenish
-
         ]); 
     }
 

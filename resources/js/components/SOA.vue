@@ -229,9 +229,10 @@
                                 v-for="item in selected"
                                 :key="item.id"
                                 style="
-                                    padding: 1px;
+                                    padding: 5px 30px;
                                     width: 800px;
                                     display: none;
+                                   
                                 "
                                 ref="soaReport"
                                 id="reportsoaoutput"
@@ -240,7 +241,7 @@
                                 <v-card-title
                                     class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
                                 >
-                                    <span>{{ item.total_meron_wala }}</span>
+                                    <span>{{  item.group === 'Replenish' ? 'For Replenishment' : 'Statement of Account'}}</span>
                                 </v-card-title>
                                 <v-card-text class="text-sm-body-2">
                                     <v-row>
@@ -248,8 +249,18 @@
                                         <v-spacer></v-spacer>
                                         <DateSOA
                                             :depositReplenishText="
-                                                computedAve.depositReplenishText
-                                            "
+                                                item.group === 'Replenish' ? {
+                                                                title: 'For Replenishment',
+                                                                dateText: 'FR',
+                                                                totalText: 'Replenish',
+                                                                bankTitle: 'We will replenish to' } : {
+                                                                title: 'Statement of Account',
+                                                                dateText: 'SOA',
+                                                                totalText: 'Deposit',
+                                                                bankTitle: 'Kindly Deposit to',
+                                                            }
+                                                        "
+                                            :refNo="item.refNo"
                                             :dateEvent="
                                                 moment(item.date_of_soa).format(
                                                     'LL'
@@ -260,8 +271,8 @@
                                     </v-row>
                                     <v-row>
                                         <ArenaDetails
-                                            :arenaDetails="arenaDetails"
-                                            :editmode="editmode"
+                                            :arenaDetails="item.arena_details ? item.arena_details : {arena: item.arena_name}"
+                                            :editmode="false"
                                         />
                                     </v-row>
                                     <v-row>
@@ -270,15 +281,54 @@
                                         </div>
                                     </v-row>
                                     <ComputeBox
-                                        :computation="computation"
+                                        :computedAve="{
+                                                    totalMWBets: numberFormat(item.total_meron_wala || 0),
+                                                    drawCancelled: numberFormat(item.draw_cancelled || 0),
+                                                    draw: numberFormat(item.draw || 0),
+                                                    totalPayoutPaid: numberFormat(item.total_payout_paid || 0),
+                                                    cdPaid: numberFormat(item.draw_cancelled_paid || 0),
+                                                    drawPaid: numberFormat(item.draw_paid || 0),
+                                                    netWinLoss: numberFormat(item.netWinLoss || 0),
+                                                    mwTotalPercent: numberFormat(item.mwTwo || 0),
+                                              
+                                                    unclaimed: numberFormat(item.unclaimed || 0),
+                                                    cUnpaid: numberFormat(item.cancelled_unpaid || 0),
+                                                    otherCommissionIntel05: numberFormat(item.otherCommissionIntel05 || 0),
+                                                    consolidatorsCommission: numberFormat(item.consolidatorsCommission || 0),
+                                                    paymentForOutstandingBalance: numberFormat(item.paymentForOutstandingBalance || 0),
+                                                    safetyFund: numberFormat(item.safetyFund || 0),
+                                                    salesDeduction: numberFormat(item.salesDeductionTablet) || 0,
+                                                    systemErrorCOArmsi: numberFormat(item.systemErrorCOArmsi || 0),
+                                                    totalOthers: numberFormat(item.totalOthers || 0),
+                                                    totalCommission: numberFormat(item.totalCommission || 0),
+                                                    totalMWMobile: numberFormat(item.total_win_mobile || 0),
+                                                    totalDrawMobile: numberFormat(item.draw_mobile || 0),                            
+                                                    depositReplenish: numberFormat(item.for_total || 0),
+                                                    mwTotalPercent: numberFormat(item.mwTwo || 0),
+                                                    drawTotalPercent: numberFormat(item.drawTwo || 0),
+                                                    mwMobileTotalPercent: numberFormat(item.mwTwoMobile || 0),
+                                                    drawMobileTotalPercent: numberFormat(item.drawMobileTotalPercent || 0),
+                                                    netOpCommission: numberFormat(item.netOperatorsCommission || 0),
+                                                    totalComputationOthers:  item.exempted === 'NOT' ? numberFormat(item.totalOthers || 0) : numberFormat(item.totalCommission || 0),
+                                        }"
+                                        
                                         :commissionPercent="commission_percent"
                                         :editmode="editmode"
-                                        :computedAve="computedAve"
+                                          :depositReplenishTxt="
+                                                item.group === 'Replenish' ? {
+                                                               
+                                                                totalText: 'Replenish',
+                                                               } : {
+                                                               
+                                                                totalText: 'Deposit',
+                                                                
+                                                            }
+                                                        "
                                     />
 
                                     <BankBox
-                                        :bank="bank"
-                                        :operatorName="operator_name"
+                                        :bank="item.bank_details[0]"
+                                        :operatorName="item.arena_details ? item.arena_details.operator : '' "
                                         :editmode="editmode"
                                         :depositReplenishText="
                                             computedAve.depositReplenishText
@@ -294,7 +344,7 @@
                         </div>
                     </v-card>
                 </v-col>
-                {{ this.selected }}
+             
 
                 <v-dialog
                     v-model="dialog"
@@ -388,6 +438,7 @@
                                                             :depositReplenishText="
                                                                 computedAve.depositReplenishText
                                                             "
+                                                            :refNo="refNo"
                                                             :dateEvent="
                                                                 dateEvent
                                                             "
@@ -412,16 +463,12 @@
                                                         </div>
                                                     </v-row>
                                                     <ComputeBox
-                                                        :computation="
-                                                            computation
-                                                        "
-                                                        :commissionPercent="
-                                                            commission_percent
-                                                        "
+                                                       
+                                                        :depositReplenishTxt="this.depositReplenishTxt"
+                                                        :commissionPercent="commission_percent"
                                                         :editmode="editmode"
-                                                        :computedAve="
-                                                            computedAve
-                                                        "
+                                                        :computedAve="computedAve"
+                                                        
                                                     />
 
                                                     <BankBox
@@ -579,7 +626,7 @@ import {
     mergeObject,
     valueSplit,
 } from "../utility";
-import fileChange from "../methods/onFileChange.js";
+// import fileChange from "../methods/onFileChange.js";
 import VueHtml2pdf from "vue-html2pdf";
 import html2canvas from "html2canvas";
 import moment from "moment";
@@ -656,9 +703,10 @@ export default {
             }),
 
             moment,
+            numberFormat,
 
             computation: {
-                totalMWBet: 0,
+                totalMWBets: 0,
                 drawCancelled: 0,
                 draw: 0,
                 totalPayoutPaid: 0,
@@ -673,23 +721,32 @@ export default {
                 consolidatorsCommission: 0,
                 paymentForOutstandingBalance: 0,
                 safetyFund: 0,
-                salesDeductionTablet: 0,
+                salesDeduction: 0,
                 systemErrorCOArmsi: 0,
                 totalOthers: 0,
                 totalCommission: 0,
                 exempted: "",
                 mobile: {
-                    totalMWBet: 0,
-                    totalDrawBet: 0,
+                    totalMWBets: 0,
+                    totalDrawBets: 0,
                     cashLoad: 0,
                     cashWithdraw: 0,
                 },
-            },
+                depositReplenish: 0,
+                mwTwo: 0,
+                drawTwo: 0,
+                mwTwoMobile: 0,
+                drawTwoMobile: 0,
+                netOpCommission: 0,
+                totalComputationOthers: 0,
+            },                   
+            refNo: "",
             soa: true,
             dateCreated: "",
             dateEvent: "",
             depositReplenishTxt: {},
             pictures: [],
+          
         };
     },
     methods: {
@@ -748,7 +805,7 @@ export default {
                     axios
                         .get("api/validate/" + result.value)
                         .then((response) => {
-                            console.log(response);
+                           
                             if (response.data == "success") {
                                 Toast.fire({
                                     icon: "success",
@@ -837,7 +894,7 @@ export default {
             $(".computation").addClass("input-show");
 
             this.computation = {
-                totalMWBet: numberUnformat(this.computation.totalMWBet),
+                totalMWBets: numberUnformat(this.computation.totalMWBets),
                 drawCancelled: numberUnformat(this.computation.drawCancelled),
                 draw: numberUnformat(this.computation.draw),
                 totalPayoutPaid: numberUnformat(
@@ -877,10 +934,10 @@ export default {
                     cashWithdraw: numberUnformat(
                         this.computation.mobile.cashWithdraw
                     ),
-                    totalMWBet: numberUnformat(
+                    totalMWBets: numberUnformat(
                         this.computation.totalMobileMWBets || "0.00"
                     ),
-                    totalDrawBet: numberUnformat(
+                    totalDrawBets: numberUnformat(
                         this.computation.totalMobileDrawBets || "0.00"
                     ),
                 },
@@ -903,7 +960,7 @@ export default {
             this.editmode = !this.editmode;
 
             this.computation = {
-                totalMWBet: numberFormat(this.computation.totalMWBet || 0),
+                totalMWBets: numberFormat(this.computation.totalMWBets || 0),
                 drawCancelled: numberFormat(
                     this.computation.drawCancelled || 0
                 ),
@@ -949,10 +1006,10 @@ export default {
                     cashWithdraw: numberFormat(
                         this.computation.mobile.cashWithdraw || 0
                     ),
-                    totalMWBet: numberFormat(
+                    totalMWBets: numberFormat(
                         this.computation.totalMobileMWBets || 0
                     ),
-                    totalDrawBet: numberFormat(
+                    totalDrawBets: numberFormat(
                         this.computation.totalMobileDrawBets || 0
                     ),
                 },
@@ -987,6 +1044,7 @@ export default {
         },
 
         openModel(data) {
+            console.log(data)
             if (data.arena_details == null) {
                 swal.fire({
                     icon: "warning",
@@ -998,16 +1056,17 @@ export default {
                 this.dialog = true;
 
                 this.form.reset();
+                this.form.fill(data.arena_details);
                 this.operator_name = data.arena_details.operator;
                 this.dateCreated = moment().format("ll");
                 this.dateEvent = moment(data.date_of_soa).format("ll");
-                this.sofrNumSeq = ("00000" + data.id).slice(-5);
+                this.refNo = data.refNo;
 
-                this.form.fill(data.arena_details);
+     
                 this.arenaDetails = data.arena_details;
                 this.arena_id = data.arena_details.id;
                 this.arena_name = data.arena_name;
-                const totalMWBet = data.total_meron_wala;
+                const totalMWBets = data.total_meron_wala;
                 const drawCancelled = data.draw_cancelled;
                 const draw = data.draw;
                 const totalPayoutPaid = data.total_payout_paid;
@@ -1027,46 +1086,51 @@ export default {
                 const totalMWMobile = data.total_win_mobile;
                 const drawMobile = data.draw_mobile;
                 const exempted = data.exempted;
-
-                const totalMWBetPercent =
-                    parseFloat(totalMWBet) *
-                    parseFloat(this.commission_percent);
+                const netWinLoss = data.netWinLoss;
+                const mwTwo = data.mwTwo;
+                const drawTwo = data.drawTwo;
+                const mwTwoMobile = data.mwTwoMobile;
+                const drawTwoMobile = data.drawTwoMobile;
+                const netOperatorsCommission = data.netOperatorsCommission;
 
                 this.computation = {
-                    totalMWBet: numberFormat(totalMWBet),
-                    drawCancelled: numberFormat(drawCancelled),
-                    draw: numberFormat(draw),
-                    totalPayoutPaid: numberFormat(totalPayoutPaid),
-                    cdPaid: numberFormat(cdPaid),
-                    drawPaid: numberFormat(drawPaid),
-                    // netWinLoss: numberFormat(netWinLoss),
-                    unclaimed: numberFormat(unclaimed),
-                    cUnpaid: numberFormat(cUnpaid),
-                    totalMWBetPercent: numberFormat(totalMWBetPercent),
-                    operatorExpenses: numberFormat(
-                        this.computation.operatorExpenses
-                    ),
-                    otherCommissionIntel05: numberFormat(
-                        otherCommissionIntel05
-                    ),
-                    consolidatorsCommission: numberFormat(
-                        consolidatorsCommission
-                    ),
-                    paymentForOutstandingBalance: numberFormat(
-                        paymentForOutstandingBalance
-                    ),
-                    safetyFund: numberFormat(safetyFund),
-                    salesDeductionTablet: numberFormat(salesDeduction),
-                    systemErrorCOArmsi: numberFormat(systemErrorCOArmsi),
+                    totalMWBets,
+                    drawCancelled,
+                    draw,
+                    totalPayoutPaid,
+                    cdPaid,
+                    drawPaid,
+                    unclaimed,
+                    cUnpaid,
+                    salesDeduction,
+                    otherCommissionIntel05,
+                    systemErrorCOArmsi,
+                    consolidatorsCommission,
+                    safetyFund,
+                    paymentForOutstandingBalance,
+                    
+                    totalMWMobile,
+                    drawMobile,
                     exempted,
-
+                    netWinLoss,
+                    mwTwo,
+                    drawTwo,
+                    mwTwoMobile,
+                    drawTwoMobile,
                     mobile: {
-                        cashLoad: numberFormat(cashLoad),
-                        cashWithdraw: numberFormat(cashWithdrawal),
-                        totalMWBet: numberFormat(totalMWMobile),
-                        totalDrawBet: numberFormat(drawMobile),
+                        totalMWBets: totalMWMobile,
+                        totalDrawBets: drawMobile,
+                        cashLoad,
+                        cashWithdraw: cashWithdrawal,
                     },
-                };
+                   
+                    netOperatorsCommission,
+                }
+                
+
+               
+
+                
             }
         },
 
@@ -1075,6 +1139,9 @@ export default {
             this.fileUpload = file;
             const checkfile =
                 file.name.includes("xlsx") || file.name.includes("csv");
+            
+            const moLetter = String.fromCharCode(96 + (moment().month()+1)).toUpperCase();
+
             if (file && checkfile) {
                 const reader = new FileReader();
                 let arrayData = [];
@@ -1290,7 +1357,7 @@ export default {
 
                     const removeKeyReportObject = filterObjectHeader.map(
                         ({ key, ...rest }) => {
-							
+                            // console.log(rest.arenaName, rest.cashLoad)
 							const type = rest.type || rest.classification;
 							const arenaName = rest.arenaName;
 							const exempted = rest.exempted;
@@ -1323,10 +1390,16 @@ export default {
 							const totalComputationOthers = exempted === "NOT" ? totalOthers : totalCommission;					
 							const depositReplenish = (netWinLoss - totalComputationOthers- systemErrorCOArmsi) + (cashLoad - cashWithdrawal);
 							const soaFr = parseFloat(depositReplenish) < 0 ? "fr" : "soa";
+                            const group = soaFr === 'fr' ? 'Replenish' : 'Deposit'
 
                             rest = {
 								areaCode: rest.areaCode,
 								eventDate: rest.eventCreated,
+                                meron: rest.meron,
+                                wala: rest.wala,
+                                rake: rest.rake,
+                                dUnpaid: rest.dUnpaid,
+                                drawUnclaimed: rest.drawUnclaimed,
 								arenaName,
 								type,
 								exempted,								
@@ -1357,7 +1430,9 @@ export default {
 								depositReplenish,
 								totalOthers,
 								systemErrorCOArmsi,
-								soaFr
+                                soaFr,
+								group,
+                                
 							
                             };
 
@@ -1372,12 +1447,11 @@ export default {
 						return r;
 					}, Object.create(null));
 					
-					const newsoa = groupSOAFR.soa.map((s, i) => ({refNo: "SOA"+moment().format("MMDYY")+(`00000${i+1}`).slice(-5), ...s}));
-					const newfr = groupSOAFR.fr.map((f, i) => ({refNo: "FR"+moment().format("MMDYY")+(`00000${i+1}`).slice(-5), ...f}));
+					const newsoa = groupSOAFR.soa.map((s, i) => ({refNo: "SO"+moment().format("MMDD")+moLetter+(`0000${i+1}`).slice(-4), ...s}));
+					const newfr = groupSOAFR.fr.map((f, i) => ({refNo: "FR"+moment().format("MMDD")+moLetter+(`0000${i+1}`).slice(-4), ...f}));
 
 					const newSetReport = concat(newsoa, newfr);
 	
-					console.log('new set soafr>>>',newSetReport);
 					
                     this.ocbsArrayFiltered = newSetReport;
 
@@ -1420,7 +1494,8 @@ export default {
             const printCanvas = await html2canvas(el, options);
 
             const link = document.createElement("a");
-            link.setAttribute("download", `${details.arena}.png`);
+            const soaFr = details.group === "Replenish" ? "FR" : "SOA"
+            link.setAttribute("download", `${soaFr}-${details.arena}.png`);
             link.setAttribute(
                 "href",
                 printCanvas
@@ -1430,9 +1505,7 @@ export default {
             link.click();
 
             axios
-                .put("api/arenaStatus/" + this.arena_name, {
-                    data: this.computedAve,
-                })
+                .put("api/arenaStatus/" + this.arena_name)
                 .then(
                     (data) => (
                         Fire.$emit("AfterCreate"),
@@ -1473,13 +1546,17 @@ export default {
                         );
                     } else {
                         const link = document.createElement("a");
-                        link.download = `${this.selected[i].arena_name}.png`;
+                        const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
+                        link.download = `${soaFr}-${this.selected[i].arena_name}.png`;
                         link.href = canvas.toDataURL("image/png");
 
                         link.click();
                         this.loading = false;
                     }
                 });
+
+            const arenaName = this.selected[i].arena_name.indexOf('/') > -1 ?this.selected[i].arena_name.replace(/\//g, '-') : this.selected[i].arena_name
+            axios.put("api/arenaStatus/" + arenaName)
             }
 
             // // // -----------ZIP--------------- // // //
@@ -1552,8 +1629,9 @@ export default {
 
     computed: {
         computedAve: function () {
+           
             const netWinLoss = numberFormat(
-                numberUnformat(this.computation.totalMWBet) +
+                numberUnformat(this.computation.totalMWBets) +
                     numberUnformat(this.computation.drawCancelled) +
                     numberUnformat(this.computation.draw) -
                     numberUnformat(this.computation.totalPayoutPaid) -
@@ -1561,23 +1639,29 @@ export default {
                     numberUnformat(this.computation.drawPaid) || 0
             );
 
-            this.netWinLoss = netWinLoss;
+         
 
             const mwTotalPercent = numberFormat(
                 numberUnformat(this.commission_percent) *
-                    numberUnformat(this.computation.totalMWBet) || 0
+                    numberUnformat(this.computation.totalMWBets) || 0
             );
+
+            
+
             const drawTotalPercent = numberFormat(
                 parseFloat(this.commission_percent) *
                     numberUnformat(this.computation.draw) || 0
             );
             const mwMobileTotalPercent = numberFormat(
                 numberUnformat(this.commission_percent) *
-                    numberUnformat(this.computation.mobile.totalMWBet) || 0
+                    numberUnformat(this.computation.mobile.totalMWBets) || 0
             );
+
+            
+
             const drawMobileTotalPercent = numberFormat(
                 numberUnformat(this.commission_percent) *
-                    numberUnformat(this.computation.mobile.totalDrawBet) || 0
+                    numberUnformat(this.computation.mobile.totalDrawBets) || 0
             );
             const netOpCommTotal =
                 numberUnformat(mwTotalPercent) +
@@ -1586,7 +1670,9 @@ export default {
                 numberUnformat(drawMobileTotalPercent) +
                 numberUnformat(this.computation.unclaimed) +
                 numberUnformat(this.computation.cUnpaid) -
-                numberUnformat(this.computation.salesDeductionTablet);
+                numberUnformat(this.computation.salesDeduction);
+
+           
 
             const totalComm =
                 numberUnformat(netOpCommTotal) +
@@ -1604,16 +1690,19 @@ export default {
             const netOpCommission = numberFormat(netOpCommTotal) || 0;
             const totalCommission = numberFormat(totalComm) || 0;
 
-            const cashLoad = this.computation.mobile.cashLoad;
-            const cashWithdraw = this.computation.mobile.cashWithdraw || 0;
+          
+
+            const cashLoad = numberFormat(this.computation.mobile.cashLoad || 0);
+            const cashWithdraw = numberFormat(this.computation.mobile.cashWithdraw || 0);
+
             const totalOthers =
                 numberUnformat(this.computation.unclaimed) +
                 numberUnformat(this.computation.cUnpaid);
+
             const totalComputationOthers =
                 this.computation.exempted === "NOT"
                     ? numberFormat(totalOthers)
                     : numberFormat(totalCommission);
-            console.log(this.computation.exempted);
 
             const depositReplenish = numberFormat(
                 (numberUnformat(netWinLoss) -
@@ -1623,6 +1712,8 @@ export default {
                     (numberUnformat(cashLoad) - numberUnformat(cashWithdraw) ||
                         0)
             );
+
+            
 
             const depositReplenishText =
                 numberUnformat(depositReplenish) < 0
@@ -1644,9 +1735,48 @@ export default {
                               this.sofrNumSeq,
                           bankTitle: "Kindly Deposit to",
                       };
-            this.depositReplenishTxt = depositReplenishText;
+           
+          
+
+
+                    // const totalMWBetPercent =
+                    // parseFloat(this.computation.totalMWBets) *
+                    // parseFloat(this.commission_percent);
+
+              
+                    const totalMWBets = numberFormat(this.computation.totalMWBets);
+                        
+                    const drawCancelled= numberFormat(this.computation.drawCancelled);
+                    const draw= numberFormat(this.computation.draw);
+                    const totalPayoutPaid= numberFormat(this.computation.totalPayoutPaid);
+                    const cdPaid= numberFormat(this.computation.cdPaid);
+                    const drawPaid= numberFormat(this.computation.drawPaid);
+            
+                    const unclaimed= numberFormat(this.computation.unclaimed);
+                    const cUnpaid= numberFormat(this.computation.cUnpaid);
+                   
+                   
+                    const otherCommissionIntel05= numberFormat(
+                        this.computation.otherCommissionIntel05
+                    );
+                   const consolidatorsCommission= numberFormat(
+                        this.computation.consolidatorsCommission
+                    );
+                    const paymentForOutstandingBalance= numberFormat(
+                        this.computation.paymentForOutstandingBalance
+                    );
+                    const safetyFund= numberFormat(this.computation.safetyFund);
+                    const salesDeduction= numberFormat(this.computation.salesDeductionTablet);
+                    const systemErrorCOArmsi= numberFormat(this.computation.systemErrorCOArmsi);
+                    const totalMWMobile = numberFormat(this.computation.mobile.totalMWBets);
+                    const totalDrawMobile = numberFormat(this.computation.mobile.totalDrawBets);
+               
+
+                
+                
 
             return {
+                totalMWBets,
                 netWinLoss,
                 mwTotalPercent,
                 drawTotalPercent,
@@ -1659,6 +1789,21 @@ export default {
                 cashWithdraw,
                 depositReplenish,
                 depositReplenishText,
+                salesDeduction,
+                systemErrorCOArmsi,
+                safetyFund,
+                drawCancelled,
+                draw,
+                totalPayoutPaid,
+                cdPaid,
+                drawPaid,
+                unclaimed,
+                cUnpaid,
+                otherCommissionIntel05,
+                consolidatorsCommission,
+                paymentForOutstandingBalance,
+                totalMWMobile,
+                totalDrawMobile
             };
         },
     },
