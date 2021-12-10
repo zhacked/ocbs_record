@@ -24,7 +24,7 @@ class ArenaController extends Controller
 
     public function index()
     {
-         return arena::with('BankDetails')->paginate(10);
+         return arena::with('BankDetails')->get();
     }
 
     /**

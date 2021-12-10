@@ -182,7 +182,7 @@
                 errorMessages: '',
                 formHasErrors: false,
                 editmode: false,
-                arena : {},
+                arena : [],
                 search: '',
                 input: '',
                 form: new Form({
@@ -200,7 +200,6 @@
         methods: {
             
             addField(index) {
-                 
                     this.inputs.push({
                         bank_name: "",
                         bank_number: "",
@@ -235,12 +234,6 @@
                     })
                    
                 },
-            getResults(page = 1) {
-                        axios.get('api/arena?page=' + page)
-                            .then(response => {
-                                this.arena = response.data;
-                            });
-                },
             updateArena(){
                 this.$Progress.start();
                 this.form.bank_details = this.inputs
@@ -258,9 +251,6 @@
                 .catch(() => {
                     this.$Progress.fail();
                 });
-            },
-            deleteColum(){
-
             },
             editModal(arenas){
                 this.editmode = true;
@@ -308,7 +298,8 @@
                     })
             },
             loadArena(){
-                    axios.get("api/arena").then(({ data }) => (
+                    axios.get("api/arena").then((data) => (
+                       
                         this.arena = data
                         ));
             },

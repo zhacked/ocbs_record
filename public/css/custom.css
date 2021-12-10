@@ -184,6 +184,10 @@ body.modal-open .is-blurred {
   -webkit-filter: blur(2px);
 
 }
+tr.v-data-table__selected {
+  background: rgba(237,112,110,.1) !important;
+}
+
 
 
 /*# sourceMappingURL=custom.css.map */

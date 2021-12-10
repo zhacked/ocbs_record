@@ -38,7 +38,7 @@
 					<i class="nav-icon fas fa-file "></i>
 					<p>Accounts &nbsp; </p>
 				
-					<span class="badge badge-danger right">	{{App\Models\import::whereNull('status')->count()}}</span>
+					<span class="badge badge-danger right">	{{$importCount}}</span>
 				</router-link>
 			</li>
 
@@ -47,7 +47,7 @@
 					<i class="nav-icon fab fa-angular"></i>
 					<p>Arena</p>
 
-					<span class="badge badge-danger right">{{App\Models\arena::count()}}</span>
+					<span class="badge badge-danger right">{{$arenaCount}}</span>
 				</router-link>
 			</li>
 

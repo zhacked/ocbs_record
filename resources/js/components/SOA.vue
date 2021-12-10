@@ -6,6 +6,7 @@
                     <v-card>
                         <v-card-title class="card-header">
                             <strong>Statement of Account</strong>
+                          
                             <v-spacer></v-spacer>
                             <form @submit.prevent="proceedAction()">
                                 <v-card-actions class="card-tools">
@@ -24,7 +25,15 @@
                                         type="submit"
                                         color="success"
                                         elevation="2"
-                                        >send</v-btn
+                                        :loading="loading"
+                                        >
+                                    <template v-slot:loader>
+                                        <span>Preparing...</span>
+                                        <span class="custom-loader">
+                                            <v-icon   v-icon light>mdi-cached</v-icon>
+                                        </span>
+                                    </template>
+                                        send</v-btn
                                     >
                                 </v-card-actions>
                             </form>
@@ -73,16 +82,21 @@
                                 >
                                     <v-row>
                                         <v-col>
-                                            <v-btn
+                                            <v-btn v-show="this.selected != 0"
                                                 :loading="loading"
                                                 :disabled="loading"
                                                 color="green lighten-1"
-                                                class="ma-2 white--text"
+                                                class="ma-2 white--text allbtn"
                                                 @click="multiDownloads"
+                                                
+                                             
                                             >
-                                                Convert all
+                                                Convert Now
                                                 <template v-slot:loader>
                                                     <span>Preparing...</span>
+                                                    <span class="custom-loader">
+                                                        <v-icon   v-icon light>mdi-cached</v-icon>
+                                                    </span>
                                                 </template>
                                             </v-btn>
                                         </v-col>
@@ -103,10 +117,9 @@
                                         role="tabpanel"
                                         aria-labelledby="custom-tabs-three-home-tab"
                                     >
-                                        <template> </template>
-                                        <!-- <img class="ls-heart" src="your-loader-url"/> -->
+                                       
                                         <v-data-table
-                                            v-model="selected"
+                                            item-key="id" 
                                             :headers="headers"
                                             :items="arenaData.data"
                                             :items-per-page="10"
@@ -115,11 +128,13 @@
                                                     5, 10, 20,
                                                 ],
                                             }"
+                                            @click:item-selected="test()"
                                             :search="search"
                                             show-select
                                             :single-select="singleSelect"
                                             class="elevation-1 text-center"
                                         >
+                                          
                                             <template
                                                 v-slot:[`item.actions`]="{
                                                     item,
@@ -156,7 +171,28 @@
                                                     <span>View Account</span>
                                                 </v-tooltip>
                                             </template>
+                                            
                                         </v-data-table>
+                                         <v-dialog 
+                                            v-model="dialog2"
+                                            hide-overlay
+                                            persistent
+                                            width="700"
+                                            full-width
+                                            >
+                                            <v-card color="primary" dark>
+                                            <v-card-text>
+                                               <h1>Please stand by</h1> 
+                                                    <v-progress-linear
+                                                        indeterminate
+                                                        color="white"
+                                                        class="mb-0"
+                                                         striped
+                                                          height="10"
+                                                    ></v-progress-linear>
+                                            </v-card-text>
+                                            </v-card>
+                                            </v-dialog>
                                         <v-btn
                                             :loading="loading"
                                             :disabled="loading"
@@ -635,6 +671,8 @@ import ArenaDetails from "./DialogPreview/ArenaDetails.vue";
 import ComputeBox from "./DialogPreview/ComputeBox.vue";
 import BankBox from "./DialogPreview/BankBox.vue";
 import PreparedChecked from "./DialogPreview/PreparedChecked.vue";
+
+import BounceLoader from 'vue-spinner/src/BounceLoader.vue';
 // import Spinner from "";
 export default {
     components: {
@@ -644,6 +682,8 @@ export default {
         ComputeBox,
         BankBox,
         PreparedChecked,
+     
+        BounceLoader
     },
     data() {
         return {
@@ -665,6 +705,7 @@ export default {
             singleSelect: false,
             selected: [],
             dialog: false,
+            dialog2:false,
             search: "",
             ocbsArray: [],
             ocbsArrayFiltered: [],
@@ -821,6 +862,12 @@ export default {
                             }
                         })
                         .catch((error) => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                                footer: error
+                                })
                             console.log(error);
                         });
                 }
@@ -1019,7 +1066,7 @@ export default {
         proceedAction() {
             this.$Progress.start();
             // var result = $('#importData').val().split('.');
-
+           
             if (
                 $("#importData").val() === "" ||
                 !this.fileUpload.name.includes("xlsx")
@@ -1031,15 +1078,26 @@ export default {
                     text: "Make sure you insert correct excel data!",
                 });
             } else {
+                this.dialog2 = true
                 axios.post("api/import", this.ocbsArrayFiltered).then(
                     ({ data }) => (
+                        this.dialog2 = false,
                         $("#importData").val(""),
                         Fire.$emit("AfterCreate"),
                         swal.fire("Successfully!", "Excel Imported", "success"),
                         this.$Progress.finish()
                         // location.reload()
                     )
-                );
+                ).catch((error)=>{
+                    this.dialog2 = false,
+                     swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                                footer: error
+                                })
+                    //      this.dialog2 = false
+                });
             }
         },
 
