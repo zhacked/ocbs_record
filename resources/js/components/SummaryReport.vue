@@ -73,11 +73,15 @@
                                         <v-data-table
                                             :headers="headers"
                                             :items="deposit"
-                                            :items-per-page="10"
                                             :search="search"
                                             sort-by="updated_at"
                                             group-by="updated_at"
                                             class="elevation-1 text-center"
+                                             :footer-props="{
+                                                'items-per-page-options': [
+                                                   50
+                                                ],
+                                            }"
                                         >
                                       <template v-slot:[`group.header`]="{ group, headers, toggle, isOpen }">
                                     
@@ -125,6 +129,7 @@
                                             :items="reflenish"
                                             :items-per-page="10"
                                             :search="search"
+                                            :show-group-by="false"
                                             sort-by="updated_at"
                                             group-by="updated_at"
                                             class="elevation-1 text-center"
@@ -187,7 +192,6 @@ export default {
                 { text: "SAO#", value: "Soa_number" },
                 { text: "OCBS Name", value: "arena_name" },
                 { text: "Amount", value: "for_total" },
-
                 { text: "date", value: "updated_at" },
          
               

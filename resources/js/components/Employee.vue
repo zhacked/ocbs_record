@@ -13,23 +13,39 @@
 							</v-card-actions>
 						</v-card-title>
 
-                      
-                            <v-text-field
-                                v-model="search"
-                                append-icon="mdi-magnify"
-                                label="Search"
-                                class="mx-4"
-                            ></v-text-field>
-                   
+                            <v-row>
+                                <v-col>
+
+                                </v-col>
+                                <v-col>
+                                    <v-text-field
+                                        v-model="search"
+                                        append-icon="mdi-magnify"
+                                        label="Search"
+                                        class="mx-4"
+                                    ></v-text-field>
+                                </v-col>
+                            </v-row>
+
+                            
                             <v-data-table
                                     :headers="headers"
                                     :items="employee"
-                               
                                     :search="search"
                                     class="elevation-1 text-center"
+                                   
                                 >
-                                
+                             <template v-slot:[`item.select`]="{ item }">
+                                     <v-checkbox
+                                        v-model="selected"
+                                        single-select
+                                        color="green"
+                                        >{{item}}</v-checkbox>
+                                     
+                            </template>
+
                             <template v-slot:[`item.actions`]="{ item }">
+
                                     <v-tooltip bottom>
                                         <template v-slot:activator="{ on, attrs }">
                                                 <v-btn
@@ -65,7 +81,7 @@
                                     </v-tooltip>
                             </template>
                             </v-data-table>
-						
+                            {{this.selected}}
 					</v-card>
 				</v-col>
 			</v-row>
@@ -191,10 +207,12 @@
         data() {
             return {
                 headers: [
+                    { text: '', value: 'select', sortable: false },
                     { text: 'Name', value: 'name' },
                     { text: 'Email', value: 'email' },
                     { text: 'Number', value: 'contact'},
                     { text: 'Position', value: 'position'},
+                    {text:'Group', value: 'group'},
                     { text: '', value: 'actions', sortable: false },
                 ],
                 editmode: false,
@@ -206,6 +224,7 @@
                     'checked',
                     'crepared'
                 ],
+                selected:'',
                 position:[
                     'QA Staff',
                     'Finance Assistant-Kiosk Operation',
@@ -223,6 +242,9 @@
             }
         },
         methods: {
+            test(){
+                console.log('test');
+            },
             updateUser(){
                 this.$Progress.start();
                 console.log('Editing data');
