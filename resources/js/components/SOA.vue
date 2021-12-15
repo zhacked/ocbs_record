@@ -30,7 +30,7 @@
                                     <template v-slot:loader>
                                         <span>Preparing...</span>
                                         <span class="custom-loader">
-                                            <v-icon   v-icon light>mdi-cached</v-icon>
+                                            <v-icon  light>mdi-cached</v-icon>
                                         </span>
                                     </template>
                                         send</v-btn
@@ -83,8 +83,8 @@
                                     <v-row>
                                         <v-col>
                                             <v-btn v-show="this.selected != 0"
-                                                :loading="loading"
-                                                :disabled="loading"
+                                                :loading="downloadingReport"
+                                                :disabled="downloadingReport"
                                                 color="green lighten-1"
                                                 class="ma-2 white--text allbtn"
                                                 @click="multiDownloads"
@@ -93,7 +93,7 @@
                                             >
                                                 Convert Now
                                                 <template v-slot:loader>
-                                                    <span>Preparing...</span>
+                                                    <span>Downloading</span>
                                                     <span class="custom-loader">
                                                         <v-icon   v-icon light>mdi-cached</v-icon>
                                                     </span>
@@ -126,14 +126,18 @@
                                              v-model="selected"
                                             :footer-props="{
                                                 'items-per-page-options': [
-                                                    5, 10, 20,
+                                                    10, 20, 30, 40, 50
                                                 ],
                                             }"
                                             @click:item-selected="test()"
                                             :search="search"
-                                            show-select
+                                            :show-select="downloadingReport ? false : true"
+                                            :disable-filtering="downloadingReport ? true : false"
+                                            :disable-sort="downloadingReport ? true : false"
+                                          
                                             :single-select="singleSelect"
                                             class="elevation-1 text-center"
+                                         
                                         >
                                           
                                             <template
@@ -163,6 +167,7 @@
                                                                 'on-hover':
                                                                     hover,
                                                             }"
+                                                            :disabled="downloadingReport"
                                                         >
                                                             <v-icon
                                                                 >mdi-eye</v-icon
@@ -179,7 +184,7 @@
                                             hide-overlay
                                             persistent
                                             width="700"
-                                            full-width
+                                        
                                             >
                                             <v-card color="primary" dark>
                                             <v-card-text>
@@ -352,9 +357,9 @@
                                         :commissionPercent="commission_percent"
                                         :editmode="editmode"
                                           :depositReplenishTxt="
-                                                item.group === 'Replenish' ? {
+                                               item.group === 'Replenish' ? {
                                                                
-                                                                totalText: 'Replenish',
+                                                                totalText: 'Replenishment'
                                                                } : {
                                                                
                                                                 totalText: 'Deposit',
@@ -501,7 +506,7 @@
                                                     </v-row>
                                                     <ComputeBox
                                                        
-                                                        :depositReplenishTxt="this.depositReplenishTxt"
+                                                        :depositReplenishTxt="computedAve.depositReplenishText"
                                                         :commissionPercent="commission_percent"
                                                         :editmode="editmode"
                                                         :computedAve="computedAve"
@@ -732,6 +737,7 @@ export default {
             arena_id: "",
             arena_name: "",
             loading: false,
+            downloadingReport: false,
             loader: null,
 
             fileUpload: "",
@@ -901,8 +907,6 @@ export default {
                 data: duplicateObj,
             };
 
-            // console.log(obj.data)
-
             this.arenaDatastatus = obj;
         },
         async showData() {
@@ -917,7 +921,7 @@ export default {
 
                     r.push(helper[key]);
                 } else {
-                    // const {arenaName, ...o} = obj;
+                   
                     helper[key].mobile = {
                         ...obj,
                     };
@@ -926,13 +930,27 @@ export default {
                 return r;
             }, []);
 
+            const newArray = [];
+
+           duplicateObj.forEach((dObj) => {
+                const arenaName = dObj.arena_name.indexOf('~') > -1 ? dObj.arena_name.replace(/\~/g, '/') : dObj.arena_name
+                
+                const obj = {
+                    ...dObj,
+                    arena_name: arenaName,
+                }
+
+                newArray.push(obj)
+
+            })
+
             const obj = {
-                data: duplicateObj,
+                data: newArray,
             };
 
             this.arenaData = obj;
 
-            duplicateObj.forEach((item) => {});
+            
         },
         closeDialog() {
             this.dialog = false;
@@ -1066,7 +1084,7 @@ export default {
 
         proceedAction() {
             this.$Progress.start();
-            // var result = $('#importData').val().split('.');
+            
            
             if (
                 $("#importData").val() === "" ||
@@ -1097,7 +1115,7 @@ export default {
                                 text: 'Something went wrong!',
                                 footer: error
                                 })
-                    //      this.dialog2 = false
+                   
                 });
             }
         },
@@ -1371,7 +1389,7 @@ export default {
                         }
                     });
 
-                    // console.log('OBJMK>>>',objMobileKiosk)
+                  
 
                     let helper = {};
                     const result = objMobileKiosk.reduce(function (r, o) {
@@ -1382,10 +1400,7 @@ export default {
 
                             r.push(helper[key]);
                         } else {
-                            // helper[key].mobile = {
-                            //     totalMW: o.total,
-                            //     draw: o.draw
-                            // }
+                          
 
                             helper[key].totalMWMobile = o.total;
                             helper[key].drawMobile = o.draw;
@@ -1416,9 +1431,9 @@ export default {
 
                     const removeKeyReportObject = filterObjectHeader.map(
                         ({ key, ...rest }) => {
-                            // console.log(rest.arenaName, rest.cashLoad)
+                           
 							const type = rest.type || rest.classification;
-							const arenaName = rest.arenaName;
+							
 							const exempted = rest.exempted;
                             const totalMWBets = rest.meron + rest.wala;
                             const totalCancelledBets = rest.drawCancelled;
@@ -1451,8 +1466,11 @@ export default {
 							const soaFr = parseFloat(depositReplenish) < 0 ? "fr" : "soa";
                             const group = soaFr === 'fr' ? 'Replenish' : 'Deposit'
 
+                            const arenaName = rest.arenaName.indexOf('/') > -1 ? rest.arenaName.replace(/\//g, '~') : rest.arenaName
+                            const areaCode = rest.areaCode.indexOf('/') > -1 ? rest.areaCode.replace(/\//g, '~') : rest.areaCode
+
                             rest = {
-								areaCode: rest.areaCode,
+								areaCode,
 								eventDate: rest.eventCreated,
                                 meron: rest.meron,
                                 wala: rest.wala,
@@ -1574,9 +1592,9 @@ export default {
                 );
             console.log("done");
         },
-        multiDownloads() {
-            // this.overlay = true;
-            this.loading = true;
+        async multiDownloads() {
+           
+            this.downloadingReport = true;
 
             const divsss = document.querySelectorAll(".reportsoaoutput");
 
@@ -1605,18 +1623,30 @@ export default {
                         );
                     } else {
                         const link = document.createElement("a");
-                        const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
-                        link.download = `${soaFr}-${this.selected[i].arena_name}.png`;
+                        // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
+                        link.download = `${this.selected[i].arena_name}.png`;
                         link.href = canvas.toDataURL("image/png");
-
+                        document.body.appendChild(link);
                         link.click();
-                        this.loading = false;
+                        // this.downloadingReport = false;
                     }
                 });
+                await axios.put("api/arenaStatus/" + this.selected[i].areaCode)
+                
+                
+                if(this.selected.length - 1 === i) {
+                    const c = this.arenaData.data.filter(arena => !this.selected.find(select => select.areaCode === arena.areaCode))
+            
+                    this.arenaData.data = c
+                    this.selected = []
+                
+                   this.downloadingReport = false
+                     
+                }
 
-            const arenaName = this.selected[i].arena_name.indexOf('/') > -1 ?this.selected[i].arena_name.replace(/\//g, '-') : this.selected[i].arena_name
-            axios.put("api/arenaStatus/" + arenaName)
+             
             }
+
 
             // // // -----------ZIP--------------- // // //
             //  const zip = new JSZip();
@@ -1681,6 +1711,21 @@ export default {
 
             // 	)
             // 	.catch((e) => console.error(e));
+
+            // console.log(this.arenaData.data)
+            // console.log(this.selected)
+           
+         
+            //  this.selected = []
+
+            //     const c = await this.arenaData.data.filter(arena => !this.selected.find(select => select.areaCode === arena.areaCode))
+           
+            //     this.arenaData.data = c
+             
+                 
+                    
+
+                 
 
             console.log("done");
         },

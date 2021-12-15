@@ -145,10 +145,10 @@ class importController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function arenastatus($arena_name)
+    public function arenastatus($areaCode)
     {   
-        dump($arena_name);
-        $import = import::where('arena_name',$arena_name)->update([
+        // dump($arena_name);
+        $import = import::where('areaCode',$areaCode)->update([
             'status' => 'done',
         ]); 
     }
