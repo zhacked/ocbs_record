@@ -27,7 +27,7 @@
                                 </v-col>
                             </v-row>
 
-                            
+                         
                             <v-data-table
                                     :headers="headers"
                                     :items="employee"
@@ -37,10 +37,25 @@
                                 >
                              <template v-slot:[`item.select`]="{ item }">
                                      <v-checkbox
-                                        v-model="selected"
-                                        single-select
+                                        :v-model="selected===true"
+                                        v-if="item.assign ='1'"
                                         color="green"
-                                        >{{item}}</v-checkbox>
+                                        class="elevation"
+                                        :value="item.assign"
+                                        @change="checked"
+                                        >
+                                    </v-checkbox>
+
+                                      <v-checkbox
+                                        v-model="selected"
+                                        v-else
+                                        color="green"
+                                        class="elevation"
+                                        :value="item.assign"
+                                        @change="checked"
+                                        >
+                                    </v-checkbox>
+                                    
                                      
                             </template>
 
@@ -222,9 +237,9 @@
                 groups:[
                     'computed',
                     'checked',
-                    'crepared'
+                    'prepared'
                 ],
-                selected:'',
+                selected:false,
                 position:[
                     'QA Staff',
                     'Finance Assistant-Kiosk Operation',
@@ -242,8 +257,11 @@
             }
         },
         methods: {
-            test(){
+            checked(){
                 console.log('test');
+            },
+            test(){
+                
             },
             updateUser(){
                 this.$Progress.start();
@@ -300,8 +318,18 @@
                     })
             },
             loadUsers(){
+                var selected = [];
                 if(this.$gate.isAdmin()){
-                    axios.get("api/employees").then((data) => (this.employee = data.data.employee));
+                    axios.get("api/employees").then((data) => (
+                        this.employee = data.data.employee,
+
+                        this.employee.forEach((element)=>{
+                            selected.push(element.assign)
+                            this.selected = element.assign
+                        }),
+                        this.selected = selected,
+                        console.log(selected)
+                    ));
                 }
                
 

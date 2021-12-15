@@ -77,6 +77,7 @@
                                             sort-by="updated_at"
                                             group-by="updated_at"
                                             class="elevation-1 text-center"
+                                             single-expand
                                              :footer-props="{
                                                 'items-per-page-options': [
                                                    50
@@ -84,16 +85,16 @@
                                             }"
                                         >
                                       <template v-slot:[`group.header`]="{ group, headers, toggle, isOpen }">
-                                    
+                  
                                         <td :colspan="headers.length">
                                                 <v-row>
                                                     <v-col class="mt-2 ">
                                                         <div class=" float-left">
-                                                            <v-btn @click="toggle" x-small icon :ref="group" class="test" >
+                                                            <v-btn @click="toggle" x-small icon :ref="group" class="test"  >
                                                                 <v-icon v-if="isOpen">mdi-plus</v-icon>
                                                                 <v-icon v-else>mdi-minus</v-icon>
                                                             </v-btn>
-                                                            <span class="mx-5 font-weight-bold">{{ group | myDateSummary }}</span>
+                                                            <span class="mx-5 font-weight-bold">{{ group | myDateSummary }} </span>
                                                         </div>  
                                                      
                                                     </v-col>
