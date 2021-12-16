@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Throwable;
 use App\Models\employee;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 class EmployeeController extends Controller
 {
     /**
@@ -31,9 +33,40 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+
+
+    
+
+    public function selectedbyUser($id,$group)
     {
-        //
+        // $groups =  employee::where('group',$group)
+        //         ->where('assign','1')->count();
+        $employee = employee::where('id',$id)->first();
+       
+        $employee->update([
+            'assign' =>  $employee->assign  ? false : true
+            ]);
+            return $employee->assign;
+        // try {
+        //    if(($group =='checked' && $groups < 2)){
+          
+        //    }elseif(($group =='prepared' &&  $groups >= 1) || ($group =='computed' &&  $groups >= 1 )){
+        //         return 'error2';
+        //    }else{
+        //         return 'error';
+        //     }
+        // } catch (Throwable $e) {
+        //     report($e);
+    
+        //     return false;
+        // }
+        // $employee->update([
+        //     'assign' =>  $employee->assign  ? false : true
+        // ]);
+        // return $employee->assign;
+        // dd('computed:'.$computed . ' '. 'prepared:'.$prepared . ' '.'checked:'.$checked  );
+
+     
     }
 
     /**
@@ -72,9 +105,17 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function countEmployee()
     {
-        //
+        $computed =  employee::where('group','computed')->where('assign','1')->count();
+        $prepared = employee::where('group','prepared')->where('assign','1')->count();
+        $checked = employee::where('group','checked')->where('assign','1')->count();
+
+        return response()->json([
+            'computed' => $computed,
+            'prepared' => $prepared,
+            'checked' => $checked,
+        ]);
     }
 
     /**

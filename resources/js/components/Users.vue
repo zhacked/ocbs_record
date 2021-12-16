@@ -235,7 +235,7 @@
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
-                    toast({
+                    fire.toast({
                         type: 'success',
                         title: 'User Created in successfully'
                         })
