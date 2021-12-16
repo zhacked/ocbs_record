@@ -208,6 +208,116 @@
 				</v-col>
 			</v-row>
 
+            
+					<!-- Modal -->
+			<div class="modal fade" id="addNew" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add New</h5>
+						<h5 class="modal-title" v-show="editmode" id="addNewLabel">Update User's Info</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form @submit.prevent="editmode ? updateUser() : createUser()">
+						<div class="modal-body">
+                            <v-text-field
+                                    label="Full name"
+                                    placeholder="John doe Dela Cruz"
+                                    outlined
+                                    dense
+                                    v-model="form.name"
+                                    :rules="[() => !!form.name || 'This field is required']"
+                                    required
+                                     prepend-inner-icon="mdi-account"
+                            ></v-text-field>
+
+                            <v-text-field
+                                     prepend-inner-icon="mdi-at"
+                                    label="Email"
+                                    placeholder="doe@gmail.com"
+                                    outlined
+                                    dense
+                                    v-model="form.email"
+                                    :rules="[
+                                    () => !!form.email || 'This field is required',
+                                    () =>  /.+@.+\..+/.test(form.email) || 'E-mail must be valid'
+                                    ]"
+                            ></v-text-field>
+
+                            <v-text-field
+                                    type="number"
+                                    prepend-inner-icon="mdi-phone"
+                                    label="Contact Number"
+                                    placeholder="09123456789"
+                                    outlined
+                                    dense
+                                    v-model="form.contact"
+                                    :rules="[
+                                    () => !!form.contact || 'This field is required',
+                                    () =>  (form.contact  && form.contact.length <= 11 && form.contact.length >= 11) || 'Name must be less than 10 characters',
+                                    ]"
+                                    required
+                            ></v-text-field>
+
+                             <v-text-field
+                                    label="Address"
+                                     prepend-inner-icon="mdi-home"
+                                    placeholder="street,Barangay,City"
+                                    outlined
+                                    dense
+                                    v-model="form.address"
+                                    :rules="[
+                                        () => !!form.address || 'This field is required',
+                                        () => !!form.address && form.address.length <= 25 || 'Address must be less than 25 characters',
+                                        ]"
+                                    required
+                            ></v-text-field>
+
+                            <v-autocomplete
+                                :items="groups"
+                                label="Group"
+                                prepend-inner-icon="mdi-account-switch"
+                                hide-details
+                                hide-no-data
+                                hide-selected
+                                outlined
+                                dense
+                                v-model="form.group"
+                                class="pb-4"
+                                :rules="[
+                                        () => !!form.group || 'This field is required',
+                                        ]"
+                            ></v-autocomplete>
+
+                            <v-autocomplete
+                                :items="position"
+                                chips
+                                label="Position"
+                                prepend-inner-icon="mdi-shield-account"
+                                hide-details
+                                hide-no-data
+                                hide-selected
+                                outlined
+                                dense
+                                v-model="form.position"
+                                 :rules="[
+                                        () => !!form.position || 'This field is required',
+                                        ]"
+                            ></v-autocomplete>
+
+						</div>
+						<div class="modal-footer">
+							<v-btn type="button" color="error" elevation="2" data-dismiss="modal">Close</v-btn>
+							<v-btn v-show="editmode" type="submit" color="primary" elevation="2">Update</v-btn>
+							<v-btn v-show="!editmode" type="submit" color="success"  elevation="2">Create</v-btn>
+						</div>
+                        </form>
+                        	</div>
+				</div>
+			</div>
+
 		</v-container>
 	</v-app>
 </template>
@@ -273,11 +383,16 @@
                 axios
                 .get("api/employees")
                 .then(
-                    ({data}) => (
-                        (this.userPrepared.computed = data.computed),
-                        (this.userPrepared.checked = data.checked),
-                        (this.userPrepared.prepared = data.prepared)
-                    )
+                    ({data}) => {
+                        this.userPrepared.computed = data.computed;
+                        this.userPrepared.checked = data.checked;
+                        this.userPrepared.prepared = data.prepared;
+                        
+                        const selectedCompute = data.computed.filter(c => c.assign !== 0);
+                        this.selectComputed = selectedCompute[0];
+                        console.log(selectedCompute)
+
+                    }
                 );
            },
 
