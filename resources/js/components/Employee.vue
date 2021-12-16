@@ -2,6 +2,7 @@
     <v-app>
 		<v-container>
 			<v-row class="mt-5 is-blurred"  v-if="$gate.isAdmin()">
+            
 				<v-col class="col-md-12">
 					<v-card >
 						<v-card-title class="card-header">
@@ -37,26 +38,16 @@
                                 >
                              <template v-slot:[`item.select`]="{ item }">
                                      <v-checkbox
-                                        :v-model="selected===true"
-                                        v-if="item.assign ='1'"
+                                       v-model="item.assign"
+                                       :false-value="0"
+                                       :true-value="1"
+                                      
                                         color="green"
                                         class="elevation"
-                                        :value="item.assign"
+                                      
                                         @change="checked"
                                         >
-                                    </v-checkbox>
-
-                                      <v-checkbox
-                                        v-model="selected"
-                                        v-else
-                                        color="green"
-                                        class="elevation"
-                                        :value="item.assign"
-                                        @change="checked"
-                                        >
-                                    </v-checkbox>
-                                    
-                                     
+                                    </v-checkbox>    
                             </template>
 
                             <template v-slot:[`item.actions`]="{ item }">
@@ -96,7 +87,7 @@
                                     </v-tooltip>
                             </template>
                             </v-data-table>
-                            {{this.selected}}
+                           
 					</v-card>
 				</v-col>
 			</v-row>
@@ -239,7 +230,8 @@
                     'checked',
                     'prepared'
                 ],
-                selected:false,
+                selected: [],
+                check: false,
                 position:[
                     'QA Staff',
                     'Finance Assistant-Kiosk Operation',
@@ -253,7 +245,9 @@
                     contact: '',
                     position: '',
                     group:'',
-                })
+                }),
+                checkbox1: 1,
+                checkbox2: 0
             }
         },
         methods: {

@@ -126,7 +126,7 @@
                                              v-model="selected"
                                             :footer-props="{
                                                 'items-per-page-options': [
-                                                    10, 20, 30, 40, 50
+                                                    10, 20, 30, 40, 50, -1
                                                 ],
                                             }"
                                             @click:item-selected="test()"
@@ -1599,6 +1599,9 @@ export default {
             const divsss = document.querySelectorAll(".reportsoaoutput");
 
             for (let i = 0; i < this.selected.length; i++) {
+
+         
+
                 html2canvas(divsss[i], {
                     onclone: function (clonedDoc) {
                         const elems =
@@ -1622,12 +1625,15 @@ export default {
                             `${this.selected[i].arena_name}.png`
                         );
                     } else {
-                        const link = document.createElement("a");
+                               const link = document.createElement("a");
                         // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
                         link.download = `${this.selected[i].arena_name}.png`;
                         link.href = canvas.toDataURL("image/png");
                         document.body.appendChild(link);
                         link.click();
+                           setTimeout(() => {
+                            document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
+                        }, 100);
                         // this.downloadingReport = false;
                     }
                 });
@@ -1639,7 +1645,7 @@ export default {
             
                     this.arenaData.data = c
                     this.selected = []
-                
+                 
                    this.downloadingReport = false
                      
                 }
