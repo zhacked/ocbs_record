@@ -37,15 +37,23 @@ class EmployeeController extends Controller
 
     
 
-    public function selectedbyUser($old,$group,$new)
-    {
+    public function selectedbyUser($id,$group)
+    {   
       
-      
-        if($old != 'undefined') {
-           
-            $olded = employee::where('id',$old)->first();
-           
-            $olded->update([
+        $checked = employee::where('group','checked')->where('assign','1')->count();
+        $groups = employee::where('group',$group)->where('assign','1')->first();
+        $employee = employee::where('id',$id)->first();
+        
+
+     
+        if($checked < 2 && $group=='checked'){
+            $employee->update([
+            'assign' =>  true
+            ]);
+        }
+
+        if(!empty($groups)){
+            $groups->update([
                 'assign' => false
             ]);
 
