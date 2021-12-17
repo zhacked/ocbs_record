@@ -39,34 +39,24 @@ class EmployeeController extends Controller
 
     public function selectedbyUser($id,$group)
     {
-        // $groups =  employee::where('group',$group)
-        //         ->where('assign','1')->count();
+       
+        $group = employee::where('group',$group)->where('assign','1')->first();
         $employee = employee::where('id',$id)->first();
        
-        $employee->update([
-            'assign' =>  $employee->assign  ? false : true
-            ]);
-            return $employee->assign;
-        // try {
-        //    if(($group =='checked' && $groups < 2)){
-          
-        //    }elseif(($group =='prepared' &&  $groups >= 1) || ($group =='computed' &&  $groups >= 1 )){
-        //         return 'error2';
-        //    }else{
-        //         return 'error';
-        //     }
-        // } catch (Throwable $e) {
-        //     report($e);
-    
-        //     return false;
-        // }
-        // $employee->update([
-        //     'assign' =>  $employee->assign  ? false : true
-        // ]);
-        // return $employee->assign;
-        // dd('computed:'.$computed . ' '. 'prepared:'.$prepared . ' '.'checked:'.$checked  );
-
      
+        if(!empty($group)){
+            $group->update([
+                'assign' => false
+            ]);
+      
+        }
+
+
+        $employee->update([
+            'assign' =>  true
+        ]);
+
+        return $employee->assign;
     }
 
     /**

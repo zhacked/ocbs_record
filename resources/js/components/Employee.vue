@@ -379,13 +379,20 @@
         },
         methods: {
             selectedrecord(val){
-              
-       
+
                 const found = this.checks.some(el => el.id === val.id);
                 if(found) {
                     console.log('NOICE')
                 }
-                console.log('val>>>'+ val.id + 'group' + val.group);
+               
+               axios.get('api/selected/'+val.id+'/'+val.group).then((data)=>{
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'User Created in successfully'
+                        })
+                    Fire.$emit('AfterCreate');
+               });
+
           
             },
            loadEmployee() {
@@ -492,7 +499,7 @@
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
-                    toast({
+                    Toast.fire({
                         type: 'success',
                         title: 'User Created in successfully'
                         })
