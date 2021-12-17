@@ -160,13 +160,13 @@
                                                    <v-select
                                                    
                                                         label="Checked By"
-                                                        v-model="selectchecked1"
-                                                        :items="userPrepared.checked"
+                                                        v-model="selectChecked1"
+                                                        :items="userPrepared.checked1"
                                                         name="client"
                                                          item-text="name"
                                                         item-value="id"
                                                         return-object
-                                                        @change="selectedrecord(selectchecked1)"
+                                                        @change="selectedrecord(selectChecked1)"
                                                     ></v-select>
                                            </v-col>
                                        </v-row>
@@ -189,7 +189,7 @@
                                                      
                                                         label="Checked By"
                                                         v-model="selectChecked2"
-                                                        :items="userPrepared.checked"
+                                                        :items="userPrepared.checked2"
                                                         name="client"
                                                          item-text="name"
                                                         item-value="id"
@@ -366,31 +366,49 @@
                 checkbox2: 0,
                 userPrepared: {
                     computed: [],
-                    checked: [],
+                    checked1: [],
+                    checked2: [],
                     prepared: [],
                 },
                 selectComputed:null,
-                selectchecked1:null,
+                selectChecked1:null,
                 selectChecked2:null,
-                selectPrepared:null
+                selectPrepared:null,
+                checks: []
             }
         },
         methods: {
             selectedrecord(val){
+              
+       
+                const found = this.checks.some(el => el.id === val.id);
+                if(found) {
+                    console.log('NOICE')
+                }
                 console.log('val>>>'+ val.id + 'group' + val.group);
+          
             },
            loadEmployee() {
                 axios
                 .get("api/employees")
                 .then(
                     ({data}) => {
-                        this.userPrepared.computed = data.computed;
-                        this.userPrepared.checked = data.checked;
-                        this.userPrepared.prepared = data.prepared;
+                      
                         
                         const selectedCompute = data.computed.filter(c => c.assign !== 0);
+                        const selectedPrepared = data.prepared.filter(c => c.assign !== 0);
+                         const checks = data.checked.filter(c => c.assign !== 0);
                         this.selectComputed = selectedCompute[0];
-                        console.log(selectedCompute)
+                        this.selectPrepared = selectedPrepared[0];
+                        this.selectChecked1 = checks[0];
+                        this.selectChecked2 = checks[1];
+                        this.checks = checks
+
+                        this.userPrepared.computed = data.computed;
+                        this.userPrepared.checked1 = data.checked.filter(c => c.id !== checks[1].id);
+                        this.userPrepared.checked2 = data.checked.filter(c => c.id !== checks[0].id);
+                        this.userPrepared.prepared = data.prepared;
+                     
 
                     }
                 );
