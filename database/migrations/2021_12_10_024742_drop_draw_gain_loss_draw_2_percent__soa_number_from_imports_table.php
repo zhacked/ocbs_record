@@ -14,7 +14,7 @@ class DropDrawGainLossDraw2PercentSoaNumberFromImportsTable extends Migration
     public function up()
     {
         Schema::table('imports', function (Blueprint $table) {
-            $table->dropColumn('Soa_number');
+        
             $table->dropColumn('draw_gain_loss');
             $table->dropColumn('draw_2_percent');
         });

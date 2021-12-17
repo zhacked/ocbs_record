@@ -56,7 +56,7 @@
                     "
                 >
                     <span
-                        >{{dateEvent}}</span
+                        >{{dateSoa}}</span
                     >
                 </div>
             </div>
@@ -83,7 +83,7 @@
                     "
                 >
                     <span
-                        >{{dateSoa}}</span
+                        >{{dateEvent}}</span
                     >
                 </div>
             </div>

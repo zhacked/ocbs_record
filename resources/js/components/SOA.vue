@@ -83,8 +83,8 @@
                                     <v-row>
                                         <v-col>
                                             <v-btn v-show="this.selected != 0"
-                                                :loading="loading"
-                                                :disabled="loading"
+                                                :loading="downloadingReport"
+                                                :disabled="downloadingReport"
                                                 color="green lighten-1"
                                                 class="ma-2 white--text allbtn"
                                                 @click="multiDownloads"
@@ -126,12 +126,15 @@
                                              v-model="selected"
                                             :footer-props="{
                                                 'items-per-page-options': [
-                                                    5, 10, 20,
+                                                    5, 10, 20, 30, 40,
                                                 ],
                                             }"
-                                          
+
+                                             @click:item-selected="test()"
                                             :search="search"
-                                            show-select
+                                            :show-select="downloadingReport ? false : true"
+                                            :disable-filtering="downloadingReport ? true : false"
+                                            :disable-sort="downloadingReport ? true : false"
                                             :single-select="singleSelect"
                                             class="elevation-1 text-center"
                                         >
@@ -163,6 +166,7 @@
                                                                 'on-hover':
                                                                     hover,
                                                             }"
+                                                            :disabled="downloadingReport"
                                                         >
                                                             <v-icon
                                                                 >mdi-eye</v-icon
@@ -347,6 +351,8 @@
                                                     drawMobileTotalPercent: numberFormat(item.drawMobileTotalPercent || 0),
                                                     netOpCommission: numberFormat(item.netOperatorsCommission || 0),
                                                     totalComputationOthers:  item.exempted === 'NOT' ? numberFormat(item.totalOthers || 0) : numberFormat(item.totalCommission || 0),
+                                                    cashLoad: numberFormat(item.cashLoad || 0),
+                                                    cashWithdraw: numberFormat(item.cashWithdraw || 0),
                                         }"
                                         
                                         :commissionPercent="commission_percent"
@@ -354,7 +360,7 @@
                                           :depositReplenishTxt="
                                                 item.group === 'Replenish' ? {
                                                                
-                                                                totalText: 'Replenish',
+                                                                totalText: 'Replenishment',
                                                                } : {
                                                                
                                                                 totalText: 'Deposit',
@@ -499,9 +505,8 @@
                                                             Computation
                                                         </div>
                                                     </v-row>
-                                                    <ComputeBox
-                                                       
-                                                        :depositReplenishTxt="this.depositReplenishTxt"
+                                                    <ComputeBox                                                
+                                                        :depositReplenishTxt="computedAve.depositReplenishText"
                                                         :commissionPercent="commission_percent"
                                                         :editmode="editmode"
                                                         :computedAve="computedAve"
@@ -567,7 +572,7 @@
                                                     v-on="on"
                                                     @click="
                                                         downloadImg(
-                                                            arenaDetails
+                                                            arenaDetails, areaCode
                                                         )
                                                     "
                                                 >
@@ -588,7 +593,7 @@
                                                     v-on="on"
                                                     :loading="loading"
                                                     :disabled="loading"
-                                                    @click="generateReport"
+                                                    @click="generateReport(areaCode)"
                                                 >
                                                     <v-icon
                                                         >mdi-file-pdf-box</v-icon
@@ -728,12 +733,12 @@ export default {
             arenaData: [],
             arenaDatastatus: [],
             arenaDetails: {},
-
+            areaCode: "",
             arena_id: "",
             arena_name: "",
             loading: false,
             loader: null,
-
+            downloadingReport: false,
             fileUpload: "",
             form: new Form({
                 id: "",
@@ -926,13 +931,25 @@ export default {
                 return r;
             }, []);
 
+
+            const newArray = [];
+           duplicateObj.forEach((dObj) => {
+                const arenaName = dObj.arena_name.indexOf('~') > -1 ? dObj.arena_name.replace(/\~/g, '/') : dObj.arena_name
+                
+                const obj = {
+                    ...dObj,
+                    arena_name: arenaName,
+                }
+                newArray.push(obj)
+            })
+
             const obj = {
-                data: duplicateObj,
+                data: newArray,
             };
 
             this.arenaData = obj;
 
-            duplicateObj.forEach((item) => {});
+            // duplicateObj.forEach((item) => {});
         },
         closeDialog() {
             this.dialog = false;
@@ -1118,13 +1135,16 @@ export default {
                 this.form.fill(data.arena_details);
                 this.operator_name = data.arena_details.operator;
                 this.dateCreated = moment().format("ll");
-                this.dateEvent = moment(data.date_of_soa).format("ll");
+                this.dateEvent = moment(data.date_of_soa).format("LL");
                 this.refNo = data.refNo;
+
+                console.log(this.dateEvent)
 
      
                 this.arenaDetails = data.arena_details;
                 this.arena_id = data.arena_details.id;
                 this.arena_name = data.arena_name;
+                this.areaCode = data.areaCode;
                 const totalMWBets = data.total_meron_wala;
                 const drawCancelled = data.draw_cancelled;
                 const draw = data.draw;
@@ -1418,7 +1438,7 @@ export default {
                         ({ key, ...rest }) => {
                             // console.log(rest.arenaName, rest.cashLoad)
 							const type = rest.type || rest.classification;
-							const arenaName = rest.arenaName;
+							
 							const exempted = rest.exempted;
                             const totalMWBets = rest.meron + rest.wala;
                             const totalCancelledBets = rest.drawCancelled;
@@ -1450,9 +1470,11 @@ export default {
 							const depositReplenish = (netWinLoss - totalComputationOthers- systemErrorCOArmsi) + (cashLoad - cashWithdrawal);
 							const soaFr = parseFloat(depositReplenish) < 0 ? "fr" : "soa";
                             const group = soaFr === 'fr' ? 'Replenish' : 'Deposit'
+                            const arenaName = rest.arenaName.indexOf('/') > -1 ? rest.arenaName.replace(/\//g, '~') : rest.arenaName
+                            const areaCode = rest.areaCode.indexOf('/') > -1 ? rest.areaCode.replace(/\//g, '~') : rest.areaCode
 
                             rest = {
-								areaCode: rest.areaCode,
+								areaCode,
 								eventDate: rest.eventCreated,
                                 meron: rest.meron,
                                 wala: rest.wala,
@@ -1527,13 +1549,13 @@ export default {
                 $("#importData").val("");
             }
         },
-        generateReport() {
+        generateReport(areaCode) {
             console.log("generating pdf..");
 
             this.$refs.html2Pdf.generatePdf();
 
             axios
-                .get("api/arenaStatus/" + this.arena_name)
+                .put("api/arenaStatus/" + areaCode)
                 .then(
                     (data) => (
                         Fire.$emit("AfterCreate"),
@@ -1542,8 +1564,8 @@ export default {
                     )
                 );
         },
-        async downloadImg(details) {
-            console.log("printing..");
+        async downloadImg(details, areaCode) {
+            console.log("printing..", details);
             const el = this.$refs.soaReport;
 
             const options = {
@@ -1554,17 +1576,29 @@ export default {
 
             const link = document.createElement("a");
             const soaFr = details.group === "Replenish" ? "FR" : "SOA"
-            link.setAttribute("download", `${soaFr}-${details.arena}.png`);
-            link.setAttribute(
-                "href",
-                printCanvas
-                    .toDataURL("image/png")
-                    .replace("image/png", "image/octet-stream")
-            );
+            // link.setAttribute("download", `${details.arena}.png`);
+            // link.setAttribute(
+            //     "href",
+            //     printCanvas
+            //         .toDataURL("image/png")
+            //         .replace("image/png", "image/octet-stream")
+            // );
+
+            link.download = `${details.arena}.png`;
+            link.href = printCanvas.toDataURL("image/png");
+            document.body.appendChild(link);
             link.click();
 
+  
+            setTimeout(() => {
+                document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
+             }, 100);
+
+
+            
+
             axios
-                .put("api/arenaStatus/" + this.arena_name)
+                .put("api/arenaStatus/" + areaCode)
                 .then(
                     (data) => (
                         Fire.$emit("AfterCreate"),
@@ -1574,9 +1608,9 @@ export default {
                 );
             console.log("done");
         },
-        multiDownloads() {
+        async multiDownloads() {
             // this.overlay = true;
-            this.loading = true;
+            this.downloadingReport  = true;
 
             const divsss = document.querySelectorAll(".reportsoaoutput");
 
@@ -1605,17 +1639,31 @@ export default {
                         );
                     } else {
                         const link = document.createElement("a");
-                        const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
-                        link.download = `${soaFr}-${this.selected[i].arena_name}.png`;
+                        // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
+                        link.download = `${this.selected[i].arena_name}.png`;
                         link.href = canvas.toDataURL("image/png");
-
+                        document.body.appendChild(link);
                         link.click();
-                        this.loading = false;
+
+                           setTimeout(() => {
+                            document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
+                        }, 100);
+                      
                     }
                 });
 
-            const arenaName = this.selected[i].arena_name.indexOf('/') > -1 ?this.selected[i].arena_name.replace(/\//g, '-') : this.selected[i].arena_name
-            axios.put("api/arenaStatus/" + arenaName)
+                 await axios.put("api/arenaStatus/" + this.selected[i].areaCode)
+
+                  if(this.selected.length - 1 === i) {
+                    const c = this.arenaData.data.filter(arena => !this.selected.find(select => select.areaCode === arena.areaCode))
+            
+                    this.arenaData.data = c
+                    this.selected = []
+                 
+                   this.downloadingReport = false
+                     
+                }
+              
             }
 
             // // // -----------ZIP--------------- // // //
@@ -1772,6 +1820,8 @@ export default {
                         0)
             );
 
+          
+
             
 
             const depositReplenishText =
@@ -1803,16 +1853,16 @@ export default {
                     // parseFloat(this.commission_percent);
 
               
-                    const totalMWBets = numberFormat(this.computation.totalMWBets);
+                    const totalMWBets = numberFormat(this.computation.totalMWBets || 0);
                         
-                    const drawCancelled= numberFormat(this.computation.drawCancelled);
-                    const draw= numberFormat(this.computation.draw);
-                    const totalPayoutPaid= numberFormat(this.computation.totalPayoutPaid);
-                    const cdPaid= numberFormat(this.computation.cdPaid);
-                    const drawPaid= numberFormat(this.computation.drawPaid);
+                    const drawCancelled= numberFormat(this.computation.drawCancelled || 0);
+                    const draw= numberFormat(this.computation.draw || 0);
+                    const totalPayoutPaid= numberFormat(this.computation.totalPayoutPaid || 0);
+                    const cdPaid= numberFormat(this.computation.cdPaid || 0);
+                    const drawPaid= numberFormat(this.computation.drawPaid || 0);
             
-                    const unclaimed= numberFormat(this.computation.unclaimed);
-                    const cUnpaid= numberFormat(this.computation.cUnpaid);
+                    const unclaimed= numberFormat(this.computation.unclaimed || 0);
+                    const cUnpaid= numberFormat(this.computation.cUnpaid || 0);
                    
                    
                     const otherCommissionIntel05= numberFormat(
