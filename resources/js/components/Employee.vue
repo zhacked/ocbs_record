@@ -401,7 +401,7 @@
                 .then(
                     ({data}) => {
                       
-                        
+                        console.log(data.prepared)
                         const selectedCompute = data.computed.filter(c => c.assign !== 0);
                         const selectedPrepared = data.prepared.filter(c => c.assign !== 0);
                          const checks = data.checked.filter(c => c.assign !== 0);
@@ -412,9 +412,12 @@
                         this.checks = checks
 
                         this.userPrepared.computed = data.computed;
-                        this.userPrepared.checked1 = data.checked.filter(c => c.id !== checks[1].id);
-                        this.userPrepared.checked2 = data.checked.filter(c => c.id !== checks[0].id);
                         this.userPrepared.prepared = data.prepared;
+                        this.userPrepared.checked1 = data.checked.filter(c => c.id !== checks[1]?.id);
+                        this.userPrepared.checked2 = data.checked.filter(c => c.id !== checks[0]?.id);
+
+                       
+                  
                      
 
                     }
