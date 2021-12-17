@@ -37,26 +37,64 @@ class EmployeeController extends Controller
 
     
 
-    public function selectedbyUser($id,$group)
+    public function selectedbyUser($old,$group,$new)
     {
-       
-        $group = employee::where('group',$group)->where('assign','1')->first();
-        $employee = employee::where('id',$id)->first();
-       
-     
-        if(!empty($group)){
-            $group->update([
+      
+      
+        if($old != 'undefined') {
+           
+            $olded = employee::where('id',$old)->first();
+           
+            $olded->update([
                 'assign' => false
             ]);
+
       
+     
         }
 
+        if($new) {
+            $newed = employee::where('id',$new)->first();
 
-        $employee->update([
-            'assign' =>  true
-        ]);
+            $newed->update([
+                'assign' => true
+            ]);
+           
+       }
+        
 
-        return $employee->assign;
+       return '$newed->assign';
+           
+        
+        // $oldgroup = employee::where('group',$group)->where('assign','1')->first();
+        // dd($employee. '    ' .$newed);
+        
+        // if($olded){
+        //         $olded->update([
+        //             'assign' => false
+        //         ]);
+        //         return $olded->assign;
+        // }
+
+        // if($newed){
+        //     $newed->update([
+        //         'assign' => true
+        //     ]);
+        //     return $newed->assign;
+        // }
+          
+
+            // new update
+        // if(!empty($old)){
+        //     $group->update([
+        //         'assign' => false
+        //     ]);
+      
+        // }
+
+
+   
+   
     }
 
     /**

@@ -147,26 +147,27 @@
                                            <v-col>
                                                  <v-select
                                                         label="Computed By"
-                                                        v-model="selectComputed"
+                                                        :value="selectComputed"
                                                         :items="userPrepared.computed"
-                                                        name="client"
-                                                         item-text="name"
-                                                        item-value="id"
+                                                        name="computed"
+                                                        :item-text="item => `${item.name} - ${item.position}`"
+                                                       
                                                         return-object
-                                                        @change="selectedrecord(selectComputed)"
+                                                        @change="selectedrecord(selectComputed, $event)"
                                                     ></v-select>
                                            </v-col>
                                            <v-col>
                                                    <v-select
                                                    
                                                         label="Checked By"
-                                                        v-model="selectChecked1"
+                                                        :value="selectChecked1"
                                                         :items="userPrepared.checked1"
-                                                        name="client"
-                                                         item-text="name"
-                                                        item-value="id"
+                                                        name="checked1"
+                                                        :item-text="item => `${item.name} - ${item.position}`"
+                                                    
                                                         return-object
-                                                        @change="selectedrecord(selectChecked1)"
+                                                       
+                                                        @change="selectedrecord(selectChecked1, $event)"
                                                     ></v-select>
                                            </v-col>
                                        </v-row>
@@ -175,26 +176,26 @@
                                                     <v-select
                                                        
                                                         label="Prepared By"
-                                                        v-model="selectPrepared"
+                                                        :value="selectPrepared"
                                                         :items="userPrepared.prepared"
-                                                        name="client"
-                                                         item-text="name"
-                                                        item-value="id"
+                                                        name="prepared"
+                                                       :item-text="item => `${item.name} - ${item.position}`"
+                                                      
                                                         return-object
-                                                        @change="selectedrecord(selectPrepared)"
+                                                        @change="selectedrecord(selectPrepared, $event)"
                                                     ></v-select>
                                            </v-col>
                                            <v-col>
                                                     <v-select
                                                      
                                                         label="Checked By"
-                                                        v-model="selectChecked2"
+                                                        :value="selectChecked2"
                                                         :items="userPrepared.checked2"
-                                                        name="client"
-                                                         item-text="name"
-                                                        item-value="id"
+                                                        name="checked2"
+                                                        :item-text="item => `${item.name} - ${item.position}`"
+                                                       
                                                         return-object
-                                                        @change="selectedrecord(selectChecked2)"
+                                                        @change="selectedrecord(selectChecked2, $event)"
                                                     ></v-select>
                                            </v-col>
                                        </v-row>
@@ -378,14 +379,17 @@
             }
         },
         methods: {
-            selectedrecord(val){
+            selectedrecord(val, event){
+                console.log('old',val);
+                console.log('new',event);
 
-                const found = this.checks.some(el => el.id === val.id);
-                if(found) {
-                    console.log('NOICE')
-                }
+
+                // const found = this.checks.some(el => el.id === val.id);
+                // if(found) {
+                //     console.log('NOICE')
+                // }
                
-               axios.get('api/selected/'+val.id+'/'+val.group).then((data)=>{
+               axios.get('api/selected/'+val?.id+'/'+val?.group+'/'+event?.id).then((data)=>{
                     Toast.fire({
                         icon: 'success',
                         title: 'User Created in successfully'
@@ -411,14 +415,12 @@
                         this.selectChecked2 = checks[1];
                         this.checks = checks
 
+
+
                         this.userPrepared.computed = data.computed;
                         this.userPrepared.prepared = data.prepared;
                         this.userPrepared.checked1 = data.checked.filter(c => c.id !== checks[1]?.id);
                         this.userPrepared.checked2 = data.checked.filter(c => c.id !== checks[0]?.id);
-
-                       
-                  
-                     
 
                     }
                 );
@@ -517,6 +519,7 @@
            this.loadEmployee();
            Fire.$on('AfterCreate',() => {
                this.loadUsers();
+               this.loadEmployee();
            });
         }
     }
