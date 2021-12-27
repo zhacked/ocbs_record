@@ -30,7 +30,7 @@
                                     <template v-slot:loader>
                                         <span>Preparing...</span>
                                         <span class="custom-loader">
-                                            <v-icon   v-icon light>mdi-cached</v-icon>
+                                            <v-icon light>mdi-cached</v-icon>
                                         </span>
                                     </template>
                                         send</v-btn
@@ -40,7 +40,7 @@
                         </v-card-title>
 
                         <div
-                            class="card card-primary card-outline card-tabs"
+                            class="card card-tabs"
                             style="overflow: auto; !important"
                         >
                             <div class="card-header p-0 pt-1 border-bottom-0">
@@ -93,9 +93,9 @@
                                             >
                                                 Convert Now
                                                 <template v-slot:loader>
-                                                    <span>Preparing...</span>
+                                                    <span>Converting...</span>
                                                     <span class="custom-loader">
-                                                        <v-icon   v-icon light>mdi-cached</v-icon>
+                                                        <v-icon light>mdi-cached</v-icon>
                                                     </span>
                                                 </template>
                                             </v-btn>
@@ -126,11 +126,11 @@
                                              v-model="selected"
                                             :footer-props="{
                                                 'items-per-page-options': [
-                                                    5, 10, 20, 30, 40,
+                                                    5, 10, 20, 30, 40 
                                                 ],
                                             }"
-
-                                             @click:item-selected="test()"
+                                            :loading="downloadingReport"
+                                            
                                             :search="search"
                                             :show-select="downloadingReport ? false : true"
                                             :disable-filtering="downloadingReport ? true : false"
@@ -224,6 +224,7 @@
                                             :items-per-page="10"
                                             :search="search"
                                             class="elevation-1 text-center"
+                                            
                                         >
                                             <template
                                                 v-slot:[`item.actions`]="{
@@ -322,24 +323,31 @@
                                         </div>
                                     </v-row>
                                     <ComputeBox
-                                        :computedAve="{
+                                    :computation="{
                                                     totalMWBets: numberFormat(item.total_meron_wala || 0),
                                                     drawCancelled: numberFormat(item.draw_cancelled || 0),
                                                     draw: numberFormat(item.draw || 0),
                                                     totalPayoutPaid: numberFormat(item.total_payout_paid || 0),
                                                     cdPaid: numberFormat(item.draw_cancelled_paid || 0),
                                                     drawPaid: numberFormat(item.draw_paid || 0),
-                                                    netWinLoss: numberFormat(item.netWinLoss || 0),
-                                                    mwTotalPercent: numberFormat(item.mwTwo || 0),
-                                              
+                                                    systemErrorCOArmsi: numberFormat(item.systemErrorCOArmsi || 0),
+                                                      safetyFund: numberFormat(item.safetyFund || 0),
+                                                    salesDeduction: numberFormat(item.salesDeductionTablet) || 0,
                                                     unclaimed: numberFormat(item.unclaimed || 0),
                                                     cUnpaid: numberFormat(item.cancelled_unpaid || 0),
                                                     otherCommissionIntel05: numberFormat(item.otherCommissionIntel05 || 0),
                                                     consolidatorsCommission: numberFormat(item.consolidatorsCommission || 0),
                                                     paymentForOutstandingBalance: numberFormat(item.paymentForOutstandingBalance || 0),
-                                                    safetyFund: numberFormat(item.safetyFund || 0),
-                                                    salesDeduction: numberFormat(item.salesDeductionTablet) || 0,
-                                                    systemErrorCOArmsi: numberFormat(item.systemErrorCOArmsi || 0),
+
+                                    }"
+                                        :computedAve="{
+                                                   
+                                                  
+                                                    netWinLoss: numberFormat(item.netWinLoss || 0),
+                                                    mwTotalPercent: numberFormat(item.mwTwo || 0),
+                                                    
+                                                  
+                                                  
                                                     totalOthers: numberFormat(item.totalOthers || 0),
                                                     totalCommission: numberFormat(item.totalCommission || 0),
                                                     totalMWMobile: numberFormat(item.total_win_mobile || 0),
@@ -510,7 +518,7 @@
                                                         :commissionPercent="commission_percent"
                                                         :editmode="editmode"
                                                         :computedAve="computedAve"
-                                                        
+                                                        :computation="computation"
                                                     />
 
                                                     <BankBox
@@ -704,6 +712,10 @@ export default {
                 computed: {},
                 checked: {},
                 prepared: {},
+                selectComputed:null,
+                selectChecked1:null,
+                selectChecked2:null,
+                selectPrepared:null,
             },
             overlay: false,
             zIndex: 0,
@@ -893,7 +905,7 @@ export default {
 
                     r.push(helper[key]);
                 } else {
-                    // const {arenaName, ...o} = obj;
+ 
                     helper[key].mobile = {
                         ...obj,
                     };
@@ -905,8 +917,6 @@ export default {
             const obj = {
                 data: duplicateObj,
             };
-
-            // console.log(obj.data)
 
             this.arenaDatastatus = obj;
         },
@@ -1007,6 +1017,8 @@ export default {
                     ),
                 },
             };
+
+            console.log(this.computation.totalMWBets)
 
             axios
                 .get("api/selectedbank/" + this.arena_id)
@@ -1120,7 +1132,7 @@ export default {
         },
 
         openModel(data) {
-            console.log(data)
+            console.log(this.userPrepared)
             if (data.arena_details == null) {
                 swal.fire({
                     icon: "warning",
@@ -1227,11 +1239,12 @@ export default {
                 let reportCombined = [];
                 let eventsCombined = [];
                 let summaryReport = [];
+                let objMobileKiosk = [];
                 // let objectKeyReplacedArray = [];
 
                 reader.onload = (e) => {
                     // eslint-disable-next-line no-unused-vars
-                    /* Parse data */
+         
                     const bstr = e.target.result;
                     const wb = XLSX.read(bstr, { type: "binary" });
                     /* Get first worksheet */
@@ -1239,14 +1252,14 @@ export default {
                     // const wsname = wb.SheetNames;
                     // const ws = wb.Sheets[wsname];
                     const ws = wb.SheetNames;
-                    // console.log(wb.Sheets['Accounts Report (Combined)', 'Summary Report'])
+                  
                     const filteredWS = ws.filter(function (value, index, arr) {
                         return (
                             value === "Accounts Report (Combined)" ||
                             value === "Summary Report"
                         );
                     });
-                    // console.log(filtered)
+                  
                     filteredWS.forEach((w) => {
                         const singleSheet = wb.Sheets[w];
 
@@ -1263,9 +1276,11 @@ export default {
                         );
                     });
 
+                    console.log(arrayData)
+
                     arrayData[0].map((r) => {
                         if (Object.keys(r).length >= 17) reportCombined.push(r);
-                        // console.log('>>>>',r)
+                      
                         if (
                             typeof r.A == "string" &&
                             r.A.indexOf("Date") > -1
@@ -1282,7 +1297,7 @@ export default {
                     // Merge Object
                     const mergeObj = mergeObject(eventsCombined);
 
-                    console.log(eventsCombined);
+              
 
                     const objectKeyed = (array) => {
                         let objectKeyReplacedArray = [];
@@ -1311,44 +1326,33 @@ export default {
                                     ? data.classification
                                     : null,
                                 totalCommission: data.totalCommission
-                                    ? data.totalCommission
-                                    : 0,
+                                  || 0,
                                 totalOthers: data.totalOthers
-                                    ? data.totalOthers
-                                    : 0,
+                                  ||0,
                                 salesDeductionTablet: data.salesDeductionTablet
-                                    ? data.salesDeductionTablet
-                                    : 0,
+                                   || 0,
                                 otherCommissionInteldata05:
                                     data.otherCommissionInteldata05
-                                        ? data.otherCommissionInteldata05
-                                        : 0,
+                                       ||0,
                                 consolidatorsCommission:
                                     data.consolidatorsCommission
-                                        ? data.consolidatorsCommission
-                                        : 0,
+                                     ||0,
                                 safetyFund: data.safetyFund
-                                    ? data.safetyFund
-                                    : 0,
+                                  ||0,
                                 paymentForOutstandingBalance:
                                     data.paymentForOutstandingBalance
-                                        ? data.paymentForOutstandingBalance
-                                        : 0,
+                                       || 0,
                                 systemErrorCOArmsi: data.systemErrorCOArmsi
                                     ? data.systemErrorCOArmsi
                                     : 0,
                                 cashLoad: data.cashLoad ? data.cashLoad : 0,
-                                cashWithdrawal: data.cashWithdrawal
-                                    ? data.cashWithdrawal
-                                    : 0,
+                                cashWithdrawal:  data.cashWithdrawal || 0,
                                 netOperatorsCommission:
                                     data.netOperatorsCommission
-                                        ? data.netOperatorsCommission
-                                        : 0,
+                                        ||0,
                                 otherCommissionIntel05:
                                     data.otherCommissionIntel05
-                                        ? data.otherCommissionIntel05
-                                        : 0,
+                                       || 0,
 
                                 drawMobile: 0,
                                 totalMWMobile: 0,
@@ -1359,14 +1363,14 @@ export default {
                         return objectKeyReplacedArray;
                     };
 
-                    const objKeyRep = objectKeyed(reportCombined, 5);
+                    // const objKeyRep = objectKeyed(reportCombined, 5);
                     const objKeySummary = objectKeyed(summaryReport, 6);
 
-                    let objMobileKiosk = [];
+                
 
                     objKeySummary.forEach(function (item) {
                         const existing = objMobileKiosk.filter((v, i) => {
-                            // if (v.arenaName == item.arenaName) console.log(v);
+                            
                             if (
                                 v.type === "KIOSK" &&
                                 v.arenaName == item.arenaName
@@ -1391,7 +1395,6 @@ export default {
                         }
                     });
 
-                    // console.log('OBJMK>>>',objMobileKiosk)
 
                     let helper = {};
                     const result = objMobileKiosk.reduce(function (r, o) {
@@ -1402,10 +1405,7 @@ export default {
 
                             r.push(helper[key]);
                         } else {
-                            // helper[key].mobile = {
-                            //     totalMW: o.total,
-                            //     draw: o.draw
-                            // }
+                        
 
                             helper[key].totalMWMobile = o.total;
                             helper[key].drawMobile = o.draw;
@@ -1609,7 +1609,7 @@ export default {
             console.log("done");
         },
         async multiDownloads() {
-            // this.overlay = true;
+       
             this.downloadingReport  = true;
 
             const divsss = document.querySelectorAll(".reportsoaoutput");
@@ -1659,8 +1659,11 @@ export default {
             
                     this.arenaData.data = c
                     this.selected = []
-                 
-                   this.downloadingReport = false
+
+                    setTimeout(() => {
+                            this.downloadingReport = false                        
+                    }, 3000);
+                  
                      
                 }
               
@@ -1746,6 +1749,7 @@ export default {
                     numberUnformat(this.computation.drawPaid) || 0
             );
 
+
          
 
             const mwTotalPercent = numberFormat(
@@ -1794,8 +1798,8 @@ export default {
                     this.computation.paymentForOutstandingBalance || "0.00"
                 );
 
-            const netOpCommission = numberFormat(netOpCommTotal) || 0;
-            const totalCommission = numberFormat(totalComm) || 0;
+            const netOpCommission = numberFormat(netOpCommTotal || 0) ;
+            const totalCommission = numberFormat(totalComm || 0);
 
           
 
@@ -1845,26 +1849,25 @@ export default {
                           bankTitle: "Kindly Deposit to",
                       };
            
-          
-
-
-                    // const totalMWBetPercent =
-                    // parseFloat(this.computation.totalMWBets) *
-                    // parseFloat(this.commission_percent);
 
               
+
+
                     const totalMWBets = numberFormat(this.computation.totalMWBets || 0);
-                        
                     const drawCancelled= numberFormat(this.computation.drawCancelled || 0);
                     const draw= numberFormat(this.computation.draw || 0);
                     const totalPayoutPaid= numberFormat(this.computation.totalPayoutPaid || 0);
                     const cdPaid= numberFormat(this.computation.cdPaid || 0);
                     const drawPaid= numberFormat(this.computation.drawPaid || 0);
-            
+
+
+
                     const unclaimed= numberFormat(this.computation.unclaimed || 0);
                     const cUnpaid= numberFormat(this.computation.cUnpaid || 0);
                    
                    
+
+
                     const otherCommissionIntel05= numberFormat(
                         this.computation.otherCommissionIntel05
                     );
@@ -1874,6 +1877,9 @@ export default {
                     const paymentForOutstandingBalance= numberFormat(
                         this.computation.paymentForOutstandingBalance
                     );
+
+
+
                     const safetyFund= numberFormat(this.computation.safetyFund);
                     const salesDeduction= numberFormat(this.computation.salesDeductionTablet);
                     const systemErrorCOArmsi= numberFormat(this.computation.systemErrorCOArmsi);
