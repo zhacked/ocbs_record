@@ -981,23 +981,23 @@ export default {
                 unclaimed: numberUnformat(this.computation.unclaimed),
                 cUnpaid: numberUnformat(this.computation.cUnpaid),
                 totalMWBetPercent: numberUnformat(
-                    this.computation.totalMWBetPercent
+                    this.computation.totalMWBetPercent || "0.00"
                 ),
                 operatorExpenses: numberUnformat(
-                    this.computation.operatorExpenses
+                    this.computation.operatorExpenses || "0.00"
                 ),
                 otherCommissionIntel05: numberUnformat(
-                    this.computation.otherCommissionIntel05
+                    this.computation.otherCommissionIntel05 || "0.00"
                 ),
                 consolidatorsCommission: numberUnformat(
-                    this.computation.consolidatorsCommission
+                    this.computation.consolidatorsCommission || "0.00"
                 ),
                 paymentForOutstandingBalance: numberUnformat(
-                    this.computation.paymentForOutstandingBalance
+                    this.computation.paymentForOutstandingBalance || "0.00"
                 ),
                 safetyFund: numberUnformat(this.computation.safetyFund),
                 salesDeductionTablet: numberUnformat(
-                    this.computation.salesDeductionTablet
+                    this.computation.salesDeductionTablet || "0.00"
                 ),
                 systemErrorCOArmsi: numberUnformat(
                     this.computation.systemErrorCOArmsi
