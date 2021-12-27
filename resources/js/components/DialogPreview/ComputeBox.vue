@@ -45,7 +45,7 @@
                                 type="text"
                                 disabled="disabled"
                                 class="input-field_report computation comp"
-                                v-model="computedAve.totalMWBets"
+                                v-model="computation.totalMWBets"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
                             />
@@ -84,7 +84,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.drawCancelled"
+                                    v-model="computation.drawCancelled"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -124,7 +124,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.draw"
+                                    v-model="computation.draw"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -164,7 +164,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.totalPayoutPaid"
+                                    v-model="computation.totalPayoutPaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -205,7 +205,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.cdPaid"
+                                    v-model="computation.cdPaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -245,7 +245,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.drawPaid"
+                                    v-model="computation.drawPaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -505,7 +505,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.unclaimed"
+                                    v-model="computation.unclaimed"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -545,7 +545,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.cUnpaid"
+                                    v-model="computation.cUnpaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -585,7 +585,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.salesDeduction"
+                                    v-model="computation.salesDeduction"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -663,7 +663,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.otherCommissionIntel05"
+                                    v-model="computation.otherCommissionIntel05"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -703,7 +703,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.consolidatorsCommission"
+                                    v-model="computation.consolidatorsCommission"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -743,7 +743,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.safetyFund"
+                                    v-model="computation.safetyFund"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -783,7 +783,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.paymentForOutstandingBalance"
+                                    v-model="computation.paymentForOutstandingBalance"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -826,7 +826,7 @@
                                     computation-total
                                 "
                             >
-                                <span class="ctotal-text">{{computedAve.totalComputationOthers}}</span>
+                                <span class="ctotal-text">{{computation.totalComputationOthers}}</span>
                             </div>
                         </div>
                     </div>
@@ -1044,6 +1044,11 @@
 </template>
 
 <script>
+import {
+    numberFormat,
+    numberUnformat,
+ 
+} from "../../utility";
 export default {
     name: "ComputeBox",
     props: {
@@ -1056,13 +1061,17 @@ export default {
     },
     methods: {
         handleCleanZeroOnFocus(event) {
-            const targetEvent = {[event.target.name]: event.target.value};
-            if(event.target.value === "0")
-                event.target.value = ""
+            // const targetEvent = {[event.target.name]: event.target.value};
+            
+            if(event.target.value === "0") event.target.value = ""
+                
+
+            return numberUnformat(event.target.value)
         },
         handleCleanZeroOnBlur(event) {
-            if(event.target.value === "")
-                event.target.value = 0
+            
+            if(event.target.value === "") event.target.value = 0
+                
         },
     }
 };

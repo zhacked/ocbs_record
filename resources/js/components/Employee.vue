@@ -405,7 +405,7 @@
                 .then(
                     ({data}) => {
                       
-                        console.log(data.prepared)
+                        
                         const selectedCompute = data.computed.filter(c => c.assign !== 0);
                         const selectedPrepared = data.prepared.filter(c => c.assign !== 0);
                          const checks = data.checked.filter(c => c.assign !== 0);
