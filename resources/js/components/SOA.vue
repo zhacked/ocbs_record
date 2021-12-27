@@ -183,7 +183,7 @@
                                             hide-overlay
                                             persistent
                                             width="700"
-                                            full-width
+                                    
                                             >
                                             <v-card color="primary" dark>
                                             <v-card-text>
@@ -199,6 +199,7 @@
                                             </v-card>
                                             </v-dialog>
                                         <v-btn
+                                         
                                             :loading="loading"
                                             :disabled="loading"
                                             @click="truncate"
@@ -845,6 +846,7 @@ export default {
                             title: "Oops...",
                             text: "Please Enter Valid Password",
                         });
+                    
                     }
                 },
             }).then((result) => {
@@ -859,6 +861,7 @@ export default {
                                     title: "Successfully Deleted",
                                 });
                                 Fire.$emit("AfterCreate");
+                                location.reload();
                             } else {
                                 swal.fire({
                                     icon: "error",
@@ -948,7 +951,7 @@ export default {
             };
 
             this.arenaData = obj;
-
+            console.log(this.arenaData);
             // duplicateObj.forEach((item) => {});
         },
         closeDialog() {
@@ -1098,15 +1101,14 @@ export default {
             } else {
                 this.dialog2 = true
                 axios.post("api/import", this.ocbsArrayFiltered).then(
-                    ({ data }) => (
-                        this.dialog2 = false,
-                        $("#importData").val(""),
-                        Fire.$emit("AfterCreate"),
-                        swal.fire("Successfully!", "Excel Imported", "success"),
-                        this.$Progress.finish()
-                        // location.reload()
-                    )
-                ).catch((error)=>{
+                    ({ data }) => {
+                          this.dialog2 = false,
+                        $("#importData").val("");
+                        Fire.$emit("AfterCreate");
+                        swal.fire("Successfully!", "Excel Imported", "success");
+                        this.$Progress.finish();
+                        location.reload();
+                    }).catch((error)=>{
                     this.dialog2 = false,
                      swal.fire({
                                 icon: 'error',

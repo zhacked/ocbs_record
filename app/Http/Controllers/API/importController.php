@@ -95,7 +95,6 @@ class importController extends Controller
                 'draw' => $data['totalDrawBets'],
                 'draw_unclaimed' => $data['drawUnclaimed'],
                 'draw_unpaid' => $data['dUnpaid'],
-
                 'type' => $data['type'],
                 'totalOthers'=> $data['totalOthers'],
                 'salesDeductionTablet'=> $data['salesDeduction'],
@@ -115,9 +114,7 @@ class importController extends Controller
                 'drawTwo' => $data['drawTwo'],
                 'mwTwoMobile' => $data['mwTwoMobile'],
                 'drawTwoMobile' => $data['drawTwoMobile'],
-
                 'for_total' => $data['depositReplenish'],
-
                 'group' => $data['group']
 
             ]);
