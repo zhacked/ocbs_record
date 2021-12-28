@@ -1,5 +1,6 @@
 <template>
     <v-row>
+        
         <div class="bank-wrapper">
             <div class="bank-headline">
                 <span>{{depositReplenishText.bankTitle}}: </span>
@@ -23,19 +24,22 @@
             </div>
             <div class="bank-container" v-else>
                 <div class="bank bank1">
+              
                     <span>{{operatorName}}</span>
-                    <!-- <span>{{bank}}</span> -->
-                    <span v-if="bank.bank_id == '' && editmode == false " > {{bank.bank_name}}</span>
-                    <span   class="select-field_container" :class="{'editmode-span': editmode}">
-                        <select class="small sign-name select-field_report" v-model="bank.bank_id" @change="filterbank()" >
-                            <option selected v-for="banks in bank.all" :key="banks.id"  :value="banks.id" >{{banks.bank_name}}</option>
+                    <!-- <span>{{banks}}</span> -->
+                    <span v-if="!editmode" > {{banks[0].bank_name}}</span>
+                    <span  class="select-field_container" :class="{'editmode-span': editmode}">
+                        <select v-if="editmode"  class="small sign-name select-field_report"  @change="filterbank($event)" >
+                            <!-- <option default disabled :value="banks[0].id" >{{banks[0].bank_name}}</option> -->
+                            <option v-for="bank in banks" :key="bank.id"  :value="bank.id" >{{bank.bank_name}}</option>
                         </select>
                     </span>
-                    <span>{{bank.bank_number}}</span>
-                </div>
+                    <span>{{banks[0].bank_number}}</span>
+                   
+                </div> 
                 
             </div>
-
+          
         </div>
     </v-row>
 </template>
@@ -44,18 +48,25 @@
         name: "BankBox",
         props:{
             bank:Object,
+            banks:Array,
+            b: Object,
+            arenaId: Number,
             operatorName: String,
             editmode: Boolean,
             depositReplenishText: Object
         },
         methods: {
            
-            filterbank(){
-         
-              axios.get("api/filterBank/"+ this.bank.bank_id).then(({data}) => (
-                   this.bank.bank_name = data.bank_name,
-                    this.bank.bank_number = data.bank_number
-                ));
+            filterbank(event){
+                console.log(event.target.value)
+                //   axios.get("api/filterBank/"+ this.bank.bank_id).then(({data}) => (
+                //        this.bank.bank_name = data.bank_name,
+                //         this.bank.bank_number = data.bank_number
+                //     ));
+
+                axios.put('api/updateBankSelection/'+this.arenaId, {
+                    bank_id: event.target.value
+                })
             }
         }
     }

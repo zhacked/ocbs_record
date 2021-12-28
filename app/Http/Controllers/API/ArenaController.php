@@ -27,6 +27,11 @@ class ArenaController extends Controller
          return arena::with('BankDetails')->get();
     }
 
+    public function arenaSelectedBank()
+    {
+         return arena::with('ArenaBankDetails')->get();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -88,6 +93,16 @@ class ArenaController extends Controller
     public function edit($id)
     {
         //
+    }
+
+    public function updateBankSelection(Request $request, $id) {
+        $arena = arena::with('BankDetails')->where('id',$id)->update([
+            'bank_id' => $request['bank_id'],
+        ]);
+       
+        
+       
+        return ['message' => 'Updated the areana details'];
     }
 
     /**
