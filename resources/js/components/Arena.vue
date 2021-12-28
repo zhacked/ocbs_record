@@ -170,6 +170,7 @@
                                             outlined
                                             dense
                                             v-model="Bankform.bank_name"
+                                             :rules="[() => !!Bankform.bank_name || 'This field is required']"
                                         ></v-text-field>
 
                                         <v-text-field
@@ -178,6 +179,7 @@
                                             outlined
                                             dense
                                             v-model="Bankform.bank_number"
+                                             :rules="[() => !!Bankform.bank_numbe || 'This field is required']"
                                         ></v-text-field>
                                     </div>
                                     <div class="modal-footer">

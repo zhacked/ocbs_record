@@ -64,17 +64,8 @@ class ArenaController extends Controller
             'email' => $request['email'],
         ]);
 
-        
-
-        foreach($request->bank_details as $bank){
-            $bank =  BankAccount::create([
-                'arenas_id' =>   $arena->id ,
-                'bank_name' => $bank['bank_name'],
-                'bank_number' => $bank['bank_number'],
-            ]);
-            }
-
-       
+    
+        return $arena;
     }
 
     /**
@@ -128,17 +119,7 @@ class ArenaController extends Controller
         ]);
        
         
-        dump($arenas->BankDetails);
-        foreach($arenas->BankDetails as $bank){
-            dump($bank);
-            $bank =  BankAccount::where('arenas_id',$bank->arenas_id)->update([
-                'bank_name' => $request->bank_details[0]['bank_name'],
-                'bank_number' => $request->bank_details[0]['bank_number'],
-            ]);
-           
-            
-        }
-        
+       
         return ['message' => 'Updated the areana details'];
     }
 
