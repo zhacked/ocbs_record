@@ -10,7 +10,9 @@ class BankAccount extends Model
     use HasFactory;
     protected $guarded = [];
 
-   
+    public function arenaDetails(){
+        return $this->hasOne('App\Models\arena','id', 'arenas_id');
+    }
    
 
-}
+}   

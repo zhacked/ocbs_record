@@ -22,7 +22,7 @@ class BankDetailsController extends Controller
     }
     public function index()
     {
-        return BankAccount::latest()->get();
+        return BankAccount::with(['arenaDetails'])->latest()->get();
     }
 
     public function show_arena()
@@ -48,15 +48,15 @@ class BankDetailsController extends Controller
      */
     public function store(Request $request)
     {
-     
+    
         $this->validate($request,[
-            'arena_id' => 'required|numeric',
+            'arenas_id' => 'required|numeric',
             'bank_name' => 'required|string|max:191',
             'bank_number' => 'required|string'
         ]);
 
         return BankAccount::create([
-            'arenas_id' => $request['arena_id'],
+            'arenas_id' => $request['arenas_id'],
             'bank_name' => $request['bank_name'],
             'bank_number' => $request['bank_number'],
         ]);
@@ -96,12 +96,16 @@ class BankDetailsController extends Controller
         $bank = BankAccount::findOrFail($id);
 
         $this->validate($request,[
-            'arena_id' => 'required|numeric',
+            'arenas_id' => 'required|numeric',
             'bank_name' => 'required|string|max:191',
             'bank_number' => 'required|string'
         ]);
 
-        $bank->update($request->all());
+        $bank->update([
+            'arenas_id' => $request['arenas_id'],
+            'bank_name' => $request['bank_name'],
+            'bank_number' => $request['bank_number'],
+        ]);
         return ['message' => 'Updated the areana details'];
     }
 

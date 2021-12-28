@@ -21,7 +21,6 @@
                                     v-model="search"
                                     append-icon="mdi-magnify"
                                     label="Search"
-                            
                                      color="primary darken-2"
                                 ></v-text-field>
                             </v-col>
@@ -33,7 +32,19 @@
                             :items-per-page="10"
                             :search="search"
                             class="elevation-1 text-center"
-                        >
+                        >   
+                           
+                             <template v-slot:[`item.bank`]="{ item }" >
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn icon  v-bind="attrs" v-on="on"  color="green"  @click="openBankModel(item)">
+                                            <v-icon small>mdi-bank</v-icon>
+                                        </v-btn>
+                                     </template>
+                                    <span>Bank Information</span>
+                                </v-tooltip>
+                            </template>
+
                             <template v-slot:[`item.actions`]="{ item }" >
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
@@ -51,7 +62,6 @@
                                      </template>
                                     <span>Delete Arena</span>
                                 </v-tooltip>
-                             
                             </template>
                         </v-data-table>
 						
@@ -59,7 +69,131 @@
 				</v-col>
 			</v-row>
 
+            		<!-- Bank Modal -->
+			<div class="modal fade" id="bankModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" v-show="!editmode" id="addNewLabel">Bank Details</h5>
+						<h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Bank Detials</h5>
+                       
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
 
+                         <v-data-table
+                            :headers="Bankheaders"
+                            :items="bankDetails"
+                            :items-per-page="5"
+                            :search="searchbank"
+                            class="elevation-1 text-center"
+                        >  
+                         <template v-slot:top>
+                                <v-toolbar flat>
+                                    <v-toolbar-title>
+                                        <v-btn color="success"
+                                            elevation="2"  @click="openBankDetails">Add Bank<i class="fas fa-plus fa-fw"></i>
+                                        </v-btn>
+                                    </v-toolbar-title>
+                                    <v-divider
+                                    class="mx-4"
+                                    inset
+                                    vertical
+                                    ></v-divider>
+                                    <v-spacer></v-spacer>
+                                    <div class="mt-4">
+                                        <v-text-field
+                                            v-model="searchbank"
+                                            append-icon="mdi-magnify"
+                                            label="Search"
+                                            color="primary darken-2"
+                                        ></v-text-field>
+                                    </div>
+                                </v-toolbar>
+                            </template>
+
+                            <template v-slot:[`item.actions`]="{ item }">
+                                    <v-tooltip top>
+                                        <template v-slot:activator="{ on, attrs }">
+                                                <v-btn
+                                                color="primary"
+                                                class="mx-2"
+                                                icon
+                                                dark
+                                                v-bind="attrs"
+                                                v-on="on"
+                                                @click="updateBankDetails(item)"
+                                                >
+                                                <i class="fas fa-edit"></i>
+                                                </v-btn>
+                                        </template>
+                                    <span>Edit Bank Info</span>
+                                    </v-tooltip>
+                                    |
+                                     <v-tooltip top>
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-btn
+                                            color="red"
+                                            dark
+                                            icon
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            class="mx-2"
+                                            @click="deleteAccount(item.id)"
+                                            >
+                                            <i class="fa fa-trash"></i>
+                                            </v-btn>
+                                        </template>
+                                    <span>Delete Bank info </span>
+                                    </v-tooltip>
+                            </template>
+                         </v-data-table>
+                        
+
+                        <v-expand-transition>
+                        <div v-show="show">
+                             <v-card-title>
+                                <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add Bank Details</h5>
+                                <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Bank Detials</h5>
+                                 <v-spacer></v-spacer>
+                                 <v-icon color="red" @click="show=false" >
+                                    mdi-close
+                                 </v-icon>
+                            </v-card-title>
+                            <v-card-text>
+                                <form @submit.prevent="editmode ? updateBank() : createBank()">
+                                    <div class="modal-body">
+                                        <v-text-field
+                                            label="Bank Name"
+                                            placeholder="Enter Bank Name"
+                                            outlined
+                                            dense
+                                            v-model="Bankform.bank_name"
+                                        ></v-text-field>
+
+                                        <v-text-field
+                                            label="Bank Number"
+                                            placeholder="Enter Bank number"
+                                            outlined
+                                            dense
+                                            v-model="Bankform.bank_number"
+                                        ></v-text-field>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <v-btn type="button" color="error" elevation="2" data-dismiss="modal">Close</v-btn>
+                                        <v-btn v-show="editmode" type="submit" color="primary" elevation="2">Update</v-btn>
+                                        <v-btn v-show="!editmode" type="submit" color="success"  elevation="2">Create</v-btn>
+                                    </div>
+
+                                </form>
+
+                            </v-card-text>
+                        </div>
+                        </v-expand-transition>
+					</div>
+				</div>
+			</div>
 					<!-- Modal -->
 			<div class="modal fade" id="addNew" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered" role="document">
@@ -73,7 +207,6 @@
 					</div>
 					<form @submit.prevent="editmode ? updateArena() : createArena()">
 						<div class="modal-body">
-					
                                 <v-text-field
                                     label="Arena Name"
                                     outlined
@@ -113,41 +246,7 @@
                                     v-model="form.email"
                                     :rules="[() => !!form.email || 'This field is required']"
                                 ></v-text-field>
-							
-	
-                            <hr>
-                            <p>
-                               <strong>Add Bank Details</strong>  <span><button  type="button" class="btn btn-success text-white" style="border-radius:50%"  @click="addField()"><i class="fas fa-plus" aria-hidden="true"></i></button></span>
-                            </p>
-                            <v-container >
-                                 <v-row fluid class="add" v-for="(input,index) in inputs" :key="index">
-                                                <v-col class="col-5">
-                                                    <v-text-field
-                                                        label="Bank Name"
-                                                        placeholder="BDO"
-                                                        outlined
-                                                         v-model="input.bank_name" 
-                                                        :rules="[() => !!input.bank_name || 'This field is required']"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col  class="col-6">
-                                                    <v-text-field
-                                                        label="Bank Number"
-                                                        placeholder="xxx-xxx-xxx"
-                                                        outlined
-                                                        v-model="input.bank_number"
-                                                        :rules="[() => !!input.bank_number || 'This field is required']"
-                                                    ></v-text-field>
-                                                   
-                                                </v-col>
-                                                <v-col  class="col-1">
-                                                    <span class="d-flex justify-content-center align-items-center h-100 d-inline-block" tabindex="0"  @click="removeField(index)" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Remove column"><i class="fas fa-trash text-danger" aria-hidden="true"></i></span> 
-                                                </v-col>
-                                    
-                                </v-row>
-                            </v-container>
-                           
-                          
+
 
 						</div>
 						<div class="modal-footer">
@@ -169,14 +268,18 @@
     export default {
         data() {
             return {
-                inputs: [{
-                    bank_name: null,
-                    bank_number: null,
-                }],
+                
                 headers: [
                     { text: "Arena Name", value: "arena" },
                     { text: "Address", value: "address" },
                     { text: "Operator", value: "operator" },
+                    { text: "Bank Detials", value: "bank" },
+                    { text: "", value: "actions", sortable: false },
+                ],
+
+                Bankheaders: [
+                    { text: "Bank Name", value: "bank_name" },
+                    { text: "Bank Number", value: "bank_number" },
                     { text: "", value: "actions", sortable: false },
                 ],
                 errorMessages: '',
@@ -184,7 +287,10 @@
                 editmode: false,
                 arena : [],
                 search: '',
+                searchbank:'',
                 input: '',
+                show:false,
+                bankDetails : [],
                 form: new Form({
                     id:'',
                     arena : '',
@@ -193,50 +299,112 @@
                     contact_number: '',
                     email: '',
                 }),
-               
+               Bankform: new Form({
+                    id:'',
+                   arenas_id:'',
+                   bank_name:'',
+                   bank_number:''
+
+                   
+                })
                 
             }
         },
         methods: {
-            
-            addField(index) {
-                    this.inputs.push({
-                        bank_name: "",
-                        bank_number: "",
-                      
-                    });
-                },
-            removeField(index) {
-                  
-                    swal.fire({
+            openBankDetails(){
+                this.show = true;
+                this.editmode = false;
+                this.Bankform.bank_name = "";
+                this.Bankform.bank_number = "";
+            },
+            openBankModel(data){
+                this.show = false;
+                 $('#bankModal').modal('show');
+                this.bankDetails = data.bank_details;
+                this.Bankform.arenas_id = data.id;
+               
+            },
+            createBank(){
+
+                this.$Progress.start();
+                this.Bankform.post('api/bankaccount')
+                .then(()=>{
+                    Fire.$emit('AfterCreate');
+                 
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Bank Created in successfully'
+                        })
+                     this.show = false;
+                    $('#bankModal').modal('hide');
+                    this.$Progress.finish();
+                })
+                .catch(()=>{
+                })
+            },
+            updateBank(){
+                this.$Progress.start();
+        
+                this.Bankform.put('api/bankaccount/'+this.Bankform.id)
+                .then(() => {
+                          
+                     swal.fire(
+                        'Updated!',
+                        'Information has been updated.',
+                        'success'
+                        )
+                        this.show = false;
+                          $('#bankModal').modal('hide');
+                        this.$Progress.finish();
+                         Fire.$emit('AfterCreate');
+                })
+                .catch(() => {
+                    this.$Progress.fail();
+                });
+            },
+            deleteAccount(id){
+                 swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
-                    type: 'warning',
+                    icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, delete it!'
                     }).then((result) => {
                          if (result.value) {
-                               let x =  this.inputs.splice(index, 1);
-                                this.form.delete('api/bankaccount/'+x[0].id).then(()=>{
+                                this.Bankform.delete('api/bankaccount/'+id).then(()=>{
                                         swal.fire(
                                         'Deleted!',
                                         'Your file has been deleted.',
                                         'success'
                                         )
-                                    
                                     Fire.$emit('AfterCreate');
+                                    $('#bankModal').modal('hide');
                                 }).catch(()=> {
-                                   this.inputs.splice(index, 1);
+                                    swal.fire("Failed!", "There was something wrong.", "warning");
                                 });
                          }
                     })
-                   
-                },
+
+            },
+            updateBankDetails(accounts){
+                this.Bankform.reset();
+                this.show = true;
+                this.editmode = true
+                this.Bankform.fill(accounts);
+                this.Bankform.arenas_id = accounts.arenas_id;
+            },
+            editBankModal(accounts){
+                this.editmode = true;
+                this.form.reset();
+                $('#addNew').modal('show');
+                this.form.fill(accounts);
+                this.form.arenas_id = accounts.arenas_id;
+                console.log(accounts);
+            },
             updateArena(){
                 this.$Progress.start();
-                this.form.bank_details = this.inputs
                 this.form.put('api/arena/'+this.form.id)
                 .then(() => {
                     $('#addNew').modal('hide');
@@ -255,15 +423,13 @@
             editModal(arenas){
                 this.editmode = true;
                 this.form.reset();
-                this.inputs= '';
+            
                 $('#addNew').modal('show');
                 this.form.fill(arenas);
 
-                this.inputs = arenas.bank_details;
             },
             openModal(){
                 this.editmode = false;
-                this.inputs== '';
                 this.form.reset();
                 
                 $('#addNew').modal('show');
@@ -305,7 +471,6 @@
             },
             createArena(){
                 this.$Progress.start();
-                this.form.bank_details = this.inputs
                 this.form.post('api/arena')
                 .then(()=>{
                     Fire.$emit('AfterCreate');

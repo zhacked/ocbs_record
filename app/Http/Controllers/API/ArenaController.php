@@ -53,8 +53,7 @@ class ArenaController extends Controller
             'operator' => 'required|string',
             'contact_number' => 'required|numeric',
             'email' => 'required|string|email|max:191',
-            
-         
+
         ]);
 
         $arena =  arena::create([
@@ -65,6 +64,8 @@ class ArenaController extends Controller
             'email' => $request['email'],
         ]);
 
+        
+
         foreach($request->bank_details as $bank){
             $bank =  BankAccount::create([
                 'arenas_id' =>   $arena->id ,
@@ -72,6 +73,8 @@ class ArenaController extends Controller
                 'bank_number' => $bank['bank_number'],
             ]);
             }
+
+       
     }
 
     /**
@@ -125,9 +128,9 @@ class ArenaController extends Controller
         ]);
        
         
-        
+        dump($arenas->BankDetails);
         foreach($arenas->BankDetails as $bank){
-           
+            dump($bank);
             $bank =  BankAccount::where('arenas_id',$bank->arenas_id)->update([
                 'bank_name' => $request->bank_details[0]['bank_name'],
                 'bank_number' => $request->bank_details[0]['bank_number'],

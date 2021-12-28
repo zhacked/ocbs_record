@@ -83,12 +83,12 @@
                             </router-link>
                         </li>
 						
-						<li class="nav-item">
+						{{-- <li class="nav-item">
 							<router-link to="/bankaccount" class="nav-link ">
 								<i class="nav-icon fa fa-money-check-alt"></i>
 								<p>Bank Details</p>
 							</router-link>
-						</li>
+						</li> --}}
                     </ul>
                 </li>
             @endcan

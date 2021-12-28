@@ -28,8 +28,8 @@
                             </v-row>
                             <v-data-table
                                 :headers="headers"
-                                :items="account.data"
-                                :items-per-page="10"
+                                :items="account"
+                                :items-per-page="5"
                                 :search="search"
                                 class="elevation-1 text-center"
                             >
@@ -137,18 +137,19 @@
         data() {
             return {
                 headers: [
+                    { text: 'OCBS Name', value: 'arena_details.arena' },
                     { text: 'Bank Name', value: 'bank_name' },
                     { text: 'Bank Account', value: 'bank_number' },
                     { text: '', value: 'actions', sortable: false },
                 ],
                 editmode: false,
-                account : {},
+                account : [],
                 length: '',
                 arena_id:{},
                 search:'',
                 form: new Form({
                     id:'',
-                   arena_id:'',
+                   arenas_id:'',
                    bank_name:'',
                    bank_number:''
 
@@ -157,12 +158,6 @@
             }
         },
         methods: {
-             getResults(page = 1) {
-                axios.get('api/bankaccount?page=' + page)
-                    .then(response => {
-                        this.account = response.data;
-                    });
-            },
             openModal(){
                 this.editmode = false;
                 this.form.reset();
@@ -173,12 +168,15 @@
                 this.form.reset();
                 $('#addNew').modal('show');
                 this.form.fill(accounts);
-                this.form.arena_id = accounts.arenas_id;
+                this.form.arenas_id = accounts.arenas_id;
                 console.log(accounts);
                 
             },
             loadDetials(){
-                    axios.get("api/bankaccount").then(({ data }) => (this.account = data));
+                    axios.get("api/bankaccount").then(({ data }) => {
+                        this.account = data,
+                        console.log(data);
+                        });
             },
             loadArenaId(){
                  axios.get("api/arenaId").then(({ data }) => (
@@ -202,7 +200,7 @@
             },
             updateBank(){
                 this.$Progress.start();
-                console.log('Editing data');
+        
                 this.form.put('api/bankaccount/'+this.form.id)
                 .then(() => {
                     $('#addNew').modal('hide');
