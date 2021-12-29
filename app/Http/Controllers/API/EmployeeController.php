@@ -39,30 +39,10 @@ class EmployeeController extends Controller
 
     public function selectedbyUser(Request $request, $old)
     {   
-<<<<<<< HEAD
-        dd($id);
-        $checked = employee::where('group','checked')->where('assign','1')->count();
-        $groups = employee::where('group',$group)->where('assign','1')->first();
-        $employee = employee::where('id',$id)->first();
-        
-=======
->>>>>>> 26cc0a164f68cfb786042eb860bd1118ce2f561e
 
-            //   dd($request['new']);
-
+      
             if($old != 'undefined') {
 
-<<<<<<< HEAD
-    //     if($new) {
-    //         $newed = employee::where('id',$new)->first();
-
-    //         $newed->update([
-    //             'assign' => true
-    //         ]);
-           
-    //    }
-    
-=======
                 $olded = employee::where('id',$old)->first();
 
                 $olded->update([ 'assign' => false
@@ -79,7 +59,6 @@ class EmployeeController extends Controller
 
             return true;
    
->>>>>>> 26cc0a164f68cfb786042eb860bd1118ce2f561e
     }
 
     /**

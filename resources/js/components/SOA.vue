@@ -198,8 +198,9 @@
                                             </v-card-text>
                                             </v-card>
                                             </v-dialog>
+                                       
                                         <v-btn
-                                            v-show="arenaDatastatus.data.length > 1"
+                                            v-show="arenaData.data.length > 1"
                                             :loading="loading"
                                             :disabled="loading"
                                             @click="truncate"
