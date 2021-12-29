@@ -50,7 +50,8 @@
             bank:Object,
             banks:Array,
             b: Object,
-            arenaId: Number,
+            arenaId: Object,
+            bankId: Object,
             operatorName: String,
             editmode: Boolean,
             depositReplenishText: Object
@@ -64,10 +65,18 @@
                 //         this.bank.bank_number = data.bank_number
                 //     ));
 
-                axios.put('api/updateBankSelection/'+this.arenaId, {
+                axios.put('api/updateBankSelection/'+this.arenaId.id, {
                     bank_id: event.target.value
                 })
+            },
+            arenaSelectedBank(){
+                  axios.get(`api/arenaSelectedBank/${parseInt(this.bankId.id)}`).then(data => {
+                      console.log('ARENA SELECTED',data)
+                  })
             }
+        },
+        created(){
+            this.arenaSelectedBank()
         }
     }
 </script>

@@ -27,10 +27,10 @@ class ArenaController extends Controller
          return arena::with('BankDetails')->get();
     }
 
-    public function arenaSelectedBank()
-    {
-         return arena::with('ArenaBankDetails')->get();
-    }
+    // public function arenaSelectedBank($bankId)
+    // {
+    //      return BankAccount::where('bank_id',$bankId)->get();
+    // }
 
     /**
      * Show the form for creating a new resource.
