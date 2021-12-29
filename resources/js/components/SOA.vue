@@ -1645,7 +1645,7 @@ export default {
                 }).then(() => {
                     axios.put("api/arenaStatus/" + this.selected[i].areaCode)
                 }).then(() => {
-                    // console.log(this.selected.length - 1 === i)   
+                   
                     if(this.selected.length - 1 === i) {
                     console.log(this.selected.length - 1 === i)
                     const c = this.arenaData.data.filter(arena => !this.selected.find(select => select.areaCode === arena.areaCode))
