@@ -377,9 +377,10 @@
                                                             }
                                                         "
                                     />
-
+                                 
                                     <BankBox
                                         :bank="item.bank_details[0]"
+                                        :banks="item.bank_details"
                                         :operatorName="item.arena_details ? item.arena_details.operator : '' "
                                         :editmode="editmode"
                                         :depositReplenishText="
@@ -524,6 +525,8 @@
 
                                                     <BankBox
                                                         :bank="bank"
+                                                        :banks="banks"
+                                                        :arenaId="arena_id"
                                                         :operatorName="
                                                             operator_name
                                                         "
@@ -669,15 +672,13 @@
 <script>
 import { camelCase, groupBy, map, spread, values, assign, concat } from "lodash";
 import XLSX from "xlsx";
-import JSZip from "jszip";
-import { saveAs } from "file-saver";
 import {
     numberFormat,
     numberUnformat,
     mergeObject,
     valueSplit,
 } from "../utility";
-// import fileChange from "../methods/onFileChange.js";
+
 import VueHtml2pdf from "vue-html2pdf";
 import html2canvas from "html2canvas";
 import moment from "moment";
@@ -688,7 +689,7 @@ import BankBox from "./DialogPreview/BankBox.vue";
 import PreparedChecked from "./DialogPreview/PreparedChecked.vue";
 
 import BounceLoader from 'vue-spinner/src/BounceLoader.vue';
-// import Spinner from "";
+
 export default {
     components: {
         VueHtml2pdf,
@@ -734,12 +735,9 @@ export default {
             ocbs: {},
             bankDetails: {},
             bank: {
-                all: {},
-                bank_id: "",
-                bank_name: "",
-                bank_number: "",
-                selected: [],
+               
             },
+            banks: [],
 
             operator_name: "",
             sofrNumSeq: 0,
@@ -1159,11 +1157,9 @@ export default {
                 this.dateCreated = moment().format("ll");
                 this.dateEvent = moment(data.date_of_soa).format("LL");
                 this.refNo = data.refNo;
-
-                console.log(this.dateEvent)
-
      
                 this.arenaDetails = data.arena_details;
+                this.banks = data.arena_details.bank_details;
                 this.arena_id = data.arena_details.id;
                 this.arena_name = data.arena_name;
                 this.areaCode = data.areaCode;
@@ -1228,10 +1224,6 @@ export default {
                     netOperatorsCommission,
                 }
                 
-
-               
-
-                
             }
         },
 
@@ -1285,8 +1277,6 @@ export default {
                             })
                         );
                     });
-
-                    console.log(arrayData)
 
                     arrayData[0].map((r) => {
                         if (Object.keys(r).length >= 17) reportCombined.push(r);
@@ -1586,13 +1576,7 @@ export default {
 
             const link = document.createElement("a");
             const soaFr = details.group === "Replenish" ? "FR" : "SOA"
-            // link.setAttribute("download", `${details.arena}.png`);
-            // link.setAttribute(
-            //     "href",
-            //     printCanvas
-            //         .toDataURL("image/png")
-            //         .replace("image/png", "image/octet-stream")
-            // );
+            
 
             link.download = `${details.arena}.png`;
             link.href = printCanvas.toDataURL("image/png");

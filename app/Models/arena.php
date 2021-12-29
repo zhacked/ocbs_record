@@ -13,4 +13,8 @@ class arena extends Model
     public function BankDetails(){
         return $this->hasMany('App\Models\BankAccount','arenas_id', 'id');
     }
+
+    public function ArenaBankDetails(){
+        return $this->hasOne('App\Models\BankAccount','id', 'bank_id');
+    }
 }
