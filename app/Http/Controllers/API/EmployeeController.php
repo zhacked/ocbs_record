@@ -37,28 +37,28 @@ class EmployeeController extends Controller
 
     
 
-    public function selectedbyUser($old,$group,$new)
+    public function selectedbyUser(Request $request, $old)
     {   
 
-    //   dd($id, $group, $new);
+            //   dd($request['new']);
 
-      if($old != 'undefined') {
+            if($old != 'undefined') {
 
-        $olded = employee::where('id',$old)->first();
+                $olded = employee::where('id',$old)->first();
 
-        $olded->update([ 'assign' => false
-    ]);
+                $olded->update([ 'assign' => false
+            ]);
 
-}
-    if($new) {
-        $newed = employee::where('id',$new)->first();
-        $newed->update([
-            'assign' => true
-        ]);
-    
-    }
+        }
+            if($request['new']) {
+                $newed = employee::where('id',$request['new'])->first();
+                $newed->update([
+                    'assign' => true
+                ]);
+            
+            }
 
-    return '$newed->assign';
+            return true;
   
 
    

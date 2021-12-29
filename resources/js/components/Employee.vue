@@ -389,7 +389,9 @@
                 //     console.log('NOICE')
                 // }
                
-               axios.get('api/selected/'+val?.id+'/'+val?.group+'/'+event?.id).then((data)=>{
+               axios.put(`api/selected/${val?.id}`, {
+                   new: event.id
+               }).then((data)=>{
                     Toast.fire({
                         icon: 'success',
                         title: 'User Created in successfully'
