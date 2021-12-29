@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\API;
+use Exception;
 use App\Models\User;
 use App\Models\arena;
 use App\Models\import;
@@ -9,10 +10,11 @@ use Illuminate\Http\Request;
 use App\Exports\importExport;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Artisan;
+
 class importController extends Controller
 {
 
@@ -198,6 +200,12 @@ class importController extends Controller
       
     }
 
-    
+    public function artisan(){
+        Artisan::call('backup:run ',[
+            '--only-db' => true
+        ]);
+        return redirect()->back();
+         
+       }
 
 }

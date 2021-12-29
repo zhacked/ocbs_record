@@ -179,7 +179,7 @@
                                             outlined
                                             dense
                                             v-model="Bankform.bank_number"
-                                             :rules="[() => !!Bankform.bank_numbe || 'This field is required']"
+                                             :rules="[() => !!Bankform.bank_number || 'This field is required']"
                                         ></v-text-field>
                                     </div>
                                     <div class="modal-footer">
@@ -346,7 +346,6 @@
             },
             updateBank(){
                 this.$Progress.start();
-        
                 this.Bankform.put('api/bankaccount/'+this.Bankform.id)
                 .then(() => {
                           

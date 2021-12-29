@@ -33,3 +33,5 @@ Auth::routes([
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('{path}', [App\Http\Controllers\HomeController::class, 'index'])->where('path', '([A-z]+)?');
+
+Route::get('/artisan', [App\Http\Controllers\API\importController::class, 'artisan'])->name('artisan');
