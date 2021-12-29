@@ -40,6 +40,11 @@ class BankDetailsController extends Controller
         return BankAccount::where('id',$id)->first();
     }
 
+    public function arenaSelectedBank($bankId)
+    {
+         return BankAccount::where('id',$bankId)->first();
+    }
+
     /**
      * Store a newly created resource in storage.
      *

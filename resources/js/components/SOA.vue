@@ -381,6 +381,8 @@
                                     <BankBox
                                         :bank="item.bank_details[0]"
                                         :banks="item.bank_details"
+                                        :bankId="{id: item.arena_details ? item.arena_details.bank_id: null}"
+                                        :arenaId="{id: item.arena_details ? item.arena_details.arena_id: null}"
                                         :operatorName="item.arena_details ? item.arena_details.operator : '' "
                                         :editmode="editmode"
                                         :depositReplenishText="
@@ -526,7 +528,8 @@
                                                     <BankBox
                                                         :bank="bank"
                                                         :banks="banks"
-                                                        :arenaId="arena_id"
+                                                        :bankId="{id: bankId}"
+                                                        :arenaId="{id: arenaId}"
                                                         :operatorName="
                                                             operator_name
                                                         "
@@ -737,6 +740,7 @@ export default {
             bank: {
                
             },
+            bankId: "",
             banks: [],
 
             operator_name: "",
@@ -745,7 +749,7 @@ export default {
             arenaDatastatus: [],
             arenaDetails: {},
             areaCode: "",
-            arena_id: "",
+            arenaId: "",
             arena_name: "",
             loading: false,
             loader: null,
@@ -1022,7 +1026,7 @@ export default {
             console.log(this.computation.totalMWBets)
 
             axios
-                .get("api/selectedbank/" + this.arena_id)
+                .get("api/selectedbank/" + this.arenaId)
                 .then(({ data }) => (this.bank.all = data));
             this.editmode = !this.editmode;
         },
@@ -1132,7 +1136,7 @@ export default {
         },
 
         openModel(data) {
-            console.log(this.userPrepared)
+            console.log(data)
             if (data.arena_details == null) {
                 swal.fire({
                     icon: "warning",
@@ -1152,7 +1156,8 @@ export default {
      
                 this.arenaDetails = data.arena_details;
                 this.banks = data.arena_details.bank_details;
-                this.arena_id = data.arena_details.id;
+                this.arenaId = data.arena_details.id;
+                this.bankId = data.arena_details.bank_id;
                 this.arena_name = data.arena_name;
                 this.areaCode = data.areaCode;
                 const totalMWBets = data.total_meron_wala;
@@ -1594,7 +1599,7 @@ export default {
                 );
             console.log("done");
         },
-        async multiDownloads() {
+        multiDownloads() {
        
             this.downloadingReport  = true;
 
@@ -1613,17 +1618,18 @@ export default {
                     backgroundColor: "#fafafa",
                 }).then((canvas) => {
                     //your onrendered function code here
-                    if (
-                        navigator.userAgent.indexOf("MSIE ") > 0 ||
-                        navigator.userAgent.match(/Trident.*rv\:11\./)
-                    ) {
-                        const blob = canvas.msToBlob();
+                    // if (
+                    //     navigator.userAgent.indexOf("MSIE ") > 0 ||
+                    //     navigator.userAgent.match(/Trident.*rv\:11\./)
+                    // ) {
+                    //     const blob = canvas.msToBlob();
 
-                        window.navigator.msSaveBlob(
-                            blob,
-                            `${this.selected[i].arena_name}.png`
-                        );
-                    } else {
+                    //     window.navigator.msSaveBlob(
+                    //         blob,
+                    //         `${this.selected[i].arena_name}.png`
+                    //     );
+                    // } else {
+                        console.log(this.selected)
                         const link = document.createElement("a");
                         // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
                         link.download = `${this.selected[i].arena_name}.png`;
@@ -1633,25 +1639,53 @@ export default {
 
                            setTimeout(() => {
                             document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
-                        }, 100);
+                        }, 500);
                       
-                    }
-                });
-
-                 await axios.put("api/arenaStatus/" + this.selected[i].areaCode)
-
-                  if(this.selected.length - 1 === i) {
+                    // }
+                }).then(() => {
+                    axios.put("api/arenaStatus/" + this.selected[i].areaCode)
+                }).then(() => {
+                    // console.log(this.selected.length - 1 === i)   
+                    if(this.selected.length - 1 === i) {
+                    console.log(this.selected.length - 1 === i)
                     const c = this.arenaData.data.filter(arena => !this.selected.find(select => select.areaCode === arena.areaCode))
             
                     this.arenaData.data = c
-                    this.selected = []
+                    
 
                     setTimeout(() => {
-                            this.downloadingReport = false                        
-                    }, 3000);
+                            this.downloadingReport = false
+                            console.log("done");  
+                            this.selected = []                    
+                    }, 5000);
                   
                      
                 }
+                });
+
+               
+         
+                    //             this.downloadingReport = false
+                //             console.log("done");
+                 console.log(this.selected.length - 1 === i)   
+                if(this.selected.length - 1 === i) {
+                    console.log(this.selected.length - 1 === i)
+                    // const c = this.arenaData.data.filter(arena => !this.selected.find(select => select.areaCode === arena.areaCode))
+            
+                    // this.arenaData.data = c
+                    
+
+                    // setTimeout(() => {
+                    //         this.downloadingReport = false
+                    //         console.log("done");  
+                    //         this.selected = []                    
+                    // }, 5000);
+                  
+                     
+                }
+
+                
+                 
               
             }
 
@@ -1719,7 +1753,7 @@ export default {
             // 	)
             // 	.catch((e) => console.error(e));
 
-            console.log("done");
+            
         },
     },
 

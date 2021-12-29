@@ -59,9 +59,6 @@ class EmployeeController extends Controller
             }
 
             return true;
-  
-
-   
    
     }
 
