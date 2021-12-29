@@ -37,69 +37,29 @@ class EmployeeController extends Controller
 
     
 
-    public function selectedbyUser($id,$group)
+    public function selectedbyUser($old,$group,$new)
     {   
-      
-        $checked = employee::where('group','checked')->where('assign','1')->count();
-        $groups = employee::where('group',$group)->where('assign','1')->first();
-        $employee = employee::where('id',$id)->first();
-        
 
-     
-        if($checked < 2 && $group=='checked'){
-            $employee->update([
-            'assign' =>  true
-            ]);
-        }
+    //   dd($id, $group, $new);
 
-        if(!empty($groups)){
-            $groups->update([
-                'assign' => false
-            ]);
+      if($old != 'undefined') {
 
-      
-     
-        }
+        $olded = employee::where('id',$old)->first();
 
-        if($new) {
-            $newed = employee::where('id',$new)->first();
+        $olded->update([ 'assign' => false
+    ]);
 
-            $newed->update([
-                'assign' => true
-            ]);
-           
-       }
-        
+}
+    if($new) {
+        $newed = employee::where('id',$new)->first();
+        $newed->update([
+            'assign' => true
+        ]);
+    
+    }
 
-       return '$newed->assign';
-           
-        
-        // $oldgroup = employee::where('group',$group)->where('assign','1')->first();
-        // dd($employee. '    ' .$newed);
-        
-        // if($olded){
-        //         $olded->update([
-        //             'assign' => false
-        //         ]);
-        //         return $olded->assign;
-        // }
-
-        // if($newed){
-        //     $newed->update([
-        //         'assign' => true
-        //     ]);
-        //     return $newed->assign;
-        // }
-          
-
-            // new update
-        // if(!empty($old)){
-        //     $group->update([
-        //         'assign' => false
-        //     ]);
-      
-        // }
-
+    return '$newed->assign';
+  
 
    
    
