@@ -200,7 +200,7 @@
                                             </v-dialog>
                                        
                                         <v-btn
-                                            v-show="arenaData.data.length > 1"
+                                            v-show="arenaData.data && arenaData.data.length > 0"
                                             :loading="loading"
                                             :disabled="loading"
                                             @click="truncate"
@@ -751,7 +751,7 @@ export default {
 
             operator_name: "",
             sofrNumSeq: 0,
-            arenaData: [],
+            arenaData: {},
             arenaDatastatus: [],
             arenaDetails: {},
             areaCode: "",
