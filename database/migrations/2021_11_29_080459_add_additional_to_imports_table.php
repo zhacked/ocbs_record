@@ -14,7 +14,7 @@ class AddAdditionalToImportsTable extends Migration
     public function up()
     {
         Schema::table('imports', function (Blueprint $table) {
-            $table->string('totalCommission')->after('cashwithdrawal_mobile')->default(0);
+            $table->string('totalCommission')->default(0);
             $table->string('totalOthers')->default(0);
             $table->string('salesDeductionTablet')->default(0);
             $table->string('netOperatorsCommission')->default(0);
