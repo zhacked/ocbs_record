@@ -877,10 +877,6 @@ export default {
                                     title: "Successfully Deleted",
                                 });
                                 Fire.$emit("AfterCreate");
-                                axios.get('api/artisanCall').then((data)=>{
-                                    console.log(data);
-                                });
-            
                                 location.reload();
 
 

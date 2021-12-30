@@ -28,7 +28,9 @@
                                     :search="search"
                                     class="elevation-1 text-center"
                                 >
-                                
+                            <template v-slot:[`item.modify`]="{ item }">
+                                {{item.updated_at | myDate }}
+                            </template>
                             <template v-slot:[`item.actions`]="{ item }">
                                     <v-tooltip bottom>
                                         <template v-slot:activator="{ on, attrs }">
@@ -84,43 +86,71 @@
 					</div>
 					<form @submit.prevent="editmode ? updateUser() : createUser()">
 						<div class="modal-body">
-							<div class="form-group">
-								<input v-model="form.name" type="text" name="name"
-									placeholder="Name"
-									class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
-								<has-error :form="form" field="name"></has-error>
-							</div>
+                             <v-text-field
+                                    label="Full name"
+                                    placeholder="John doe Dela Cruz"
+                                    outlined
+                                    dense
+                                    v-model="form.name"
+                                    :rules="[() => !!form.name || 'This field is required']"
+                                    required
+                                     prepend-inner-icon="mdi-account"
+                            ></v-text-field>
 
-							<div class="form-group">
-								<input v-model="form.email" type="email" name="email"
-									placeholder="Email Address"
-									class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-								<has-error :form="form" field="email"></has-error>
-							</div>
+							<v-text-field
+                                     prepend-inner-icon="mdi-at"
+                                    label="Email"
+                                    placeholder="doe@gmail.com"
+                                    outlined
+                                    dense
+                                    v-model="form.email"
+                                    :rules="[
+                                    () => !!form.email || 'This field is required',
+                                    () =>  /.+@.+\..+/.test(form.email) || 'E-mail must be valid'
+                                    ]"
+                            ></v-text-field>
+							
+                            <v-text-area
+                                     prepend-inner-icon="mdi-at"
+                                    label="Email"
+                                    placeholder="doe@gmail.com"
+                                    outlined
+                                    dense
+                                    v-model="form.bio"
+                                    :rules="[
+                                    () => !!form.bio || 'This field is required',
+                                    ]"
+                            ></v-text-area>
+                               <v-select
+                                    label="Select Role"
+                                    outlined
+                                    dense
+                                    name="role"
+                                    :item-text="item => `${item.name}`"
+                                    :items="roles"
+                                    v-model="form.type"
+                                    return-object
+                                    @change="selectedrecord(selectComputed, $event)"
+                                ></v-select>
+							
 
-							<div class="form-group">
-								<textarea v-model="form.bio" name="bio" id="bio"
-								placeholder="Short bio for user (Optional)"
-								class="form-control" :class="{ 'is-invalid': form.errors.has('bio') }"></textarea>
-								<has-error :form="form" field="bio"></has-error>
-							</div>
-
-
-							<div class="form-group">
-								<select name="type" v-model="form.type" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
-									<option value="">Select User Role</option>
-									<option value="admin">Admin</option>
-									<option value="user">Standard User</option>
-									<option value="author">Author</option>
-								</select>
-								<has-error :form="form" field="type"></has-error>
-							</div>
-
-							<div class="form-group">
+                            <v-text-field
+                                    prepend-inner-icon="mdi-lock"
+                                    type="password"
+                                    label="Password"
+                                    placeholder="doe@gmail.com"
+                                    outlined
+                                    dense
+                                    v-model="form.password"
+                                    :rules="[
+                                    () => !!form.password || 'This field is required',
+                                    ]"
+                            ></v-text-field>
+							<!-- <div class="form-group">
 								<input v-model="form.password" type="password" name="password" id="password"
 								class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
 								<has-error :form="form" field="password"></has-error>
-							</div>
+							</div> -->
 
 						</div>
 						<div class="modal-footer">
@@ -146,13 +176,17 @@
                     { text: 'Name', value: 'name' },
                     { text: 'Email', value: 'email' },
                     { text: 'Type', value: 'type'},
-                    { text: 'Modify', value: 'created_at'},
+                    { text: 'Modify', value: 'modify'},
                     { text: '', value: 'actions', sortable: false },
                 ],
                 editmode: false,
                 users : {},
                 length: '',
                 search: '',
+                roles:[
+                    'admin',
+                    'user',
+                ],
                 form: new Form({
                     id:'',
                     name : '',

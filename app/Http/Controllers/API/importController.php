@@ -200,12 +200,6 @@ class importController extends Controller
       
     }
 
-    public function artisan(){
-        Artisan::call('backup:run ',[
-            '--only-db' => true
-        ]);
-        return redirect()->back();
-         
-       }
+   
 
 }

@@ -42,4 +42,3 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('validate/{password}', [App\Http\Controllers\API\UserController::class, 'validate_user']);
     Route::put('selected/{id}', [App\Http\Controllers\API\EmployeeController::class, 'selectedbyUser']);
     Route::get('counts', [App\Http\Controllers\API\EmployeeController::class, 'countEmployee']);
-    Route::get('artisanCall', [App\Http\Controllers\API\importController::class, 'artisan']);

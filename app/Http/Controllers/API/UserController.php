@@ -45,7 +45,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
+     
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users',
@@ -67,7 +67,6 @@ class UserController extends Controller
     {
         $user = auth('api')->user();
 
-
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,
@@ -76,8 +75,6 @@ class UserController extends Controller
 
 
         $currentPhoto = $user->photo;
-
-
             if($request->photo != $currentPhoto){
                 $name = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
 
@@ -90,7 +87,6 @@ class UserController extends Controller
                 }
 
             }
-
 
             if(!empty($request->password)){
                 $request->merge(['password' => Hash::make($request['password'])]);
@@ -116,9 +112,9 @@ class UserController extends Controller
     {
     
         if (Hash::check($password, Auth::user()->password)) {
-            // $artisan = Artisan::call('backup:run',[
-            //     '--only-db' => true,
-            // ]);
+            $artisan = Artisan::call('backup:run',[
+                '--only-db' => true,
+            ]);
              $import =  import::truncate();
              return 'success';
         }else{
