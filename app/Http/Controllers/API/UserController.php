@@ -112,9 +112,9 @@ class UserController extends Controller
     {
     
         if (Hash::check($password, Auth::user()->password)) {
-            $artisan = Artisan::call('backup:run',[
-                '--only-db' => true,
-            ]);
+            // $artisan = Artisan::call('backup:run',[
+            //     '--only-db' => true,
+            // ]);
              $import =  import::truncate();
              return 'success';
         }else{
