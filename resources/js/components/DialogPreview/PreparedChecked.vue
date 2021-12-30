@@ -17,7 +17,7 @@
                                                                         "
                                                                     >
                                                                        <span class="select-field_container  " :class="{'editmode-span': editmode}">
-                                                                            <select class="sign-name select-field_report computation" name="computed" disabled @change="handlePreparedBy($event)">
+                                                                            <select class="sign-name select-field_report computation" name="computed" disabled @change="handleComputedBy($event)">
                                                                                 <!-- <option>Ralph Redoquerio</option> -->
                                                                                 <option v-for="computed_by in userPrepared.computed" :value="`${computed_by.name} | ${computed_by.position}`" :key="computed_by.id">{{computed_by.name}}</option>
                                                                             </select>
@@ -72,7 +72,7 @@
                                                                     >
                                                                     <div class="sign-container">
                                                                          <span class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                            <select class="sign-name select-field_report computation" name="checkedOne" disabled @change="handlePreparedBy($event)">
+                                                                            <select class="sign-name select-field_report computation" name="checkedOne" disabled @change="handleCheckedOneBy($event)">
                                                                                 <!-- <option default>Ma. Lourdes Anoba/Leo Tampilic Jr.</option> -->
                                                                                 <option v-for="checked_by in userPrepared.checked" :value="`${checked_by.name} | ${checked_by.position}`" :key="checked_by.id">{{checked_by.name}}</option>
                                                                             </select>
@@ -90,7 +90,7 @@
                                                                     <span class="signedBy">Checked by:</span>
                                                                     <div class="sign-container">
                                                                          <span class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                            <select class="sign-name select-field_report computation" name="checkedTwo" disabled @change="handlePreparedBy($event)">
+                                                                            <select class="sign-name select-field_report computation" name="checkedTwo" disabled @change="handleCheckedTwoBy($event)">
                                                                                 <!-- <option>Mariel Pilotos/Jonalyn Bonares</option> -->
                                                                                 <option v-for="checked_by in userPrepared.checked" :value="`${checked_by.name} | ${checked_by.position}`" :key="checked_by.id">{{checked_by.name}}</option>
                                                                             </select>
@@ -125,17 +125,31 @@
         },
         methods: {
             handlePreparedBy(event){
-                const fin = {[event.target.name]:event.target.value};
-                // console.log(fin)
-                const positionPrepared = fin.prepared && fin.prepared.split(" | ");
-                const positionComputed = fin.computed && fin.computed.split(" | ");
-                const positionCheckedOne = fin.checkedOne && fin.checkedOne.split(" | ");
-                const positionCheckedTwo = fin.checkedTwo && fin.checkedTwo.split(" | ");
-
-
+               
+                const positionPrepared = event.target.value.split(" | ");
+             
                 this.preparedPosition =  positionPrepared && positionPrepared[1] || "";
+               
+                
+            },
+            handleComputedBy(event){
+        
+             
+                const positionComputed = event.target.value.split(" | ");
+               
+             
                 this.computedPosition = positionComputed && positionComputed[1] || "";
+              
+                
+            },
+            handleCheckedOneBy(event){
+                const positionCheckedOne = event.target.value.split(" | ");
                 this.checkedOnePosition = positionCheckedOne && positionCheckedOne[1] || "";
+            },
+            handleCheckedTwoBy(event){
+               
+                const positionCheckedTwo = event.target.value.split(" | ");
+
                 this.checkedTwoPosition = positionCheckedTwo && positionCheckedTwo[1] || "";
                 
             }
