@@ -126,17 +126,17 @@
         methods: {
             handlePreparedBy(event){
                 const fin = {[event.target.name]:event.target.value};
-                console.log(fin)
-                 const positionPrepared = fin.prepared && fin.prepared.split(" | ");
-                 const positionComputed = fin.computed && fin.computed.split(" | ");
-                 const positionCheckedOne = fin.checkedOne && fin.checkedOne.split(" | ");
-                 const positionCheckedTwo = fin.checkedTwo && fin.checkedTwo.split(" | ");
-            
-              
-                this.preparedPosition =  positionPrepared[1] || "";
-                this.computedPosition = positionComputed[1] || "";
-                this.checkedOnePosition = positionCheckedOne[1] || "";
-                this.checkedTwoPosition = positionCheckedTwo[1] || "";
+                // console.log(fin)
+                const positionPrepared = fin.prepared && fin.prepared.split(" | ");
+                const positionComputed = fin.computed && fin.computed.split(" | ");
+                const positionCheckedOne = fin.checkedOne && fin.checkedOne.split(" | ");
+                const positionCheckedTwo = fin.checkedTwo && fin.checkedTwo.split(" | ");
+
+
+                this.preparedPosition =  positionPrepared && positionPrepared[1] || "";
+                this.computedPosition = positionComputed && positionComputed[1] || "";
+                this.checkedOnePosition = positionCheckedOne && positionCheckedOne[1] || "";
+                this.checkedTwoPosition = positionCheckedTwo && positionCheckedTwo[1] || "";
                 
             }
         }

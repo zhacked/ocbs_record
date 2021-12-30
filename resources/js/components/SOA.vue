@@ -200,7 +200,7 @@
                                             </v-dialog>
                                        
                                         <v-btn
-                                            v-show="arenaData.data.length > 1"
+                                            v-show="arenaData.data && arenaData.data.length > 0"
                                             :loading="loading"
                                             :disabled="loading"
                                             @click="truncate"
@@ -340,6 +340,7 @@
                                                     otherCommissionIntel05: numberFormat(item.otherCommissionIntel05 || 0),
                                                     consolidatorsCommission: numberFormat(item.consolidatorsCommission || 0),
                                                     paymentForOutstandingBalance: numberFormat(item.paymentForOutstandingBalance || 0),
+                                                    mwTotalPercent: numberFormat(item.mwTwo || 0),
 
                                     }"
                                         :computedAve="{
@@ -380,10 +381,13 @@
                                     />
                                  
                                     <BankBox
-                                        :bank="item.bank_details[0]"
-                                        :banks="item.bank_details"
-                                        :bankId="{id: item.arena_details ? item.arena_details.bank_id: null}"
-                                        :arenaId="{id: item.arena_details ? item.arena_details.arena_id: null}"
+                                        :bank="item.arena_details"
+                                       
+
+                                        :arenaDetails="item.arena_details"
+
+                                        :bankId="{id: bankId}"
+                                        :arenaId="{id: arenaId}"
                                         :operatorName="item.arena_details ? item.arena_details.operator : '' "
                                         :editmode="editmode"
                                         :depositReplenishText="
@@ -527,8 +531,9 @@
                                                     />
 
                                                     <BankBox
-                                                        :bank="bank"
-                                                        :banks="banks"
+                                                        :bank="arenaDetails"
+                                 
+                                                        :arenaDetails="arenaDetails"
                                                         :bankId="{id: bankId}"
                                                         :arenaId="{id: arenaId}"
                                                         :operatorName="
@@ -746,7 +751,7 @@ export default {
 
             operator_name: "",
             sofrNumSeq: 0,
-            arenaData: [],
+            arenaData: {},
             arenaDatastatus: [],
             arenaDetails: {},
             areaCode: "",
@@ -789,6 +794,8 @@ export default {
                 totalOthers: 0,
                 totalCommission: 0,
                 exempted: "",
+                mwTotalPercent: 0,
+                drawTotalPercent: 0,
                 mobile: {
                     totalMWBets: 0,
                     totalDrawBets: 0,
@@ -977,58 +984,42 @@ export default {
         updateModal() {
             $(".computation").removeAttr("disabled");
             $(".computation").addClass("input-show");
-
+            
             this.computation = {
-                totalMWBets: numberUnformat(this.computation.totalMWBets),
-                drawCancelled: numberUnformat(this.computation.drawCancelled),
-                draw: numberUnformat(this.computation.draw),
-                totalPayoutPaid: numberUnformat(
-                    this.computation.totalPayoutPaid
-                ),
-                cdPaid: numberUnformat(this.computation.cdPaid),
-                drawPaid: numberUnformat(this.computation.drawPaid),
-                netWinLoss: numberFormat(this.computation.netWinLoss),
-                unclaimed: numberUnformat(this.computation.unclaimed),
-                cUnpaid: numberUnformat(this.computation.cUnpaid),
-                totalMWBetPercent: numberUnformat(
-                    this.computation.totalMWBetPercent || "0.00"
-                ),
-                operatorExpenses: numberUnformat(
-                    this.computation.operatorExpenses || "0.00"
-                ),
-                otherCommissionIntel05: numberUnformat(
-                    this.computation.otherCommissionIntel05 || "0.00"
-                ),
-                consolidatorsCommission: numberUnformat(
-                    this.computation.consolidatorsCommission || "0.00"
-                ),
-                paymentForOutstandingBalance: numberUnformat(
-                    this.computation.paymentForOutstandingBalance || "0.00"
-                ),
-                safetyFund: numberUnformat(this.computation.safetyFund),
-                salesDeductionTablet: numberUnformat(
-                    this.computation.salesDeductionTablet || "0.00"
-                ),
-                systemErrorCOArmsi: numberUnformat(
-                    this.computation.systemErrorCOArmsi
-                ),
-                totalOthers: numberUnformat(this.computation.totalOthers),
-
-                mobile: {
-                    cashLoad: numberUnformat(this.computation.mobile.cashLoad),
-                    cashWithdraw: numberUnformat(
-                        this.computation.mobile.cashWithdraw
-                    ),
-                    totalMWBets: numberUnformat(
-                        this.computation.totalMobileMWBets || "0.00"
-                    ),
-                    totalDrawBets: numberUnformat(
-                        this.computation.totalMobileDrawBets || "0.00"
-                    ),
-                },
+                    totalMWBets: numberUnformat(this.computation.totalMWBets),
+                    drawCancelled: numberUnformat(this.computation.drawCancelled),
+                    draw: numberUnformat(this.computation.draw),
+                    totalPayoutPaid: numberUnformat(this.computation.totalPayoutPaid),
+                    cdPaid: numberUnformat(this.computation.cdPaid),
+                    drawPaid: numberUnformat(this.computation.drawPaid),
+                    unclaimed: numberUnformat(this.computation.unclaimed),
+                    cUnpaid: numberUnformat(this.computation.cUnpaid),
+                    salesDeduction: numberUnformat(this.computation.salesDeduction),
+                    otherCommissionIntel05: numberUnformat(this.computation.otherCommissionIntel05),
+                    systemErrorCOArmsi: numberUnformat(this.computation.systemErrorCOArmsi),
+                    consolidatorsCommission: numberUnformat(this.computation.consolidatorsCommission),
+                    safetyFund: numberUnformat(this.computation.safetyFund),
+                    paymentForOutstandingBalance: numberUnformat(this.computation.paymentForOutstandingBalance),
+                    mwTotalPercent: numberUnformat(this.computation.mwTotalPercent),
+                    totalMWMobile: numberUnformat(this.computation.totalMWMobile),
+                    drawMobile: numberUnformat(this.computation.drawMobile),
+                     exempted: this.computation.exempted,
+                    netWinLoss: numberUnformat(this.computation.netWinLoss),
+                    mwTwo: numberUnformat(this.computation.mwTwo),
+                    drawTwo: numberUnformat(this.computation.drawTwo),
+                    mwTwoMobile: numberUnformat(this.computation.mwTwoMobile),
+                    drawTwoMobile: numberUnformat(this.computation.drawTwoMobile),
+                    mobile: {
+                        totalMWBets: numberUnformat(this.computation.totalMWMobile),
+                        totalDrawBets: numberUnformat(this.computation.drawMobile),
+                        cashLoad: numberUnformat(this.computation.cashLoad),
+                        cashWithdraw: numberUnformat(this.computation.cashWithdraw),
+                    },
+                   
+                    netOperatorsCommission: numberUnformat(this.computation.netOperatorsCommission),
             };
 
-            console.log(this.computation.totalMWBets)
+      
 
             axios
                 .get("api/selectedbank/" + this.arenaId)
@@ -1045,61 +1036,39 @@ export default {
         saveModal() {
             $(".computation").attr("disabled", true);
             this.editmode = !this.editmode;
-
+          
             this.computation = {
-                totalMWBets: numberFormat(this.computation.totalMWBets || 0),
-                drawCancelled: numberFormat(
-                    this.computation.drawCancelled || 0
-                ),
-                draw: numberFormat(this.computation.draw),
-                totalPayoutPaid: numberFormat(
-                    this.computation.totalPayoutPaid || 0
-                ),
-                cdPaid: numberFormat(this.computation.cdPaid || 0),
-                drawPaid: numberFormat(this.computation.drawPaid || 0),
-                netWinLoss: numberFormat(this.computation.netWinLoss || 0),
-                unclaimed: numberFormat(this.computation.unclaimed || 0),
-                cUnpaid: numberFormat(this.computation.cUnpaid || 0),
-                totalMWBetPercent: numberFormat(
-                    this.computation.totalMWBetPercent || 0
-                ),
-                operatorExpenses: numberFormat(
-                    this.computation.operatorExpenses || 0
-                ),
-                otherCommissionIntel05: numberFormat(
-                    this.computation.otherCommissionIntel05 || 0
-                ),
-                consolidatorsCommission: numberFormat(
-                    this.computation.consolidatorsCommission || 0
-                ),
-                paymentForOutstandingBalance: numberFormat(
-                    this.computation.paymentForOutstandingBalance || 0
-                ),
-                safetyFund: numberFormat(this.computation.safetyFund || 0),
-                salesDeductionTablet: numberFormat(
-                    this.computation.salesDeductionTablet || 0
-                ),
-                systemErrorCOArmsi: numberFormat(
-                    this.computation.systemErrorCOArmsi || 0
-                ),
-                totalOthers: numberFormat(this.computation.totalOthers || 0),
-                totalCommission: numberFormat(
-                    this.computation.totalCommission || 0
-                ),
-                mobile: {
-                    cashLoad: numberFormat(
-                        this.computation.mobile.cashLoad || 0
-                    ),
-                    cashWithdraw: numberFormat(
-                        this.computation.mobile.cashWithdraw || 0
-                    ),
-                    totalMWBets: numberFormat(
-                        this.computation.totalMobileMWBets || 0
-                    ),
-                    totalDrawBets: numberFormat(
-                        this.computation.totalMobileDrawBets || 0
-                    ),
-                },
+                    totalMWBets: numberFormat(this.computation.totalMWBets),
+                    drawCancelled: numberFormat(this.computation.drawCancelled),
+                    draw: numberFormat(this.computation.draw),
+                    totalPayoutPaid: numberFormat(this.computation.totalPayoutPaid),
+                    cdPaid: numberFormat(this.computation.cdPaid),
+                    drawPaid: numberFormat(this.computation.drawPaid),
+                    unclaimed: numberFormat(this.computation.unclaimed),
+                    cUnpaid: numberFormat(this.computation.cUnpaid),
+                    salesDeduction: numberFormat(this.computation.salesDeduction),
+                    otherCommissionIntel05: numberFormat(this.computation.otherCommissionIntel05),
+                    systemErrorCOArmsi: numberFormat(this.computation.systemErrorCOArmsi),
+                    consolidatorsCommission: numberFormat(this.computation.consolidatorsCommission),
+                    safetyFund: numberFormat(this.computation.safetyFund),
+                    paymentForOutstandingBalance: numberFormat(this.computation.paymentForOutstandingBalance),
+                    exempted: this.computation.exempted,
+                    totalMWMobile: numberFormat(this.computation.totalMWMobile),
+                    drawMobile: numberFormat(this.computation.drawMobile),
+                    
+                    netWinLoss: numberFormat(this.computation.netWinLoss),
+                    mwTwo: numberFormat(this.computation.mwTwo),
+                    drawTwo: numberFormat(this.computation.drawTwo),
+                    mwTwoMobile: numberFormat(this.computation.mwTwoMobile),
+                    drawTwoMobile: numberFormat(this.computation.drawTwoMobile),
+                    mobile: {
+                        totalMWBets: numberFormat(this.computation.totalMWMobile),
+                        totalDrawBets: numberFormat(this.computation.drawMobile),
+                        cashLoad: numberFormat(this.computation.cashLoad),
+                        cashWithdraw: numberFormat(this.computation.cashWithdraw),
+                    },
+                   
+                    netOperatorsCommission: numberFormat(this.computation.netOperatorsCommission),
             };
         },
 
@@ -1190,7 +1159,7 @@ export default {
                 const drawTwo = data.drawTwo;
                 const mwTwoMobile = data.mwTwoMobile;
                 const drawTwoMobile = data.drawTwoMobile;
-                const netOperatorsCommission = data.netOperatorsCommission;
+                // const netOperatorsCommission = data.netOperatorsCommission;
 
                 this.computation = {
                     totalMWBets,
@@ -1223,7 +1192,7 @@ export default {
                         cashWithdraw: cashWithdrawal,
                     },
                    
-                    netOperatorsCommission,
+                    // netOperatorsCommission,
                 }
                 
             }
@@ -1438,7 +1407,7 @@ export default {
 
                     const removeKeyReportObject = filterObjectHeader.map(
                         ({ key, ...rest }) => {
-                            // console.log(rest.arenaName, rest.cashLoad)
+                            
 							const type = rest.type || rest.classification;
 							
 							const exempted = rest.exempted;
@@ -1634,7 +1603,7 @@ export default {
                     //         `${this.selected[i].arena_name}.png`
                     //     );
                     // } else {
-                        console.log(this.selected)
+                       
                         const link = document.createElement("a");
                         // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
                         link.download = `${this.selected[i].arena_name}.png`;
@@ -1650,44 +1619,25 @@ export default {
                 }).then(() => {
                     axios.put("api/arenaStatus/" + this.selected[i].areaCode)
                 }).then(() => {
-                   
                     if(this.selected.length - 1 === i) {
-                    console.log(this.selected.length - 1 === i)
-                    const c = this.arenaData.data.filter(arena => !this.selected.find(select => select.areaCode === arena.areaCode))
-            
-                    this.arenaData.data = c
-                    
+                        console.log(this.selected.length - 1 === i)
+                        const c = this.arenaData.data.filter(arena => !this.selected.find(select => select.areaCode === arena.areaCode))
+                
+                        this.arenaData.data = c
+                        
+                        setTimeout(async () => {
+                                this.downloadingReport = false
+                                console.log("done");  
+                                this.selected = []                    
+                        }, 5000);
+                    }
+                })
 
-                    setTimeout(() => {
-                            this.downloadingReport = false
-                            console.log("done");  
-                            this.selected = []                    
-                    }, 5000);
-                  
-                     
-                }
-                });
+                
 
                
          
-                    //             this.downloadingReport = false
-                //             console.log("done");
-                 console.log(this.selected.length - 1 === i)   
-                if(this.selected.length - 1 === i) {
-                    console.log(this.selected.length - 1 === i)
-                    // const c = this.arenaData.data.filter(arena => !this.selected.find(select => select.areaCode === arena.areaCode))
-            
-                    // this.arenaData.data = c
-                    
-
-                    // setTimeout(() => {
-                    //         this.downloadingReport = false
-                    //         console.log("done");  
-                    //         this.selected = []                    
-                    // }, 5000);
-                  
-                     
-                }
+              
 
                 
                  
@@ -1781,8 +1731,8 @@ export default {
                 numberUnformat(this.commission_percent) *
                     numberUnformat(this.computation.totalMWBets) || 0
             );
-
             
+          
 
             const drawTotalPercent = numberFormat(
                 parseFloat(this.commission_percent) *
@@ -1841,17 +1791,8 @@ export default {
                     : numberFormat(totalCommission);
 
             const depositReplenish = numberFormat(
-                (numberUnformat(netWinLoss) -
-                    numberUnformat(totalComputationOthers) ||
-                    0 - numberUnformat(this.computation.systemErrorCOArmsi) ||
-                    0) +
-                    (numberUnformat(cashLoad) - numberUnformat(cashWithdraw) ||
-                        0)
-            );
-
-          
-
-            
+                (numberUnformat(netWinLoss) - numberUnformat(totalComputationOthers) || 0 - numberUnformat(this.computation.systemErrorCOArmsi) ||0) + (numberUnformat(cashLoad) - numberUnformat(cashWithdraw) || 0)
+            );         
 
             const depositReplenishText =
                 numberUnformat(depositReplenish) < 0
@@ -1912,6 +1853,11 @@ export default {
                     const totalDrawMobile = numberFormat(this.computation.mobile.totalDrawBets);
                
 
+
+            // this.computation.mwTotalPercent = mwTotalPercent;
+            // this.computation.netOperatorsCommission = numberFormat(netOpCommTotal)
+            // this.computation.drawTotalPercent = numberFormat(drawTotalPercent);
+            
                 
                 
 
