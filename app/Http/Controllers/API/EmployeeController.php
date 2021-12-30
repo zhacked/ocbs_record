@@ -40,8 +40,7 @@ class EmployeeController extends Controller
     public function selectedbyUser(Request $request, $old)
     {   
 
-            //   dd($request['new']);
-
+      
             if($old != 'undefined') {
 
                 $olded = employee::where('id',$old)->first();

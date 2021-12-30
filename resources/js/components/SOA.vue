@@ -198,8 +198,9 @@
                                             </v-card-text>
                                             </v-card>
                                             </v-dialog>
+                                       
                                         <v-btn
-                                         
+                                            v-show="arenaData.data.length > 1"
                                             :loading="loading"
                                             :disabled="loading"
                                             @click="truncate"
@@ -832,6 +833,7 @@ export default {
         },
 
         truncate() {
+        
             swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -872,17 +874,23 @@ export default {
                 },
             }).then((result) => {
                 if (result.isConfirmed) {
+
                     axios
                         .get("api/validate/" + result.value)
                         .then((response) => {
-                           
                             if (response.data == "success") {
                                 Toast.fire({
                                     icon: "success",
                                     title: "Successfully Deleted",
                                 });
                                 Fire.$emit("AfterCreate");
+                                axios.get('api/artisanCall').then((data)=>{
+                                    console.log(data);
+                                });
+            
                                 location.reload();
+
+
                             } else {
                                 swal.fire({
                                     icon: "error",
@@ -931,6 +939,7 @@ export default {
             };
 
             this.arenaDatastatus = obj;
+            console.log(obj.data)
         },
         async showData() {
             const data = await axios.get("api/import");
