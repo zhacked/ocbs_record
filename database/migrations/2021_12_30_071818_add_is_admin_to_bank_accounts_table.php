@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBankAccountsTable extends Migration
+class AddIsAdminToBankAccountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateBankAccountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bank_accounts', function (Blueprint $table) {
-            $table->id();
-            $table->string('arenas_id')->nullable();
-            $table->string('bank_name');
-            $table->string('bank_number');
-            $table->timestamps();
+        Schema::table('bank_accounts', function (Blueprint $table) {
+            $table->boolean('isAdmin')->nullable();
         });
     }
 
@@ -29,6 +25,8 @@ class CreateBankAccountsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bank_accounts');
+        Schema::table('bank_accounts', function (Blueprint $table) {
+            //
+        });
     }
 }

@@ -24,6 +24,10 @@ class BankDetailsController extends Controller
     {
         return BankAccount::with(['arenaDetails'])->latest()->get();
     }
+    public function Companybank()
+    {
+        return BankAccount::with(['arenaDetails'])->where('isAdmin',true)->get();
+    }
 
     public function show_arena()
     {
@@ -53,9 +57,9 @@ class BankDetailsController extends Controller
      */
     public function store(Request $request)
     {
-    
+        // dd($request->all());
         $this->validate($request,[
-            'arenas_id' => 'required|numeric',
+       
             'bank_name' => 'required|string|max:191',
             'bank_number' => 'required|string'
         ]);
@@ -64,6 +68,7 @@ class BankDetailsController extends Controller
             'arenas_id' => $request['arenas_id'],
             'bank_name' => $request['bank_name'],
             'bank_number' => $request['bank_number'],
+            'isAdmin' => $request['isAdmin'],
         ]);
     }
 
@@ -101,7 +106,7 @@ class BankDetailsController extends Controller
         $bank = BankAccount::findOrFail($id);
 
         $this->validate($request,[
-            'arenas_id' => 'required|numeric',
+          
             'bank_name' => 'required|string|max:191',
             'bank_number' => 'required|string'
         ]);
@@ -110,6 +115,7 @@ class BankDetailsController extends Controller
             'arenas_id' => $request['arenas_id'],
             'bank_name' => $request['bank_name'],
             'bank_number' => $request['bank_number'],
+            'isAdmin' => $request['isAdmin'],
         ]);
         return ['message' => 'Updated the areana details'];
     }

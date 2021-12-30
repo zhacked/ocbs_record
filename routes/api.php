@@ -30,6 +30,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');
     Route::get('arenaId', [App\Http\Controllers\API\BankDetailsController::class, 'show_arena'])->name('arenaId');
     Route::get('filterBank/{id}', [App\Http\Controllers\API\BankDetailsController::class, 'FilterBank']);
+    Route::get('Companybanks', [App\Http\Controllers\API\BankDetailsController::class, 'Companybank']);
     Route::get('importwithstatus', [App\Http\Controllers\API\ImportController::class, 'withstatus']);
     Route::get('depositeandreflenish', [App\Http\Controllers\API\ImportController::class, 'depositedata']);
     Route::get('count', [App\Http\Controllers\API\ImportController::class, 'countdata']);

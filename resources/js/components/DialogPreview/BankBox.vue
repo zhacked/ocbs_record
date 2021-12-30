@@ -1,7 +1,7 @@
 <template>
     <v-row>
         
-        <div class="bank-wrapper">
+        <div class="bank-wrapper"  style="padding-left:30px; padding-right:30px; !important;">
             <div class="bank-headline">
                 <span>{{depositReplenishText.bankTitle}}: </span>
             </div>
@@ -22,9 +22,8 @@
                     <span>123-1232-1232</span>
                 </div>
             </div>
-            <div class="bank-container" v-else>
-                <div class="bank bank1">
-              
+            <div class="bank-container" v-else >
+                <div class="bank bank1">  
                     <span>{{operatorName}}</span>
                     <!-- <span>{{banks}}</span> -->
                     <span v-if="!editmode" > {{ bankSelected.bank_name || 'No Bank' }}</span>

@@ -282,6 +282,7 @@
                                 id="reportsoaoutput"
                                 class="reportsoaoutput"
                             >
+                               
                                 <v-card-title
                                     class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
                                 >
@@ -289,6 +290,7 @@
                                 </v-card-title>
                                 <v-card-text class="text-sm-body-2">
                                     <v-row>
+                                        
                                         <v-spacer></v-spacer>
                                         <v-spacer></v-spacer>
                                         <DateSOA

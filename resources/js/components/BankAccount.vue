@@ -5,7 +5,7 @@
 				<v-col class="col-md-12">
 					<v-card >
 						<v-card-title class="card-header">
-							<strong> Bank Detials</strong>
+							<strong>Company Bank Detials</strong>
                             <v-spacer></v-spacer>
 							<v-card-actions class="card-tools">
 								<v-btn color="success"
@@ -92,17 +92,27 @@
 					</div>
 					<form @submit.prevent="editmode ? updateBank() : createBank()">
 						<div class="modal-body">
-
-                           	<div class="form-group">
-								<select name="type" v-model="form.arena_id" id="arena_id" class="form-control" :class="{ 'is-invalid': form.errors.has('arena_id') }">
-									<option value="">Select OCBS Name</option>
-									<option v-for="arenas in arena_id" :key="arenas.id"  :value="arenas.id" >{{arenas.arena}}</option>
-								
-								</select>
-								<has-error :form="form" field="arena_id"></has-error>
-							</div>
-
-							<div class="form-group">
+                            <v-text-field
+                                    label="Bank Name"
+                                    placeholder="BDO"
+                                    outlined
+                                    dense
+                                    v-model="form.bank_name"
+                                    :rules="[() => !!form.bank_name || 'This field is required']"
+                                    required
+                                     prepend-inner-icon="mdi-bank"
+                            ></v-text-field>
+                            <v-text-field
+                                    label="Bank Number"
+                                    placeholder="0123-456-789"
+                                    outlined
+                                    dense
+                                    v-model="form.bank_number"
+                                    :rules="[() => !!form.bank_number || 'This field is required']"
+                                    required
+                                     prepend-inner-icon="mdi-ticket-confirmation"
+                            ></v-text-field>
+							<!-- <div class="form-group">
 								<input v-model="form.bank_name" type="text" name="bank_name"
 									placeholder="Enter Bank Name"
 									class="form-control" :class="{ 'is-invalid': form.errors.has('bank_name') }">
@@ -114,7 +124,7 @@
 									placeholder="Enter Bank number"
 									class="form-control" :class="{ 'is-invalid': form.errors.has('bank_number') }">
 								<has-error :form="form" field="bank_number"></has-error>
-							</div>
+							</div> -->
 
 						</div>
 						<div class="modal-footer">
@@ -149,7 +159,7 @@
                 search:'',
                 form: new Form({
                     id:'',
-                   arenas_id:'',
+                   isAdmin:1,
                    bank_name:'',
                    bank_number:''
 
@@ -173,7 +183,7 @@
                 
             },
             loadDetials(){
-                    axios.get("api/bankaccount").then(({ data }) => {
+                    axios.get("api/Companybanks").then(({ data }) => {
                         this.account = data,
                         console.log(data);
                         });
