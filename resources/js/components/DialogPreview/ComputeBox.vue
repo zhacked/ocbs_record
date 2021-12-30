@@ -826,7 +826,7 @@
                                     computation-total
                                 "
                             >
-                                <span class="ctotal-text">{{computation.totalComputationOthers}}</span>
+                                <span class="ctotal-text">{{computedAve.totalComputationOthers}}</span>
                             </div>
                         </div>
                     </div>
@@ -951,7 +951,7 @@
                                 type="text"
                                 disabled
                                 class="input-field_report computation comp"
-                                v-model="computedAve.cashLoad"
+                                v-model="computation.mobile.cashLoad"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
                             />
@@ -987,7 +987,7 @@
                                 type="text"
                                 disabled
                                 class="input-field_report computation comp"
-                                v-model="computedAve.cashWithdraw"
+                                v-model="computation.mobile.cashWithdrawal"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
                             />
