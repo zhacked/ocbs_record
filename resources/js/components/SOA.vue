@@ -1185,7 +1185,7 @@ export default {
                     mwTwoMobile: numberFormat(mwTwoMobile),
                     drawTwoMobile: numberFormat(drawTwoMobile),
                     mobile: {
-                        totalMWBets: numberFormat(totalMWBets),
+                        totalMWBets: numberFormat(mwTwoMobile),
                         totalDrawBets: numberFormat(drawMobile),
                         cashLoad: numberFormat(cashLoad),
                         cashWithdrawal: numberFormat(cashWithdrawal),
