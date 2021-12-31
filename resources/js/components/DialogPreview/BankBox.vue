@@ -2,11 +2,10 @@
     <v-row>
         
         <div class="bank-wrapper"  style="padding-left:30px; padding-right:30px; !important;">
-            <div class="bank-headline">
+            <div class="bank-headline mr-6">
                 <span>{{depositReplenishText.bankTitle}}: </span>
             </div>
 
-            
             <div class="bank-container" v-if="depositReplenishText.totalText =='Deposit'">
                 <div class="bank bank1">
                     <span>LUCKY 8STAR QUEST INC.</span>
@@ -22,22 +21,24 @@
                     <span>123-1232-1232</span>
                 </div>
             </div>
-            <div class="bank-container" v-else >
+         
+            <div class="bank-container d-flex justify-center align-center" v-else >
                 <div class="bank bank1">  
-                    <span>{{operatorName}}</span>
-                    <!-- <span>{{banks}}</span> -->
-                    <span v-if="!editmode" > {{ bankSelected.bank_name || 'No Bank' }}</span>
+                    <span class="text-sm font-weight-medium">{{operatorName}}</span>
+                   
+                    <span v-if="!editmode" class="text-sm font-weight-medium"> {{ Object.values(bankTarget).length ? bankTarget.bank_name : bank.bank_name || 'No Bank' }}</span>
                     <span  class="select-field_container" :class="{'editmode-span': editmode}">
-                        <select v-if="editmode"  class="small sign-name select-field_report"  @change="filterbank($event)" >
-                            <!-- <option default disabled :value="banks[0].id" >{{banks[0].bank_name}}</option> -->
-                            <option v-for="bank in arenaDetails.bank_details" :key="bank.id"  :value="bank.id" >{{bank.bank_name}}</option>
+                        <select v-if="editmode"  class="text-sm font-weight-medium medium sign-name select-field_report"  @change="filterbank($event)" >
+                            <option selected disabled>Select Bank</option>
+                            <option v-for="b in arenaDetails.bank_details" :key="b.id"  :value="b.id" >{{b.bank_name}}</option>
                         </select>
                     </span>
-                    <span>{{ bankSelected.bank_number || 'No Bank' }}</span>
+                    <span class="text-sm font-weight-medium">{{  Object.values(bankTarget).length ? bankTarget.bank_number : bank.bank_number || 'No Bank' }}</span>
                    
                 </div> 
                 
             </div>
+           
           
         </div>
     </v-row>
@@ -58,39 +59,48 @@
             depositReplenishText: Object
         },
         data(){
-            return {bankSelected: {}}
+            return {
+                bankTarget: this.bank
+             }
         },
         methods: {
            
             filterbank(event){
+<<<<<<< HEAD
                 console.log('bank Select',event)
+=======
+              
+                const bankId = event.target.value
+
+                // this.bank = bank
+                console.log(bankId)
+>>>>>>> main
                 axios.put('api/updateBankSelection/'+this.arenaId.id, {
-                    bank_id: event.target.value
-                })
-            },
-            arenaSelectedBank(){
-                
-                    if(this.bankId.id) {
-                        const bb = this.arenaDetails.bank_details.length > 0 ? parseInt(this.arenaDetails.bank_details[0].id) : null
-                        const bId = this.bankId.id ? this.bankId.id : bb
-                        
-                        axios.get(`api/arenaSelectedBank/${bId}`).then(({data}) => {
-                            this.bankSelected = data
-                            console.log('BANK ARENA SELECTED',data)
-                        })
-                    }else {
-                        this.bankSelected = {
-                            name: this.arenaDetails.bank_details.length > 0 ? this.arenaDetails.bank_details[0].bank_name : null,
-                            number: this.arenaDetails.bank_details.length > 0 ? this.arenaDetails.bank_details[0].bank_number : null
-                        }
+                    bank_id: bankId
+                }).then(({data}) => {
+                 const selectedBank = data.bank_details.find(sb => sb.id === parseInt(data.bank_id));
+              
+
+                    this.bankTarget = {
+                        bank_name: selectedBank.bank_name,
+                        bank_number: selectedBank.bank_number
                     }
-                   
-                
-                    
-            }
+                })
+
+                Fire.$emit('AfterCreated')
+            },
+            // arenaSelectedBank(){
+            //     const bb = this.arenaDetails.bank_details.length > 0 ? parseInt(this.arenaDetails.bank_details[0].id) : null
+            //     const bId = this.bankId.id ? this.bankId.id : bb
+                        
+            //     axios.get(`api/arenaSelectedBank/${bId}`).then(({data}) => {
+            //         this.bank = data
+            //         console.log('BANK ARENA SELECTED',data)
+            //     })
+            // }
         },
         created(){
-            this.arenaSelectedBank()
+            // this.arenaSelectedBank()
         }
     }
 </script>

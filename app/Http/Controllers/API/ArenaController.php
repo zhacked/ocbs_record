@@ -100,10 +100,8 @@ class ArenaController extends Controller
         $arena = arena::with('BankDetails')->where('id',$id)->update([
             'bank_id' => $request['bank_id'],
         ]);
-       
-        
-       
-        return ['message' => 'Updated the areana details'];
+          
+        return $arena->first();
     }
 
     /**

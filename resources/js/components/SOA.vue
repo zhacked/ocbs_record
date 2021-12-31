@@ -533,7 +533,7 @@
                                                     />
 
                                                     <BankBox
-                                                        :bank="arenaDetails"
+                                                        :bank="bank || {}"
                                  
                                                         :arenaDetails="arenaDetails"
                                                         :bankId="{id: bankId}"
@@ -745,10 +745,8 @@ export default {
             status: "Reflenish",
             ocbs: {},
             bankDetails: {},
-            bank: {
-               
-            },
-            bankId: "",
+            bank: {},
+            bankId: null,
             banks: [],
 
             operator_name: "",
@@ -833,6 +831,17 @@ export default {
                     )
                 );
         },
+           arenaSelectedBank(bankId){
+              
+                // const bb = this.arenaDetails.bank_details.length > 0 ? parseInt(this.arenaDetails.bank_details[0].id) : null
+                const bId = bankId 
+                        
+                axios.get(`api/arenaSelectedBank/${bId}`).then(({data}) => {
+              
+                    this.bank = data
+                    console.log('BANK ARENA SELECTED',data)
+                })
+            },
 
         truncate() {
         
@@ -1023,9 +1032,9 @@ export default {
 
       
 
-            axios
-                .get("api/selectedbank/" + this.arenaId)
-                .then(({ data }) => (this.bank.all = data));
+            // axios
+            //     .get("api/selectedbank/" + this.arenaId)
+            //     .then(({ data }) => (this.bank.all = data));
             this.editmode = !this.editmode;
         },
         closeDialog() {
@@ -1072,6 +1081,9 @@ export default {
                    
                     netOperatorsCommission: numberFormat(this.computation.netOperatorsCommission),
             };
+
+            Fire.$emit("AfterCreate")
+
         },
 
         proceedAction() {
@@ -1112,7 +1124,8 @@ export default {
         },
 
         openModel(data) {
-            console.log(data)
+            
+           
             if (data.arena_details == null) {
                 swal.fire({
                     icon: "warning",
@@ -1197,6 +1210,7 @@ export default {
                 }
                 
             }
+            this.arenaSelectedBank(data.arena_details.bank_id)
         },
 
         onFileChange(event) {
@@ -1592,18 +1606,7 @@ export default {
                     type: "dataURL",
                     backgroundColor: "#fafafa",
                 }).then((canvas) => {
-                    //your onrendered function code here
-                    // if (
-                    //     navigator.userAgent.indexOf("MSIE ") > 0 ||
-                    //     navigator.userAgent.match(/Trident.*rv\:11\./)
-                    // ) {
-                    //     const blob = canvas.msToBlob();
-
-                    //     window.navigator.msSaveBlob(
-                    //         blob,
-                    //         `${this.selected[i].arena_name}.png`
-                    //     );
-                    // } else {
+                  
                        
                         const link = document.createElement("a");
                         // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
@@ -1632,83 +1635,9 @@ export default {
                                 this.selected = []                    
                         }, 5000);
                     }
-                })
-
-                
-
-               
-         
-              
-
-                
-                 
+                })   
               
             }
-
-            // // // -----------ZIP--------------- // // //
-            //  const zip = new JSZip();
-            // const getBase64Image = (img) => {
-            // 	return img.replace(/^data:image\/(png|jpg);base64,/, "");
-            // }
-
-            //  const doSomeAsyncStuffWith = async(item, i) => {
-
-            // 	const aaa = await html2canvas(divsss[i],{
-            // 			onclone: function (clonedDoc) {
-            // 				const elems = clonedDoc.getElementsByClassName('reportsoaoutput');
-            // 				for(let i = 0; i < elems.length; i++) {
-            // 					elems[i].style.display = 'block';
-            // 				}
-
-            // 			},
-            // 			type: "dataURL",
-            // 			backgroundColor: "#fafafa"
-
-            // 		})
-
-            // 		const dataURL = await aaa.toDataURL("image/png");
-
-            // 		return Promise.resolve({arenaName: item.arena_name, dataURL});
-            // }
-
-            // const awaitAll = (list, asyncFn) => {
-            // 	const promises = [];
-
-            // 	list.forEach((value, index) => {
-
-            // 		promises.push(asyncFn(value, index));
-
-            // 	});
-
-            // 	return Promise.all(promises);
-            // }
-
-            // awaitAll(this.selected, doSomeAsyncStuffWith)
-            // 	.then((results) => {
-
-            // 			console.log(
-            // 				"doSomeStuffOnlyWhenTheAsyncStuffIsFinished",
-            // 				results
-            // 			)
-
-            // 			results.forEach((value) => {
-            // 				const arenaName = value.arenaName.indexOf('/') > -1 ? value.arenaName.replace(/\//g, '-') : value.arenaName;
-            // 				zip.file(`${arenaName}.png`, getBase64Image(value.dataURL), {base64: true})
-
-            // 			})
-
-            // 			zip.generateAsync({
-            // 				type: "blob"
-            // 			}).then(function(content) {
-            // 				saveAs(content, `soafr-${new Date().toLocaleDateString()}.zip`)
-            // 			})
-
-            // 			this.loading = false;
-            // 		}
-
-            // 	)
-            // 	.catch((e) => console.error(e));
-
             
         },
     },
@@ -1894,6 +1823,7 @@ export default {
         this.importwithstatus();
         this.loadEmployee();
         // this.loadbank();
+    //    this.arenaSelectedBank()
         Fire.$on("AfterCreate", () => {
             this.showData();
             this.importwithstatus();
