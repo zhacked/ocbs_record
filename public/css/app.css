@@ -73321,6 +73321,7 @@ readers do not read off random characters that represent icons */
   font-size: 9px;
   border-radius: 3px;
   padding: 0.3px 3px;
+  overflow: hidden;
 }
 
 .editmode-span {
@@ -73423,8 +73424,13 @@ readers do not read off random characters that represent icons */
   background-color: #ccc;
 }
 
+.ctotal-text {
+  overflow: hidden;
+}
+
 .ctotal-text, .ctotal-label {
   font-weight: 700;
+  overflow: hidden;
 }
 
 .overtotal {
@@ -73457,6 +73463,8 @@ readers do not read off random characters that represent icons */
 
 .bank-container {
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
 }
 
@@ -73466,6 +73474,7 @@ readers do not read off random characters that represent icons */
   align-items: center;
   flex-direction: column;
   font-size: 11px;
+  font-weight: 800;
 }
 
 .bank1 {
@@ -73516,6 +73525,7 @@ readers do not read off random characters that represent icons */
   outline: 0;
   border: 0;
   width: 100%;
+  overflow: hidden;
 }
 
 .input-field_report:focus {

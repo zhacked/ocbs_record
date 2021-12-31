@@ -877,7 +877,7 @@
                                 type="text"
                                 disabled
                                 class="input-field_report computation comp"
-                                v-model="computedAve.totalMWMobile"
+                                v-model="computation.mobile.totalMWBets"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
                             />
@@ -913,7 +913,7 @@
                                 type="text"
                                 disabled
                                 class="input-field_report computation comp"
-                                v-model="computedAve.totalDrawMobile"
+                                v-model="computation.mobile.totalDrawBets"
                                  @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
                             />
