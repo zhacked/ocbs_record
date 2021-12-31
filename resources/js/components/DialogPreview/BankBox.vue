@@ -6,19 +6,21 @@
                 <span>{{depositReplenishText.bankTitle}}: </span>
             </div>
 
-            <div class="bank-container" v-if="depositReplenishText.totalText =='Deposit'">
+            <div   class="bank-container" v-if="depositReplenishText.totalText =='Deposit'">
                 <div class="bank bank1">
-                    <span>LUCKY 8STAR QUEST INC.</span>
-                    <span>PBB</span>
-                    <span>0050-1001-5156</span>
+                  
+                      <span>{{account.length > 0 ? account[0].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
+                    <span>{{account.length > 0 ? account[0].bank_name: 'PBB'}}</span>
+                    <span>{{account.length > 0 ? account[0].bank_number: '0050-1001-5156'}}</span>
                 </div>
-                <div class="or">
+                <div v-if="account.length > 1" class="or">
                     OR
                 </div>
-                <div  class="bank bank2">
-                    <span>LUCKY 8 STAR QUEST INC.</span>
-                    <span>PBB</span>
-                    <span>123-1232-1232</span>
+                <div v-if="account.length > 1"  class="bank bank2">
+                  
+                     <span>{{account.length > 1 ? account[1].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
+                    <span>{{account.length > 1 ? account[1].bank_name: 'PBB'}}</span>
+                    <span>{{account.length > 1 ? account[1].bank_number: '123-1232-1232'}}</span>
                 </div>
             </div>
          
@@ -60,7 +62,8 @@
         },
         data(){
             return {
-                bankTarget: this.bank
+                bankTarget: this.bank,
+                account: []
              }
         },
         methods: {
@@ -83,18 +86,15 @@
 
                 Fire.$emit('AfterCreated')
             },
-            // arenaSelectedBank(){
-            //     const bb = this.arenaDetails.bank_details.length > 0 ? parseInt(this.arenaDetails.bank_details[0].id) : null
-            //     const bId = this.bankId.id ? this.bankId.id : bb
-                        
-            //     axios.get(`api/arenaSelectedBank/${bId}`).then(({data}) => {
-            //         this.bank = data
-            //         console.log('BANK ARENA SELECTED',data)
-            //     })
-            // }
+          loadDetials(){
+                    axios.get("api/Companybanks").then(({ data }) => {
+                        this.account = data,
+                        console.log('ACCOUNT',data);
+                        });
+            },
         },
         created(){
-            // this.arenaSelectedBank()
+            this.loadDetials()
         }
     }
 </script>

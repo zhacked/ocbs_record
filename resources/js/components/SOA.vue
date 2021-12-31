@@ -526,7 +526,7 @@
                                                     </v-row>
                                                     <ComputeBox                                                
                                                         :depositReplenishTxt="computedAve.depositReplenishText"
-                                                        :commissionPercent="commission_percent"
+                                                        :commissionPercent="parseFloat(commission_percent)"
                                                         :editmode="editmode"
                                                         :computedAve="computedAve"
                                                         :computation="computation"
@@ -832,14 +832,11 @@ export default {
                 );
         },
            arenaSelectedBank(bankId){
-              
-                // const bb = this.arenaDetails.bank_details.length > 0 ? parseInt(this.arenaDetails.bank_details[0].id) : null
                 const bId = bankId 
                         
                 axios.get(`api/arenaSelectedBank/${bId}`).then(({data}) => {
               
                     this.bank = data
-                    console.log('BANK ARENA SELECTED',data)
                 })
             },
 
@@ -946,7 +943,7 @@ export default {
             };
 
             this.arenaDatastatus = obj;
-            console.log(obj.data)
+            
         },
         async showData() {
             const data = await axios.get("api/import");
@@ -986,7 +983,7 @@ export default {
             };
 
             this.arenaData = obj;
-            console.log(this.arenaData);
+         
             // duplicateObj.forEach((item) => {});
         },
         closeDialog() {
@@ -995,7 +992,7 @@ export default {
         updateModal() {
             $(".computation").removeAttr("disabled");
             $(".computation").addClass("input-show");
-            console.log(numberUnformat(this.computation.mobile.cashWithdrawal))
+           
             this.computation = {
                     totalMWBets: numberUnformat(this.computation.totalMWBets),
                     drawCancelled: numberUnformat(this.computation.drawCancelled),
@@ -1288,7 +1285,7 @@ export default {
                     const objectKeyed = (array) => {
                         let objectKeyReplacedArray = [];
                         const keysss = array.find((k) => k.B === "ARENA NAME");
-                        console.log("FINDING KEY>>>", keysss);
+                       
                         const [, ...headKey] = Object.values(keysss);
                         const headK = ["key", ...headKey];
 
@@ -1551,7 +1548,7 @@ export default {
                 );
         },
         async downloadImg(details, areaCode) {
-            console.log("printing..", details);
+            
             const el = this.$refs.soaReport;
 
             const options = {
@@ -1586,7 +1583,7 @@ export default {
                         swal.fire("convert to png!", "successfully", "success")
                     )
                 );
-            console.log("done");
+          
         },
         multiDownloads() {
        
@@ -1624,7 +1621,7 @@ export default {
                     axios.put("api/arenaStatus/" + this.selected[i].areaCode)
                 }).then(() => {
                     if(this.selected.length - 1 === i) {
-                        console.log(this.selected.length - 1 === i)
+                      
                         const c = this.arenaData.data.filter(arena => !this.selected.find(select => select.areaCode === arena.areaCode))
                 
                         this.arenaData.data = c
@@ -1655,10 +1652,9 @@ export default {
             );
 
 
-         
 
             const mwTotalPercent = numberFormat(
-                numberUnformat(this.commission_percent) *
+                parseFloat(this.commission_percent) *
                     numberUnformat(this.computation.totalMWBets) || 0
             );
             
@@ -1669,14 +1665,14 @@ export default {
                     numberUnformat(this.computation.draw) || 0
             );
             const mwMobileTotalPercent = numberFormat(
-                numberUnformat(this.commission_percent) *
+                parseFloat(this.commission_percent) *
                     numberUnformat(this.computation.mobile.totalMWBets) || 0
             );
 
             
 
             const drawMobileTotalPercent = numberFormat(
-                numberUnformat(this.commission_percent) *
+                parseFloat(this.commission_percent) *
                     numberUnformat(this.computation.mobile.totalDrawBets) || 0
             );
             const netOpCommTotal =
@@ -1688,6 +1684,7 @@ export default {
                 numberUnformat(this.computation.cUnpaid) -
                 numberUnformat(this.computation.salesDeduction);
 
+        
            
 
             const totalComm =
@@ -1703,6 +1700,7 @@ export default {
                     this.computation.paymentForOutstandingBalance || "0.00"
                 );
 
+        
             const netOpCommission = numberFormat(netOpCommTotal || 0) ;
             const totalCommission = numberFormat(totalComm || 0);
 
@@ -1720,11 +1718,11 @@ export default {
                     ? numberFormat(totalOthers)
                     : numberFormat(totalCommission);
 
+
             const depositReplenish = numberFormat(
                 (numberUnformat(netWinLoss) - numberUnformat(totalComputationOthers) || 0 - numberUnformat(this.computation.systemErrorCOArmsi) ||0) + (numberUnformat(this.computation.mobile.cashLoad) - numberUnformat(this.computation.mobile.cashWithdrawal) || 0)
             );         
 
-            console.log(this.computation.mobile.cashWithdrawal)
 
             const depositReplenishText =
                 numberUnformat(depositReplenish) < 0
@@ -1758,13 +1756,8 @@ export default {
                     const cdPaid= numberFormat(this.computation.cdPaid || 0);
                     const drawPaid= numberFormat(this.computation.drawPaid || 0);
 
-
-
                     const unclaimed= numberFormat(this.computation.unclaimed || 0);
                     const cUnpaid= numberFormat(this.computation.cUnpaid || 0);
-                   
-                   
-
 
                     const otherCommissionIntel05= numberFormat(
                         this.computation.otherCommissionIntel05
@@ -1775,8 +1768,6 @@ export default {
                     const paymentForOutstandingBalance= numberFormat(
                         this.computation.paymentForOutstandingBalance
                     );
-
-
 
                     const safetyFund= numberFormat(this.computation.safetyFund);
                     const salesDeduction= numberFormat(this.computation.salesDeductionTablet);
