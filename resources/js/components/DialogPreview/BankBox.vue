@@ -66,15 +66,9 @@
         methods: {
            
             filterbank(event){
-<<<<<<< HEAD
-                console.log('bank Select',event)
-=======
               
                 const bankId = event.target.value
 
-                // this.bank = bank
-                console.log(bankId)
->>>>>>> main
                 axios.put('api/updateBankSelection/'+this.arenaId.id, {
                     bank_id: bankId
                 }).then(({data}) => {
