@@ -223,11 +223,12 @@ export default {
             var worksheet = '';
             let aray = [];
             axios.get("api/convertToExcel/"+ value).then(({ data }) => (
-            
+
                 data.forEach((val) => {
+
                     const test = {
                        'ID': val.id,
-                       'Soa Number': val.Soa_number,
+                       'Soa Number': val.refNo,
                         'OCBS Name': val.arena_name,
                         'Amount': val.for_total
                     }
