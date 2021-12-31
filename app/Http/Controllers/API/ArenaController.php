@@ -96,6 +96,7 @@ class ArenaController extends Controller
     }
 
     public function updateBankSelection(Request $request, $id) {
+    
         $arena = arena::with('BankDetails')->where('id',$id)->update([
             'bank_id' => $request['bank_id'],
         ]);
