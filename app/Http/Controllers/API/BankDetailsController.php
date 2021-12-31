@@ -57,7 +57,7 @@ class BankDetailsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+     
         $this->validate($request,[
        
             'bank_name' => 'required|string|max:191',
@@ -66,6 +66,7 @@ class BankDetailsController extends Controller
 
         return BankAccount::create([
             'arenas_id' => $request['arenas_id'],
+            'account_name'=> $request['account_name'],
             'bank_name' => $request['bank_name'],
             'bank_number' => $request['bank_number'],
             'isAdmin' => $request['isAdmin'],
@@ -105,14 +106,14 @@ class BankDetailsController extends Controller
     {
         $bank = BankAccount::findOrFail($id);
 
-        $this->validate($request,[
-          
+        $this->validate($request,[  
             'bank_name' => 'required|string|max:191',
             'bank_number' => 'required|string'
         ]);
 
         $bank->update([
             'arenas_id' => $request['arenas_id'],
+            'account_name'=> $request['account_name'],
             'bank_name' => $request['bank_name'],
             'bank_number' => $request['bank_number'],
             'isAdmin' => $request['isAdmin'],

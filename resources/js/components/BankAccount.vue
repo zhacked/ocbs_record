@@ -92,6 +92,16 @@
 					</div>
 					<form @submit.prevent="editmode ? updateBank() : createBank()">
 						<div class="modal-body">
+                             <v-text-field
+                                    label="Account Name"
+                                    placeholder="john doe"
+                                    outlined
+                                    dense
+                                    v-model="form.account_name"
+                                    :rules="[() => !!form.account_name || 'This field is required']"
+                                    required
+                                     prepend-inner-icon="mdi-shield-account"
+                            ></v-text-field>
                             <v-text-field
                                     label="Bank Name"
                                     placeholder="BDO"
@@ -147,7 +157,7 @@
         data() {
             return {
                 headers: [
-                    { text: 'OCBS Name', value: 'arena_details.arena' },
+                    { text: 'Account Name', value: 'account_name' },
                     { text: 'Bank Name', value: 'bank_name' },
                     { text: 'Bank Account', value: 'bank_number' },
                     { text: '', value: 'actions', sortable: false },
@@ -160,6 +170,7 @@
                 form: new Form({
                     id:'',
                    isAdmin:1,
+                   account_name:'',
                    bank_name:'',
                    bank_number:''
 

@@ -164,6 +164,16 @@
                             <v-card-text>
                                 <form @submit.prevent="editmode ? updateBank() : createBank()">
                                     <div class="modal-body">
+
+                                          <v-text-field
+                                            label="Account Name"
+                                            placeholder="Enter Account Name"
+                                            outlined
+                                            dense
+                                            v-model="Bankform.account_name"
+                                             :rules="[() => !!Bankform.account_name || 'This field is required']"
+                                        ></v-text-field>
+
                                         <v-text-field
                                             label="Bank Name"
                                             placeholder="Enter Bank Name"
@@ -280,6 +290,7 @@
                 ],
 
                 Bankheaders: [
+
                     { text: "Bank Name", value: "bank_name" },
                     { text: "Bank Number", value: "bank_number" },
                     { text: "", value: "actions", sortable: false },
@@ -303,9 +314,10 @@
                 }),
                Bankform: new Form({
                     id:'',
-                   arenas_id:'',
-                   bank_name:'',
-                   bank_number:''
+                    account_name:'',
+                    arenas_id:'',
+                    bank_name:'',
+                    bank_number:''
 
                    
                 })
@@ -320,10 +332,12 @@
                 this.Bankform.bank_number = "";
             },
             openBankModel(data){
+           
                 this.show = false;
                  $('#bankModal').modal('show');
                 this.bankDetails = data.bank_details;
                 this.Bankform.arenas_id = data.id;
+                this.Bankform.account_name = data.operator;
                
             },
             createBank(){
