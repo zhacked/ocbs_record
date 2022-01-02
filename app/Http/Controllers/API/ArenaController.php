@@ -168,7 +168,11 @@ class ArenaController extends Controller
     
         $arena = arena::findOrFail($id);
         // delete the user
-
+        $email = Email::where('arena_name',$arena->arena);
+       
+        if($email){
+            $email->delete();
+        }
         $arena->delete();
 
         return ['message' => 'User Deleted'];

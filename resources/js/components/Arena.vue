@@ -56,7 +56,7 @@
                                 </v-tooltip>
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
-                                        <v-btn icon  v-bind="attrs" v-on="on"  color="red" @click="deleteUser(item.id)">
+                                        <v-btn icon  v-bind="attrs" v-on="on"  color="red" @click="deleteArena(item.id)">
                                           <v-icon small>fas fa-trash</v-icon>
                                         </v-btn>
                                      </template>
@@ -269,13 +269,16 @@
                                     v-model="form.email"
                                     :items="emails.data"
                                     label="Email Address"
+                                     hint="Maximum of 5 Emails"
                                     multiple
                                     chips
                                     outlined
                                     auto-select-first
                                     deletable-chips
                                     item-text='email'
-                                  
+                                   
+                                      
+                                      
                                     :rules="[
                                     () => !!form.email || 'This field is required',
                                  
@@ -291,11 +294,7 @@
                                         @click:close="selectItem(data.item.id)"
                                         close
                                         >
-                                        <!-- <v-avatar
-                                            class="accent white--text"
-                                            left
-                                            :v-text="typeof data.item === 'object' ? data.item.email.slice(0, 1).toUpperCase() : data.item.slice(0, 1).toUpperCase()"
-                                        ></v-avatar> -->
+                                       
                                         {{typeof data.item === 'object' ? data.item.email : data.item}}
                                         </v-chip>
                                     </template>
@@ -372,6 +371,7 @@
         methods: {
            
             selectItem(id){
+                
                 axios.get('api/emailDelete/'+id).then((data)=>{
                     Fire.$emit('AfterCreate');
                      $('#addNew').modal('hide');
@@ -521,7 +521,7 @@
                 swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
-                    type: 'warning',
+                    icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -579,6 +579,14 @@
            Fire.$on('AfterCreate',() => {
                this.loadArena();
            });
+        },
+         watch: {
+             "form.email": function (val) {
+                    if (val.length > 5) {
+                        this.$nextTick(() => this.form.email.pop())
+                    }
+                }
+           
         }
     }
 </script>
