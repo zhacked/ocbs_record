@@ -511,6 +511,7 @@
 
             },
             openModal(){
+                
                 this.editmode = false;
                 this.form.reset();
                 
@@ -552,6 +553,7 @@
                         ));
             },
             createArena(){
+                // console.log(this.form)
                 this.$Progress.start();
                 this.form.post('api/arena')
                 .then(()=>{

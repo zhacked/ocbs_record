@@ -915,308 +915,7 @@ export default {
                 }
             });
         },
-
-        async importwithstatus() {
-            const data = await axios.get("api/importwithstatus");
-
-            let helper = {};
-
-            const duplicateObj = await data.data.reduce(function (r, obj) {
-                const key = obj.arena_name;
-
-                if (!helper[key]) {
-                    helper[key] = Object.assign({}, obj); // create a copy of o
-
-                    r.push(helper[key]);
-                } else {
- 
-                    helper[key].mobile = {
-                        ...obj,
-                    };
-                }
-
-                return r;
-            }, []);
-
-            const obj = {
-                data: duplicateObj,
-            };
-
-            this.arenaDatastatus = obj;
-            
-        },
-        async showData() {
-            const data = await axios.get("api/import");
-            let helper = {};
-
-            const duplicateObj = await data.data.reduce(function (r, obj) {
-                const key = obj.arena_name;
-
-                if (!helper[key]) {
-                    helper[key] = Object.assign({}, obj); // create a copy of o
-
-                    r.push(helper[key]);
-                } else {
-                    // const {arenaName, ...o} = obj;
-                    helper[key].mobile = {
-                        ...obj,
-                    };
-                }
-
-                return r;
-            }, []);
-
-
-            const newArray = [];
-           duplicateObj.forEach((dObj) => {
-                const arenaName = dObj.arena_name.indexOf('~') > -1 ? dObj.arena_name.replace(/\~/g, '/') : dObj.arena_name
-                
-                const obj = {
-                    ...dObj,
-                    arena_name: arenaName,
-                }
-                newArray.push(obj)
-            })
-
-            const obj = {
-                data: newArray,
-            };
-
-            this.arenaData = obj;
-         
-            // duplicateObj.forEach((item) => {});
-        },
-        closeDialog() {
-            this.dialog = false;
-        },
-        updateModal() {
-            $(".computation").removeAttr("disabled");
-            $(".computation").addClass("input-show");
-           
-            this.computation = {
-                    totalMWBets: numberUnformat(this.computation.totalMWBets),
-                    drawCancelled: numberUnformat(this.computation.drawCancelled),
-                    draw: numberUnformat(this.computation.draw),
-                    totalPayoutPaid: numberUnformat(this.computation.totalPayoutPaid),
-                    cdPaid: numberUnformat(this.computation.cdPaid),
-                    drawPaid: numberUnformat(this.computation.drawPaid),
-                    unclaimed: numberUnformat(this.computation.unclaimed),
-                    cUnpaid: numberUnformat(this.computation.cUnpaid),
-                    salesDeduction: numberUnformat(this.computation.salesDeduction),
-                    otherCommissionIntel05: numberUnformat(this.computation.otherCommissionIntel05),
-                    systemErrorCOArmsi: numberUnformat(this.computation.systemErrorCOArmsi),
-                    consolidatorsCommission: numberUnformat(this.computation.consolidatorsCommission),
-                    safetyFund: numberUnformat(this.computation.safetyFund),
-                    paymentForOutstandingBalance: numberUnformat(this.computation.paymentForOutstandingBalance),
-                    mwTotalPercent: numberUnformat(this.computation.mwTotalPercent),
-                    totalMWMobile: numberUnformat(this.computation.totalMWMobile),
-                    drawMobile: numberUnformat(this.computation.drawMobile),
-                     exempted: this.computation.exempted,
-                    netWinLoss: numberUnformat(this.computation.netWinLoss),
-                    mwTwo: numberUnformat(this.computation.mwTwo),
-                    drawTwo: numberUnformat(this.computation.drawTwo),
-                    mwTwoMobile: numberUnformat(this.computation.mwTwoMobile),
-                    drawTwoMobile: numberUnformat(this.computation.drawTwoMobile),
-                    mobile: {
-                        totalMWBets: numberUnformat(this.computation.totalMWMobile),
-                        totalDrawBets: numberUnformat(this.computation.drawMobile),
-                        cashLoad: numberUnformat(this.computation.mobile.cashLoad),
-                        cashWithdrawal: numberUnformat(this.computation.mobile.cashWithdrawal),
-                    },
-                   
-                    netOperatorsCommission: numberUnformat(this.computation.netOperatorsCommission),
-            };
-
-      
-
-            // axios
-            //     .get("api/selectedbank/" + this.arenaId)
-            //     .then(({ data }) => (this.bank.all = data));
-            this.editmode = !this.editmode;
-        },
-        closeDialog() {
-            this.editmode = false;
-            this.dialog = false;
-            this.form.reset();
-            $(".computation").attr("disabled", true);
-        },
-
-        saveModal() {
-            $(".computation").attr("disabled", true);
-            this.editmode = !this.editmode;
-          
-            this.computation = {
-                    totalMWBets: numberFormat(this.computation.totalMWBets),
-                    drawCancelled: numberFormat(this.computation.drawCancelled),
-                    draw: numberFormat(this.computation.draw),
-                    totalPayoutPaid: numberFormat(this.computation.totalPayoutPaid),
-                    cdPaid: numberFormat(this.computation.cdPaid),
-                    drawPaid: numberFormat(this.computation.drawPaid),
-                    unclaimed: numberFormat(this.computation.unclaimed),
-                    cUnpaid: numberFormat(this.computation.cUnpaid),
-                    salesDeduction: numberFormat(this.computation.salesDeduction),
-                    otherCommissionIntel05: numberFormat(this.computation.otherCommissionIntel05),
-                    systemErrorCOArmsi: numberFormat(this.computation.systemErrorCOArmsi),
-                    consolidatorsCommission: numberFormat(this.computation.consolidatorsCommission),
-                    safetyFund: numberFormat(this.computation.safetyFund),
-                    paymentForOutstandingBalance: numberFormat(this.computation.paymentForOutstandingBalance),
-                    exempted: this.computation.exempted,
-                    totalMWMobile: numberFormat(this.computation.totalMWMobile),
-                    drawMobile: numberFormat(this.computation.drawMobile),
-                    
-                    netWinLoss: numberFormat(this.computation.netWinLoss),
-                    mwTwo: numberFormat(this.computation.mwTwo),
-                    drawTwo: numberFormat(this.computation.drawTwo),
-                    mwTwoMobile: numberFormat(this.computation.mwTwoMobile),
-                    drawTwoMobile: numberFormat(this.computation.drawTwoMobile),
-                    mobile: {
-                        totalMWBets: numberFormat(this.computation.totalMWMobile || 0),
-                        totalDrawBets: numberFormat(this.computation.drawMobile || 0),
-                        cashLoad: numberFormat(this.computation.mobile.cashLoad || 0),
-                        cashWithdrawal: numberFormat(this.computation.mobile.cashWithdrawal || 0),
-                    },
-                   
-                    netOperatorsCommission: numberFormat(this.computation.netOperatorsCommission),
-            };
-
-            Fire.$emit("AfterCreate")
-
-        },
-
-        proceedAction() {
-            this.$Progress.start();
-            // var result = $('#importData').val().split('.');
-           
-            if (
-                $("#importData").val() === "" ||
-                !this.fileUpload.name.includes("xlsx")
-            ) {
-                Fire.$emit("AfterCreate");
-                swal.fire({
-                    icon: "warning",
-                    title: "Oops...",
-                    text: "Make sure you insert correct excel data!",
-                });
-            } else {
-                this.dialog2 = true
-                axios.post("api/import", this.ocbsArrayFiltered).then(
-                    ({ data }) => {
-                          this.dialog2 = false,
-                        $("#importData").val("");
-                        Fire.$emit("AfterCreate");
-                        swal.fire("Successfully!", "Excel Imported", "success");
-                        this.$Progress.finish();
-                        location.reload();
-                    }).catch((error)=>{
-                    this.dialog2 = false,
-                     swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Something went wrong!',
-                                footer: error
-                                })
-                    //      this.dialog2 = false
-                });
-            }
-        },
-
-        openModel(data) {
-            
-           console.log('data',data);
-            if (data.arena_details == null) {
-                swal.fire({
-                    icon: "warning",
-                    title: "Missing",
-                    text: "Add Arena Details",
-                    footer: '<a href="/arena">Click here to Add Arena</a>',
-                });
-            } else {
-                this.dialog = true;
-
-                this.form.reset();
-                this.form.fill(data.arena_details);
-                this.form.id = data.arena_details.id;
-                this.form.arena = data.arena_details.arena;
-                this.form.address = data.arena_details.address;
-                this.form.operator = data.arena_details.operator;
-                this.form.contact_number = data.arena_details.contact_number;
-                this.form.email = data.arena_details.email_details;
-                this.operator_name = data.arena_details.operator;
-                this.dateCreated = moment().format("ll");
-                this.dateEvent = moment(data.date_of_soa).format("LL");
-                this.refNo = data.refNo;
-     
-                this.arenaDetails = data.arena_details;
-                this.banks = data.arena_details.bank_details;
-                this.arenaId = data.arena_details.id;
-                this.bankId = data.arena_details.bank_id;
-                this.arena_name = data.arena_name;
-                this.areaCode = data.areaCode;
-                const totalMWBets = data.total_meron_wala;
-                const drawCancelled = data.draw_cancelled;
-                const draw = data.draw;
-                const totalPayoutPaid = data.total_payout_paid;
-                const cdPaid = data.draw_cancelled_paid;
-                const drawPaid = data.draw_paid;
-                const unclaimed = data.unclaimed;
-                const cUnpaid = data.cancelled_unpaid;
-                const salesDeduction = data.salesDeductionTablet;
-                const otherCommissionIntel05 = data.otherCommissionIntel05;
-                const systemErrorCOArmsi = data.systemErrorCOArmsi;
-                const consolidatorsCommission = data.consolidatorsCommission;
-                const safetyFund = data.safetyFund;
-                const paymentForOutstandingBalance =
-                    data.paymentForOutstandingBalance;
-                const cashLoad = data.cashLoad;
-                const cashWithdrawal = data.cashWithdrawal;
-                const totalMWMobile = data.total_win_mobile;
-                const drawMobile = data.draw_mobile;
-                const exempted = data.exempted;
-                const netWinLoss = data.netWinLoss;
-                const mwTwo = data.mwTwo;
-                const drawTwo = data.drawTwo;
-                const mwTwoMobile = data.mwTwoMobile;
-                const drawTwoMobile = data.drawTwoMobile;
-                // const netOperatorsCommission = data.netOperatorsCommission;
-
-                this.computation = {
-                    totalMWBets: numberFormat(totalMWBets),
-                    drawCancelled: numberFormat(drawCancelled),
-                    draw: numberFormat(draw),
-                    totalPayoutPaid: numberFormat(totalPayoutPaid),
-                    cdPaid: numberFormat(cdPaid),
-                    drawPaid: numberFormat(drawPaid),
-                    unclaimed: numberFormat(unclaimed),
-                    cUnpaid: numberFormat(cUnpaid),
-                    salesDeduction: numberFormat(salesDeduction),
-                    otherCommissionIntel05: numberFormat(otherCommissionIntel05),
-                    systemErrorCOArmsi: numberFormat(systemErrorCOArmsi),
-                    consolidatorsCommission: numberFormat(consolidatorsCommission),
-                    safetyFund: numberFormat(safetyFund),
-                    paymentForOutstandingBalance: numberFormat(paymentForOutstandingBalance),
-                    totalMWMobile: numberFormat(totalMWMobile),
-                    drawMobile: numberFormat(drawMobile),
-                    exempted,
-                    netWinLoss: numberFormat(netWinLoss),
-                    mwTwo: numberFormat(mwTwo),
-                    drawTwo: numberFormat(drawTwo),
-                    mwTwoMobile: numberFormat(mwTwoMobile),
-                    drawTwoMobile: numberFormat(drawTwoMobile),
-                    mobile: {
-                        totalMWBets: numberFormat(mwTwoMobile),
-                        totalDrawBets: numberFormat(drawMobile),
-                        cashLoad: numberFormat(cashLoad),
-                        cashWithdrawal: numberFormat(cashWithdrawal),
-                    },
-                   
-                    // netOperatorsCommission,
-                }
-                
-            }
-            this.arenaSelectedBank(data.arena_details.bank_id)
-        },
-
-        onFileChange(event) {
+           onFileChange(event) {
             const file = event.target.files ? event.target.files[0] : null;
             this.fileUpload = file;
             const checkfile =
@@ -1352,7 +1051,6 @@ export default {
                         return objectKeyReplacedArray;
                     };
 
-                    // const objKeyRep = objectKeyed(reportCombined, 5);
                     const objKeySummary = objectKeyed(summaryReport, 6);
 
                 
@@ -1461,43 +1159,46 @@ export default {
                             const group = soaFr === 'fr' ? 'Replenish' : 'Deposit'
                             const arenaName = rest.arenaName.indexOf('/') > -1 ? rest.arenaName.replace(/\//g, '~') : rest.arenaName
                             const areaCode = rest.areaCode.indexOf('/') > -1 ? rest.areaCode.replace(/\//g, '~') : rest.areaCode
+                            const codeEvent = `${areaCode.toLowerCase()}${moment(rest.eventCreated, 'MM/DD/YYYY hh:mm:ss a').format('X')}`;
+
 
                             rest = {
 								areaCode,
-								eventDate: rest.eventCreated,
+                                codeEvent,
+								date_of_soa: rest.eventCreated,
                                 meron: rest.meron,
                                 wala: rest.wala,
                                 rake: rest.rake,
-                                dUnpaid: rest.dUnpaid,
-                                drawUnclaimed: rest.drawUnclaimed,
-								arenaName,
+                                draw_unpaid: rest.dUnpaid,
+                                draw_unclaimed: rest.drawUnclaimed,
+								arena_name: arenaName,
 								type,
 								exempted,								
-                                totalMWBets,
-                                totalCancelledBets,
-                                totalDrawBets,
-                                totalPayoutPaid,
-                                totalCDPaid,
-                                totalDrawPaid,
+                                total_meron_wala: totalMWBets,
+                                draw_cancelled: totalCancelledBets,
+                                draw: totalDrawBets,
+                                total_payout_paid: totalPayoutPaid,
+                                draw_cancelled_paid: totalCDPaid,
+                                draw_paid: totalDrawPaid,
                                 netWinLoss,
                                 mwTwo,
                                 drawTwo,
 								mwTwoMobile,
 								drawTwoMobile,
-								totalUnclaimed,
-								totalCUnpaid,
-								salesDeduction,
+								unclaimed: totalUnclaimed,
+								cancelled_unpaid: totalCUnpaid,
+								salesDeductionTablet: salesDeduction,
 								netOperatorsCommission,
-								otherCommissionIntel,
+								otherCommissionIntel05: otherCommissionIntel,
 								consolidatorsCommission,
 								safetyFund,
 								paymentForOutstandingBalance,
 								totalCommission,
-								totalMWMobile,
-								totalDrawMobile,
+								total_win_mobile: totalMWMobile,
+								draw_mobile: totalDrawMobile,
 								cashLoad,
 								cashWithdrawal,
-								depositReplenish,
+								for_total: depositReplenish,
 								totalOthers,
 								systemErrorCOArmsi,
                                 soaFr,
@@ -1517,11 +1218,12 @@ export default {
 						return r;
 					}, Object.create(null));
 					
-					const newsoa = groupSOAFR.soa.map((s, i) => ({refNo: "SO"+moment().format("MMDD")+moLetter+(`0000${i+1}`).slice(-4), ...s}));
-					const newfr = groupSOAFR.fr.map((f, i) => ({refNo: "FR"+moment().format("MMDD")+moLetter+(`0000${i+1}`).slice(-4), ...f}));
+					const newsoa = groupSOAFR.soa.map(({soaFr, ...s}, i) => ({refNo: "SO"+moment().format("MMDD")+moLetter+(`0000${i+1}`).slice(-4), ...s}));
+					const newfr = groupSOAFR.fr.map(({soaFr, ...f}, i) => ({refNo: "FR"+moment().format("MMDD")+moLetter+(`0000${i+1}`).slice(-4), ...f}));
 
 					const newSetReport = concat(newsoa, newfr);
-	
+                
+   
 					
                     this.ocbsArrayFiltered = newSetReport;
 
@@ -1538,6 +1240,304 @@ export default {
                 $("#importData").val("");
             }
         },
+    proceedAction() {
+            this.$Progress.start();
+            // var result = $('#importData').val().split('.');
+           
+            if (
+                $("#importData").val() === "" ||
+                !this.fileUpload.name.includes("xlsx")
+            ) {
+                Fire.$emit("AfterCreate");
+                swal.fire({
+                    icon: "warning",
+                    title: "Oops...",
+                    text: "Make sure you insert correct excel data!",
+                });
+            } else {
+                this.dialog2 = true
+                // const data = await axios.get("api/import");
+               
+            //    axios.post("api/import", this.ocbsArrayFiltered)
+      
+                axios.post("api/import", this.ocbsArrayFiltered).then(
+                    ({ data }) => {
+                          this.dialog2 = false,
+                        $("#importData").val("");
+                        Fire.$emit("AfterCreate");
+                        swal.fire("Successfully!", "Excel Imported", "success");
+                        this.$Progress.finish();
+                        location.reload();
+                    }).catch((error)=>{
+                    this.dialog2 = false,
+                     swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                                footer: error
+                                })
+        
+                });
+            }
+        },
+        async importwithstatus() {
+            const data = await axios.get("api/importwithstatus");
+
+            let helper = {};
+
+            const duplicateObj = await data.data.reduce(function (r, obj) {
+                const key = obj.arena_name;
+
+                if (!helper[key]) {
+                    helper[key] = Object.assign({}, obj); // create a copy of o
+
+                    r.push(helper[key]);
+                } else {
+ 
+                    helper[key].mobile = {
+                        ...obj,
+                    };
+                }
+
+                return r;
+            }, []);
+
+            const obj = {
+                data: duplicateObj,
+            };
+
+            this.arenaDatastatus = obj;
+            
+        },
+        async showData() {
+            const data = await axios.get("api/import");
+            let helper = {};
+
+            const duplicateObj = await data.data.reduce(function (r, obj) {
+                const key = obj.arena_name;
+
+                if (!helper[key]) {
+                    helper[key] = Object.assign({}, obj); // create a copy of o
+
+                    r.push(helper[key]);
+                } else {
+                    // const {arenaName, ...o} = obj;
+                    helper[key].mobile = {
+                        ...obj,
+                    };
+                }
+
+                return r;
+            }, []);
+
+
+            const newArray = [];
+           duplicateObj.forEach((dObj) => {
+                const arenaName = dObj.arena_name.indexOf('~') > -1 ? dObj.arena_name.replace(/\~/g, '/') : dObj.arena_name
+                
+                const obj = {
+                    ...dObj,
+                    arena_name: arenaName,
+                }
+                newArray.push(obj)
+            })
+
+            const obj = {
+                data: newArray,
+            };
+
+            this.arenaData = obj;
+         
+            // duplicateObj.forEach((item) => {});
+        },
+        
+        openModel(data) {
+            
+           console.log(data)
+            if (data.arena_details == null) {
+                swal.fire({
+                    icon: "warning",
+                    title: "Missing",
+                    text: "Add Arena Details",
+                    footer: '<a href="/arena">Click here to Add Arena</a>',
+                });
+            } else {
+                this.dialog = true;
+                
+                this.form.reset();
+                this.form.fill(data.arena_details);
+                this.operator_name = data.arena_details.operator;
+                this.dateCreated = moment().format("ll");
+                this.dateEvent = moment(data.date_of_soa).format("LL");
+                console.log(data.exempted)
+                this.refNo = data.refNo;
+     
+                this.arenaDetails = data.arena_details;
+                this.banks = data.arena_details.bank_details;
+                this.arenaId = data.arena_details.id;
+                this.bankId = data.arena_details.bank_id;
+                this.arena_name = data.arena_name;
+                this.areaCode = data.areaCode;
+                const totalMWBets = data.total_meron_wala;
+                const drawCancelled = data.draw_cancelled;
+                const draw = data.draw;
+                const totalPayoutPaid = data.total_payout_paid;
+                const cdPaid = data.draw_cancelled_paid;
+                const drawPaid = data.draw_paid;
+                const unclaimed = data.unclaimed;
+                const cUnpaid = data.cancelled_unpaid;
+                const salesDeduction = data.salesDeductionTablet;
+                const otherCommissionIntel05 = data.otherCommissionIntel05;
+                const systemErrorCOArmsi = data.systemErrorCOArmsi;
+                const consolidatorsCommission = data.consolidatorsCommission;
+                const safetyFund = data.safetyFund;
+                const paymentForOutstandingBalance =
+                    data.paymentForOutstandingBalance;
+                const cashLoad = data.cashLoad;
+                const cashWithdrawal = data.cashWithdrawal;
+                const totalMWMobile = data.total_win_mobile;
+                const drawMobile = data.draw_mobile;
+                const exempted = data.exempted;
+                const netWinLoss = data.netWinLoss;
+                const mwTwo = data.mwTwo;
+                const drawTwo = data.drawTwo;
+                const mwTwoMobile = data.mwTwoMobile;
+                const drawTwoMobile = data.drawTwoMobile;
+                // const netOperatorsCommission = data.netOperatorsCommission;
+
+                this.computation = {
+                    totalMWBets: numberFormat(totalMWBets),
+                    drawCancelled: numberFormat(drawCancelled),
+                    draw: numberFormat(draw),
+                    totalPayoutPaid: numberFormat(totalPayoutPaid),
+                    cdPaid: numberFormat(cdPaid),
+                    drawPaid: numberFormat(drawPaid),
+                    unclaimed: numberFormat(unclaimed),
+                    cUnpaid: numberFormat(cUnpaid),
+                    salesDeduction: numberFormat(salesDeduction),
+                    otherCommissionIntel05: numberFormat(otherCommissionIntel05),
+                    systemErrorCOArmsi: numberFormat(systemErrorCOArmsi),
+                    consolidatorsCommission: numberFormat(consolidatorsCommission),
+                    safetyFund: numberFormat(safetyFund),
+                    paymentForOutstandingBalance: numberFormat(paymentForOutstandingBalance),
+                    totalMWMobile: numberFormat(totalMWMobile),
+                    drawMobile: numberFormat(drawMobile),
+                    exempted,
+                    netWinLoss: numberFormat(netWinLoss),
+                    mwTwo: numberFormat(mwTwo),
+                    drawTwo: numberFormat(drawTwo),
+                    mwTwoMobile: numberFormat(mwTwoMobile),
+                    drawTwoMobile: numberFormat(drawTwoMobile),
+                    mobile: {
+                        totalMWBets: numberFormat(mwTwoMobile),
+                        totalDrawBets: numberFormat(drawMobile),
+                        cashLoad: numberFormat(cashLoad),
+                        cashWithdrawal: numberFormat(cashWithdrawal),
+                    },
+                   
+                    // netOperatorsCommission,
+                }
+                
+            }
+            this.arenaSelectedBank(data.arena_details.bank_id)
+        },
+
+        closeDialog() {
+            this.dialog = false;
+        },
+        updateModal() {
+            $(".computation").removeAttr("disabled");
+            $(".computation").addClass("input-show");
+           
+            this.computation = {
+                    totalMWBets: numberUnformat(this.computation.totalMWBets),
+                    drawCancelled: numberUnformat(this.computation.drawCancelled),
+                    draw: numberUnformat(this.computation.draw),
+                    totalPayoutPaid: numberUnformat(this.computation.totalPayoutPaid),
+                    cdPaid: numberUnformat(this.computation.cdPaid),
+                    drawPaid: numberUnformat(this.computation.drawPaid),
+                    unclaimed: numberUnformat(this.computation.unclaimed),
+                    cUnpaid: numberUnformat(this.computation.cUnpaid),
+                    salesDeduction: numberUnformat(this.computation.salesDeduction),
+                    otherCommissionIntel05: numberUnformat(this.computation.otherCommissionIntel05),
+                    systemErrorCOArmsi: numberUnformat(this.computation.systemErrorCOArmsi),
+                    consolidatorsCommission: numberUnformat(this.computation.consolidatorsCommission),
+                    safetyFund: numberUnformat(this.computation.safetyFund),
+                    paymentForOutstandingBalance: numberUnformat(this.computation.paymentForOutstandingBalance),
+                    mwTotalPercent: numberUnformat(this.computation.mwTotalPercent),
+                    totalMWMobile: numberUnformat(this.computation.totalMWMobile),
+                    drawMobile: numberUnformat(this.computation.drawMobile),
+                     exempted: this.computation.exempted,
+                    netWinLoss: numberUnformat(this.computation.netWinLoss),
+                    mwTwo: numberUnformat(this.computation.mwTwo),
+                    drawTwo: numberUnformat(this.computation.drawTwo),
+                    mwTwoMobile: numberUnformat(this.computation.mwTwoMobile),
+                    drawTwoMobile: numberUnformat(this.computation.drawTwoMobile),
+                    mobile: {
+                        totalMWBets: numberUnformat(this.computation.totalMWMobile),
+                        totalDrawBets: numberUnformat(this.computation.drawMobile),
+                        cashLoad: numberUnformat(this.computation.mobile.cashLoad),
+                        cashWithdrawal: numberUnformat(this.computation.mobile.cashWithdrawal),
+                    },
+                   
+                    netOperatorsCommission: numberUnformat(this.computation.netOperatorsCommission),
+            };
+
+      
+            this.editmode = !this.editmode;
+        },
+        closeDialog() {
+            this.editmode = false;
+            this.dialog = false;
+            this.form.reset();
+            $(".computation").attr("disabled", true);
+        },
+
+        saveModal() {
+            $(".computation").attr("disabled", true);
+            this.editmode = !this.editmode;
+          
+            this.computation = {
+                    totalMWBets: numberFormat(this.computation.totalMWBets),
+                    drawCancelled: numberFormat(this.computation.drawCancelled),
+                    draw: numberFormat(this.computation.draw),
+                    totalPayoutPaid: numberFormat(this.computation.totalPayoutPaid),
+                    cdPaid: numberFormat(this.computation.cdPaid),
+                    drawPaid: numberFormat(this.computation.drawPaid),
+                    unclaimed: numberFormat(this.computation.unclaimed),
+                    cUnpaid: numberFormat(this.computation.cUnpaid),
+                    salesDeduction: numberFormat(this.computation.salesDeduction),
+                    otherCommissionIntel05: numberFormat(this.computation.otherCommissionIntel05),
+                    systemErrorCOArmsi: numberFormat(this.computation.systemErrorCOArmsi),
+                    consolidatorsCommission: numberFormat(this.computation.consolidatorsCommission),
+                    safetyFund: numberFormat(this.computation.safetyFund),
+                    paymentForOutstandingBalance: numberFormat(this.computation.paymentForOutstandingBalance),
+                    exempted: this.computation.exempted,
+                    totalMWMobile: numberFormat(this.computation.totalMWMobile),
+                    drawMobile: numberFormat(this.computation.drawMobile),
+                    
+                    netWinLoss: numberFormat(this.computation.netWinLoss),
+                    mwTwo: numberFormat(this.computation.mwTwo),
+                    drawTwo: numberFormat(this.computation.drawTwo),
+                    mwTwoMobile: numberFormat(this.computation.mwTwoMobile),
+                    drawTwoMobile: numberFormat(this.computation.drawTwoMobile),
+                    mobile: {
+                        totalMWBets: numberFormat(this.computation.totalMWMobile || 0),
+                        totalDrawBets: numberFormat(this.computation.drawMobile || 0),
+                        cashLoad: numberFormat(this.computation.mobile.cashLoad || 0),
+                        cashWithdrawal: numberFormat(this.computation.mobile.cashWithdrawal || 0),
+                    },
+                   
+                    netOperatorsCommission: numberFormat(this.computation.netOperatorsCommission),
+            };
+
+            Fire.$emit("AfterCreate")
+
+        },
+
+    
+
+     
         generateReport(areaCode) {
             console.log("generating pdf..");
 

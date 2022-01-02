@@ -52,13 +52,13 @@ class ArenaController extends Controller
     public function store(Request $request)
     {
 
-    
+        // dd($request->all());
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
             'operator' => 'required|string',
             'contact_number' => 'required|numeric',
-            'email' => 'required|string|email|max:191',
+            // 'email' => 'required|string|email|max:191',
 
         ]);
 
@@ -67,6 +67,7 @@ class ArenaController extends Controller
             'address' => $request['address'],
             'operator' => $request['operator'],
             'contact_number' => $request['contact_number'],
+            
           
         ]);
 
