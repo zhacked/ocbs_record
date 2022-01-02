@@ -119,14 +119,14 @@
                                     >
                                        
                                         <v-data-table
-                                            item-key="id" 
+                                            item-key="codeEvent" 
                                             :headers="headers"
                                             :items="arenaData.data"
                                             :items-per-page="10"
                                              v-model="selected"
                                             :footer-props="{
                                                 'items-per-page-options': [
-                                                    5, 10, 20, 30, 40 
+                                                    10, 20, 30
                                                 ],
                                             }"
                                             :loading="downloadingReport"
@@ -319,6 +319,7 @@
                                         <ArenaDetails
                                             :arenaDetails="item.arena_details ? item.arena_details : {arena: item.arena_name}"
                                             :editmode="false"
+                                            :emailFormat="defineEmail(item.arena_details.email_details)"
                                         />
                                     </v-row>
                                     <v-row>
@@ -515,6 +516,7 @@
                                                                 arenaDetails
                                                             "
                                                             :editmode="editmode"
+                                                            :emailFormat="emailFormat"
                                                         />
                                                     </v-row>
                                                     <v-row>
@@ -814,6 +816,7 @@ export default {
             soa: true,
             dateCreated: "",
             dateEvent: "",
+            emailFormat: "",
             depositReplenishTxt: {},
             pictures: [],
           
@@ -1311,28 +1314,28 @@ export default {
         },
         async showData() {
             const data = await axios.get("api/import");
-            let helper = {};
+            // let helper = {};
 
-            const duplicateObj = await data.data.reduce(function (r, obj) {
-                const key = obj.arena_name;
+            // const duplicateObj = await data.data.reduce(function (r, obj) {
+            //     const key = obj.arena_name;
 
-                if (!helper[key]) {
-                    helper[key] = Object.assign({}, obj); // create a copy of o
+            //     if (!helper[key]) {
+            //         helper[key] = Object.assign({}, obj); // create a copy of o
 
-                    r.push(helper[key]);
-                } else {
-                    // const {arenaName, ...o} = obj;
-                    helper[key].mobile = {
-                        ...obj,
-                    };
-                }
+            //         r.push(helper[key]);
+            //     } else {
+            //         // const {arenaName, ...o} = obj;
+            //         helper[key].mobile = {
+            //             ...obj,
+            //         };
+            //     }
 
-                return r;
-            }, []);
+            //     return r;
+            // }, []);
 
 
             const newArray = [];
-           duplicateObj.forEach((dObj) => {
+           data.data.forEach((dObj) => {
                 const arenaName = dObj.arena_name.indexOf('~') > -1 ? dObj.arena_name.replace(/\~/g, '/') : dObj.arena_name
                 
                 const obj = {
@@ -1440,6 +1443,7 @@ export default {
                 
             }
             this.arenaSelectedBank(data.arena_details.bank_id)
+            this.emailFormat = this.defineEmail(data.arena_details.email_details)
         },
 
         closeDialog() {
@@ -1643,6 +1647,16 @@ export default {
             }
             
         },
+        defineEmail(arrayEmail){
+            console.log(arrayEmail)
+                const emailMap = arrayEmail.map(ed => ed['email']);
+
+                const ee = emailMap.reduce((prev, current) => {
+                   return (current+" "+prev)
+                },"")
+                return ee.trim().replace(/\s/g, ' / ')
+
+        }
     },
 
     computed: {
