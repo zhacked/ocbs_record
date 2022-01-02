@@ -14,6 +14,7 @@ use Maatwebsite\Excel\Facades\Excel;class import extends Model
         return $this->hasOne('App\Models\arena','arena', 'arena_name');
     }
 
+
     public function BankDetails(){
         return $this->hasMany('App\Models\BankAccount','arenas_id', 'id');
     }

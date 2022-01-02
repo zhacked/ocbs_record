@@ -31,13 +31,13 @@ class importController extends Controller
      */
     public function index()
     {
-        return import::with(['BankDetails','arenaDetails.BankDetails'])->whereNull('status')->get();
+        return import::with(['BankDetails','arenaDetails.BankDetails','arenaDetails.EmailDetails'])->whereNull('status')->get();
       
     }
 
     public function withstatus()
     {
-        return import::with(['BankDetails','arenaDetails.BankDetails'])->whereNotNull('status')->get();
+        return import::with(['BankDetails','arenaDetails.BankDetails','arenaDetails.EmailDetails'])->whereNotNull('status')->get();
         
     }
 

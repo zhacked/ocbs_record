@@ -1122,7 +1122,7 @@ export default {
 
         openModel(data) {
             
-           
+           console.log('data',data);
             if (data.arena_details == null) {
                 swal.fire({
                     icon: "warning",
@@ -1135,6 +1135,12 @@ export default {
 
                 this.form.reset();
                 this.form.fill(data.arena_details);
+                this.form.id = data.arena_details.id;
+                this.form.arena = data.arena_details.arena;
+                this.form.address = data.arena_details.address;
+                this.form.operator = data.arena_details.operator;
+                this.form.contact_number = data.arena_details.contact_number;
+                this.form.email = data.arena_details.email_details;
                 this.operator_name = data.arena_details.operator;
                 this.dateCreated = moment().format("ll");
                 this.dateEvent = moment(data.date_of_soa).format("LL");

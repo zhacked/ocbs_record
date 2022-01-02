@@ -141,7 +141,7 @@
                         "
                         :class="{'editmode-span': editmode}"
                     >
-                        <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.email"/>
+                        <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.email_details"/>
                     </div>
                 </div>
             </v-col>

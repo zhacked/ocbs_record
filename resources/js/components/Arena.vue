@@ -233,6 +233,7 @@
                                     :rules="[() => !!form.address || 'This field is required']"
                                    :class="{ 'is-invalid': form.errors.has('address') }"
                                 ></v-text-field>
+                                 
 								
                                  <v-text-field
                                     label="Operator Name"
@@ -247,17 +248,58 @@
                                     placeholder="0912-123-4567"
                                     outlined
                                     v-model="form.contact_number"
-                                    :rules="[() => !!form.contact_number || 'This field is required']"
+                                    :rules="[
+                                         () => !!form.contact_number || 'This field is required',
+                                        () =>   /^\d+$/.test(form.contact_number) || 'must be a number'
+                                    ]"
                                 ></v-text-field>
 				
-                                <v-text-field
+                                <!-- <v-text-field
                                     label="Email"
                                      placeholder="sample@gmail.com"
                                     outlined
                                    
                                     v-model="form.email"
-                                    :rules="[() => !!form.email || 'This field is required']"
-                                ></v-text-field>
+                                    :rules="[
+                                    () => !!form.email || 'This field is required',
+                                    () =>  /.+@.+\..+/.test(form.email) || 'E-mail must be valid'
+                                    ]"
+                                ></v-text-field> -->
+                                  <v-combobox
+                                    v-model="form.email"
+                                    :items="emails.data"
+                                    label="Email Address"
+                                    multiple
+                                    chips
+                                    outlined
+                                    auto-select-first
+                                    deletable-chips
+                                    item-text='email'
+                                  
+                                    :rules="[
+                                    () => !!form.email || 'This field is required',
+                                 
+                                    ]"
+                                    >
+                                    <template v-slot:selection="data">
+                                   
+                                        <v-chip
+                                        :key="JSON.stringify(data.item.email)"
+                                        v-bind="data.attrs"
+                                        :input-value="data.selected"
+                                        :disabled="data.disabled"
+                                        @click:close="selectItem(data.item.id)"
+                                        close
+                                        >
+                                        <!-- <v-avatar
+                                            class="accent white--text"
+                                            left
+                                            :v-text="typeof data.item === 'object' ? data.item.email.slice(0, 1).toUpperCase() : data.item.slice(0, 1).toUpperCase()"
+                                        ></v-avatar> -->
+                                        {{typeof data.item === 'object' ? data.item.email : data.item}}
+                                        </v-chip>
+                                    </template>
+                                    </v-combobox>
 
 
 						</div>
@@ -295,10 +337,13 @@
                     { text: "Bank Number", value: "bank_number" },
                     { text: "", value: "actions", sortable: false },
                 ],
+                select: [],
+              
                 errorMessages: '',
                 formHasErrors: false,
                 editmode: false,
                 arena : [],
+                emails:[],
                 search: '',
                 searchbank:'',
                 input: '',
@@ -325,6 +370,18 @@
             }
         },
         methods: {
+           
+            selectItem(id){
+                axios.get('api/emailDelete/'+id).then((data)=>{
+                    Fire.$emit('AfterCreate');
+                     $('#addNew').modal('hide');
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Email successfully Deleted'
+                        })
+                    });
+                    
+            },
             openBankDetails(){
                 this.show = true;
                 this.editmode = false;
@@ -416,7 +473,7 @@
                 $('#addNew').modal('show');
                 this.form.fill(accounts);
                 this.form.arenas_id = accounts.arenas_id;
-                console.log(accounts);
+               
             },
             updateArena(){
                 this.$Progress.start();
@@ -425,7 +482,7 @@
                     $('#addNew').modal('hide');
                             Toast.fire({
                                 icon: 'success',
-                                title: 'Successfully Deleted'
+                                title: 'Successfully Created'
                                 
                                 })
                         this.$Progress.finish();
@@ -440,7 +497,17 @@
                 this.form.reset();
             
                 $('#addNew').modal('show');
-                this.form.fill(arenas);
+            
+                this.form.id = arenas.id,
+                this.form.arena = arenas.arena,
+                this.form.address = arenas.address,
+                this.form.operator = arenas.operator,
+                this.form.contact_number = arenas.contact_number
+                
+                axios.get('api/getEmail/'+ arenas.arena).then((data) => {
+                   this.emails = data
+                 
+                })
 
             },
             openModal(){
@@ -499,11 +566,7 @@
                     this.$Progress.finish();
                 })
                 .catch((e)=>{
-                       swal.fire(
-                                'Error!',
-                                'Bank Detials is Required!',
-                                'error'
-                        )
+                      console.log(e);
                      
                 })
             }
