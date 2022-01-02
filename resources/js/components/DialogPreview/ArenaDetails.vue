@@ -141,9 +141,12 @@
                         "
                         :class="{'editmode-span': editmode}"
                     >
-                        <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.email_details"/>
+                    
+                        <!-- <input type="text" disabled class="input-field_report computation" v-model="emailFormat"/> -->
+                        <span class="input-field_report computation emailFormat">{{emailFormat}}</span>
                     </div>
                 </div>
+             
             </v-col>
 </template>
 <script>
@@ -151,7 +154,14 @@
         name: "ArenaDetails",
         props: {
             arenaDetails: Object,
-            editmode: Boolean
-        }
+            editmode: Boolean,
+            emailFormat: String
+        },  
     }
 </script>
+<style scoped>
+    .emailFormat{
+        color: rgb(0, 123, 238);
+      
+    }
+</style>
