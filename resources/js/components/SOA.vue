@@ -268,10 +268,10 @@
                                     </div>
                                 </div>
                             </div>
-
+                          
                             <div
                                 v-for="item in selected"
-                                :key="item.id"
+                                :key="item.codeEvent"
                                 style="
                                     padding: 5px 30px;
                                     width: 800px;
@@ -282,7 +282,7 @@
                                 id="reportsoaoutput"
                                 class="reportsoaoutput"
                             >
-                               
+                         
                                 <v-card-title
                                     class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
                                 >
@@ -319,7 +319,7 @@
                                         <ArenaDetails
                                             :arenaDetails="item.arena_details ? item.arena_details : {arena: item.arena_name}"
                                             :editmode="false"
-                                            :emailFormat="defineEmail(item.arena_details.email_details)"
+                                            :emailFormat="item.arena_details ? defineEmail(item.arena_details.email_details) : ''"
                                         />
                                     </v-row>
                                     <v-row>
@@ -344,6 +344,13 @@
                                                     consolidatorsCommission: numberFormat(item.consolidatorsCommission || 0),
                                                     paymentForOutstandingBalance: numberFormat(item.paymentForOutstandingBalance || 0),
                                                     mwTotalPercent: numberFormat(item.mwTwo || 0),
+                                                  
+                                                     mobile: {
+                                                        totalMWBets: numberFormat(item.total_win_mobile || 0),
+                                                        totalDrawBets: numberFormat(item.draw_mobile || 0),
+                                                        cashLoad: numberFormat(item.cashLoad || 0),
+                                                        cashWithdrawal:numberFormat(item.cashWithdraw || 0),
+                                                    },
 
                                     }"
                                         :computedAve="{
@@ -356,8 +363,8 @@
                                                   
                                                     totalOthers: numberFormat(item.totalOthers || 0),
                                                     totalCommission: numberFormat(item.totalCommission || 0),
-                                                    totalMWMobile: numberFormat(item.total_win_mobile || 0),
-                                                    totalDrawMobile: numberFormat(item.draw_mobile || 0),                            
+                                                   
+                                                                            
                                                     depositReplenish: numberFormat(item.for_total || 0),
                                                     mwTotalPercent: numberFormat(item.mwTwo || 0),
                                                     drawTotalPercent: numberFormat(item.drawTwo || 0),
@@ -365,8 +372,7 @@
                                                     drawMobileTotalPercent: numberFormat(item.drawMobileTotalPercent || 0),
                                                     netOpCommission: numberFormat(item.netOperatorsCommission || 0),
                                                     totalComputationOthers:  item.exempted === 'NOT' ? numberFormat(item.totalOthers || 0) : numberFormat(item.totalCommission || 0),
-                                                    cashLoad: numberFormat(item.cashLoad || 0),
-                                                    cashWithdraw: numberFormat(item.cashWithdraw || 0),
+                                                   
                                         }"
                                         
                                         :commissionPercent="commission_percent"
@@ -1356,7 +1362,7 @@ export default {
         
         openModel(data) {
             
-           console.log(data)
+           console.log('>>>>',data.total_meron_wala)
             if (data.arena_details == null) {
                 swal.fire({
                     icon: "warning",
@@ -1442,6 +1448,8 @@ export default {
                 }
                 
             }
+
+          
             this.arenaSelectedBank(data.arena_details.bank_id)
             this.emailFormat = this.defineEmail(data.arena_details.email_details)
         },
@@ -1649,12 +1657,15 @@ export default {
         },
         defineEmail(arrayEmail){
             console.log(arrayEmail)
-                const emailMap = arrayEmail.map(ed => ed['email']);
+                if(arrayEmail != null) {
+                    const emailMap = arrayEmail.map(ed => ed['email']);
 
-                const ee = emailMap.reduce((prev, current) => {
-                   return (current+" "+prev)
-                },"")
-                return ee.trim().replace(/\s/g, ' / ')
+                    const ee = emailMap.reduce((prev, current) => {
+                    return (current+" "+prev)
+                    },"")
+                    return ee.trim().replace(/\s/g, ' / ')
+                }
+              
 
         }
     },
