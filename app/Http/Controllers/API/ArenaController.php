@@ -52,7 +52,7 @@ class ArenaController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request->all());
+       
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
@@ -128,9 +128,12 @@ class ArenaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->all());
-        $arenas = arena::with('BankDetails')->findOrFail($id);
        
+        $arenas = arena::with('BankDetails')->findOrFail($id);
+
+        $emails =  Email::where('arena_name',$arenas->arena)->get();
+
+      
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
@@ -145,14 +148,17 @@ class ArenaController extends Controller
             'contact_number' => $request['contact_number'],
 
         ]);
-       
-        foreach ($request['email'] as $email){
-            $data = Email::updateOrCreate([
-                'arena_name' => $request['arena'],
-                'email' => $email
-            ]);
-        }
-        
+   
+            foreach ($request['email'] as $email){
+                    if(!is_array($email)){
+                        $data = Email::Create([
+                            'arena_name' => $request['arena'],
+                            'email' => $email
+                        ]);
+                     }
+            }
+  
+          
        
         return ['message' => 'Updated the areana details'];
     }

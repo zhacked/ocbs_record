@@ -276,7 +276,9 @@
                                     auto-select-first
                                     deletable-chips
                                     item-text='email'
-                                   
+                           
+                                  
+                                   hide-selected
                                       
                                       
                                     :rules="[
@@ -354,7 +356,7 @@
                     address: '',
                     operator: '',
                     contact_number: '',
-                    email: '',
+                    email: [],
                 }),
                Bankform: new Form({
                     id:'',
@@ -498,15 +500,16 @@
             
                 $('#addNew').modal('show');
             
-                this.form.id = arenas.id,
-                this.form.arena = arenas.arena,
-                this.form.address = arenas.address,
-                this.form.operator = arenas.operator,
+                this.form.id = arenas.id
+                this.form.arena = arenas.arena
+                this.form.address = arenas.address
+                this.form.operator = arenas.operator
                 this.form.contact_number = arenas.contact_number
-                
+               
                 axios.get('api/getEmail/'+ arenas.arena).then((data) => {
                    this.emails = data
-                 
+                   this.form.email = data.data
+                    console.log(data.data)
                 })
 
             },
@@ -553,7 +556,7 @@
                         ));
             },
             createArena(){
-                // console.log(this.form)
+                console.log(this.form.email)
                 this.$Progress.start();
                 this.form.post('api/arena')
                 .then(()=>{
