@@ -1460,8 +1460,8 @@ export default {
             }
 
           
-            this.arenaSelectedBank(data.arena_details.bank_id)
-            this.emailFormat = this.defineEmail(data.arena_details.email_details)
+            this.arenaSelectedBank(data.arana_details && data.arena_details.bank_id)
+            this.emailFormat = this.defineEmail(data.arana_details && data.arena_details.email_details)
         },
 
         closeDialog() {
