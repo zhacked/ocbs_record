@@ -1292,30 +1292,41 @@ export default {
         async importwithstatus() {
             const data = await axios.get("api/importwithstatus");
 
-            let helper = {};
+            // let helper = {};
 
-            const duplicateObj = await data.data.reduce(function (r, obj) {
-                const key = obj.arena_name;
+            // const duplicateObj = await data.data.reduce(function (r, obj) {
+            //     const key = obj.arena_name;
 
-                if (!helper[key]) {
-                    helper[key] = Object.assign({}, obj); // create a copy of o
+            //     if (!helper[key]) {
+            //         helper[key] = Object.assign({}, obj); // create a copy of o
 
-                    r.push(helper[key]);
-                } else {
+            //         r.push(helper[key]);
+            //     } else {
  
-                    helper[key].mobile = {
-                        ...obj,
-                    };
-                }
+            //         helper[key].mobile = {
+            //             ...obj,
+            //         };
+            //     }
 
-                return r;
-            }, []);
+            //     return r;
+            // }, []);
 
-            const obj = {
-                data: duplicateObj,
-            };
+       
+            const newArray = [];
+            data.data.forEach((dObj) => {
+                    const arenaName = dObj.arena_name.indexOf('~') > -1 ? dObj.arena_name.replace(/\~/g, '/') : dObj.arena_name
+                    
+                    const obj = {
+                        ...dObj,
+                        arena_name: arenaName,
+                    }
+                    newArray.push(obj)
+                })
 
-            this.arenaDatastatus = obj;
+                const obj = {
+                    data: newArray,
+                };
+                this.arenaDatastatus = obj;
             
         },
         async showData() {
@@ -1357,7 +1368,6 @@ export default {
 
             this.arenaData = obj;
          
-            // duplicateObj.forEach((item) => {});
         },
         
         openModel(data) {
