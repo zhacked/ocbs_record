@@ -245,12 +245,13 @@
 							
                                  <v-text-field
                                     label="Contact Number"
-                                    placeholder="0912-123-4567"
+                                    placeholder="09121234567"
                                     outlined
                                     v-model="form.contact_number"
                                     :rules="[
-                                         () => !!form.contact_number || 'This field is required',
-                                        () =>   /^\d+$/.test(form.contact_number) || 'must be a number'
+                                        () => !!form.contact_number || 'This field is required',
+                                        () =>   /^\d+$/.test(form.contact_number) || 'Must be a number',
+                                        () =>  form.contact_number && form.contact_number.length >= 11 && form.contact_number.length <= 11|| 'This field must have atleast 11 digits'
                                     ]"
                                 ></v-text-field>
 				

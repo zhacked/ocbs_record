@@ -248,7 +248,7 @@
                             ></v-text-field>
 
                             <v-text-field
-                                    type="number"
+                                  
                                     prepend-inner-icon="mdi-phone"
                                     label="Contact Number"
                                     placeholder="09123456789"
@@ -256,8 +256,10 @@
                                     dense
                                     v-model="form.contact"
                                     :rules="[
-                                    () => !!form.contact || 'This field is required',
-                                    () =>  (form.contact  && form.contact.length <= 11 && form.contact.length >= 11) || 'Name must be less than 10 characters',
+                                        () => !!form.contact || 'This field is required',
+                                        () =>   /^\d+$/.test(form.contact) || 'Must be a number',
+                                        () =>  form.contact && form.contact.length >= 11 && form.contact.length <= 11 || 'This field must have atleast 11 digits',
+                                        
                                     ]"
                                     required
                             ></v-text-field>
