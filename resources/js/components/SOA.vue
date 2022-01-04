@@ -1048,6 +1048,7 @@ export default {
                             objectKeyReplacedArray.push({
                                 eventCreated:
                                     eventDateCreated,
+                                eventClosed: eventDateClosed,
                                 type: data.type
                                     ? data.type
                                     : data.classification
@@ -1206,6 +1207,7 @@ export default {
 								areaCode,
                                 codeEvent,
 								date_of_soa: rest.eventCreated,
+                                date_closed: rest.eventClosed,
                                 meron: rest.meron,
                                 wala: rest.wala,
                                 rake: rest.rake,
