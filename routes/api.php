@@ -44,7 +44,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('convertToExcel/{data}', [App\Http\Controllers\API\ImportController::class, 'ConvertToExcel']);
     Route::get('validate/{password}', [App\Http\Controllers\API\UserController::class, 'validate_user']);
     Route::put('selected/{id}', [App\Http\Controllers\API\EmployeeController::class, 'selectedbyUser']);
-    Route::get('counts', [App\Http\Controllers\API\EmployeeController::class, 'countEmployee']);
-
- 
-    
+    Route::post('saveposition', [App\Http\Controllers\API\EmployeeController::class, 'savepostionNow']);
+    Route::get('getposition', [App\Http\Controllers\API\EmployeeController::class, 'getpostionNow']);
+    Route::get('deletePosition/{id}', [App\Http\Controllers\API\EmployeeController::class, 'deletepostionNow']);
+    Route::put('updateposition/{id}', [App\Http\Controllers\API\EmployeeController::class, 'updatepostionNowwith']);

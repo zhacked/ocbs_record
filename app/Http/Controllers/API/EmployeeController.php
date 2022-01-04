@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Throwable;
 use App\Models\employee;
+use App\Models\position;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -71,7 +72,7 @@ class EmployeeController extends Controller
     {
      
 
-
+      
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users',
@@ -87,7 +88,7 @@ class EmployeeController extends Controller
             'contact' => $request['contact'],
             'address' => $request['address'],
             'group' => $request['group'],
-            'position' =>$request['position'],
+            'position' =>$request->position[0]['position'],
         ]);
     }
 
@@ -116,9 +117,40 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function savepostionNow(request $request)
     {
-        //
+        $this->validate($request,[
+            'position' => 'required',
+        ]);
+
+        return position::create([
+            'position' => $request->position
+        ]);
+        
+    }
+
+    public function getpostionNow()
+    {
+        return position::latest()->get();
+    }
+    public function updatepostionNowwith(request $request,$id){
+        $position = position::findOrFail($id);
+
+        $this->validate($request,[
+            'position' => 'required',
+        ]);
+
+        $position->update($request->all());
+        return ['message' => 'Updated the user info'];
+
+    }
+    
+
+    public function deletepostionNow($id)
+    {
+  
+        $position = position::findorfail($id);
+        $position->delete();
     }
 
     /**

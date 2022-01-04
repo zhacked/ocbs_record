@@ -104,8 +104,7 @@ class ArenaController extends Controller
 
     public function deleteEmail($id){
         $email = Email::findOrFail($id);
-        // delete the user
-
+       
         $email->delete();
     }
 
@@ -130,8 +129,6 @@ class ArenaController extends Controller
     {
        
         $arenas = arena::with('BankDetails')->findOrFail($id);
-
-        $emails =  Email::where('arena_name',$arenas->arena)->get();
 
       
         $this->validate($request,[
