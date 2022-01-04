@@ -930,7 +930,7 @@ export default {
             const checkfile =
                 file.name.includes("xlsx") || file.name.includes("csv");
             
-            const moLetter = String.fromCharCode(96 + (moment().month()+1)).toUpperCase();
+           
 
             if (file && checkfile) {
                 const reader = new FileReader();
@@ -962,10 +962,10 @@ export default {
                     filteredWS.forEach((w) => {
                         const singleSheet = wb.Sheets[w];
 
-                        const hhh = XLSX.utils.sheet_to_json(singleSheet, {
-                            header: "A",
-                            defval: 0,
-                        });
+                        // const hhh = XLSX.utils.sheet_to_json(singleSheet, {
+                        //     header: "A",
+                        //     defval: 0,
+                        // });
 
                         arrayData.push(
                             XLSX.utils.sheet_to_json(singleSheet, {
@@ -975,9 +975,18 @@ export default {
                         );
                     });
 
+
+
+
+
+                    let eventDetailsA = []
+              
+
+ 
                     arrayData[0].map((r) => {
                         if (Object.keys(r).length >= 17) reportCombined.push(r);
-                      
+                        // console.log(ExcelDateToJSDate(r.A))
+                         if (typeof r.A == "string" ) eventDetailsA.push(r);
                         if (
                             typeof r.A == "string" &&
                             r.A.indexOf("Date") > -1
@@ -993,9 +1002,32 @@ export default {
 
                     // Merge Object
                     const mergeObj = mergeObject(eventsCombined);
+                
 
-              
+                    // date format MM/DD/YYYY || DD/MM/YYYY
+                    const dateFormatting = (date) => (moment(date,'MM/DD/YYYY').isValid() ? moment(date,'MM/DD/YYYY').format('LL') : moment(date,'DD/MM/YYYY').isValid() ? moment(date,'DD/MM/YYYY').format('LL')  : moment(date).format('LL'));
+                    
+                    // if date is serial
+                    const ExcelDateToJSDate = (serial) => {
+                        const utc_days  = Math.floor(serial - 25569);
+                        const utc_value = utc_days * 86400;                                        
+                        const date_info = new Date(utc_value * 1000);
+                        const fractional_day = serial - Math.floor(serial) + 0.0000001;
+                        let total_seconds = Math.floor(86400 * fractional_day);
+                        const seconds = total_seconds % 60;
+                        total_seconds -= seconds;
+                        const hours = Math.floor(total_seconds / (60 * 60));
+                        const minutes = Math.floor(total_seconds / 60) % 60;
+                        return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
+                    }
 
+                    const eventCreatedUTC = ExcelDateToJSDate(arrayData[0][2].A);
+                    const eventClosedUTC = ExcelDateToJSDate(arrayData[0][4].A);
+                    const isValidEventArenaDate = (stringDate) => (moment(stringDate, 'MM/DD/YYYY').isValid() || moment(stringDate, 'DD/MM/YYYY').isValid()  ? stringDate : null)
+ 
+                    const eventDateCreated = dateFormatting(mergeObj.dateCreated  || isValidEventArenaDate(eventDetailsA[2]?.A) || eventCreatedUTC);
+                    const eventDateClosed = dateFormatting(mergeObj.dateClosed || isValidEventArenaDate(eventDetailsA[4]?.A) || eventClosedUTC)
+          
                     const objectKeyed = (array) => {
                         let objectKeyReplacedArray = [];
                         const keysss = array.find((k) => k.B === "ARENA NAME");
@@ -1012,11 +1044,10 @@ export default {
                                     })
                                 )
                             );
-
+                            
                             objectKeyReplacedArray.push({
                                 eventCreated:
-                                    mergeObj.dateCreated ||
-                                    moment().format("LL"),
+                                    eventDateCreated,
                                 type: data.type
                                     ? data.type
                                     : data.classification
@@ -1226,13 +1257,16 @@ export default {
 						r[a.soaFr].push(a);
 						return r;
 					}, Object.create(null));
-					
-					const newsoa = groupSOAFR.soa.map(({soaFr, ...s}, i) => ({refNo: "SO"+moment().format("MMDD")+moLetter+(`0000${i+1}`).slice(-4), ...s}));
-					const newfr = groupSOAFR.fr.map(({soaFr, ...f}, i) => ({refNo: "FR"+moment().format("MMDD")+moLetter+(`0000${i+1}`).slice(-4), ...f}));
+
+					const moLetter = String.fromCharCode(96 + (moment(eventDateClosed).month()+1)).toUpperCase();
+                    
+
+					const newsoa = groupSOAFR.soa.map(({soaFr, ...s}, i) => ({refNo: "SO"+moment(eventDateClosed).format("MMDD")+moLetter+(`0000${i+1}`).slice(-4), ...s}));
+					const newfr = groupSOAFR.fr.map(({soaFr, ...f}, i) => ({refNo: "FR"+moment(eventDateClosed).format("MMDD")+moLetter+(`0000${i+1}`).slice(-4), ...f}));
 
 					const newSetReport = concat(newsoa, newfr);
                 
-   
+                    console.log(newSetReport)
 					
                     this.ocbsArrayFiltered = newSetReport;
 
@@ -1854,8 +1888,7 @@ export default {
         this.showData();
         this.importwithstatus();
         this.loadEmployee();
-        // this.loadbank();
-    //    this.arenaSelectedBank()
+      
         Fire.$on("AfterCreate", () => {
             this.showData();
             this.importwithstatus();
