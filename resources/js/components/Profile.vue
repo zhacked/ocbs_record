@@ -1,5 +1,5 @@
 
-<style>
+<style scoped>
 .widget-user-header{
     background-position: center center;
     background-size: cover;
@@ -15,7 +15,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 mt-3">
-                
+              
                 <div class="card card-widget widget-user">
                 <div class="widget-user-header text-bold text-white" style="background-image:url('./image/user-cover.jpg')">
                     <h1 class="widget-user-username ">{{this.form.name}}</h1>

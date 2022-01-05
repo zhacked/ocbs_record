@@ -277,11 +277,7 @@
                                     auto-select-first
                                     deletable-chips
                                     item-text='email'
-                           
-                                  
                                    hide-selected
-                                      
-                                      
                                     :rules="[
                                     () => !!form.email || 'This field is required',
                                  
@@ -485,7 +481,7 @@
                     $('#addNew').modal('hide');
                             Toast.fire({
                                 icon: 'success',
-                                title: 'Successfully Created'
+                                title: 'Successfully Updated'
                                 
                                 })
                         this.$Progress.finish();

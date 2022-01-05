@@ -1,3 +1,10 @@
+<style scoped>
+ .nav-tabs .nav-link.active{
+    background-color:#00C4F5!important ;
+    color:white !important
+}
+</style>
+
 <template>
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
@@ -204,7 +211,7 @@
                                             :loading="loading"
                                             :disabled="loading"
                                             @click="truncate"
-                                            color="light-blue lighten-1"
+                                            color="red lighten-1"
                                             class="ma-2 white--text"
                                         >
                                             Clear Data

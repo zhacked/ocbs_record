@@ -110,7 +110,7 @@
                                     ]"
                             ></v-text-field>
 							
-                            <v-text-area
+                            <v-text-field
                                      prepend-inner-icon="mdi-at"
                                     label="Email"
                                     placeholder="doe@gmail.com"
@@ -120,7 +120,7 @@
                                     :rules="[
                                     () => !!form.bio || 'This field is required',
                                     ]"
-                            ></v-text-area>
+                            ></v-text-field>
                                <v-select
                                     label="Select Role"
                                     outlined
@@ -130,7 +130,7 @@
                                     :items="roles"
                                     v-model="form.type"
                                     return-object
-                                    @change="selectedrecord(selectComputed, $event)"
+                                   
                                 ></v-select>
 							
 
@@ -146,11 +146,7 @@
                                     () => !!form.password || 'This field is required',
                                     ]"
                             ></v-text-field>
-							<!-- <div class="form-group">
-								<input v-model="form.password" type="password" name="password" id="password"
-								class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
-								<has-error :form="form" field="password"></has-error>
-							</div> -->
+						
 
 						</div>
 						<div class="modal-footer">
@@ -199,12 +195,7 @@
             }
         },
         methods: {
-            getResults(page = 1) {
-                        axios.get('api/user?page=' + page)
-                            .then(response => {
-                                this.users = response.data;
-                            });
-                },
+          
             updateUser(){
                 this.$Progress.start();
                 console.log('Editing data');

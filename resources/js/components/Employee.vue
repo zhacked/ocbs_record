@@ -1,3 +1,11 @@
+<style scoped>
+ .nav-tabs .nav-link.active{
+    background-color:#00C4F5!important ;
+    color:white !important
+}
+</style>
+
+
 <template >
     <v-app>
 		<v-container>
@@ -467,7 +475,7 @@
                 positionHeaders : [
                   
                     { text: 'Position', value: 'position' },
-                    { text: '', value: 'PositionAction'},
+                    { text: '', value: 'PositionAction', sortable: false},
                 ],
                 editmode: false,
                 employee : [],
