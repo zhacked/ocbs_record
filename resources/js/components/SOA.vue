@@ -1,7 +1,7 @@
 <style scoped>
- .nav-tabs .nav-link.active{
-    background-color:#00C4F5!important ;
-    color:white !important
+.nav-tabs .nav-link.active {
+    background-color: #00c4f5 !important ;
+    color: white !important;
 }
 </style>
 
@@ -13,7 +13,7 @@
                     <v-card>
                         <v-card-title class="card-header">
                             <strong>Statement of Account</strong>
-                          
+
                             <v-spacer></v-spacer>
                             <form @submit.prevent="proceedAction()">
                                 <v-card-actions class="card-tools">
@@ -33,13 +33,15 @@
                                         color="success"
                                         elevation="2"
                                         :loading="loading"
-                                        >
-                                    <template v-slot:loader>
-                                        <span>Preparing...</span>
-                                        <span class="custom-loader">
-                                            <v-icon light>mdi-cached</v-icon>
-                                        </span>
-                                    </template>
+                                    >
+                                        <template v-slot:loader>
+                                            <span>Preparing...</span>
+                                            <span class="custom-loader">
+                                                <v-icon light
+                                                    >mdi-cached</v-icon
+                                                >
+                                            </span>
+                                        </template>
                                         send</v-btn
                                     >
                                 </v-card-actions>
@@ -89,20 +91,21 @@
                                 >
                                     <v-row>
                                         <v-col>
-                                            <v-btn v-show="this.selected != 0"
+                                            <v-btn
+                                                v-show="this.selected != 0"
                                                 :loading="downloadingReport"
                                                 :disabled="downloadingReport"
                                                 color="green lighten-1"
                                                 class="ma-2 white--text allbtn"
                                                 @click="multiDownloads"
-                                                
-                                             
                                             >
                                                 Convert Now
                                                 <template v-slot:loader>
                                                     <span>Converting...</span>
                                                     <span class="custom-loader">
-                                                        <v-icon light>mdi-cached</v-icon>
+                                                        <v-icon light
+                                                            >mdi-cached</v-icon
+                                                        >
                                                     </span>
                                                 </template>
                                             </v-btn>
@@ -124,28 +127,31 @@
                                         role="tabpanel"
                                         aria-labelledby="custom-tabs-three-home-tab"
                                     >
-                                       
                                         <v-data-table
-                                            item-key="codeEvent" 
+                                            item-key="codeEvent"
                                             :headers="headers"
                                             :items="arenaData.data"
                                             :items-per-page="10"
-                                             v-model="selected"
+                                            v-model="selected"
                                             :footer-props="{
                                                 'items-per-page-options': [
-                                                    10, 20, 30
+                                                    10, 20, 30, 40, 50, 100, -1
                                                 ],
                                             }"
                                             :loading="downloadingReport"
-                                            
                                             :search="search"
-                                            :show-select="downloadingReport ? false : true"
-                                            :disable-filtering="downloadingReport ? true : false"
-                                            :disable-sort="downloadingReport ? true : false"
+                                            :show-select="
+                                                downloadingReport ? false : true
+                                            "
+                                            :disable-filtering="
+                                                downloadingReport ? true : false
+                                            "
+                                            :disable-sort="
+                                                downloadingReport ? true : false
+                                            "
                                             :single-select="singleSelect"
                                             class="elevation-1 text-center"
                                         >
-                                          
                                             <template
                                                 v-slot:[`item.actions`]="{
                                                     item,
@@ -173,7 +179,9 @@
                                                                 'on-hover':
                                                                     hover,
                                                             }"
-                                                            :disabled="downloadingReport"
+                                                            :disabled="
+                                                                downloadingReport
+                                                            "
                                                         >
                                                             <v-icon
                                                                 >mdi-eye</v-icon
@@ -183,31 +191,32 @@
                                                     <span>View Account</span>
                                                 </v-tooltip>
                                             </template>
-                                            
                                         </v-data-table>
-                                         <v-dialog 
+                                        <v-dialog
                                             v-model="dialog2"
                                             hide-overlay
                                             persistent
                                             width="700"
-                                    
-                                            >
+                                        >
                                             <v-card color="primary" dark>
-                                            <v-card-text>
-                                               <h1>Please stand by</h1> 
+                                                <v-card-text>
+                                                    <h1>Please stand by</h1>
                                                     <v-progress-linear
                                                         indeterminate
                                                         color="white"
                                                         class="mb-0"
-                                                         striped
-                                                          height="10"
+                                                        striped
+                                                        height="10"
                                                     ></v-progress-linear>
-                                            </v-card-text>
+                                                </v-card-text>
                                             </v-card>
-                                            </v-dialog>
-                                       
+                                        </v-dialog>
+
                                         <v-btn
-                                            v-show="arenaData.data && arenaData.data.length > 0"
+                                            v-show="
+                                                arenaData.data &&
+                                                arenaData.data.length > 0
+                                            "
                                             :loading="loading"
                                             :disabled="loading"
                                             @click="truncate"
@@ -233,7 +242,6 @@
                                             :items-per-page="10"
                                             :search="search"
                                             class="elevation-1 text-center"
-                                            
                                         >
                                             <template
                                                 v-slot:[`item.actions`]="{
@@ -275,7 +283,7 @@
                                     </div>
                                 </div>
                             </div>
-                          
+
                             <div
                                 v-for="item in selected"
                                 :key="item.codeEvent"
@@ -283,36 +291,43 @@
                                     padding: 5px 30px;
                                     width: 800px;
                                     display: none;
-                                   
                                 "
                                 ref="soaReport"
                                 id="reportsoaoutput"
                                 class="reportsoaoutput"
                             >
-                         
                                 <v-card-title
                                     class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
                                 >
-                                    <span>{{  item.group === 'Replenish' ? 'For Replenishment' : 'Statement of Account'}}</span>
+                                    <span>{{
+                                        item.group === "Replenish"
+                                            ? "For Replenishment"
+                                            : "Statement of Account"
+                                    }}</span>
                                 </v-card-title>
                                 <v-card-text class="text-sm-body-2">
                                     <v-row>
-                                        
                                         <v-spacer></v-spacer>
                                         <v-spacer></v-spacer>
                                         <DateSOA
                                             :depositReplenishText="
-                                                item.group === 'Replenish' ? {
-                                                                title: 'For Replenishment',
-                                                                dateText: 'FR',
-                                                                totalText: 'Replenish',
-                                                                bankTitle: 'We will replenish to' } : {
-                                                                title: 'Statement of Account',
-                                                                dateText: 'SOA',
-                                                                totalText: 'Deposit',
-                                                                bankTitle: 'Kindly Deposit to',
-                                                            }
-                                                        "
+                                                item.group === 'Replenish'
+                                                    ? {
+                                                          title: 'For Replenishment',
+                                                          dateText: 'FR',
+                                                          totalText:
+                                                              'Replenish',
+                                                          bankTitle:
+                                                              'We will replenish to',
+                                                      }
+                                                    : {
+                                                          title: 'Statement of Account',
+                                                          dateText: 'SOA',
+                                                          totalText: 'Deposit',
+                                                          bankTitle:
+                                                              'Kindly Deposit to',
+                                                      }
+                                            "
                                             :refNo="item.refNo"
                                             :dateEvent="
                                                 moment(item.date_of_soa).format(
@@ -324,9 +339,20 @@
                                     </v-row>
                                     <v-row>
                                         <ArenaDetails
-                                            :arenaDetails="item.arena_details ? item.arena_details : {arena: item.arena_name}"
+                                            :arenaDetails="
+                                                item.arena_details
+                                                    ? item.arena_details
+                                                    : { arena: item.arena_name }
+                                            "
                                             :editmode="false"
-                                            :emailFormat="item.arena_details ? defineEmail(item.arena_details.email_details) : ''"
+                                            :emailFormat="
+                                                item.arena_details
+                                                    ? defineEmail(
+                                                          item.arena_details
+                                                              .email_details
+                                                      )
+                                                    : ''
+                                            "
                                         />
                                     </v-row>
                                     <v-row>
@@ -335,76 +361,143 @@
                                         </div>
                                     </v-row>
                                     <ComputeBox
-                                    :computation="{
-                                                    totalMWBets: numberFormat(item.total_meron_wala || 0),
-                                                    drawCancelled: numberFormat(item.draw_cancelled || 0),
-                                                    draw: numberFormat(item.draw || 0),
-                                                    totalPayoutPaid: numberFormat(item.total_payout_paid || 0),
-                                                    cdPaid: numberFormat(item.draw_cancelled_paid || 0),
-                                                    drawPaid: numberFormat(item.draw_paid || 0),
-                                                    systemErrorCOArmsi: numberFormat(item.systemErrorCOArmsi || 0),
-                                                      safetyFund: numberFormat(item.safetyFund || 0),
-                                                    salesDeduction: numberFormat(item.salesDeductionTablet) || 0,
-                                                    unclaimed: numberFormat(item.unclaimed || 0),
-                                                    cUnpaid: numberFormat(item.cancelled_unpaid || 0),
-                                                    otherCommissionIntel05: numberFormat(item.otherCommissionIntel05 || 0),
-                                                    consolidatorsCommission: numberFormat(item.consolidatorsCommission || 0),
-                                                    paymentForOutstandingBalance: numberFormat(item.paymentForOutstandingBalance || 0),
-                                                    mwTotalPercent: numberFormat(item.mwTwo || 0),
-                                                  
-                                                     mobile: {
-                                                        totalMWBets: numberFormat(item.total_win_mobile || 0),
-                                                        totalDrawBets: numberFormat(item.draw_mobile || 0),
-                                                        cashLoad: numberFormat(item.cashLoad || 0),
-                                                        cashWithdrawal:numberFormat(item.cashWithdraw || 0),
-                                                    },
+                                        :computation="{
+                                            totalMWBets: numberFormat(
+                                                item.total_meron_wala || 0
+                                            ),
+                                            drawCancelled: numberFormat(
+                                                item.draw_cancelled || 0
+                                            ),
+                                            draw: numberFormat(item.draw || 0),
+                                            totalPayoutPaid: numberFormat(
+                                                item.total_payout_paid || 0
+                                            ),
+                                            cdPaid: numberFormat(
+                                                item.draw_cancelled_paid || 0
+                                            ),
+                                            drawPaid: numberFormat(
+                                                item.draw_paid || 0
+                                            ),
+                                            systemErrorCOArmsi: numberFormat(
+                                                item.systemErrorCOArmsi || 0
+                                            ),
+                                            safetyFund: numberFormat(
+                                                item.safetyFund || 0
+                                            ),
+                                            salesDeduction:
+                                                numberFormat(
+                                                    item.salesDeductionTablet
+                                                ) || 0,
+                                            unclaimed: numberFormat(
+                                                item.unclaimed || 0
+                                            ),
+                                            cUnpaid: numberFormat(
+                                                item.cancelled_unpaid || 0
+                                            ),
+                                            otherCommissionIntel05:
+                                                numberFormat(
+                                                    item.otherCommissionIntel05 ||
+                                                        0
+                                                ),
+                                            consolidatorsCommission:
+                                                numberFormat(
+                                                    item.consolidatorsCommission ||
+                                                        0
+                                                ),
+                                            paymentForOutstandingBalance:
+                                                numberFormat(
+                                                    item.paymentForOutstandingBalance ||
+                                                        0
+                                                ),
+                                            mwTotalPercent: numberFormat(
+                                                item.mwTwo || 0
+                                            ),
 
-                                    }"
-                                        :computedAve="{
-                                                   
-                                                  
-                                                    netWinLoss: numberFormat(item.netWinLoss || 0),
-                                                    mwTotalPercent: numberFormat(item.mwTwo || 0),
-                                                    
-                                                  
-                                                  
-                                                    totalOthers: numberFormat(item.totalOthers || 0),
-                                                    totalCommission: numberFormat(item.totalCommission || 0),
-                                                   
-                                                                            
-                                                    depositReplenish: numberFormat(item.for_total || 0),
-                                                    mwTotalPercent: numberFormat(item.mwTwo || 0),
-                                                    drawTotalPercent: numberFormat(item.drawTwo || 0),
-                                                    mwMobileTotalPercent: numberFormat(item.mwTwoMobile || 0),
-                                                    drawMobileTotalPercent: numberFormat(item.drawMobileTotalPercent || 0),
-                                                    netOpCommission: numberFormat(item.netOperatorsCommission || 0),
-                                                    totalComputationOthers:  item.exempted === 'NOT' ? numberFormat(item.totalOthers || 0) : numberFormat(item.totalCommission || 0),
-                                                   
+                                            mobile: {
+                                                totalMWBets: numberFormat(
+                                                    item.total_win_mobile || 0
+                                                ),
+                                                totalDrawBets: numberFormat(
+                                                    item.draw_mobile || 0
+                                                ),
+                                                cashLoad: numberFormat(
+                                                    item.cashLoad || 0
+                                                ),
+                                                cashWithdrawal: numberFormat(
+                                                    item.cashWithdraw || 0
+                                                ),
+                                            },
                                         }"
-                                        
+                                        :computedAve="{
+                                            netWinLoss: numberFormat(
+                                                item.netWinLoss || 0
+                                            ),
+                                            mwTotalPercent: numberFormat(
+                                                item.mwTwo || 0
+                                            ),
+
+                                            totalOthers: numberFormat(
+                                                item.totalOthers || 0
+                                            ),
+                                            totalCommission: numberFormat(
+                                                item.totalCommission || 0
+                                            ),
+
+                                            depositReplenish: numberFormat(
+                                                item.for_total || 0
+                                            ),
+                                            mwTotalPercent: numberFormat(
+                                                item.mwTwo || 0
+                                            ),
+                                            drawTotalPercent: numberFormat(
+                                                item.drawTwo || 0
+                                            ),
+                                            mwMobileTotalPercent: numberFormat(
+                                                item.mwTwoMobile || 0
+                                            ),
+                                            drawMobileTotalPercent:
+                                                numberFormat(
+                                                    item.drawMobileTotalPercent ||
+                                                        0
+                                                ),
+                                            netOpCommission: numberFormat(
+                                                item.netOperatorsCommission || 0
+                                            ),
+                                            totalComputationOthers:
+                                                item.exempted === 'NOT'
+                                                    ? numberFormat(
+                                                          item.totalOthers || 0
+                                                      )
+                                                    : numberFormat(
+                                                          item.totalCommission ||
+                                                              0
+                                                      ),
+                                        }"
                                         :commissionPercent="commission_percent"
                                         :editmode="editmode"
-                                          :depositReplenishTxt="
-                                                item.group === 'Replenish' ? {
-                                                               
-                                                                totalText: 'Replenishment',
-                                                               } : {
-                                                               
-                                                                totalText: 'Deposit',
-                                                                
-                                                            }
-                                                        "
+                                        :depositReplenishTxt="
+                                            item.group === 'Replenish'
+                                                ? {
+                                                      totalText:
+                                                          'Replenishment',
+                                                  }
+                                                : {
+                                                      totalText: 'Deposit',
+                                                  }
+                                        "
                                     />
-                                 
+
                                     <BankBox
                                         :bank="item.arena_details"
-                                       
-
+                                        :bankAccounts="bankAccounts || []"
                                         :arenaDetails="item.arena_details"
-
-                                        :bankId="{id: bankId}"
-                                        :arenaId="{id: arenaId}"
-                                        :operatorName="item.arena_details ? item.arena_details.operator : '' "
+                                        :bankId="{ id: bankId }"
+                                        :arenaId="{ id: arenaId }"
+                                        :operatorName="
+                                            item.arena_details
+                                                ? item.arena_details.operator
+                                                : ''
+                                        "
                                         :editmode="editmode"
                                         :depositReplenishText="
                                             computedAve.depositReplenishText
@@ -420,7 +513,6 @@
                         </div>
                     </v-card>
                 </v-col>
-             
 
                 <v-dialog
                     v-model="dialog"
@@ -529,7 +621,9 @@
                                                                 arenaDetails
                                                             "
                                                             :editmode="editmode"
-                                                            :emailFormat="emailFormat"
+                                                            :emailFormat="
+                                                                emailFormat
+                                                            "
                                                         />
                                                     </v-row>
                                                     <v-row>
@@ -539,20 +633,36 @@
                                                             Computation
                                                         </div>
                                                     </v-row>
-                                                    <ComputeBox                                                
-                                                        :depositReplenishTxt="computedAve.depositReplenishText"
-                                                        :commissionPercent="parseFloat(commission_percent)"
+                                                    <ComputeBox
+                                                        :depositReplenishTxt="
+                                                            computedAve.depositReplenishText
+                                                        "
+                                                        :commissionPercent="
+                                                            parseFloat(
+                                                                commission_percent
+                                                            )
+                                                        "
                                                         :editmode="editmode"
-                                                        :computedAve="computedAve"
-                                                        :computation="computation"
+                                                        :computedAve="
+                                                            computedAve
+                                                        "
+                                                        :computation="
+                                                            computation
+                                                        "
                                                     />
 
                                                     <BankBox
                                                         :bank="bank || {}"
-                                 
-                                                        :arenaDetails="arenaDetails"
-                                                        :bankId="{id: bankId}"
-                                                        :arenaId="{id: arenaId}"
+                                                        :bankAccounts="
+                                                            bankAccounts || []
+                                                        "
+                                                        :arenaDetails="
+                                                            arenaDetails
+                                                        "
+                                                        :bankId="{ id: bankId }"
+                                                        :arenaId="{
+                                                            id: arenaId,
+                                                        }"
                                                         :operatorName="
                                                             operator_name
                                                         "
@@ -610,7 +720,8 @@
                                                     v-on="on"
                                                     @click="
                                                         downloadImg(
-                                                            arenaDetails, codeEvent
+                                                            arenaDetails,
+                                                            codeEvent
                                                         )
                                                     "
                                                 >
@@ -631,7 +742,11 @@
                                                     v-on="on"
                                                     :loading="loading"
                                                     :disabled="loading"
-                                                    @click="generateReport(codeEvent)"
+                                                    @click="
+                                                        generateReport(
+                                                            codeEvent
+                                                        )
+                                                    "
                                                 >
                                                     <v-icon
                                                         >mdi-file-pdf-box</v-icon
@@ -696,7 +811,15 @@
     </v-app>
 </template>
 <script>
-import { camelCase, groupBy, map, spread, values, assign, concat } from "lodash";
+import {
+    camelCase,
+    groupBy,
+    map,
+    spread,
+    values,
+    assign,
+    concat,
+} from "lodash";
 import XLSX from "xlsx";
 import {
     numberFormat,
@@ -714,7 +837,7 @@ import ComputeBox from "./DialogPreview/ComputeBox.vue";
 import BankBox from "./DialogPreview/BankBox.vue";
 import PreparedChecked from "./DialogPreview/PreparedChecked.vue";
 
-import BounceLoader from 'vue-spinner/src/BounceLoader.vue';
+import BounceLoader from "vue-spinner/src/BounceLoader.vue";
 
 export default {
     components: {
@@ -724,8 +847,8 @@ export default {
         ComputeBox,
         BankBox,
         PreparedChecked,
-     
-        BounceLoader
+
+        BounceLoader,
     },
     data() {
         return {
@@ -740,10 +863,10 @@ export default {
                 computed: {},
                 checked: {},
                 prepared: {},
-                selectComputed:null,
-                selectChecked1:null,
-                selectChecked2:null,
-                selectPrepared:null,
+                selectComputed: null,
+                selectChecked1: null,
+                selectChecked2: null,
+                selectPrepared: null,
             },
             overlay: false,
             zIndex: 0,
@@ -751,7 +874,7 @@ export default {
             singleSelect: false,
             selected: [],
             dialog: false,
-            dialog2:false,
+            dialog2: false,
             search: "",
             ocbsArray: [],
             ocbsArrayFiltered: [],
@@ -763,7 +886,7 @@ export default {
             bank: {},
             bankId: null,
             banks: [],
-
+            bankAccounts: [],
             operator_name: "",
             sofrNumSeq: 0,
             arenaData: {},
@@ -825,7 +948,7 @@ export default {
                 drawTwoMobile: 0,
                 netOpCommission: 0,
                 totalComputationOthers: 0,
-            },                   
+            },
             refNo: "",
             soa: true,
             dateCreated: "",
@@ -833,7 +956,6 @@ export default {
             emailFormat: "",
             depositReplenishTxt: {},
             pictures: [],
-          
         };
     },
     methods: {
@@ -848,17 +970,15 @@ export default {
                     )
                 );
         },
-           arenaSelectedBank(bankId){
-                const bId = bankId 
-                        
-                axios.get(`api/arenaSelectedBank/${bId}`).then(({data}) => {
-              
-                    this.bank = data
-                })
-            },
+        arenaSelectedBank(bankId) {
+            const bId = bankId;
+
+            axios.get(`api/arenaSelectedBank/${bId}`).then(({ data }) => {
+                this.bank = data;
+            });
+        },
 
         truncate() {
-        
             swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -894,12 +1014,10 @@ export default {
                             title: "Oops...",
                             text: "Please Enter Valid Password",
                         });
-                    
                     }
                 },
             }).then((result) => {
                 if (result.isConfirmed) {
-
                     axios
                         .get("api/validate/" + result.value)
                         .then((response) => {
@@ -910,8 +1028,6 @@ export default {
                                 });
                                 Fire.$emit("AfterCreate");
                                 location.reload();
-
-
                             } else {
                                 swal.fire({
                                     icon: "error",
@@ -922,23 +1038,21 @@ export default {
                         })
                         .catch((error) => {
                             Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Something went wrong!',
-                                footer: error
-                                })
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Something went wrong!",
+                                footer: error,
+                            });
                             console.log(error);
                         });
                 }
             });
         },
-           onFileChange(event) {
+        onFileChange(event) {
             const file = event.target.files ? event.target.files[0] : null;
             this.fileUpload = file;
             const checkfile =
                 file.name.includes("xlsx") || file.name.includes("csv");
-            
-           
 
             if (file && checkfile) {
                 const reader = new FileReader();
@@ -951,7 +1065,7 @@ export default {
 
                 reader.onload = (e) => {
                     // eslint-disable-next-line no-unused-vars
-         
+
                     const bstr = e.target.result;
                     const wb = XLSX.read(bstr, { type: "binary" });
                     /* Get first worksheet */
@@ -959,14 +1073,14 @@ export default {
                     // const wsname = wb.SheetNames;
                     // const ws = wb.Sheets[wsname];
                     const ws = wb.SheetNames;
-                  
+
                     const filteredWS = ws.filter(function (value, index, arr) {
                         return (
                             value === "Accounts Report (Combined)" ||
                             value === "Summary Report"
                         );
                     });
-                  
+
                     filteredWS.forEach((w) => {
                         const singleSheet = wb.Sheets[w];
 
@@ -983,18 +1097,12 @@ export default {
                         );
                     });
 
+                    let eventDetailsA = [];
 
-
-
-
-                    let eventDetailsA = []
-              
-
- 
                     arrayData[0].map((r) => {
                         if (Object.keys(r).length >= 17) reportCombined.push(r);
                         // console.log(ExcelDateToJSDate(r.A))
-                         if (typeof r.A == "string" ) eventDetailsA.push(r);
+                        if (typeof r.A == "string") eventDetailsA.push(r);
                         if (
                             typeof r.A == "string" &&
                             r.A.indexOf("Date") > -1
@@ -1010,38 +1118,68 @@ export default {
 
                     // Merge Object
                     const mergeObj = mergeObject(eventsCombined);
-                
 
                     // date format MM/DD/YYYY || DD/MM/YYYY
-                    const dateFormatting = (date) => (moment(date,'MM/DD/YYYY').isValid() ? moment(date,'MM/DD/YYYY').format('YYYY-MM-DD LTS') : moment(date,'DD/MM/YYYY').isValid() ? moment(date,'DD/MM/YYYY').format('YYYY-MM-DD LTS')  : moment(date).format('YYYY-MM-DD LTS'));
-                    
+                    const dateFormatting = (date) =>
+                        moment(date, "MM/DD/YYYY").isValid()
+                            ? moment(date, "MM/DD/YYYY").format(
+                                  "YYYY-MM-DD LTS"
+                              )
+                            : moment(date, "DD/MM/YYYY").isValid()
+                            ? moment(date, "DD/MM/YYYY").format(
+                                  "YYYY-MM-DD LTS"
+                              )
+                            : moment(date).format("YYYY-MM-DD LTS");
+
                     // if date is serial
                     const ExcelDateToJSDate = (serial) => {
-                        const utc_days  = Math.floor(serial - 25569);
-                        const utc_value = utc_days * 86400;                                        
+                        const utc_days = Math.floor(serial - 25569);
+                        const utc_value = utc_days * 86400;
                         const date_info = new Date(utc_value * 1000);
-                        const fractional_day = serial - Math.floor(serial) + 0.0000001;
+                        const fractional_day =
+                            serial - Math.floor(serial) + 0.0000001;
                         let total_seconds = Math.floor(86400 * fractional_day);
                         const seconds = total_seconds % 60;
                         total_seconds -= seconds;
                         const hours = Math.floor(total_seconds / (60 * 60));
                         const minutes = Math.floor(total_seconds / 60) % 60;
-                        return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
-                    }
+                        return new Date(
+                            date_info.getFullYear(),
+                            date_info.getMonth(),
+                            date_info.getDate(),
+                            hours,
+                            minutes,
+                            seconds
+                        );
+                    };
 
-                    const eventCreatedUTC = ExcelDateToJSDate(arrayData[0][2].A);
+                    const eventCreatedUTC = ExcelDateToJSDate(
+                        arrayData[0][2].A
+                    );
                     const eventClosedUTC = ExcelDateToJSDate(arrayData[0][4].A);
-                    const isValidEventArenaDate = (stringDate) => (moment(stringDate, 'MM/DD/YYYY hh:mm:ss a').isValid() || moment(stringDate, 'DD/MM/YYYY hh:mm:ss a').isValid()  ? stringDate : null)
- 
-                    const eventDateCreated = dateFormatting(mergeObj.dateCreated  || isValidEventArenaDate(eventDetailsA[2]?.A) || eventCreatedUTC);
-                    const eventDateClosed = dateFormatting(mergeObj.dateClosed || isValidEventArenaDate(eventDetailsA[4]?.A) || eventClosedUTC)
+                    const isValidEventArenaDate = (stringDate) =>
+                        moment(stringDate, "MM/DD/YYYY hh:mm:ss a").isValid() ||
+                        moment(stringDate, "DD/MM/YYYY hh:mm:ss a").isValid()
+                            ? stringDate
+                            : null;
 
-                    console.log(eventDateCreated)
-          
+                    const eventDateCreated = dateFormatting(
+                        mergeObj.dateCreated ||
+                            isValidEventArenaDate(eventDetailsA[2]?.A) ||
+                            eventCreatedUTC
+                    );
+                    const eventDateClosed = dateFormatting(
+                        mergeObj.dateClosed ||
+                            isValidEventArenaDate(eventDetailsA[4]?.A) ||
+                            eventClosedUTC
+                    );
+
+                    console.log(eventDateCreated);
+
                     const objectKeyed = (array) => {
                         let objectKeyReplacedArray = [];
                         const keysss = array.find((k) => k.B === "ARENA NAME");
-                       
+
                         const [, ...headKey] = Object.values(keysss);
                         const headK = ["key", ...headKey];
 
@@ -1054,44 +1192,35 @@ export default {
                                     })
                                 )
                             );
-                            
+
                             objectKeyReplacedArray.push({
-                                eventCreated:
-                                    eventDateCreated,
+                                eventCreated: eventDateCreated,
                                 eventClosed: eventDateClosed,
                                 type: data.type
                                     ? data.type
                                     : data.classification
                                     ? data.classification
                                     : null,
-                                totalCommission: data.totalCommission
-                                  || 0,
-                                totalOthers: data.totalOthers
-                                  ||0,
-                                salesDeductionTablet: data.salesDeductionTablet
-                                   || 0,
+                                totalCommission: data.totalCommission || 0,
+                                totalOthers: data.totalOthers || 0,
+                                salesDeductionTablet:
+                                    data.salesDeductionTablet || 0,
                                 otherCommissionInteldata05:
-                                    data.otherCommissionInteldata05
-                                       ||0,
+                                    data.otherCommissionInteldata05 || 0,
                                 consolidatorsCommission:
-                                    data.consolidatorsCommission
-                                     ||0,
-                                safetyFund: data.safetyFund
-                                  ||0,
+                                    data.consolidatorsCommission || 0,
+                                safetyFund: data.safetyFund || 0,
                                 paymentForOutstandingBalance:
-                                    data.paymentForOutstandingBalance
-                                       || 0,
+                                    data.paymentForOutstandingBalance || 0,
                                 systemErrorCOArmsi: data.systemErrorCOArmsi
                                     ? data.systemErrorCOArmsi
                                     : 0,
                                 cashLoad: data.cashLoad ? data.cashLoad : 0,
-                                cashWithdrawal:  data.cashWithdrawal || 0,
+                                cashWithdrawal: data.cashWithdrawal || 0,
                                 netOperatorsCommission:
-                                    data.netOperatorsCommission
-                                        ||0,
+                                    data.netOperatorsCommission || 0,
                                 otherCommissionIntel05:
-                                    data.otherCommissionIntel05
-                                       || 0,
+                                    data.otherCommissionIntel05 || 0,
 
                                 drawMobile: 0,
                                 totalMWMobile: 0,
@@ -1104,11 +1233,8 @@ export default {
 
                     const objKeySummary = objectKeyed(summaryReport, 6);
 
-                
-
                     objKeySummary.forEach(function (item) {
                         const existing = objMobileKiosk.filter((v, i) => {
-                            
                             if (
                                 v.type === "KIOSK" &&
                                 v.arenaName == item.arenaName
@@ -1133,7 +1259,6 @@ export default {
                         }
                     });
 
-
                     let helper = {};
                     const result = objMobileKiosk.reduce(function (r, o) {
                         let key = o.arenaName;
@@ -1143,8 +1268,6 @@ export default {
 
                             r.push(helper[key]);
                         } else {
-                        
-
                             helper[key].totalMWMobile = o.total;
                             helper[key].drawMobile = o.draw;
                         }
@@ -1174,10 +1297,9 @@ export default {
 
                     const removeKeyReportObject = filterObjectHeader.map(
                         ({ key, ...rest }) => {
-                            
-							const type = rest.type || rest.classification;
-							
-							const exempted = rest.exempted;
+                            const type = rest.type || rest.classification;
+
+                            const exempted = rest.exempted;
                             const totalMWBets = rest.meron + rest.wala;
                             const totalCancelledBets = rest.drawCancelled;
                             const totalDrawBets = rest.draw;
@@ -1186,7 +1308,13 @@ export default {
                             const totalDrawPaid = rest.drawPaid;
                             const totalMWMobile = rest.totalMWMobile;
                             const totalDrawMobile = rest.drawMobile;
-                            const netWinLoss = totalMWBets + totalCancelledBets + totalDrawBets - totalPayoutPaid - totalCDPaid - totalDrawPaid;
+                            const netWinLoss =
+                                totalMWBets +
+                                totalCancelledBets +
+                                totalDrawBets -
+                                totalPayoutPaid -
+                                totalCDPaid -
+                                totalDrawPaid;
                             const mwTwo = totalMWBets * 0.02;
                             const drawTwo = totalDrawBets * 0.02;
                             const mwTwoMobile = totalMWMobile * 0.02;
@@ -1194,38 +1322,69 @@ export default {
                             const totalUnclaimed = rest.unclaimed;
                             const totalCUnpaid = rest.cUnpaid;
                             const salesDeduction = rest.salesDeductionTablet;
-                            const netOperatorsCommission = mwTwo + drawTwo + mwTwoMobile + drawTwoMobile + totalUnclaimed +totalCUnpaid - salesDeduction;
-                            const otherCommissionIntel = rest.otherCommissionIntel05;
-                            const consolidatorsCommission = rest.consolidatorsCommission;
+                            const netOperatorsCommission =
+                                mwTwo +
+                                drawTwo +
+                                mwTwoMobile +
+                                drawTwoMobile +
+                                totalUnclaimed +
+                                totalCUnpaid -
+                                salesDeduction;
+                            const otherCommissionIntel =
+                                rest.otherCommissionIntel05;
+                            const consolidatorsCommission =
+                                rest.consolidatorsCommission;
                             const safetyFund = rest.safetyFund;
-                            const paymentForOutstandingBalance = rest.paymentForOutstandingBalance;
-                            const totalCommission = netOperatorsCommission + otherCommissionIntel - consolidatorsCommission - safetyFund - paymentForOutstandingBalance;
-							const cashLoad = rest.cashLoad;
-							const cashWithdrawal = rest.cashWithdrawal;
-							const totalOthers = rest.totalOthers
-							const systemErrorCOArmsi = rest.systemErrorCOArmsi
-							const totalComputationOthers = exempted === "NOT" ? totalOthers : totalCommission;					
-							const depositReplenish = (netWinLoss - totalComputationOthers- systemErrorCOArmsi) + (cashLoad - cashWithdrawal);
-							const soaFr = parseFloat(depositReplenish) < 0 ? "fr" : "soa";
-                            const group = soaFr === 'fr' ? 'Replenish' : 'Deposit'
-                            const arenaName = rest.arenaName.indexOf('/') > -1 ? rest.arenaName.replace(/\//g, '~') : rest.arenaName
-                            const areaCode = rest.areaCode.indexOf('/') > -1 ? rest.areaCode.replace(/\//g, '~') : rest.areaCode
-                            const codeEvent = `${areaCode.toLowerCase()}${moment(rest.eventCreated).format('X')}`;
-                       
+                            const paymentForOutstandingBalance =
+                                rest.paymentForOutstandingBalance;
+                            const totalCommission =
+                                netOperatorsCommission +
+                                otherCommissionIntel -
+                                consolidatorsCommission -
+                                safetyFund -
+                                paymentForOutstandingBalance;
+                            const cashLoad = rest.cashLoad;
+                            const cashWithdrawal = rest.cashWithdrawal;
+                            const totalOthers = rest.totalOthers;
+                            const systemErrorCOArmsi = rest.systemErrorCOArmsi;
+                            const totalComputationOthers =
+                                exempted === "NOT"
+                                    ? totalOthers
+                                    : totalCommission;
+                            const depositReplenish =
+                                netWinLoss -
+                                totalComputationOthers -
+                                systemErrorCOArmsi +
+                                (cashLoad - cashWithdrawal);
+                            const soaFr =
+                                parseFloat(depositReplenish) < 0 ? "fr" : "soa";
+                            const group =
+                                soaFr === "fr" ? "Replenish" : "Deposit";
+                            const arenaName =
+                                rest.arenaName.indexOf("/") > -1
+                                    ? rest.arenaName.replace(/\//g, "~")
+                                    : rest.arenaName;
+                            const areaCode =
+                                rest.areaCode.indexOf("/") > -1
+                                    ? rest.areaCode.replace(/\//g, "~")
+                                    : rest.areaCode;
+                            const codeEvent = `${areaCode.toLowerCase()}${moment(
+                                rest.eventCreated
+                            ).format("X")}`;
 
                             rest = {
-								areaCode,
+                                areaCode,
                                 codeEvent,
-								date_of_soa: rest.eventCreated,
+                                date_of_soa: rest.eventCreated,
                                 date_closed: rest.eventClosed,
                                 meron: rest.meron,
                                 wala: rest.wala,
                                 rake: rest.rake,
                                 draw_unpaid: rest.dUnpaid,
                                 draw_unclaimed: rest.drawUnclaimed,
-								arena_name: arenaName,
-								type,
-								exempted,								
+                                arena_name: arenaName,
+                                type,
+                                exempted,
                                 total_meron_wala: totalMWBets,
                                 draw_cancelled: totalCancelledBets,
                                 draw: totalDrawBets,
@@ -1235,54 +1394,69 @@ export default {
                                 netWinLoss,
                                 mwTwo,
                                 drawTwo,
-								mwTwoMobile,
-								drawTwoMobile,
-								unclaimed: totalUnclaimed,
-								cancelled_unpaid: totalCUnpaid,
-								salesDeductionTablet: salesDeduction,
-								netOperatorsCommission,
-								otherCommissionIntel05: otherCommissionIntel,
-								consolidatorsCommission,
-								safetyFund,
-								paymentForOutstandingBalance,
-								totalCommission,
-								total_win_mobile: totalMWMobile,
-								draw_mobile: totalDrawMobile,
-								cashLoad,
-								cashWithdrawal,
-								for_total: depositReplenish,
-								totalOthers,
-								systemErrorCOArmsi,
+                                mwTwoMobile,
+                                drawTwoMobile,
+                                unclaimed: totalUnclaimed,
+                                cancelled_unpaid: totalCUnpaid,
+                                salesDeductionTablet: salesDeduction,
+                                netOperatorsCommission,
+                                otherCommissionIntel05: otherCommissionIntel,
+                                consolidatorsCommission,
+                                safetyFund,
+                                paymentForOutstandingBalance,
+                                totalCommission,
+                                total_win_mobile: totalMWMobile,
+                                draw_mobile: totalDrawMobile,
+                                cashLoad,
+                                cashWithdrawal,
+                                for_total: depositReplenish,
+                                totalOthers,
+                                systemErrorCOArmsi,
                                 soaFr,
-								group,
-                                
-							
+                                group,
                             };
 
-                            return {...rest};
+                            return { ...rest };
                         }
                     );
 
-					// group fr and soa
-					 const groupSOAFR = removeKeyReportObject.reduce(function (r, a) {
-						r[a.soaFr] = r[a.soaFr] || [];
-						r[a.soaFr].push(a);
-						return r;
-					}, Object.create(null));
+                    // group fr and soa
+                    const groupSOAFR = removeKeyReportObject.reduce(function (
+                        r,
+                        a
+                    ) {
+                        r[a.soaFr] = r[a.soaFr] || [];
+                        r[a.soaFr].push(a);
+                        return r;
+                    },
+                    Object.create(null));
 
-					const moLetter = String.fromCharCode(96 + (moment(eventDateClosed).month()+1)).toUpperCase();
-                    
+                    const moLetter = String.fromCharCode(
+                        96 + (moment(eventDateClosed).month() + 1)
+                    ).toUpperCase();
 
-					const newsoa = groupSOAFR.soa.map(({soaFr, ...s}, i) => ({refNo: "SO"+moment(eventDateClosed).format("MMDD")+moLetter+(`0000${i+1}`).slice(-4), ...s}));
-					const newfr = groupSOAFR.fr.map(({soaFr, ...f}, i) => ({refNo: "FR"+moment(eventDateClosed).format("MMDD")+moLetter+(`0000${i+1}`).slice(-4), ...f}));
+                    const newsoa = groupSOAFR.soa.map(({ soaFr, ...s }, i) => ({
+                        refNo:
+                            "SO" +
+                            moment(eventDateClosed).format("MMDD") +
+                            moLetter +
+                            `0000${i + 1}`.slice(-4),
+                        ...s,
+                    }));
+                    const newfr = groupSOAFR.fr.map(({ soaFr, ...f }, i) => ({
+                        refNo:
+                            "FR" +
+                            moment(eventDateClosed).format("MMDD") +
+                            moLetter +
+                            `0000${i + 1}`.slice(-4),
+                        ...f,
+                    }));
 
-					const newSetReport = concat(newsoa, newfr);
-                
-                    console.log(newSetReport)
-					
+                    const newSetReport = concat(newsoa, newfr);
+
+                    console.log(newSetReport);
+
                     this.ocbsArrayFiltered = newSetReport;
-
-                   
                 };
                 reader.readAsBinaryString(file);
             } else {
@@ -1295,10 +1469,10 @@ export default {
                 $("#importData").val("");
             }
         },
-    proceedAction() {
+        proceedAction() {
             this.$Progress.start();
             // var result = $('#importData').val().split('.');
-           
+
             if (
                 $("#importData").val() === "" ||
                 !this.fileUpload.name.includes("xlsx")
@@ -1310,29 +1484,29 @@ export default {
                     text: "Make sure you insert correct excel data!",
                 });
             } else {
-                this.dialog2 = true
+                this.dialog2 = true;
                 // const data = await axios.get("api/import");
-               
-            //    axios.post("api/import", this.ocbsArrayFiltered)
-      
-                axios.post("api/import", this.ocbsArrayFiltered).then(
-                    ({ data }) => {
-                          this.dialog2 = false,
-                        $("#importData").val("");
+
+                //    axios.post("api/import", this.ocbsArrayFiltered)
+
+                axios
+                    .post("api/import", this.ocbsArrayFiltered)
+                    .then(({ data }) => {
+                        (this.dialog2 = false), $("#importData").val("");
                         Fire.$emit("AfterCreate");
                         swal.fire("Successfully!", "Excel Imported", "success");
                         this.$Progress.finish();
                         location.reload();
-                    }).catch((error)=>{
-                    this.dialog2 = false,
-                     swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Something went wrong!',
-                                footer: error
-                                })
-        
-                });
+                    })
+                    .catch((error) => {
+                        (this.dialog2 = false),
+                            swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Something went wrong!",
+                                footer: error,
+                            });
+                    });
             }
         },
         async importwithstatus() {
@@ -1348,7 +1522,7 @@ export default {
 
             //         r.push(helper[key]);
             //     } else {
- 
+
             //         helper[key].mobile = {
             //             ...obj,
             //         };
@@ -1357,23 +1531,24 @@ export default {
             //     return r;
             // }, []);
 
-       
             const newArray = [];
             data.data.forEach((dObj) => {
-                    const arenaName = dObj.arena_name.indexOf('~') > -1 ? dObj.arena_name.replace(/\~/g, '/') : dObj.arena_name
-                    
-                    const obj = {
-                        ...dObj,
-                        arena_name: arenaName,
-                    }
-                    newArray.push(obj)
-                })
+                const arenaName =
+                    dObj.arena_name.indexOf("~") > -1
+                        ? dObj.arena_name.replace(/\~/g, "/")
+                        : dObj.arena_name;
 
                 const obj = {
-                    data: newArray,
+                    ...dObj,
+                    arena_name: arenaName,
                 };
-                this.arenaDatastatus = obj;
-            
+                newArray.push(obj);
+            });
+
+            const obj = {
+                data: newArray,
+            };
+            this.arenaDatastatus = obj;
         },
         async showData() {
             const data = await axios.get("api/import");
@@ -1396,28 +1571,28 @@ export default {
             //     return r;
             // }, []);
 
-
             const newArray = [];
-           data.data.forEach((dObj) => {
-                const arenaName = dObj.arena_name.indexOf('~') > -1 ? dObj.arena_name.replace(/\~/g, '/') : dObj.arena_name
-                
+            data.data.forEach((dObj) => {
+                const arenaName =
+                    dObj.arena_name.indexOf("~") > -1
+                        ? dObj.arena_name.replace(/\~/g, "/")
+                        : dObj.arena_name;
+
                 const obj = {
                     ...dObj,
                     arena_name: arenaName,
-                }
-                newArray.push(obj)
-            })
+                };
+                newArray.push(obj);
+            });
 
             const obj = {
                 data: newArray,
             };
 
             this.arenaData = obj;
-         
         },
-        
+
         openModel(data) {
-            
             if (data.arena_details == null) {
                 swal.fire({
                     icon: "warning",
@@ -1427,15 +1602,15 @@ export default {
                 });
             } else {
                 this.dialog = true;
-                
+
                 this.form.reset();
                 this.form.fill(data.arena_details);
                 this.operator_name = data.arena_details.operator;
                 this.dateCreated = moment().format("ll");
                 this.dateEvent = moment(data.date_of_soa).format("LL");
-                console.log(data.exempted)
+                console.log(data.exempted);
                 this.refNo = data.refNo;
-     
+
                 this.arenaDetails = data.arena_details;
                 this.banks = data.arena_details.bank_details;
                 this.arenaId = data.arena_details.id;
@@ -1480,11 +1655,17 @@ export default {
                     unclaimed: numberFormat(unclaimed),
                     cUnpaid: numberFormat(cUnpaid),
                     salesDeduction: numberFormat(salesDeduction),
-                    otherCommissionIntel05: numberFormat(otherCommissionIntel05),
+                    otherCommissionIntel05: numberFormat(
+                        otherCommissionIntel05
+                    ),
                     systemErrorCOArmsi: numberFormat(systemErrorCOArmsi),
-                    consolidatorsCommission: numberFormat(consolidatorsCommission),
+                    consolidatorsCommission: numberFormat(
+                        consolidatorsCommission
+                    ),
                     safetyFund: numberFormat(safetyFund),
-                    paymentForOutstandingBalance: numberFormat(paymentForOutstandingBalance),
+                    paymentForOutstandingBalance: numberFormat(
+                        paymentForOutstandingBalance
+                    ),
                     totalMWMobile: numberFormat(totalMWMobile),
                     drawMobile: numberFormat(drawMobile),
                     exempted,
@@ -1499,15 +1680,17 @@ export default {
                         cashLoad: numberFormat(cashLoad),
                         cashWithdrawal: numberFormat(cashWithdrawal),
                     },
-                   
+
                     // netOperatorsCommission,
-                }
-                
+                };
             }
 
-          
-            this.arenaSelectedBank(data.arana_details && data.arena_details.bank_id)
-            this.emailFormat = this.defineEmail(data.arana_details && data.arena_details.email_details)
+            this.arenaSelectedBank(
+                data.arana_details && data.arena_details.bank_id
+            );
+            this.emailFormat = this.defineEmail(
+                data.arana_details && data.arena_details.email_details
+            );
         },
 
         closeDialog() {
@@ -1516,42 +1699,55 @@ export default {
         updateModal() {
             $(".computation").removeAttr("disabled");
             $(".computation").addClass("input-show");
-           
+
             this.computation = {
-                    totalMWBets: numberUnformat(this.computation.totalMWBets),
-                    drawCancelled: numberUnformat(this.computation.drawCancelled),
-                    draw: numberUnformat(this.computation.draw),
-                    totalPayoutPaid: numberUnformat(this.computation.totalPayoutPaid),
-                    cdPaid: numberUnformat(this.computation.cdPaid),
-                    drawPaid: numberUnformat(this.computation.drawPaid),
-                    unclaimed: numberUnformat(this.computation.unclaimed),
-                    cUnpaid: numberUnformat(this.computation.cUnpaid),
-                    salesDeduction: numberUnformat(this.computation.salesDeduction),
-                    otherCommissionIntel05: numberUnformat(this.computation.otherCommissionIntel05),
-                    systemErrorCOArmsi: numberUnformat(this.computation.systemErrorCOArmsi),
-                    consolidatorsCommission: numberUnformat(this.computation.consolidatorsCommission),
-                    safetyFund: numberUnformat(this.computation.safetyFund),
-                    paymentForOutstandingBalance: numberUnformat(this.computation.paymentForOutstandingBalance),
-                    mwTotalPercent: numberUnformat(this.computation.mwTotalPercent),
-                    totalMWMobile: numberUnformat(this.computation.totalMWMobile),
-                    drawMobile: numberUnformat(this.computation.drawMobile),
-                     exempted: this.computation.exempted,
-                    netWinLoss: numberUnformat(this.computation.netWinLoss),
-                    mwTwo: numberUnformat(this.computation.mwTwo),
-                    drawTwo: numberUnformat(this.computation.drawTwo),
-                    mwTwoMobile: numberUnformat(this.computation.mwTwoMobile),
-                    drawTwoMobile: numberUnformat(this.computation.drawTwoMobile),
-                    mobile: {
-                        totalMWBets: numberUnformat(this.computation.totalMWMobile),
-                        totalDrawBets: numberUnformat(this.computation.drawMobile),
-                        cashLoad: numberUnformat(this.computation.mobile.cashLoad),
-                        cashWithdrawal: numberUnformat(this.computation.mobile.cashWithdrawal),
-                    },
-                   
-                    netOperatorsCommission: numberUnformat(this.computation.netOperatorsCommission),
+                totalMWBets: numberUnformat(this.computation.totalMWBets),
+                drawCancelled: numberUnformat(this.computation.drawCancelled),
+                draw: numberUnformat(this.computation.draw),
+                totalPayoutPaid: numberUnformat(
+                    this.computation.totalPayoutPaid
+                ),
+                cdPaid: numberUnformat(this.computation.cdPaid),
+                drawPaid: numberUnformat(this.computation.drawPaid),
+                unclaimed: numberUnformat(this.computation.unclaimed),
+                cUnpaid: numberUnformat(this.computation.cUnpaid),
+                salesDeduction: numberUnformat(this.computation.salesDeduction),
+                otherCommissionIntel05: numberUnformat(
+                    this.computation.otherCommissionIntel05
+                ),
+                systemErrorCOArmsi: numberUnformat(
+                    this.computation.systemErrorCOArmsi
+                ),
+                consolidatorsCommission: numberUnformat(
+                    this.computation.consolidatorsCommission
+                ),
+                safetyFund: numberUnformat(this.computation.safetyFund),
+                paymentForOutstandingBalance: numberUnformat(
+                    this.computation.paymentForOutstandingBalance
+                ),
+                mwTotalPercent: numberUnformat(this.computation.mwTotalPercent),
+                totalMWMobile: numberUnformat(this.computation.totalMWMobile),
+                drawMobile: numberUnformat(this.computation.drawMobile),
+                exempted: this.computation.exempted,
+                netWinLoss: numberUnformat(this.computation.netWinLoss),
+                mwTwo: numberUnformat(this.computation.mwTwo),
+                drawTwo: numberUnformat(this.computation.drawTwo),
+                mwTwoMobile: numberUnformat(this.computation.mwTwoMobile),
+                drawTwoMobile: numberUnformat(this.computation.drawTwoMobile),
+                mobile: {
+                    totalMWBets: numberUnformat(this.computation.totalMWMobile),
+                    totalDrawBets: numberUnformat(this.computation.drawMobile),
+                    cashLoad: numberUnformat(this.computation.mobile.cashLoad),
+                    cashWithdrawal: numberUnformat(
+                        this.computation.mobile.cashWithdrawal
+                    ),
+                },
+
+                netOperatorsCommission: numberUnformat(
+                    this.computation.netOperatorsCommission
+                ),
             };
 
-      
             this.editmode = !this.editmode;
         },
         closeDialog() {
@@ -1564,55 +1760,69 @@ export default {
         saveModal() {
             $(".computation").attr("disabled", true);
             this.editmode = !this.editmode;
-          
+
             this.computation = {
-                    totalMWBets: numberFormat(this.computation.totalMWBets),
-                    drawCancelled: numberFormat(this.computation.drawCancelled),
-                    draw: numberFormat(this.computation.draw),
-                    totalPayoutPaid: numberFormat(this.computation.totalPayoutPaid),
-                    cdPaid: numberFormat(this.computation.cdPaid),
-                    drawPaid: numberFormat(this.computation.drawPaid),
-                    unclaimed: numberFormat(this.computation.unclaimed),
-                    cUnpaid: numberFormat(this.computation.cUnpaid),
-                    salesDeduction: numberFormat(this.computation.salesDeduction),
-                    otherCommissionIntel05: numberFormat(this.computation.otherCommissionIntel05),
-                    systemErrorCOArmsi: numberFormat(this.computation.systemErrorCOArmsi),
-                    consolidatorsCommission: numberFormat(this.computation.consolidatorsCommission),
-                    safetyFund: numberFormat(this.computation.safetyFund),
-                    paymentForOutstandingBalance: numberFormat(this.computation.paymentForOutstandingBalance),
-                    exempted: this.computation.exempted,
-                    totalMWMobile: numberFormat(this.computation.totalMWMobile),
-                    drawMobile: numberFormat(this.computation.drawMobile),
-                    
-                    netWinLoss: numberFormat(this.computation.netWinLoss),
-                    mwTwo: numberFormat(this.computation.mwTwo),
-                    drawTwo: numberFormat(this.computation.drawTwo),
-                    mwTwoMobile: numberFormat(this.computation.mwTwoMobile),
-                    drawTwoMobile: numberFormat(this.computation.drawTwoMobile),
-                    mobile: {
-                        totalMWBets: numberFormat(this.computation.totalMWMobile || 0),
-                        totalDrawBets: numberFormat(this.computation.drawMobile || 0),
-                        cashLoad: numberFormat(this.computation.mobile.cashLoad || 0),
-                        cashWithdrawal: numberFormat(this.computation.mobile.cashWithdrawal || 0),
-                    },
-                   
-                    netOperatorsCommission: numberFormat(this.computation.netOperatorsCommission),
+                totalMWBets: numberFormat(this.computation.totalMWBets),
+                drawCancelled: numberFormat(this.computation.drawCancelled),
+                draw: numberFormat(this.computation.draw),
+                totalPayoutPaid: numberFormat(this.computation.totalPayoutPaid),
+                cdPaid: numberFormat(this.computation.cdPaid),
+                drawPaid: numberFormat(this.computation.drawPaid),
+                unclaimed: numberFormat(this.computation.unclaimed),
+                cUnpaid: numberFormat(this.computation.cUnpaid),
+                salesDeduction: numberFormat(this.computation.salesDeduction),
+                otherCommissionIntel05: numberFormat(
+                    this.computation.otherCommissionIntel05
+                ),
+                systemErrorCOArmsi: numberFormat(
+                    this.computation.systemErrorCOArmsi
+                ),
+                consolidatorsCommission: numberFormat(
+                    this.computation.consolidatorsCommission
+                ),
+                safetyFund: numberFormat(this.computation.safetyFund),
+                paymentForOutstandingBalance: numberFormat(
+                    this.computation.paymentForOutstandingBalance
+                ),
+                exempted: this.computation.exempted,
+                totalMWMobile: numberFormat(this.computation.totalMWMobile),
+                drawMobile: numberFormat(this.computation.drawMobile),
+
+                netWinLoss: numberFormat(this.computation.netWinLoss),
+                mwTwo: numberFormat(this.computation.mwTwo),
+                drawTwo: numberFormat(this.computation.drawTwo),
+                mwTwoMobile: numberFormat(this.computation.mwTwoMobile),
+                drawTwoMobile: numberFormat(this.computation.drawTwoMobile),
+                mobile: {
+                    totalMWBets: numberFormat(
+                        this.computation.totalMWMobile || 0
+                    ),
+                    totalDrawBets: numberFormat(
+                        this.computation.drawMobile || 0
+                    ),
+                    cashLoad: numberFormat(
+                        this.computation.mobile.cashLoad || 0
+                    ),
+                    cashWithdrawal: numberFormat(
+                        this.computation.mobile.cashWithdrawal || 0
+                    ),
+                },
+
+                netOperatorsCommission: numberFormat(
+                    this.computation.netOperatorsCommission
+                ),
             };
 
-            Fire.$emit("AfterCreate")
-
+            Fire.$emit("AfterCreate");
         },
 
-    
-
-     
         generateReport(codeEvent) {
             console.log("generating pdf..");
 
             this.$refs.html2Pdf.generatePdf();
 
             axios
-                .put("api/arenaStatus", [{codeEvent, status: 'done'}])
+                .put("api/arenaStatus", [{ codeEvent, status: "done" }])
                 .then(
                     (data) => (
                         Fire.$emit("AfterCreate"),
@@ -1622,7 +1832,6 @@ export default {
                 );
         },
         async downloadImg(details, codeEvent) {
-            
             const el = this.$refs.soaReport;
 
             const options = {
@@ -1632,23 +1841,19 @@ export default {
             const printCanvas = await html2canvas(el, options);
 
             const link = document.createElement("a");
-            const soaFr = details.group === "Replenish" ? "FR" : "SOA"
-            
+            const soaFr = details.group === "Replenish" ? "FR" : "SOA";
 
             link.download = `${details.arena}.png`;
             link.href = printCanvas.toDataURL("image/png");
             document.body.appendChild(link);
             link.click();
 
-  
             setTimeout(() => {
                 document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
-             }, 100);
+            }, 100);
 
-
-            
             axios
-                .put("api/arenaStatus", [{codeEvent, status: 'done'}])
+                .put("api/arenaStatus", [{ codeEvent, status: "done" }])
                 .then(
                     (data) => (
                         Fire.$emit("AfterCreate"),
@@ -1656,18 +1861,63 @@ export default {
                         swal.fire("convert to png!", "successfully", "success")
                     )
                 );
-          
         },
-        multiDownloads() {
+        async multiDownloads() {
             let statusArenas = [];
-            this.downloadingReport  = true;
+            this.downloadingReport = true;
 
             const divsss = document.querySelectorAll(".reportsoaoutput");
 
             for (let i = 0; i < this.selected.length; i++) {
-                statusArenas.push({codeEvent: this.selected[i].codeEvent, status: 'done'});
-      
-                html2canvas(divsss[i], {
+                statusArenas.push({
+                    codeEvent: this.selected[i].codeEvent,
+                    status: "done",
+                });
+
+                // html2canvas(divsss[i], {
+                //     onclone: function (clonedDoc) {
+                //         const elems =
+                //             clonedDoc.getElementsByClassName("reportsoaoutput");
+                //         for (let i = 0; i < elems.length; i++) {
+                //             elems[i].style.display = "block";
+                //         }
+                //     },
+                //     type: "dataURL",
+                //     backgroundColor: "#fafafa",
+                // })
+                //     .then((canvas) => {
+                //         const link = document.createElement("a");
+                //         // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
+                //         link.download = `${this.selected[i].arena_name}.png`;
+                //         link.href = canvas.toDataURL("image/png");
+                //         document.body.appendChild(link);
+                //         link.click();
+
+                //         setTimeout(() => {
+                //             document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
+                //         }, 500);
+                //     })
+                //     .then(() => {
+                //         if (this.selected.length - 1 === i) {
+                //             const c = this.arenaData.data.filter(
+                //                 (arena) =>
+                //                     !this.selected.find(
+                //                         (select) =>
+                //                             select.areaCode === arena.areaCode
+                //                     )
+                //             );
+
+                //             this.arenaData.data = c;
+
+                //             setTimeout(async () => {
+                //                 this.downloadingReport = false;
+                //                 console.log("done");
+                //                 this.selected = [];
+                //             }, 5000);
+                //         }
+                //     });
+
+                const canvas = await html2canvas(divsss[i], {
                     onclone: function (clonedDoc) {
                         const elems =
                             clonedDoc.getElementsByClassName("reportsoaoutput");
@@ -1677,63 +1927,64 @@ export default {
                     },
                     type: "dataURL",
                     backgroundColor: "#fafafa",
-                }).then((canvas) => {
-                        const link = document.createElement("a");
-                        // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
-                        link.download = `${this.selected[i].arena_name}.png`;
-                        link.href = canvas.toDataURL("image/png");
-                        document.body.appendChild(link);
-                        link.click();
+                });
 
-                           setTimeout(() => {
-                            document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
-                        }, 500);
-            
-                }).then(() => {
-                    if(this.selected.length - 1 === i) {
-                      
-                        const c = this.arenaData.data.filter(arena => !this.selected.find(select => select.areaCode === arena.areaCode))
-                
-                        this.arenaData.data = c
-                       
-                        setTimeout(async () => {
-                                this.downloadingReport = false
-                                console.log("done");  
-                                this.selected = []                    
-                        }, 5000);
-                        
-                    }
-                })   
+                const link = document.createElement("a");
+                // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
+                link.download = `${this.selected[i].arena_name}.png`;
+                link.href = canvas.toDataURL("image/png");
+                document.body.appendChild(link);
+                link.click();
 
+                await setTimeout(() => {
+                    document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
+                }, 500);
 
-              
+                if (this.selected.length - 1 === i) {
+                    await axios.put("api/arenaStatus", statusArenas);
+                    const c = this.arenaData.data.filter(
+                        (arena) =>
+                            !this.selected.find(
+                                (select) => select.areaCode === arena.areaCode
+                            )
+                    );
+
+                    this.arenaData.data = c;
+
+                    setTimeout(async () => {
+                        this.downloadingReport = false;
+                        console.log("done");
+                        this.selected = [];
+                    }, 5000);
+                }
             }
 
             // .then(() => {
-                    axios.put("api/arenaStatus",statusArenas)
+            // axios.put("api/arenaStatus", statusArenas);
             //     }).
 
             // console.log(statusArenas)
-            
         },
-        defineEmail(arrayEmail){
-            console.log(arrayEmail)
-                if(arrayEmail != null) {
-                    const emailMap = arrayEmail.map(ed => ed['email']);
+        defineEmail(arrayEmail) {
+            console.log(arrayEmail);
+            if (arrayEmail != null) {
+                const emailMap = arrayEmail.map((ed) => ed["email"]);
 
-                    const ee = emailMap.reduce((prev, current) => {
-                    return (current+" "+prev)
-                    },"")
-                    return ee.trim().replace(/\s/g, ' / ')
-                }
-              
-
-        }
+                const ee = emailMap.reduce((prev, current) => {
+                    return current + " " + prev;
+                }, "");
+                return ee.trim().replace(/\s/g, " / ");
+            }
+        },
+        loadBankDetails() {
+            axios.get("api/Companybanks").then(({ data }) => {
+                (this.bankAccounts = data), console.log("ACCOUNT", data);
+            });
+        },
     },
 
     computed: {
         computedAve: function () {
-           
             const netWinLoss = numberFormat(
                 numberUnformat(this.computation.totalMWBets) +
                     numberUnformat(this.computation.drawCancelled) +
@@ -1743,14 +1994,10 @@ export default {
                     numberUnformat(this.computation.drawPaid) || 0
             );
 
-
-
             const mwTotalPercent = numberFormat(
                 parseFloat(this.commission_percent) *
                     numberUnformat(this.computation.totalMWBets) || 0
             );
-            
-          
 
             const drawTotalPercent = numberFormat(
                 parseFloat(this.commission_percent) *
@@ -1760,8 +2007,6 @@ export default {
                 parseFloat(this.commission_percent) *
                     numberUnformat(this.computation.mobile.totalMWBets) || 0
             );
-
-            
 
             const drawMobileTotalPercent = numberFormat(
                 parseFloat(this.commission_percent) *
@@ -1776,9 +2021,6 @@ export default {
                 numberUnformat(this.computation.cUnpaid) -
                 numberUnformat(this.computation.salesDeduction);
 
-        
-           
-
             const totalComm =
                 numberUnformat(netOpCommTotal) +
                 numberUnformat(
@@ -1792,14 +2034,15 @@ export default {
                     this.computation.paymentForOutstandingBalance || "0.00"
                 );
 
-        
-            const netOpCommission = numberFormat(netOpCommTotal || 0) ;
+            const netOpCommission = numberFormat(netOpCommTotal || 0);
             const totalCommission = numberFormat(totalComm || 0);
 
-          
-
-            const cashLoad = numberFormat(this.computation.mobile.cashLoad || 0);
-            const cashWithdraw = numberFormat(this.computation.mobile.cashWithdrawal || 0);
+            const cashLoad = numberFormat(
+                this.computation.mobile.cashLoad || 0
+            );
+            const cashWithdraw = numberFormat(
+                this.computation.mobile.cashWithdrawal || 0
+            );
 
             const totalOthers =
                 numberUnformat(this.computation.unclaimed) +
@@ -1810,11 +2053,16 @@ export default {
                     ? numberFormat(totalOthers)
                     : numberFormat(totalCommission);
 
-
             const depositReplenish = numberFormat(
-                (numberUnformat(netWinLoss) - numberUnformat(totalComputationOthers) || 0 - numberUnformat(this.computation.systemErrorCOArmsi) ||0) + (numberUnformat(this.computation.mobile.cashLoad) - numberUnformat(this.computation.mobile.cashWithdrawal) || 0)
-            );         
-
+                (numberUnformat(netWinLoss) -
+                    numberUnformat(totalComputationOthers) ||
+                    0 - numberUnformat(this.computation.systemErrorCOArmsi) ||
+                    0) +
+                    (numberUnformat(this.computation.mobile.cashLoad) -
+                        numberUnformat(
+                            this.computation.mobile.cashWithdrawal
+                        ) || 0)
+            );
 
             const depositReplenishText =
                 numberUnformat(depositReplenish) < 0
@@ -1836,37 +2084,44 @@ export default {
                               this.sofrNumSeq,
                           bankTitle: "Kindly Deposit to",
                       };
-           
 
-              
+            const totalMWBets = numberFormat(this.computation.totalMWBets || 0);
+            const drawCancelled = numberFormat(
+                this.computation.drawCancelled || 0
+            );
+            const draw = numberFormat(this.computation.draw || 0);
+            const totalPayoutPaid = numberFormat(
+                this.computation.totalPayoutPaid || 0
+            );
+            const cdPaid = numberFormat(this.computation.cdPaid || 0);
+            const drawPaid = numberFormat(this.computation.drawPaid || 0);
 
+            const unclaimed = numberFormat(this.computation.unclaimed || 0);
+            const cUnpaid = numberFormat(this.computation.cUnpaid || 0);
 
-                    const totalMWBets = numberFormat(this.computation.totalMWBets || 0);
-                    const drawCancelled= numberFormat(this.computation.drawCancelled || 0);
-                    const draw= numberFormat(this.computation.draw || 0);
-                    const totalPayoutPaid= numberFormat(this.computation.totalPayoutPaid || 0);
-                    const cdPaid= numberFormat(this.computation.cdPaid || 0);
-                    const drawPaid= numberFormat(this.computation.drawPaid || 0);
+            const otherCommissionIntel05 = numberFormat(
+                this.computation.otherCommissionIntel05
+            );
+            const consolidatorsCommission = numberFormat(
+                this.computation.consolidatorsCommission
+            );
+            const paymentForOutstandingBalance = numberFormat(
+                this.computation.paymentForOutstandingBalance
+            );
 
-                    const unclaimed= numberFormat(this.computation.unclaimed || 0);
-                    const cUnpaid= numberFormat(this.computation.cUnpaid || 0);
-
-                    const otherCommissionIntel05= numberFormat(
-                        this.computation.otherCommissionIntel05
-                    );
-                   const consolidatorsCommission= numberFormat(
-                        this.computation.consolidatorsCommission
-                    );
-                    const paymentForOutstandingBalance= numberFormat(
-                        this.computation.paymentForOutstandingBalance
-                    );
-
-                    const safetyFund= numberFormat(this.computation.safetyFund);
-                    const salesDeduction= numberFormat(this.computation.salesDeductionTablet);
-                    const systemErrorCOArmsi= numberFormat(this.computation.systemErrorCOArmsi);
-                    const totalMWMobile = numberFormat(this.computation.mobile.totalMWBets);
-                    const totalDrawMobile = numberFormat(this.computation.mobile.totalDrawBets);
-               
+            const safetyFund = numberFormat(this.computation.safetyFund);
+            const salesDeduction = numberFormat(
+                this.computation.salesDeductionTablet
+            );
+            const systemErrorCOArmsi = numberFormat(
+                this.computation.systemErrorCOArmsi
+            );
+            const totalMWMobile = numberFormat(
+                this.computation.mobile.totalMWBets
+            );
+            const totalDrawMobile = numberFormat(
+                this.computation.mobile.totalDrawBets
+            );
 
             return {
                 totalMWBets,
@@ -1896,16 +2151,16 @@ export default {
                 consolidatorsCommission,
                 paymentForOutstandingBalance,
                 totalMWMobile,
-                totalDrawMobile
+                totalDrawMobile,
             };
         },
     },
- 
+
     created() {
         this.showData();
         this.importwithstatus();
         this.loadEmployee();
-      
+        this.loadBankDetails();
         Fire.$on("AfterCreate", () => {
             this.showData();
             this.importwithstatus();

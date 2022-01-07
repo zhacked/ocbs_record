@@ -26,7 +26,7 @@
 
                                                                         <span class="signed-title">
                                                                             
-                                                                           {{computedPosition || "Quality Assurance Staff" }}
+                                                                           {{computedPosition || userPrepared.computed[0].position || "Quality Assurance Staff" }}
                                                                            
                                                                         </span >
                                                                     </div>
@@ -53,7 +53,7 @@
                                                                         
 
                                                                         <span class="signed-title">
-                                                                           {{preparedPosition || " Finance Assistant - Kiosk" }}
+                                                                           {{preparedPosition || userPrepared.prepared[0].position || " Finance Assistant - Kiosk" }}
                                                                         </span>
                                                                     </div>
                                                                 </div>
@@ -80,7 +80,7 @@
                                                                         
 
                                                                         <span class="signed-title">
-                                                                            {{checkedOnePosition || "QA - Team Leader"}}
+                                                                            {{checkedOnePosition || userPrepared.checked[0].position || "QA - Team Leader"}}
                                                                         </span >
                                                                     </div>
                                                                 </div>
@@ -89,16 +89,18 @@
                                                                 <div class="sign-wrapper scbottom">
                                                                     <span class="signedBy">Checked by:</span>
                                                                     <div class="sign-container">
+                                                                        
                                                                          <span class="select-field_container" :class="{'editmode-span': editmode}">
                                                                             <select class="sign-name select-field_report computation" name="checkedTwo" disabled @change="handleCheckedTwoBy($event)">
                                                                                 <!-- <option>Mariel Pilotos/Jonalyn Bonares</option> -->
+
                                                                                 <option v-for="checked_by in userPrepared.checked" :value="`${checked_by.name} | ${checked_by.position}`" :key="checked_by.id">{{checked_by.name}}</option>
                                                                             </select>
                                                                         </span>
                                                                         
 
                                                                         <span class="signed-title">
-                                                                           {{checkedTwoPosition || "Supervisor - Arena/OCBS"}}
+                                                                           {{checkedTwoPosition || userPrepared.checked[1].position ||"Supervisor - Arena/OCBS"}}
                                                                         </span >
                                                                     </div>
                                                                 </div>
