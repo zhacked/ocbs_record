@@ -9,18 +9,18 @@
             <div   class="bank-container" v-if="depositReplenishText.totalText =='Deposit'">
                 <div class="bank bank1">
                   
-                      <span>{{account.length > 0 ? account[0].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
-                    <span>{{account.length > 0 ? account[0].bank_name: 'PBB'}}</span>
-                    <span>{{account.length > 0 ? account[0].bank_number: '0050-1001-5156'}}</span>
+                      <span>{{bankAccounts.length > 0 ? bankAccounts[0].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
+                    <span>{{bankAccounts.length > 0 ? bankAccounts[0].bank_name: 'PBB'}}</span>
+                    <span>{{bankAccounts.length > 0 ? bankAccounts[0].bank_number: '0050-1001-5156'}}</span>
                 </div>
-                <div v-if="account.length > 1" class="or">
+                <div v-if="bankAccounts.length > 1" class="or">
                     OR
                 </div>
-                <div v-if="account.length > 1"  class="bank bank2">
+                <div v-if="bankAccounts.length > 1"  class="bank bank2">
                   
-                     <span>{{account.length > 1 ? account[1].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
-                    <span>{{account.length > 1 ? account[1].bank_name: 'PBB'}}</span>
-                    <span>{{account.length > 1 ? account[1].bank_number: '123-1232-1232'}}</span>
+                     <span>{{bankAccounts.length > 1 ? bankAccounts[1].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
+                    <span>{{bankAccounts.length > 1 ? bankAccounts[1].bank_name: 'PBB'}}</span>
+                    <span>{{bankAccounts.length > 1 ? bankAccounts[1].bank_number: '123-1232-1232'}}</span>
                 </div>
             </div>
          
@@ -50,7 +50,7 @@
         name: "BankBox",
         props:{
             bank:Object,
-           
+            bankAccounts: Array,
         
             arenaDetails: Object,
             arenaId: Object,
@@ -63,7 +63,7 @@
         data(){
             return {
                 bankTarget: this.bank,
-                account: []
+                // account: []
              }
         },
         methods: {
@@ -86,15 +86,15 @@
 
                 Fire.$emit('AfterCreated')
             },
-          loadDetials(){
-                    axios.get("api/Companybanks").then(({ data }) => {
-                        this.account = data,
-                        console.log('ACCOUNT',data);
-                        });
-            },
+        //   loadDetials(){
+        //             axios.get("api/Companybanks").then(({ data }) => {
+        //                 this.account = data,
+        //                 console.log('ACCOUNT',data);
+        //                 });
+        //     },
         },
         created(){
-            this.loadDetials()
+            // this.loadDetials()
         }
     }
 </script>
