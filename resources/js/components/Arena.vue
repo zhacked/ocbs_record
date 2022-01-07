@@ -267,10 +267,7 @@
                                     deletable-chips
                                     item-text='email'
                                    hide-selected
-                                    :rules="[
-                                    () => !!form.email || 'This field is required',
-                                 
-                                    ]"
+                                    :rules="[required]"
                                     >
                                     <template v-slot:selection="data">
                                    
@@ -337,7 +334,7 @@
                     { text: "", value: "actions", sortable: false },
                 ],
                 select: [],
-              
+                emailRules:[],
                 errorMessages: '',
                 formHasErrors: false,
                 editmode: false,
@@ -369,7 +366,14 @@
             }
         },
         methods: {
-           
+            required(value) {
+                if (value instanceof Array && value.length == 0) {
+                    return 'Email is Required.';
+                }
+             
+            
+                    return true;
+                },
             selectItem(id){
                 
                 axios.get('api/emailDelete/'+id).then((data)=>{
@@ -586,6 +590,21 @@
                     if (val.length > 5) {
                         this.$nextTick(() => this.form.email.pop())
                     }
+
+                     
+                    val.forEach(function (x) {
+                        // console.log(/.+@.+\..+/.test(x));
+                        if(/.+@.+\..+/.test(x) == false ){
+                            this.emailRules = false
+                        }
+                     
+                    });
+
+                    if(this.emailRules == false){
+                        this.$nextTick(() => this.form.email.pop())
+                    }
+                   
+                    
                 }
            
         }
