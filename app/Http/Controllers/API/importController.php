@@ -149,12 +149,14 @@ class importController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function arenastatus($areaCode)
+    public function arenastatus(Request $request)
     {   
         // dump($arena_name);
-        $import = import::where('areaCode',$areaCode)->update([
-            'status' => 'done',
-        ]); 
+        // $import = import::where('areaCode',$areaCode)->update([
+        //     'status' => 'done',
+        // ]); 
+      
+        $import = import::upsert( $request->all(),['codeEvent']);
     }
 
     /**
