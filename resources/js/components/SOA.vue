@@ -610,7 +610,7 @@
                                                     v-on="on"
                                                     @click="
                                                         downloadImg(
-                                                            arenaDetails, areaCode
+                                                            arenaDetails, codeEvent
                                                         )
                                                     "
                                                 >
@@ -631,7 +631,7 @@
                                                     v-on="on"
                                                     :loading="loading"
                                                     :disabled="loading"
-                                                    @click="generateReport(areaCode)"
+                                                    @click="generateReport(codeEvent)"
                                                 >
                                                     <v-icon
                                                         >mdi-file-pdf-box</v-icon
@@ -770,6 +770,7 @@ export default {
             arenaDatastatus: [],
             arenaDetails: {},
             areaCode: "",
+            codeEvent: "",
             arenaId: "",
             arena_name: "",
             loading: false,
@@ -1012,7 +1013,7 @@ export default {
                 
 
                     // date format MM/DD/YYYY || DD/MM/YYYY
-                    const dateFormatting = (date) => (moment(date,'MM/DD/YYYY').isValid() ? moment(date,'MM/DD/YYYY').format('LL') : moment(date,'DD/MM/YYYY').isValid() ? moment(date,'DD/MM/YYYY').format('LL')  : moment(date).format('LL'));
+                    const dateFormatting = (date) => (moment(date,'MM/DD/YYYY').isValid() ? moment(date,'MM/DD/YYYY').format('YYYY-MM-DD LTS') : moment(date,'DD/MM/YYYY').isValid() ? moment(date,'DD/MM/YYYY').format('YYYY-MM-DD LTS')  : moment(date).format('YYYY-MM-DD LTS'));
                     
                     // if date is serial
                     const ExcelDateToJSDate = (serial) => {
@@ -1030,10 +1031,12 @@ export default {
 
                     const eventCreatedUTC = ExcelDateToJSDate(arrayData[0][2].A);
                     const eventClosedUTC = ExcelDateToJSDate(arrayData[0][4].A);
-                    const isValidEventArenaDate = (stringDate) => (moment(stringDate, 'MM/DD/YYYY').isValid() || moment(stringDate, 'DD/MM/YYYY').isValid()  ? stringDate : null)
+                    const isValidEventArenaDate = (stringDate) => (moment(stringDate, 'MM/DD/YYYY hh:mm:ss a').isValid() || moment(stringDate, 'DD/MM/YYYY hh:mm:ss a').isValid()  ? stringDate : null)
  
                     const eventDateCreated = dateFormatting(mergeObj.dateCreated  || isValidEventArenaDate(eventDetailsA[2]?.A) || eventCreatedUTC);
                     const eventDateClosed = dateFormatting(mergeObj.dateClosed || isValidEventArenaDate(eventDetailsA[4]?.A) || eventClosedUTC)
+
+                    console.log(eventDateCreated)
           
                     const objectKeyed = (array) => {
                         let objectKeyReplacedArray = [];
@@ -1207,8 +1210,8 @@ export default {
                             const group = soaFr === 'fr' ? 'Replenish' : 'Deposit'
                             const arenaName = rest.arenaName.indexOf('/') > -1 ? rest.arenaName.replace(/\//g, '~') : rest.arenaName
                             const areaCode = rest.areaCode.indexOf('/') > -1 ? rest.areaCode.replace(/\//g, '~') : rest.areaCode
-                            const codeEvent = `${areaCode.toLowerCase()}${moment(rest.eventCreated, 'MM/DD/YYYY hh:mm:ss a').format('X')}`;
-
+                            const codeEvent = `${areaCode.toLowerCase()}${moment(rest.eventCreated).format('X')}`;
+                       
 
                             rest = {
 								areaCode,
@@ -1415,7 +1418,6 @@ export default {
         
         openModel(data) {
             
-           console.log('>>>>',data.total_meron_wala)
             if (data.arena_details == null) {
                 swal.fire({
                     icon: "warning",
@@ -1440,6 +1442,7 @@ export default {
                 this.bankId = data.arena_details.bank_id;
                 this.arena_name = data.arena_name;
                 this.areaCode = data.areaCode;
+                this.codeEvent = data.codeEvent;
                 const totalMWBets = data.total_meron_wala;
                 const drawCancelled = data.draw_cancelled;
                 const draw = data.draw;
@@ -1603,13 +1606,13 @@ export default {
     
 
      
-        generateReport(areaCode) {
+        generateReport(codeEvent) {
             console.log("generating pdf..");
 
             this.$refs.html2Pdf.generatePdf();
 
             axios
-                .put("api/arenaStatus/" + areaCode)
+                .put("api/arenaStatus", [{codeEvent, status: 'done'}])
                 .then(
                     (data) => (
                         Fire.$emit("AfterCreate"),
@@ -1618,7 +1621,7 @@ export default {
                     )
                 );
         },
-        async downloadImg(details, areaCode) {
+        async downloadImg(details, codeEvent) {
             
             const el = this.$refs.soaReport;
 
@@ -1644,9 +1647,8 @@ export default {
 
 
             
-
             axios
-                .put("api/arenaStatus/" + areaCode)
+                .put("api/arenaStatus", [{codeEvent, status: 'done'}])
                 .then(
                     (data) => (
                         Fire.$emit("AfterCreate"),
@@ -1657,12 +1659,14 @@ export default {
           
         },
         multiDownloads() {
-       
+            let statusArenas = [];
             this.downloadingReport  = true;
 
             const divsss = document.querySelectorAll(".reportsoaoutput");
 
             for (let i = 0; i < this.selected.length; i++) {
+                statusArenas.push({codeEvent: this.selected[i].codeEvent, status: 'done'});
+      
                 html2canvas(divsss[i], {
                     onclone: function (clonedDoc) {
                         const elems =
@@ -1674,8 +1678,6 @@ export default {
                     type: "dataURL",
                     backgroundColor: "#fafafa",
                 }).then((canvas) => {
-                  
-                       
                         const link = document.createElement("a");
                         // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
                         link.download = `${this.selected[i].arena_name}.png`;
@@ -1686,26 +1688,32 @@ export default {
                            setTimeout(() => {
                             document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
                         }, 500);
-                      
-                    // }
-                }).then(() => {
-                    axios.put("api/arenaStatus/" + this.selected[i].areaCode)
+            
                 }).then(() => {
                     if(this.selected.length - 1 === i) {
                       
                         const c = this.arenaData.data.filter(arena => !this.selected.find(select => select.areaCode === arena.areaCode))
                 
                         this.arenaData.data = c
-                        
+                       
                         setTimeout(async () => {
                                 this.downloadingReport = false
                                 console.log("done");  
                                 this.selected = []                    
                         }, 5000);
+                        
                     }
                 })   
+
+
               
             }
+
+            // .then(() => {
+                    axios.put("api/arenaStatus",statusArenas)
+            //     }).
+
+            // console.log(statusArenas)
             
         },
         defineEmail(arrayEmail){
