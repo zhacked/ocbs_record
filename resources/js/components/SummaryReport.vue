@@ -221,7 +221,7 @@ export default {
         },
         convertToExcel(data){
             
-            var value = moment(data).format("YYYY-MM-DD");
+            var value = moment(data).format("YYYY-MM-DD LTS");
             var date = moment(data).format("MMMM-DD-YYYY");
             
             console.log(value + '' + date);

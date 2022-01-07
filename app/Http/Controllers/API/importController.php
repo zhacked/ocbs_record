@@ -201,10 +201,8 @@ class importController extends Controller
         ]);
     }
     public function ConvertToExcel($data){
-
-     
+        
         return import::Where('date_closed',$data)
-        ->whereGroup('Deposit')
         ->whereNotNull('status')->get();
       
     }

@@ -255,17 +255,6 @@
                                     ]"
                                 ></v-text-field>
 				
-                                <!-- <v-text-field
-                                    label="Email"
-                                     placeholder="sample@gmail.com"
-                                    outlined
-                                   
-                                    v-model="form.email"
-                                    :rules="[
-                                    () => !!form.email || 'This field is required',
-                                    () =>  /.+@.+\..+/.test(form.email) || 'E-mail must be valid'
-                                    ]"
-                                ></v-text-field> -->
                                   <v-combobox
                                     v-model="form.email"
                                     :items="emails.data"
@@ -290,8 +279,20 @@
                                         v-bind="data.attrs"
                                         :input-value="data.selected"
                                         :disabled="data.disabled"
-                                        @click:close="selectItem(data.item.id)"
+                                        @click:close="selectItem(data.item.id) "
                                         close
+                                        v-if="editmode"   
+                                        >
+                                       
+                                        {{typeof data.item === 'object' ? data.item.email : data.item}}
+                                        </v-chip>
+
+                                        <v-chip
+                                        :key="JSON.stringify(data.item.email)"
+                                        v-bind="data.attrs"
+                                        :input-value="data.selected"
+                                        :disabled="data.disabled"
+                                        v-else
                                         >
                                        
                                         {{typeof data.item === 'object' ? data.item.email : data.item}}

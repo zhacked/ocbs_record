@@ -19,7 +19,6 @@ class CreateArenasTable extends Migration
             $table->string('address');
             $table->string('operator');
             $table->string('contact_number');
-            $table->string('email');
             $table->timestamps();
         });
     }
