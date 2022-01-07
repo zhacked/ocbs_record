@@ -81,8 +81,8 @@
                                             :headers="headers"
                                             :items="deposit"
                                             :search="search"
-                                            sort-by="updated_at"
-                                            group-by="updated_at"
+                                            sort-by="date_closed"
+                                            group-by="date_closed"
                                             class="elevation-1 text-center"
                                              single-expand
                                              :footer-props="{
@@ -109,7 +109,7 @@
                                                       <div class=" float-right">
                                                            <v-btn 
                                                             small  
-                                                            @click="convertToExcel(group )"
+                                                            @click="convertToExcel(group)"
                                                             outlined
                                                             color="green" 
                                                            >
@@ -200,9 +200,7 @@ export default {
                 { text: "SAO#", value: "Soa_number" },
                 { text: "OCBS Name", value: "arena_name" },
                 { text: "Amount", value: "for_total" },
-                { text: "date", value: "updated_at" },
          
-              
             ],
             deposit:[],
             reflenish:[],
@@ -216,21 +214,23 @@ export default {
         loadSummary() {
             axios
                 .get("api/depositeandreflenish")
-                .then(({ data }) => (
-                
-                    this.deposit = data.dp,
-                    this.reflenish = data.rf
-                ));
+                .then(({ data }) => {
+                    this.deposit = data.dp;
+                    this.reflenish = data.rf;
+                });
         },
         convertToExcel(data){
-
+            
             var value = moment(data).format("YYYY-MM-DD");
             var date = moment(data).format("MMMM-DD-YYYY");
+            
+            console.log(value + '' + date);
+
             var workbooks =  XLSX.utils.book_new();
             var worksheet = '';
             let aray = [];
             axios.get("api/convertToExcel/"+ value).then(({ data }) => (
-
+                console.log(data),
                 data.forEach((val) => {
 
                     const test = {

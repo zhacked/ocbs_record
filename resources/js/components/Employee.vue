@@ -467,7 +467,6 @@
                     { text: 'Email', value: 'email' },
                     { text: 'Number', value: 'contact'},
                     { text: 'Position', value: 'position'},
-                    { text: 'Assign', value: 'assign'},
                     {text:'Group', value: 'group'},
 
                     { text: '', value: 'actions', sortable: false },
@@ -536,6 +535,8 @@
             },
             addnewPostion(){
                 $('#addPostion').modal('show');
+                 this.positionform.reset();
+                   this.editmode = false;
             },
             createPosition(){
                 this.positionform.post('api/saveposition').then((data)=> {
