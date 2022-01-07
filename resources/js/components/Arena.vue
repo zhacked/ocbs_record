@@ -370,8 +370,6 @@
                 if (value instanceof Array && value.length == 0) {
                     return 'Email is Required.';
                 }
-             
-            
                     return true;
                 },
             selectItem(id){
@@ -587,25 +585,23 @@
         },
          watch: {
              "form.email": function (val) {
-                    if (val.length > 5) {
-                        this.$nextTick(() => this.form.email.pop())
-                    }
 
-                     
-                    val.forEach(function (x) {
-                        // console.log(/.+@.+\..+/.test(x));
-                        if(/.+@.+\..+/.test(x) == false ){
-                            this.emailRules = false
+                    val.forEach((x) =>  {
+                        if(!(/.+@.+\..+/.test(x))){
+                          this.$nextTick(() => this.form.email.pop())
                         }
-                     
                     });
 
-                    if(this.emailRules == false){
+                     if (val.length > 5) {
                         this.$nextTick(() => this.form.email.pop())
-                    }
+                    }     
+                },
+            // "form.contact_number" : function (val){
+            //    if(val.substring(0 , 1 ) > 0){
+            //     this.$nextTick(() => this.form.contact_number.pop())
+            //    }
                    
-                    
-                }
+            // }
            
         }
     }
