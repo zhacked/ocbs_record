@@ -1,9 +1,3 @@
-<style scoped>
-.nav-tabs .nav-link.active {
-    background-color: #00c4f5 !important ;
-    color: white !important;
-}
-</style>
 
 <template>
     <v-app>
@@ -133,11 +127,7 @@
                                             :items="arenaData.data"
                                             :items-per-page="10"
                                             v-model="selected"
-                                            :footer-props="{
-                                                'items-per-page-options': [
-                                                    10, 20, 30, 40, 50, 100, -1
-                                                ],
-                                            }"
+                                          
                                             :loading="downloadingReport"
                                             :search="search"
                                             :show-select="
@@ -151,12 +141,39 @@
                                             "
                                             :single-select="singleSelect"
                                             class="elevation-1 text-center"
+                                          
+                                            :footer-props="{
+                                                'items-per-page-options': [
+                                                    10, 20, 30, 40, 50, 100, -1
+                                                ],
+                                            }"
+                                            @toggle-select-all="selectAllToggle"
+                                            
                                         >
+                                        
                                             <template
-                                                v-slot:[`item.actions`]="{
-                                                    item,
+                                                v-slot:[`item.data-table-select`]="{
+                                                    item, isSelected, select
+                
                                                 }"
                                             >
+                                       
+                                                  <v-simple-checkbox
+                                                :value="isSelected"
+                                                :readonly="item.disabled"
+                                                :disabled="item.arena_details ? false : true"
+                                                @input="select($event)"
+                                            ></v-simple-checkbox>
+                                            </template>
+
+                                     
+                                            <template
+                                                v-slot:[`item.actions`]="{
+                                                    item
+
+                                                }"
+                                            >
+                                           
                                                 <v-tooltip top>
                                                     <template
                                                         v-slot:activator="{
@@ -956,6 +973,8 @@ export default {
             emailFormat: "",
             depositReplenishTxt: {},
             pictures: [],
+            disabledCount: 0,
+            selectedItems: []
         };
     },
     methods: {
@@ -1981,6 +2000,25 @@ export default {
                 (this.bankAccounts = data), console.log("ACCOUNT", data);
             });
         },
+        selectAllToggle(props) {
+            let dis = 0;
+            this.selectedItems = props.items
+          
+            props.items.map(x => {
+                if(!x.arena_details) dis+=1;
+            })
+
+
+            if(this.selected.length != (props.items.length - dis)) {
+                this.selected = [];
+                const self = this;
+                props.items.forEach(item => {
+                if(item.arena_details) {
+                    self.selected.push(item);
+                } 
+                });
+            } else this.selected = [];
+        }
     },
 
     computed: {
@@ -2156,8 +2194,8 @@ export default {
         },
     },
 
-    created() {
-        this.showData();
+    async created() {
+        await this.showData();
         this.importwithstatus();
         this.loadEmployee();
         this.loadBankDetails();
@@ -2165,6 +2203,19 @@ export default {
             this.showData();
             this.importwithstatus();
         });
+        // console.log('Selected ITems',this.selectedItems)
+        // const self = this;
+        // this.arenaData.data.map(item => {
+        //     if (!item.arena_details) self.disabledCount += 1
+          
+        // })
+
     },
 };
 </script>
+<style scoped>
+.nav-tabs .nav-link.active {
+    background-color: #00c4f5 !important ;
+    color: white !important;
+}
+</style>
