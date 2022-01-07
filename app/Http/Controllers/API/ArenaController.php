@@ -52,7 +52,7 @@ class ArenaController extends Controller
     public function store(Request $request)
     {
 
-
+        
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
@@ -70,9 +70,8 @@ class ArenaController extends Controller
         ]);
 
         foreach ($request['email'] as $email){
-
              Email::updateOrCreate([
-                'arena_name' => $request['arena'],
+                'arena_id' => $arena->id,
                 'email' => $email
             ]);
         }
@@ -96,9 +95,9 @@ class ArenaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getEmilByid($arenaName)
+    public function getEmilByid($id)
     {
-        return Email::where('arena_name',$arenaName)->get();
+        return Email::where('arena_id',$id)->get();
     }
 
     public function deleteEmail($id){
@@ -148,7 +147,7 @@ class ArenaController extends Controller
             foreach ($request['email'] as $email){
                     if(!is_array($email)){
                         $data = Email::Create([
-                            'arena_name' => $request['arena'],
+                            'arena_id' => $request['id'],
                             'email' => $email
                         ]);
                      }

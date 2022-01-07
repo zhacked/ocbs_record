@@ -504,7 +504,7 @@
                 this.form.operator = arenas.operator
                 this.form.contact_number = arenas.contact_number
                
-                axios.get('api/getEmail/'+ arenas.arena).then((data) => {
+                axios.get('api/getEmail/'+ arenas.id).then((data) => {
                    this.emails = data
                    this.form.email = data.data
                     console.log(data.data)

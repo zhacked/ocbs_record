@@ -39,7 +39,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     // Route::put('arenaStatus/{id}', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
     Route::put('arenaStatus', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
     Route::put('updateBankSelection/{id}', [App\Http\Controllers\API\ArenaController::class, 'updateBankSelection']);
-    Route::get('getEmail/{arenaName}', [App\Http\Controllers\API\ArenaController::class, 'getEmilByid']);
+    Route::get('getEmail/{id}', [App\Http\Controllers\API\ArenaController::class, 'getEmilByid']);
     Route::get('emailDelete/{id}', [App\Http\Controllers\API\ArenaController::class, 'deleteEmail']);
     Route::get('arenaSelectedBank/{id}', [App\Http\Controllers\API\BankDetailsController::class, 'arenaSelectedBank']);
     Route::get('convertToExcel/{data}', [App\Http\Controllers\API\ImportController::class, 'ConvertToExcel']);
