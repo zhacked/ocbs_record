@@ -19,4 +19,5 @@ npm run dev
 
 ## Seeder
 php artisan db:seed --class=UserSeeder
+php artisan db:seed --class=PositionSeeder
 
