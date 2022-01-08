@@ -18,6 +18,6 @@ php artisan serve
 npm run dev
 
 ## Seeder
-php artisan db:seed --class=UserSeeder
+php artisan db:seed --class=UserSeeder <br>
 php artisan db:seed --class=PositionSeeder
 
