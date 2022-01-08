@@ -255,18 +255,17 @@
                                     ]"
                                 ></v-text-field>
 				
-                                  <v-combobox
+                                <v-combobox
                                     v-model="form.email"
                                     :items="emails.data"
                                     label="Email Address"
-                                     hint="Maximum of 5 Emails"
+                                    hint="Maximum of 5 Emails"
                                     multiple
                                     chips
                                     outlined
-                                    auto-select-first
                                     deletable-chips
                                     item-text='email'
-                                   hide-selected
+                                 
                                     :rules="[required]"
                                     >
                                     <template v-slot:selection="data">
@@ -505,11 +504,13 @@
                 this.form.address = arenas.address
                 this.form.operator = arenas.operator
                 this.form.contact_number = arenas.contact_number
+             
+                // console.log(this.form.id)
+                axios.get('api/getEmail/'+ this.form.id).then((data) => {
+                    console.log(data)
+                //    this.emails = data
+                    this.form.email = data.data
                
-                axios.get('api/getEmail/'+ arenas.id).then((data) => {
-                   this.emails = data
-                   this.form.email = data.data
-                    console.log(data.data)
                 })
 
             },
@@ -586,22 +587,17 @@
          watch: {
              "form.email": function (val) {
 
-                    val.forEach((x) =>  {
-                        if(!(/.+@.+\..+/.test(x))){
-                          this.$nextTick(() => this.form.email.pop())
-                        }
-                    });
+                    // val.forEach((x) =>  {
+                    //     if(!(/.+@.+\..+/.test(x))){
+                    //       this.$nextTick(() => this.form.email.pop())
+                    //     }
+                    // });
 
                      if (val.length > 5) {
                         this.$nextTick(() => this.form.email.pop())
                     }     
                 },
-            // "form.contact_number" : function (val){
-            //    if(val.substring(0 , 1 ) > 0){
-            //     this.$nextTick(() => this.form.contact_number.pop())
-            //    }
-                   
-            // }
+            
            
         }
     }

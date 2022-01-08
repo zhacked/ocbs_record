@@ -97,7 +97,10 @@ class ArenaController extends Controller
      */
     public function getEmilByid($id)
     {
-        return Email::where('arena_id',$id)->get();
+      
+       $email =  Email::where('arena_id',$id)->get();
+     
+       return $email;
     }
 
     public function deleteEmail($id){
