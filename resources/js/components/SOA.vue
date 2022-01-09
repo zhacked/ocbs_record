@@ -247,11 +247,7 @@
                                                     40,
                                                     50,
                                                     100,
-                                                    200,
-                                                    300,
-                                                    400,
-                                                    500,
-                                                    1000 - 1,
+                    
                                                 ],
                                             }"
                                             @toggle-select-all="selectAllToggle"
