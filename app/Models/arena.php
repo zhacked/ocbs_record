@@ -27,7 +27,7 @@ class arena extends Model
         return $this->hasMany('App\Models\Email','arena_id', 'id');
     } 
 
-    protected static $logAttributes = ['arena','BankDetails.bank_name','BankDetails.bank_number','EmailDetails.email'];
+    // protected static $logAttributes = ['arena','BankDetails.bank_name','BankDetails.bank_number','EmailDetails.email']; // ERROR
     
     protected static $logName = 'arena';
     

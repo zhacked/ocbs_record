@@ -1,4 +1,3 @@
-
 <template>
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
@@ -85,7 +84,7 @@
                                 >
                                     <v-row>
                                         <v-col>
-                                            <v-btn
+                                            <!-- <v-btn
                                                 v-show="this.selected != 0"
                                                 :loading="downloadingReport"
                                                 :disabled="downloadingReport"
@@ -102,7 +101,107 @@
                                                         >
                                                     </span>
                                                 </template>
-                                            </v-btn>
+                                            </v-btn> -->
+                                            <!--  -->
+                                            <v-menu
+                                               offset-x
+                                                v-if="this.selected != 0"
+                                                rounded="rounded"
+                                                :loading="downloadingReport"
+                                                :disabled="downloadingReport"
+                                            >
+                                                <template
+                                                    v-slot:activator="{
+                                                        attrs,
+                                                        on,
+                                                    }"
+                                                >
+                                                    <v-btn
+                                                         color="primary lighten-1"
+                                                        v-bind="attrs"
+                                                        v-on="on"
+                                                         :loading="
+                                                                downloadingReport
+                                                            "
+                                                            :disabled="
+                                                                downloadingReport
+                                                            "
+                                                    >
+                                                         <v-icon light
+                                                                >mdi-image</v-icon
+                                                            > Download
+                                                              <template
+                                                                v-slot:loader
+                                                            >
+                                                                <span
+                                                                    >Downloading...</span
+                                                                >
+                                                                <!-- <span
+                                                                    class="custom-loader"
+                                                                >
+                                                                    <v-icon
+                                                                        light
+                                                                        >mdi-cached</v-icon
+                                                                    >
+                                                                </span> -->
+                                                            </template>
+                                                    </v-btn>
+                                                </template>
+
+                                                <v-list >
+                                                    <v-list-item>
+                                                        <v-btn
+                                                            v-show="
+                                                                this.selected !=
+                                                                0
+                                                            "
+                                                            :loading="
+                                                                downloadingReport
+                                                            "
+                                                            :disabled="
+                                                                downloadingReport
+                                                            "
+                                                            color="green lighten-1"
+                                                            class="ma-2 white--text allbtn"
+                                                            @click="
+                                                                multiDownloads
+                                                            "
+                                                        >
+                                                            <v-icon light
+                                                                >mdi-download</v-icon
+                                                            >
+                                                            PNG
+                                                           
+                                                        </v-btn>
+                                                    </v-list-item>
+                                                    <v-list-item >
+                                                        <v-btn
+                                                            v-show="
+                                                                this.selected !=
+                                                                0
+                                                            "
+                                                            :loading="
+                                                                downloadingReport
+                                                            "
+                                                            :disabled="
+                                                                downloadingReport
+                                                            "
+                                                            color="yellow darken-3"
+                                                            class="ma-2 white--text allbtn"
+                                                            @click="
+                                                                downloadZip
+                                                            "
+                                                        >
+                                                            <v-icon light
+                                                                >mdi-zip-box</v-icon
+                                                            >
+                                                            Zip
+                                                           
+                                                        </v-btn>
+                                                    </v-list-item>
+                                                </v-list>
+                                            </v-menu>
+                                            <!--  -->
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col>
@@ -127,7 +226,6 @@
                                             :items="arenaData.data"
                                             :items-per-page="10"
                                             v-model="selected"
-                                          
                                             :loading="downloadingReport"
                                             :search="search"
                                             :show-select="
@@ -141,39 +239,47 @@
                                             "
                                             :single-select="singleSelect"
                                             class="elevation-1 text-center"
-                                          
                                             :footer-props="{
                                                 'items-per-page-options': [
-                                                    10, 20, 30, 40, 50, 100, -1
+                                                    10,
+                                                    20,
+                                                    30,
+                                                    40,
+                                                    50,
+                                                    100,
+                                                    200,
+                                                    300,
+                                                    400,
+                                                    500,
+                                                    1000 - 1,
                                                 ],
                                             }"
                                             @toggle-select-all="selectAllToggle"
-                                            
                                         >
-                                        
                                             <template
                                                 v-slot:[`item.data-table-select`]="{
-                                                    item, isSelected, select
-                
+                                                    item,
+                                                    isSelected,
+                                                    select,
                                                 }"
                                             >
-                                       
-                                                  <v-simple-checkbox
-                                                :value="isSelected"
-                                                :readonly="item.disabled"
-                                                :disabled="item.arena_details ? false : true"
-                                                @input="select($event)"
-                                            ></v-simple-checkbox>
+                                                <v-simple-checkbox
+                                                    :value="isSelected"
+                                                    :readonly="item.disabled"
+                                                    :disabled="
+                                                        item.arena_details
+                                                            ? false
+                                                            : true
+                                                    "
+                                                    @input="select($event)"
+                                                ></v-simple-checkbox>
                                             </template>
 
-                                     
                                             <template
                                                 v-slot:[`item.actions`]="{
-                                                    item
-
+                                                    item,
                                                 }"
                                             >
-                                           
                                                 <v-tooltip top>
                                                     <template
                                                         v-slot:activator="{
@@ -234,8 +340,8 @@
                                                 arenaData.data &&
                                                 arenaData.data.length > 0
                                             "
-                                            :loading="loading"
-                                            :disabled="loading"
+                                            :loading="downloadingReport"
+                                            :disabled="downloadingReport"
                                             @click="truncate"
                                             color="red lighten-1"
                                             class="ma-2 white--text"
@@ -836,6 +942,7 @@ import {
     values,
     assign,
     concat,
+    sortBy,
 } from "lodash";
 import XLSX from "xlsx";
 import {
@@ -847,6 +954,9 @@ import {
 
 import VueHtml2pdf from "vue-html2pdf";
 import html2canvas from "html2canvas";
+import JSZip from "jszip";
+import JSZipUtils from "jszip-utils";
+import { saveAs } from "file-saver";
 import moment from "moment";
 import DateSOA from "./DialogPreview/DateSOA.vue";
 import ArenaDetails from "./DialogPreview/ArenaDetails.vue";
@@ -974,7 +1084,7 @@ export default {
             depositReplenishTxt: {},
             pictures: [],
             disabledCount: 0,
-            selectedItems: []
+            selectedItems: [],
         };
     },
     methods: {
@@ -1046,7 +1156,7 @@ export default {
                                     title: "Successfully Deleted",
                                 });
                                 Fire.$emit("AfterCreate");
-                                location.reload();
+                                // location.reload(); //to be removed
                             } else {
                                 swal.fire({
                                     icon: "error",
@@ -1472,10 +1582,13 @@ export default {
                     }));
 
                     const newSetReport = concat(newsoa, newfr);
+                    const sortReport = sortBy(newSetReport, [
+                        function (o) {
+                            return o.areaCode;
+                        },
+                    ]);
 
-                    console.log(newSetReport);
-
-                    this.ocbsArrayFiltered = newSetReport;
+                    this.ocbsArrayFiltered = sortReport;
                 };
                 reader.readAsBinaryString(file);
             } else {
@@ -1515,7 +1628,8 @@ export default {
                         Fire.$emit("AfterCreate");
                         swal.fire("Successfully!", "Excel Imported", "success");
                         this.$Progress.finish();
-                        location.reload();
+                        // location.reload(); // to be removed
+                        // this.showData()
                     })
                     .catch((error) => {
                         (this.dialog2 = false),
@@ -1530,25 +1644,6 @@ export default {
         },
         async importwithstatus() {
             const data = await axios.get("api/importwithstatus");
-
-            // let helper = {};
-
-            // const duplicateObj = await data.data.reduce(function (r, obj) {
-            //     const key = obj.arena_name;
-
-            //     if (!helper[key]) {
-            //         helper[key] = Object.assign({}, obj); // create a copy of o
-
-            //         r.push(helper[key]);
-            //     } else {
-
-            //         helper[key].mobile = {
-            //             ...obj,
-            //         };
-            //     }
-
-            //     return r;
-            // }, []);
 
             const newArray = [];
             data.data.forEach((dObj) => {
@@ -1571,24 +1666,7 @@ export default {
         },
         async showData() {
             const data = await axios.get("api/import");
-            // let helper = {};
-
-            // const duplicateObj = await data.data.reduce(function (r, obj) {
-            //     const key = obj.arena_name;
-
-            //     if (!helper[key]) {
-            //         helper[key] = Object.assign({}, obj); // create a copy of o
-
-            //         r.push(helper[key]);
-            //     } else {
-            //         // const {arenaName, ...o} = obj;
-            //         helper[key].mobile = {
-            //             ...obj,
-            //         };
-            //     }
-
-            //     return r;
-            // }, []);
+          
 
             const newArray = [];
             data.data.forEach((dObj) => {
@@ -1662,7 +1740,7 @@ export default {
                 const drawTwo = data.drawTwo;
                 const mwTwoMobile = data.mwTwoMobile;
                 const drawTwoMobile = data.drawTwoMobile;
-                // const netOperatorsCommission = data.netOperatorsCommission;
+
 
                 this.computation = {
                     totalMWBets: numberFormat(totalMWBets),
@@ -1893,49 +1971,6 @@ export default {
                     status: "done",
                 });
 
-                // html2canvas(divsss[i], {
-                //     onclone: function (clonedDoc) {
-                //         const elems =
-                //             clonedDoc.getElementsByClassName("reportsoaoutput");
-                //         for (let i = 0; i < elems.length; i++) {
-                //             elems[i].style.display = "block";
-                //         }
-                //     },
-                //     type: "dataURL",
-                //     backgroundColor: "#fafafa",
-                // })
-                //     .then((canvas) => {
-                //         const link = document.createElement("a");
-                //         // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
-                //         link.download = `${this.selected[i].arena_name}.png`;
-                //         link.href = canvas.toDataURL("image/png");
-                //         document.body.appendChild(link);
-                //         link.click();
-
-                //         setTimeout(() => {
-                //             document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
-                //         }, 500);
-                //     })
-                //     .then(() => {
-                //         if (this.selected.length - 1 === i) {
-                //             const c = this.arenaData.data.filter(
-                //                 (arena) =>
-                //                     !this.selected.find(
-                //                         (select) =>
-                //                             select.areaCode === arena.areaCode
-                //                     )
-                //             );
-
-                //             this.arenaData.data = c;
-
-                //             setTimeout(async () => {
-                //                 this.downloadingReport = false;
-                //                 console.log("done");
-                //                 this.selected = [];
-                //             }, 5000);
-                //         }
-                //     });
-
                 const canvas = await html2canvas(divsss[i], {
                     onclone: function (clonedDoc) {
                         const elems =
@@ -1974,7 +2009,7 @@ export default {
                         this.downloadingReport = false;
                         console.log("done");
                         this.selected = [];
-                    }, 5000);
+                    }, 3000);
                 }
             }
 
@@ -1983,6 +2018,99 @@ export default {
             //     }).
 
             // console.log(statusArenas)
+        },
+        async downloadZip() {
+             let statusArenas = [];
+            this.downloadingReport = true;
+            // // -----------ZIP--------------- // // //
+            const divsss = document.querySelectorAll(".reportsoaoutput");
+            const zip = new JSZip();
+
+            const urlToPromise = async (url) => {
+                return new Promise(function (resolve, reject) {
+                    JSZipUtils.getBinaryContent(url, function (err, data) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(data);
+                            console.log(data);
+                        }
+                    });
+                });
+            };
+
+        const generateZipFile = async (zip) => {
+                const blob = await zip.generateAsync({ type: "blob" });
+                await saveAs(
+                    blob,
+                    `report-${moment(this.selected[0].date_closed).format(
+                        "MMDYY"
+                    )}.zip`
+                );
+                console.log("zip generated");
+                 await axios.put("api/arenaStatus", statusArenas);
+                    const c = this.arenaData.data.filter(
+                        (arena) =>
+                            !this.selected.find(
+                                (select) => select.areaCode === arena.areaCode
+                            )
+                    );
+
+                    this.arenaData.data = c;
+
+                    setTimeout(async () => {
+                        this.downloadingReport = false;
+                        console.log("done");
+                        this.selected = [];
+                    }, 3000);
+            };
+            // start benchmark
+            const t = new Date();
+            // some xml processing
+
+            for (let i = 0; i < this.selected.length; i++) {
+                statusArenas.push({
+                    codeEvent: this.selected[i].codeEvent,
+                    status: "done",
+                });
+
+                console.log(`Currently at ${this.selected[i].id}, ${new Date() - t}ms`)
+                // var queryId = allSectionsArray[i].id.toString();
+
+                const canvas = await html2canvas(divsss[i], {
+                    onclone: function (clonedDoc) {
+                        const elems =
+                            clonedDoc.getElementsByClassName("reportsoaoutput");
+                        for (let i = 0; i < elems.length; i++) {
+                            elems[i].style.display = "block";
+                        }
+                    },
+                    type: "dataURL",
+                    backgroundColor: "#fafafa",
+                });
+
+                const link = document.createElement("a");
+                // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
+                link.download = `${this.selected[i].arena_name}.png`;
+                link.href = await canvas.toDataURL("image/png");
+                const url = link.href;
+
+                const folderName =
+                    parseFloat(this.selected[i].for_total) < 0 ? "fr" : "soa";
+
+                const arenaName =
+                    (await this.selected[i].arena_name.indexOf("/")) > -1
+                        ? this.selected[i].arena_name.replace(/\//g, "-")
+                        : this.selected[i].arena_name;
+                const filename = `${folderName}/${arenaName}.png`;
+
+                await zip.file(filename, await urlToPromise(url), {
+                    binary: true,
+                }); //Create new zip file with filename and content
+            }
+
+            //Generate zip file
+            await generateZipFile(zip);
         },
         defineEmail(arrayEmail) {
             console.log(arrayEmail);
@@ -2003,22 +2131,19 @@ export default {
         selectAllToggle(props) {
             let dis = 0;
             this.selectedItems = props.items
-          
             props.items.map(x => {
                 if(!x.arena_details) dis+=1;
             })
-
-
             if(this.selected.length != (props.items.length - dis)) {
                 this.selected = [];
                 const self = this;
                 props.items.forEach(item => {
                 if(item.arena_details) {
                     self.selected.push(item);
-                } 
+                }
                 });
             } else this.selected = [];
-        }
+        },
     },
 
     computed: {
@@ -2203,13 +2328,6 @@ export default {
             this.showData();
             this.importwithstatus();
         });
-        // console.log('Selected ITems',this.selectedItems)
-        // const self = this;
-        // this.arenaData.data.map(item => {
-        //     if (!item.arena_details) self.disabledCount += 1
-          
-        // })
-
     },
 };
 </script>
