@@ -1774,7 +1774,6 @@ export default {
                         cashWithdrawal: numberFormat(cashWithdrawal),
                     },
 
-                    // netOperatorsCommission,
                 };
             }
 
@@ -1934,7 +1933,7 @@ export default {
             const printCanvas = await html2canvas(el, options);
 
             const link = document.createElement("a");
-            const soaFr = details.group === "Replenish" ? "FR" : "SOA";
+            // const soaFr = details.group === "Replenish" ? "FR" : "SOA";
 
             link.download = `${details.arena}.png`;
             link.href = printCanvas.toDataURL("image/png");
@@ -2006,14 +2005,10 @@ export default {
                         console.log("done");
                         this.selected = [];
                     }, 3000);
+                     this.importwithstatus()
                 }
             }
 
-            // .then(() => {
-            // axios.put("api/arenaStatus", statusArenas);
-            //     }).
-
-            // console.log(statusArenas)
         },
         async downloadZip() {
              let statusArenas = [];
@@ -2035,7 +2030,7 @@ export default {
                 });
             };
 
-        const generateZipFile = async (zip) => {
+            const generateZipFile = async (zip) => {
                 const blob = await zip.generateAsync({ type: "blob" });
                 await saveAs(
                     blob,
@@ -2059,6 +2054,7 @@ export default {
                         console.log("done");
                         this.selected = [];
                     }, 3000);
+                    this.importwithstatus()
             };
             // start benchmark
             const t = new Date();
