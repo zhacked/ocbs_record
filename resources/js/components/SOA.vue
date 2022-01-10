@@ -60,6 +60,7 @@
                                             role="tab"
                                             aria-controls="custom-tabs-three-home"
                                             aria-selected="true"
+                                            @click="() => this.selected = []"
                                             >On Going</a
                                         >
                                     </li>
@@ -72,6 +73,7 @@
                                             role="tab"
                                             aria-controls="custom-tabs-three-profile"
                                             aria-selected="false"
+                                            @click="() => this.selected = []"
                                             >Converted</a
                                         >
                                     </li>
@@ -84,25 +86,6 @@
                                 >
                                     <v-row>
                                         <v-col>
-                                            <!-- <v-btn
-                                                v-show="this.selected != 0"
-                                                :loading="downloadingReport"
-                                                :disabled="downloadingReport"
-                                                color="green lighten-1"
-                                                class="ma-2 white--text allbtn"
-                                                @click="multiDownloads"
-                                            >
-                                                Convert Now
-                                                <template v-slot:loader>
-                                                    <span>Converting...</span>
-                                                    <span class="custom-loader">
-                                                        <v-icon light
-                                                            >mdi-cached</v-icon
-                                                        >
-                                                    </span>
-                                                </template>
-                                            </v-btn> -->
-                                            <!--  -->
                                             <v-menu
                                                offset-x
                                                 v-if="this.selected != 0"
@@ -136,14 +119,7 @@
                                                                 <span
                                                                     >Downloading...</span
                                                                 >
-                                                                <!-- <span
-                                                                    class="custom-loader"
-                                                                >
-                                                                    <v-icon
-                                                                        light
-                                                                        >mdi-cached</v-icon
-                                                                    >
-                                                                </span> -->
+                                                              
                                                             </template>
                                                     </v-btn>
                                                 </template>
@@ -247,7 +223,7 @@
                                                     40,
                                                     50,
                                                     100,
-                    
+                                                    500
                                                 ],
                                             }"
                                             @toggle-select-all="selectAllToggle"
@@ -338,11 +314,37 @@
                                         aria-labelledby="custom-tabs-three-profile-tab"
                                     >
                                         <v-data-table
+                                    
+                                             item-key="codeEvent"
                                             :headers="headers"
                                             :items="arenaDatastatus.data"
                                             :items-per-page="10"
+                                            v-model="selected"
+                                            :loading="downloadingReport"
                                             :search="search"
+                                            :show-select="
+                                                downloadingReport ? false : true
+                                            "
+                                            :disable-filtering="
+                                                downloadingReport ? true : false
+                                            "
+                                            :disable-sort="
+                                                downloadingReport ? true : false
+                                            "
+                                            :single-select="singleSelect"
                                             class="elevation-1 text-center"
+                                            :footer-props="{
+                                                'items-per-page-options': [
+                                                    10,
+                                                    20,
+                                                    30,
+                                                    40,
+                                                    50,
+                                                    100,
+                                                    
+                                                ],
+                                            }"
+                                            @toggle-select-all="selectAllToggle"
                                         >
                                             <template
                                                 v-slot:[`item.actions`]="{
@@ -915,14 +917,23 @@
                                             persistent
                                             width="400"
                                         >
-                                            <v-card color="primary" dark>
+                                            <v-card :color="progressvalue === 100 ? 'light-blue darken-3' : 'light-blue accent-3'" dark>
                                                 <v-card-text>
                                                     {{downloadingReport ? 'Downloading...' :'Please stand by' }}
-                                                    <v-progress-linear
-                                                        indeterminate
-                                                        color="white"
-                                                        class="mb-0"
-                                                    ></v-progress-linear>
+                                                   
+                                                      <v-progress-linear
+                                                        v-model="progressvalue"
+                                                        color="light-blue darken-3"
+                                                        height="25"
+                                                        :buffer-value="progressvalue"
+                                                        stream
+                                                        >
+                                                      
+                                                            <template v-slot:default="{ value }">
+                                                                <strong>{{ value === 100 ? 'Complete' : `${Math.ceil(value)}%` }}</strong>
+                                                            </template>
+                                                     
+                                                        </v-progress-linear>
                                                 </v-card-text>
                                             </v-card>
                                         </v-dialog>
@@ -1086,6 +1097,7 @@ export default {
             pictures: [],
             disabledCount: 0,
             selectedItems: [],
+            progressvalue: 0,
         };
     },
     methods: {
@@ -1930,7 +1942,7 @@ export default {
             const printCanvas = await html2canvas(el, options);
 
             const link = document.createElement("a");
-            // const soaFr = details.group === "Replenish" ? "FR" : "SOA";
+    
 
             link.download = `${details.arena}.png`;
             link.href = printCanvas.toDataURL("image/png");
@@ -1958,6 +1970,7 @@ export default {
             const divsss = document.querySelectorAll(".reportsoaoutput");
 
             for (let i = 0; i < this.selected.length; i++) {
+                this.progressvalue = Math.ceil((parseInt(i+1)/parseInt(this.selected.length))*100)
                 statusArenas.push({
                     codeEvent: this.selected[i].codeEvent,
                     status: "done",
@@ -2048,15 +2061,18 @@ export default {
                     );
 
                     this.arenaData.data = c;
-
-                    setTimeout(async () => {
-                        this.downloadingReport = false;
-                        this.dialog2 = false
-                        
-                        console.log("done");
-                        this.selected = [];
-                    }, 1000);
-                    this.importwithstatus()
+                        if(this.progressvalue === 100) {
+                            setTimeout(async () => {
+                            this.downloadingReport = false;
+                            this.dialog2 = false
+                            
+                            console.log("done");
+                            this.selected = []; 
+                        }, 1000);
+                   
+                    }
+                     this.importwithstatus()
+                  
             };
             // start benchmark
             const t = new Date();
@@ -2069,7 +2085,9 @@ export default {
                 });
 
                 console.log(`Currently at ${this.selected[i].id}, ${new Date() - t}ms`)
-                // var queryId = allSectionsArray[i].id.toString();
+                
+                this.progressvalue = Math.ceil((parseInt(i+1)/parseInt(this.selected.length))*100)
+               
 
                 const canvas = await html2canvas(divsss[i], {
                     onclone: function (clonedDoc) {
