@@ -311,25 +311,7 @@
                                                 </v-tooltip>
                                             </template>
                                         </v-data-table>
-                                        <v-dialog
-                                            v-model="dialog2"
-                                            hide-overlay
-                                            persistent
-                                            width="700"
-                                        >
-                                            <v-card color="primary" dark>
-                                                <v-card-text>
-                                                    <h1>Please stand by</h1>
-                                                    <v-progress-linear
-                                                        indeterminate
-                                                        color="white"
-                                                        class="mb-0"
-                                                        striped
-                                                        height="10"
-                                                    ></v-progress-linear>
-                                                </v-card-text>
-                                            </v-card>
-                                        </v-dialog>
+                                       
 
                                         <v-btn
                                             v-show="
@@ -925,7 +907,30 @@
 
                 <!-- </v-col> -->
             </v-row>
-            <v-overlay :z-index="zIndex" :value="overlay"> </v-overlay>
+             <!-- PLEASE STAND BY -->
+           
+                    <v-dialog
+                                            v-model="dialog2"
+                                          
+                                            persistent
+                                            width="400"
+                                        >
+                                            <v-card color="primary" dark>
+                                                <v-card-text>
+                                                    {{downloadingReport ? 'Downloading...' :'Please stand by' }}
+                                                    <v-progress-linear
+                                                        indeterminate
+                                                        color="white"
+                                                        class="mb-0"
+                                                    ></v-progress-linear>
+                                                </v-card-text>
+                                            </v-card>
+                                        </v-dialog>
+
+            
+
+                                        
+                                        <!-- PLEASE STAND BY -->
         </v-container>
     </v-app>
 </template>
@@ -991,7 +996,7 @@ export default {
                 selectChecked2: null,
                 selectPrepared: null,
             },
-            overlay: false,
+            
             zIndex: 0,
             perPageOptions: [10, 15, 20, 30],
             singleSelect: false,
@@ -1186,17 +1191,14 @@ export default {
                 let eventsCombined = [];
                 let summaryReport = [];
                 let objMobileKiosk = [];
-                // let objectKeyReplacedArray = [];
+               
 
                 reader.onload = (e) => {
                     // eslint-disable-next-line no-unused-vars
 
                     const bstr = e.target.result;
                     const wb = XLSX.read(bstr, { type: "binary" });
-                    /* Get first worksheet */
-                    // const wsname = wb.SheetNames[0];
-                    // const wsname = wb.SheetNames;
-                    // const ws = wb.Sheets[wsname];
+                   
                     const ws = wb.SheetNames;
 
                     const filteredWS = ws.filter(function (value, index, arr) {
@@ -1208,11 +1210,6 @@ export default {
 
                     filteredWS.forEach((w) => {
                         const singleSheet = wb.Sheets[w];
-
-                        // const hhh = XLSX.utils.sheet_to_json(singleSheet, {
-                        //     header: "A",
-                        //     defval: 0,
-                        // });
 
                         arrayData.push(
                             XLSX.utils.sheet_to_json(singleSheet, {
@@ -1226,7 +1223,7 @@ export default {
 
                     arrayData[0].map((r) => {
                         if (Object.keys(r).length >= 17) reportCombined.push(r);
-                        // console.log(ExcelDateToJSDate(r.A))
+                        
                         if (typeof r.A == "string") eventDetailsA.push(r);
                         if (
                             typeof r.A == "string" &&
@@ -1957,7 +1954,7 @@ export default {
         async multiDownloads() {
             let statusArenas = [];
             this.downloadingReport = true;
-
+            this.dialog2 = true
             const divsss = document.querySelectorAll(".reportsoaoutput");
 
             for (let i = 0; i < this.selected.length; i++) {
@@ -2002,17 +1999,20 @@ export default {
 
                     setTimeout(async () => {
                         this.downloadingReport = false;
+                        this.dialog2 = false
                         console.log("done");
                         this.selected = [];
-                    }, 3000);
+                    }, 1000);
                      this.importwithstatus()
                 }
             }
 
         },
         async downloadZip() {
-             let statusArenas = [];
+            let statusArenas = [];
             this.downloadingReport = true;
+            this.dialog2 = true
+          
             // // -----------ZIP--------------- // // //
             const divsss = document.querySelectorAll(".reportsoaoutput");
             const zip = new JSZip();
@@ -2051,9 +2051,11 @@ export default {
 
                     setTimeout(async () => {
                         this.downloadingReport = false;
+                        this.dialog2 = false
+                        
                         console.log("done");
                         this.selected = [];
-                    }, 3000);
+                    }, 1000);
                     this.importwithstatus()
             };
             // start benchmark
@@ -2121,20 +2123,20 @@ export default {
             });
         },
         selectAllToggle(props) {
-            let dis = 0;
-            this.selectedItems = props.items
-            props.items.map(x => {
-                if(!x.arena_details) dis+=1;
-            })
-            if(this.selected.length != (props.items.length - dis)) {
-                this.selected = [];
-                const self = this;
-                props.items.forEach(item => {
-                if(item.arena_details) {
-                    self.selected.push(item);
-                }
-                });
-            } else this.selected = [];
+            // let dis = 0;
+            // this.selectedItems = props.items
+            // props.items.map(x => {
+            //     if(!x.arena_details) dis+=1;
+            // })
+            // if(this.selected.length != (props.items.length - dis)) {
+            //     this.selected = [];
+            //     const self = this;
+            //     props.items.forEach(item => {
+            //     if(item.arena_details) {
+            //         self.selected.push(item);
+            //     }
+            //     });
+            // } else this.selected = [];
         },
     },
 
