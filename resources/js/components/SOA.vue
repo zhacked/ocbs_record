@@ -2123,20 +2123,20 @@ export default {
             });
         },
         selectAllToggle(props) {
-            // let dis = 0;
-            // this.selectedItems = props.items
-            // props.items.map(x => {
-            //     if(!x.arena_details) dis+=1;
-            // })
-            // if(this.selected.length != (props.items.length - dis)) {
-            //     this.selected = [];
-            //     const self = this;
-            //     props.items.forEach(item => {
-            //     if(item.arena_details) {
-            //         self.selected.push(item);
-            //     }
-            //     });
-            // } else this.selected = [];
+            let dis = 0;
+            this.selectedItems = props.items
+            props.items.map(x => {
+                if(!x.arena_details) dis+=1;
+            })
+            if(this.selected.length != (props.items.length - dis)) {
+                this.selected = [];
+                const self = this;
+                props.items.forEach(item => {
+                if(item.arena_details) {
+                    self.selected.push(item);
+                }
+                });
+            } else this.selected = [];
         },
     },
 
