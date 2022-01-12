@@ -591,7 +591,8 @@
                                     />
 
                                     <BankBox
-                                        :bank="item.arena_details"
+                                        :bank="bank"
+                                         :banks="banks || []"
                                         :bankAccounts="bankAccounts || []"
                                         :arenaDetails="item.arena_details"
                                         :bankId="{ id: bankId }"
@@ -603,9 +604,23 @@
                                         "
                                         :editmode="editmode"
                                         :depositReplenishText="
-                                            computedAve.depositReplenishText
+                                              item.group === 'Replenish'
+                                                    ? {
+                                                         
+                                                          totalText:
+                                                              'Replenish',
+                                                          bankTitle:
+                                                              'We will replenish to',
+                                                      }
+                                                    : {
+                                                         
+                                                          totalText: 'Deposit',
+                                                          bankTitle:
+                                                              'Kindly Deposit to',
+                                                      }
                                         "
                                     />
+                              
 
                                     <PreparedChecked
                                         :userPrepared="userPrepared"
@@ -756,6 +771,7 @@
 
                                                     <BankBox
                                                         :bank="bank || {}"
+                                                        :banks="banks || []"
                                                         :bankAccounts="
                                                             bankAccounts || []
                                                         "
@@ -1787,11 +1803,15 @@ export default {
             }
 
             this.arenaSelectedBank(
-                data.arana_details && data.arena_details.bank_id
+                data && data.arena_details.bank_id
             );
+
+
             this.emailFormat = this.defineEmail(
-                data.arana_details && data.arena_details.email_details
+                data && data.arena_details.email_details
             );
+
+            console.log('>>>>>',data && data.arena_details.bank_id)
         },
 
         closeDialog() {

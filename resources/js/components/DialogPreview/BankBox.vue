@@ -6,7 +6,7 @@
                 <span>{{depositReplenishText.bankTitle}}: </span>
             </div>
 
-            <div   class="bank-container" v-if="depositReplenishText.totalText =='Deposit'">
+            <div   class="bank-container" v-if="depositReplenishText.totalText === 'Deposit'">
                 <div class="bank bank1">
                   
                       <span>{{bankAccounts.length > 0 ? bankAccounts[0].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
@@ -28,15 +28,15 @@
                 <div class="bank bank1">  
                     <span class="text-sm font-weight-medium">{{operatorName}}</span>
                    
-                    <span v-if="!editmode" class="text-sm font-weight-medium"> {{ Object.values(bankTarget).length ? bankTarget.bank_name : bank.bank_name || 'No Bank' }}</span>
+                    <span v-if="!editmode" class="text-sm font-weight-medium"> {{ Object.values(bankTarget).length ? bankTarget.bank_name : banks.length > 0 ? banks[0].bank_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_name : 'No Bank' }}</span>
                     <span  class="select-field_container" :class="{'editmode-span': editmode}">
                         <select v-if="editmode"  class="text-sm font-weight-medium medium sign-name select-field_report"  @change="filterbank($event)" >
                             <option selected disabled>Select Bank</option>
                             <option v-for="b in arenaDetails.bank_details" :key="b.id"  :value="b.id" >{{b.bank_name}}</option>
                         </select>
                     </span>
-                    <span class="text-sm font-weight-medium">{{  Object.values(bankTarget).length ? bankTarget.bank_number : bank.bank_number || 'No Bank' }}</span>
-                   
+                    <span class="text-sm font-weight-medium">{{  Object.values(bankTarget).length ? bankTarget.bank_number : banks.length > 0 ? banks[0].bank_number : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_number  : 'No Bank' }}</span>
+    
                 </div> 
                 
             </div>
@@ -51,7 +51,7 @@
         props:{
             bank:Object,
             bankAccounts: Array,
-        
+            banks: Array,
             arenaDetails: Object,
             arenaId: Object,
             bankId: Object,
