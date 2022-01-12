@@ -393,7 +393,7 @@
                                 style="
                                     padding: 5px 30px;
                                     width: 800px;
-                                    display: none;
+                                    display: block;
                                 "
                                 ref="soaReport"
                                 id="reportsoaoutput"
@@ -437,7 +437,7 @@
                                                     'LL'
                                                 )
                                             "
-                                            :dateSoa="moment().format('LL')"
+                                            :dateSoa="moment(item.date_closed).format('LL')"
                                         />
                                     </v-row>
                                     <v-row>
@@ -567,7 +567,7 @@
                                                 item.netOperatorsCommission || 0
                                             ),
                                             totalComputationOthers:
-                                                item.exempted === 'NOT'
+                                                item.exempted.toUpperCase() === 'NOT EXEMPTED' ||  item.exempted.toUpperCase() === 'NOT'
                                                     ? numberFormat(
                                                           item.totalOthers || 0
                                                       )
@@ -626,6 +626,7 @@
                                         :userPrepared="userPrepared"
                                         :editmode="editmode"
                                     />
+                                    {{item.for_total}}
                                 </v-card-text>
                             </div>
                         </div>
@@ -1473,13 +1474,13 @@ export default {
                             const totalCUnpaid = rest.cUnpaid;
                             const salesDeduction = rest.salesDeductionTablet;
                             const netOperatorsCommission =
-                                mwTwo +
-                                drawTwo +
-                                mwTwoMobile +
-                                drawTwoMobile +
-                                totalUnclaimed +
-                                totalCUnpaid -
-                                salesDeduction;
+                                parseFloat(mwTwo) +
+                                parseFloat(drawTwo) +
+                                parseFloat(mwTwoMobile) +
+                                parseFloat(drawTwoMobile) +
+                                parseFloat(totalUnclaimed) +
+                                parseFloat(totalCUnpaid) -
+                                parseFloat(salesDeduction);
                             const otherCommissionIntel =
                                 rest.otherCommissionIntel05;
                             const consolidatorsCommission =
@@ -1487,25 +1488,33 @@ export default {
                             const safetyFund = rest.safetyFund;
                             const paymentForOutstandingBalance =
                                 rest.paymentForOutstandingBalance;
+
                             const totalCommission =
-                                netOperatorsCommission +
-                                otherCommissionIntel -
-                                consolidatorsCommission -
-                                safetyFund -
-                                paymentForOutstandingBalance;
+                                parseFloat(netOperatorsCommission) +
+                                parseFloat(otherCommissionIntel) -
+                                parseFloat(consolidatorsCommission) -
+                                parseFloat(safetyFund) -
+                                parseFloat(paymentForOutstandingBalance);
+
                             const cashLoad = rest.cashLoad;
                             const cashWithdrawal = rest.cashWithdrawal;
                             const totalOthers = rest.totalOthers;
                             const systemErrorCOArmsi = rest.systemErrorCOArmsi;
+
+
+
                             const totalComputationOthers =
-                                exempted === "NOT"
+                                exempted.toUpperCase() === "NOT EXEMPTED" ||  exempted.toUpperCase() === "NOT"
                                     ? totalOthers
                                     : totalCommission;
                             const depositReplenish =
-                                netWinLoss -
-                                totalComputationOthers -
-                                systemErrorCOArmsi +
-                                (cashLoad - cashWithdrawal);
+                                parseFloat(netWinLoss) -
+                                parseFloat(totalComputationOthers) -
+                                parseFloat(systemErrorCOArmsi) +
+                                (parseFloat(cashLoad) - parseFloat(cashWithdrawal));
+                            
+                           
+
                             const soaFr =
                                 parseFloat(depositReplenish) < 0 ? "fr" : "soa";
                             const group =
@@ -1724,7 +1733,7 @@ export default {
                 this.form.reset();
                 this.form.fill(data.arena_details);
                 this.operator_name = data.arena_details.operator;
-                this.dateCreated = moment().format("ll");
+                this.dateCreated = moment(data.date_closed).format("LL");
                 this.dateEvent = moment(data.date_of_soa).format("LL");
                 console.log(data.exempted);
                 this.refNo = data.refNo;
@@ -2244,7 +2253,7 @@ export default {
                 numberUnformat(this.computation.cUnpaid);
 
             const totalComputationOthers =
-                this.computation.exempted === "NOT"
+                this.computation.exempted.toUpperCase() === "NOT EXEMPTED" ||  this.computation.exempted.toUpperCase() === "NOT"
                     ? numberFormat(totalOthers)
                     : numberFormat(totalCommission);
 
