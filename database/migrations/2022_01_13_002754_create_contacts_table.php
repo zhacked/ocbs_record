@@ -32,6 +32,6 @@ class CreateContactsTable extends Migration
             $table->dropForeign('contacts_arena_id_foreign');
             $table->dropIndex('contacts_arena_id_index');
             $table->dropColumn('arena_id');
-    });
+       });
    }
 }
