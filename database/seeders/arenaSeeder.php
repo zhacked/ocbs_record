@@ -17,7 +17,6 @@ class arenaSeeder extends Seeder
         DB::table('arenas')->insert([
             [
                 'arena' => 'AB27 3GRA Betting Station (Burabod Malinao)-OCBS',
-          
                 'address' => 'BURADO MALINAO, ALBAY',
                 'operator' =>'ANGEL FAYE DATUN',
                 'contact_number' => 'xxxxxxxxxx',

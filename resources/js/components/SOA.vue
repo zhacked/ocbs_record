@@ -1241,7 +1241,7 @@ export default {
 
                 reader.onload = (e) => {
                     // eslint-disable-next-line no-unused-vars
-
+             
                     const bstr = e.target.result;
                     const wb = XLSX.read(bstr, { type: "binary" });
                    
@@ -1690,9 +1690,7 @@ export default {
                 });
             } else {
                 this.dialog2 = true;
-                // const data = await axios.get("api/import");
-
-                //    axios.post("api/import", this.ocbsArrayFiltered)
+              
 
                 axios
                     .post("api/import", this.ocbsArrayFiltered)

@@ -8,7 +8,7 @@
 							<strong> Arena Detials</strong>
                             <v-spacer></v-spacer>
 							<v-card-actions class="card-tools">
-                                 <!-- <form @submit.prevent="proceedAction()">
+                                 <form @submit.prevent="proceedAction()">
                                     <v-card-actions class="card-tools">
                                         <label
                                             class="form-control-label"
@@ -38,7 +38,7 @@
                                             send</v-btn
                                         >
                                     </v-card-actions>
-                                </form> -->
+                                </form>
 								
 							</v-card-actions>
 						</v-card-title>
@@ -386,6 +386,30 @@
 </template>
 
 <script>
+import {
+    camelCase,
+    groupBy,
+    map,
+    spread,
+    values,
+    assign,
+    concat,
+    sortBy,
+} from "lodash";
+import XLSX from "xlsx";
+import {
+    numberFormat,
+    numberUnformat,
+    mergeObject,
+    valueSplit,
+} from "../utility";
+
+import VueHtml2pdf from "vue-html2pdf";
+import html2canvas from "html2canvas";
+import JSZip from "jszip";
+import JSZipUtils from "jszip-utils";
+import moment from "moment";
+
     export default {
         data() {
             return {
@@ -415,6 +439,7 @@
                 search: '',
                 searchbank:'',
                 input: '',
+                loading:false,
                 show:false,
                 bankDetails : [],
                 form: new Form({
@@ -439,6 +464,89 @@
             }
         },
         methods: {
+            onFileChange(event) {
+                const file = event.target.files ? event.target.files[0] : null;
+                this.fileUpload = file;
+                const checkfile = file.name.includes("xlsx") || file.name.includes("csv");
+              
+                   if (file && checkfile) {
+                        const reader = new FileReader();
+                         let arrayData = [];
+                         let reportCombined = [];
+                        let eventsCombined = [];
+                         let summaryReport = [];
+                        reader.onload = (e) => {
+                            //  console.log(e);
+                                const bstr = e.target.result;
+                                 const wb = XLSX.read(bstr, { type: "binary" });
+                            
+                                const ws = wb.SheetNames;
+
+                                const filteredWS = ws.filter(function (value, index, arr) {
+                                     return (
+                                            value === "Details"
+                                        );
+                                });
+                                filteredWS.forEach((w) => {
+                                    const singleSheet = wb.Sheets[w];
+                                    
+                                    arrayData.push(
+                                        XLSX.utils.sheet_to_json(singleSheet, {
+                                            header: "A",
+                                            defval: 0,
+                                        })
+                                    );
+                                });
+                                
+                                let eventDetailsA = [];
+                                 arrayData[0].map((r) => {
+                                  
+                                        if (typeof r.A == "string") eventDetailsA.push(r);
+                                      
+                                    });
+
+                                console.log(eventDetailsA)
+
+                    const objectKeyed = (array) => {
+                        let objectKeyReplacedArray = [];
+                        const keysss = array.find((k) => k.B === "ARENA NAME");
+
+                        const [, ...headKey] = Object.values(keysss);
+                        const headK = ["key", ...headKey];
+
+                        array.map((data) => {
+                            data = Object.assign(
+                                {},
+                                ...Object.entries(data).map(
+                                    ([, prop], index) => ({
+                                        [camelCase(headK[index])]: prop,
+                                    })
+                                )
+                            );
+                            console.log(data);
+                            // objectKeyReplacedArray.push({
+                            
+                            // });
+                        });
+                     
+                        return objectKeyReplacedArray;
+                        };
+                        }
+                     reader.readAsBinaryString(file);
+                   }else{
+                         Fire.$emit("AfterCreate"),
+                            swal.fire({
+                                icon: "warning",
+                                title: "Oops...",
+                                text: "Make sure you insert correct excel data!",
+                            });
+                        $("#importData").val("");
+                   }
+                   
+            },
+            proceedAction(){
+
+            },
             testEnter(item){
                 console.log(item)
             },
@@ -626,7 +734,7 @@
             },
             getContacts(areaCode){
                 axios.get('api/getContacts/'+ areaCode).then((data) => {
-                    console.log('CONTACT>>>',data)
+                    // console.log('CONTACT>>>',data)
              
                     this.form.contact_number = data.data
                
