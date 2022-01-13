@@ -39,8 +39,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     // Route::put('arenaStatus/{id}', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
     Route::put('arenaStatus', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
     Route::put('updateBankSelection/{id}', [App\Http\Controllers\API\ArenaController::class, 'updateBankSelection']);
-    Route::get('getEmail/{id}', [App\Http\Controllers\API\ArenaController::class, 'getEmilByid']);
-    Route::get('getContacts/{arenaId}', [App\Http\Controllers\API\ArenaController::class, 'getContacts']);
+    Route::get('getEmails/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'getEmails']);
+    Route::get('getContacts/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'getContacts']);
     Route::get('emailDelete/{id}', [App\Http\Controllers\API\ArenaController::class, 'deleteEmail']);
     Route::delete('deleteContact/{id}', [App\Http\Controllers\API\ArenaController::class, 'deleteContact']);
     

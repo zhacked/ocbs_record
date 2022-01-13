@@ -16,7 +16,7 @@ class arena extends Model
 
 
     public function BankDetails(){
-        return $this->hasMany('App\Models\BankAccount','arenas_id', 'id');
+        return $this->hasMany('App\Models\BankAccount','area_code', 'area_code');
     }
 
     public function ArenaBankDetails(){
@@ -28,7 +28,7 @@ class arena extends Model
     } 
 
     public function ContactDetails(){
-        return $this->hasMany('App\Models\Contact','arena_id', 'id');
+        return $this->hasMany('App\Models\Contact','area_code', 'area_code');
     } 
     // protected static $logAttributes = ['arena','BankDetails.bank_name','BankDetails.bank_number','EmailDetails.email']; // ERROR
     

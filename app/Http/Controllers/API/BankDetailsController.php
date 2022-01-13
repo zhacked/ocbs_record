@@ -66,6 +66,7 @@ class BankDetailsController extends Controller
 
         return BankAccount::create([
             'arenas_id' => $request['arenas_id'],
+            'area_code' => $request['area_code'],
             'account_name'=> $request['account_name'],
             'bank_name' => $request['bank_name'],
             'bank_number' => $request['bank_number'],

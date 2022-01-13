@@ -63,6 +63,7 @@ class ArenaController extends Controller
         ]);
 
         $arena =  arena::create([
+            'area_code' => $request['area_code'],
             'arena' => $request['arena'],
             'address' => $request['address'],
             'operator' => $request['operator'],
@@ -75,14 +76,15 @@ class ArenaController extends Controller
 
         foreach ($request['email'] as $email){
              Email::updateOrCreate([
-                'arena_id' => $arena->id,
+                 'arena_id' => $arena->id,
+                'area_code' => $arena->area_code,
                 'email' => $email
             ]);
         }
 
         foreach ($request['contact_number'] as $contact){
             Contact::updateOrCreate([
-               'arena_id' => $arena->id,
+               'area_code' => $arena->area_code,
                'contact_number' => $contact
            ]);
        }
@@ -110,18 +112,18 @@ class ArenaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getEmilByid($id)
+    public function getEmails($areaCode)
     {
       
-       $email =  Email::where('arena_id',$id)->get();
+       $email =  Email::where('area_code',$areaCode)->get();
      
        return $email;
     }
 
-    public function getContacts($id)
+    public function getContacts($areaCode)
     {
      
-       $contact =  Contact::where('arena_id',$id)->get();
+       $contact =  Contact::where('area_code',$areaCode)->get();
      
        return $contact;
     }
@@ -136,7 +138,7 @@ class ArenaController extends Controller
     public function deleteContact($id){
         $contact = Contact::findOrFail($id);
        
-        $contact    ->delete();
+        $contact->delete();
     }
 
 
@@ -182,6 +184,7 @@ class ArenaController extends Controller
                     if(!is_array($email)){
                         $data = Email::Create([
                             'arena_id' => $request['id'],
+                            'area_code' => $request['area_code'],
                             'email' => $email
                         ]);
                      }
@@ -190,7 +193,7 @@ class ArenaController extends Controller
             foreach ($request['contact_number'] as $contact){
                 if(!is_array($contact)){
                     $data = Contact::Create([
-                        'arena_id' => $request['id'],
+                        'area_code' => $request['area_code'],
                         'contact_number' => $contact
                     ]);
                  }
@@ -212,11 +215,13 @@ class ArenaController extends Controller
     
         $arena = arena::findOrFail($id);
         // delete the user
-        $email = Email::where('arena_name',$arena->arena);
-       
-        if($email){
+        $email = Email::where('area_code',$arena->area_code);
+   
+        if($email || $contact){
             $email->delete();
+           
         }
+      
         $arena->delete();
 
         return ['message' => 'User Deleted'];
