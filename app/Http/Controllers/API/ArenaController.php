@@ -26,7 +26,7 @@ class ArenaController extends Controller
 
     public function index()
     {
-         return arena::with('BankDetails')->get();
+         return arena::with(['BankDetails','ContactDetails'])->get();
     }
 
     // public function arenaSelectedBank($bankId)

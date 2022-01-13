@@ -112,7 +112,8 @@
                         "
                         :class="{'editmode-span': editmode}"
                     >
-                        <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.contact_number"/>
+                        <!-- <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.contact_number"/> -->
+                        <span class="input-field_report computation">{{contactFormat}}</span>
                     </div>
                 </div>
                 <div
@@ -155,7 +156,8 @@
         props: {
             arenaDetails: Object,
             editmode: Boolean,
-            emailFormat: String
+            emailFormat: String,
+            contactFormat: String
         },  
     }
 </script>
@@ -164,4 +166,5 @@
         color: rgb(0, 123, 238);
       
     }
+   
 </style>

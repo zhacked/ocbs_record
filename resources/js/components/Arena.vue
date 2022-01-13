@@ -296,6 +296,7 @@
                                         outlined
                                         deletable-chips
                                         item-text='contact_number'
+                                        @mousedown="testEnter"
                                        
 
                                     >
@@ -306,13 +307,11 @@
                                         v-bind="attrs"
                                         :input-value="selected"
                                         :disabled="disabled"
-                                      
+                                        
                                       
                                         
                                         >
-                                          <!-- v-if="editmode"  -->
-                                         <!-- @click:close="removeContact(item.id) " -->
-                                        <!-- {{typeof item === 'object' ? item.contact_number : item}} -->
+                                      
 
                                             <span class="pr-2">
                                                 {{typeof item === 'object' ? item.contact_number : item}}
@@ -325,16 +324,7 @@
                                             </v-icon>
                                         </v-chip>
 
-                                        <!-- <v-chip
-                                        :key="JSON.stringify(item.contact_number)"
-                                        v-bind="attrs"
-                                        :input-value="selected"
-                                        :disabled="disabled"
-                                        v-else
-                                        >
-                                       
-                                        {{typeof item === 'object' ? item.contact_number : item}}
-                                        </v-chip> -->
+                                    
                                     </template>
                                     </v-combobox>
 				
@@ -351,7 +341,7 @@
                                  
                                     :rules="[required]"
                                     >
-                                    <!-- <template v-slot:selection="data"> -->
+                                   
                                     <template v-slot:selection="{item, attrs, selected, disabled, parent}">
                                    
                                         <v-chip
@@ -363,9 +353,7 @@
                                    
                                       
                                         >
-                                        <!-- v-if="editmode"   -->
-                                        <!-- close @click:close="removeEmail(item.id)" -->
-                                        <!-- {{typeof item === 'object' ? item.email : item}} -->
+                                     
                                           <span class="pr-2">
                                                 {{typeof item === 'object' ? item.email : item}}
                                             </span>
@@ -376,18 +364,7 @@
                                                 $delete
                                             </v-icon>
                                         </v-chip>
-<!-- 
-                                        <v-chip
-                                        :key="JSON.stringify(item.email)"
-                                        v-bind="attrs"
-                                        :input-value="selected"
-                                        :disabled="disabled"
-                                        v-else
-                                        
-                                        >
-                                       
-                                        {{typeof item === 'object' ? item.email : item}}
-                                        </v-chip> -->
+
                                     </template>
                                     </v-combobox>
 
@@ -461,6 +438,9 @@
             }
         },
         methods: {
+            testEnter(item){
+                console.log(item)
+            },
             required(value) {
                 if (value instanceof Array && value.length == 0) {
                     return 'Email is Required.';

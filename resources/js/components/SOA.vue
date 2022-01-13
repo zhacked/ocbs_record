@@ -228,6 +228,9 @@
                                             }"
                                             @toggle-select-all="selectAllToggle"
                                         >
+                                       
+                                            
+                                      
                                             <template
                                                 v-slot:[`item.data-table-select`]="{
                                                     item,
@@ -314,7 +317,6 @@
                                         aria-labelledby="custom-tabs-three-profile-tab"
                                     >
                                         <v-data-table
-                                    
                                              item-key="codeEvent"
                                             :headers="headers"
                                             :items="arenaDatastatus.data"
@@ -393,7 +395,7 @@
                                 style="
                                     padding: 5px 30px;
                                     width: 800px;
-                                    display: block;
+                                    display: none;
                                 "
                                 ref="soaReport"
                                 id="reportsoaoutput"
@@ -456,6 +458,12 @@
                                                       )
                                                     : ''
                                             "
+                                            :contactFormat=" item.arena_details
+                                                    ? defineContact(
+                                                          item.arena_details
+                                                              .contact_details
+                                                      )
+                                                    : ''"
                                         />
                                     </v-row>
                                     <v-row>
@@ -743,6 +751,7 @@
                                                             :emailFormat="
                                                                 emailFormat
                                                             "
+                                                            :contactFormat="contactFormat"
                                                         />
                                                     </v-row>
                                                     <v-row>
@@ -1010,10 +1019,16 @@ export default {
         return {
             headers: [
                 { text: "#", value: "id" },
+                {text: "ref", value: "refNo"},
                 { text: "Arena Name", value: "arena_name" },
                 { text: "Operator", value: "arena_details.operator" },
-                { text: "Contact", value: "arena_details.contact_number" },
+              
                 { text: "", value: "actions", sortable: false },
+            ],
+             sortBy: 'refNo',
+                keys: [
+                'CATEGORY',
+               
             ],
             userPrepared: {
                 computed: {},
@@ -1110,6 +1125,7 @@ export default {
             dateCreated: "",
             dateEvent: "",
             emailFormat: "",
+            contactFormat: "",
             depositReplenishTxt: {},
             pictures: [],
             disabledCount: 0,
@@ -1580,6 +1596,8 @@ export default {
                         }
                     );
 
+                    
+
                     // group fr and soa
                     const groupSOAFR = removeKeyReportObject.reduce(function (
                         r,
@@ -1591,11 +1609,26 @@ export default {
                     },
                     Object.create(null));
 
+
+
                     const moLetter = String.fromCharCode(
                         96 + (moment(eventDateClosed).month() + 1)
                     ).toUpperCase();
 
-                    const newsoa = groupSOAFR.soa.map(({ soaFr, ...s }, i) => ({
+
+                    const sortSoa = sortBy(groupSOAFR.soa, [
+                        function (o) {
+                            return o.areaCode;
+                        },
+                    ])
+
+                    const sortFr = sortBy(groupSOAFR.fr, [
+                        function (o) {
+                            return o.areaCode;
+                        },
+                    ])
+
+                    const newsoa = sortSoa.map(({ soaFr, ...s }, i) => ({
                         refNo:
                             "SO" +
                             moment(eventDateClosed).format("MMDD") +
@@ -1603,7 +1636,7 @@ export default {
                             `0000${i + 1}`.slice(-4),
                         ...s,
                     }));
-                    const newfr = groupSOAFR.fr.map(({ soaFr, ...f }, i) => ({
+                    const newfr = sortFr.map(({ soaFr, ...f }, i) => ({
                         refNo:
                             "FR" +
                             moment(eventDateClosed).format("MMDD") +
@@ -1831,8 +1864,12 @@ export default {
             this.emailFormat = this.defineEmail(
                 data && data.arena_details.email_details
             );
+          
+            this.contactFormat = this.defineContact(data && data.arena_details.contact_details)
+           
+        
 
-            console.log('>>>>>',data && data.arena_details.bank_id)
+           
         },
 
         closeDialog() {
@@ -2176,6 +2213,18 @@ export default {
                 return ee.trim().replace(/\s/g, " / ");
             }
         },
+         defineContact(arrayContact) {
+            console.log(arrayContact);
+            if (arrayContact != null) {
+                const emailMap = arrayContact.map((ed) => ed["contact_number"]);
+
+                const ee = emailMap.reduce((prev, current) => {
+                    return current + " " + prev;
+                }, "");
+                return ee.trim().replace(/\s/g, " / ");
+            }
+        },
+
         loadBankDetails() {
             axios.get("api/Companybanks").then(({ data }) => {
                 (this.bankAccounts = data), console.log("ACCOUNT", data);
