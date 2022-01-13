@@ -21,7 +21,7 @@ class PositionSeeder extends Seeder
               'position' => 'Finance Assistant-Kiosk Operation'
            ],
            [
-            'position' => 'Team Leader'
+              'position' => 'Team Leader'
            ]
         ]);
     }

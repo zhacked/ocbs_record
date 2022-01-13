@@ -28,9 +28,10 @@ class CreateContactsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contacts');
-        $table->dropForeign('contacts_arena_id_foreign');
-        $table->dropIndex('contacts_arena_id_index');
-        $table->dropColumn('arena_id');
-    }
+        Schema::table('contacts', function (Blueprint $table) {
+            $table->dropForeign('contacts_arena_id_foreign');
+            $table->dropIndex('contacts_arena_id_index');
+            $table->dropColumn('arena_id');
+    });
+   }
 }
