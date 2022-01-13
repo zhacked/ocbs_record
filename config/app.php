@@ -164,7 +164,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Cyberduck\LaravelExcel\ExcelServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        
+        Barryvdh\Debugbar\ServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -233,6 +233,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
     ],
 
 ];

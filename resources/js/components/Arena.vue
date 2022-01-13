@@ -8,13 +8,45 @@
 							<strong> Arena Detials</strong>
                             <v-spacer></v-spacer>
 							<v-card-actions class="card-tools">
-								<v-btn color="success"
-                                    elevation="2"  @click="openModal">Add Arena<i class="fas fa-plus fa-fw"></i></v-btn>
+                                 <!-- <form @submit.prevent="proceedAction()">
+                                    <v-card-actions class="card-tools">
+                                        <label
+                                            class="form-control-label"
+                                            for="input-file-import"
+                                        ></label>
+                                        <input
+                                            type="file"
+                                            id="importData"
+                                            class="form-control"
+                                            @change="onFileChange"
+                                            accept=".xlsx, .xls, .csv"
+                                        />
+                                        <v-btn
+                                            type="submit"
+                                            color="success"
+                                            elevation="2"
+                                            :loading="loading"
+                                        >
+                                            <template v-slot:loader>
+                                                <span>Preparing...</span>
+                                                <span class="custom-loader">
+                                                    <v-icon light
+                                                        >mdi-cached</v-icon
+                                                    >
+                                                </span>
+                                            </template>
+                                            send</v-btn
+                                        >
+                                    </v-card-actions>
+                                </form> -->
+								
 							</v-card-actions>
 						</v-card-title>
                         <v-row>
-                            <v-col>
-
+                            <v-col class="ma-5">
+                               <v-btn color="success"
+                                    elevation="2"  @click="openModal">Add Arena<i class="fas fa-plus fa-fw"></i>
+                                </v-btn>
                             </v-col>
                             <v-col>
                                 <v-text-field
