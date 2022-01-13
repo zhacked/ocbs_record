@@ -386,6 +386,7 @@
                 show:false,
                 bankDetails : [],
                 form: new Form({
+                    area_code: '',
                     id:'',
                     arena : '',
                     address: '',
@@ -424,12 +425,12 @@
                     //     icon: 'success',
                     //     title: 'Email successfully Deleted'
                     //     })
-                        this.getEmail(this.form.id)
+                        this.getEmail(this.form.area_code)
                     });
                     
             },
             removeContact(id){
-                
+                console.log(this.form.area_code)
                 axios.delete('api/deleteContact/'+id).then((data)=>{
                     Fire.$emit('AfterCreate');
                     // $('#addNew').modal('hide');
@@ -437,7 +438,7 @@
                     //     icon: 'success',
                     //     title: 'Email successfully Deleted'
                     //     })
-                    this.getContacts(this.form.id)
+                    this.getContacts(this.form.area_code)
                     });
                     
             },
@@ -448,11 +449,12 @@
                 this.Bankform.bank_number = "";
             },
             openBankModel(data){
-           
+                
                 this.show = false;
                  $('#bankModal').modal('show');
                 this.bankDetails = data.bank_details;
                 this.Bankform.arenas_id = data.id;
+                this.Bankform.area_code = data.area_code;
                 this.Bankform.account_name = data.operator;
                
             },
@@ -460,15 +462,16 @@
 
                 this.$Progress.start();
                 this.Bankform.post('api/bankaccount')
-                .then(()=>{
+                .then(({data})=>{
+                    console.log(data)
                     Fire.$emit('AfterCreate');
-                 
+                    this.bankDetails.push(data)
                     Toast.fire({
                         icon: 'success',
                         title: 'Bank Created in successfully'
                         })
                      this.show = false;
-                    $('#bankModal').modal('hide');
+                    // $('#bankModal').modal('hide');
                     this.$Progress.finish();
                 })
                 .catch(()=>{
@@ -478,12 +481,21 @@
                 this.$Progress.start();
                 this.Bankform.put('api/bankaccount/'+this.Bankform.id)
                 .then(() => {
-                          
+                  
                      swal.fire(
                         'Updated!',
                         'Information has been updated.',
                         'success'
                         )
+
+                        // const foundIndex = this.bankDetails.findIndex(x => x.id === this.Bankform.id);
+                        
+                        // this.bankDetails[foundIndex] = this.Bankform
+                        // console.log(foundIndex)
+                        // console.log(this.bankDetails[foundIndex])
+                       
+
+
                         this.show = false;
                           $('#bankModal').modal('hide');
                         this.$Progress.finish();
@@ -536,6 +548,10 @@
             },
             updateArena(){
                 this.$Progress.start();
+                const areaCode = this.form.arena.split(' ')[0]
+                this.form.area_code = areaCode;
+               
+                
                 this.form.put('api/arena/'+this.form.id)
                 .then(() => {
                     $('#addNew').modal('hide');
@@ -556,19 +572,19 @@
                 this.form.reset();
             
                 $('#addNew').modal('show');
-            
+                this.form.area_code = arenas.area_code;
                 this.form.id = arenas.id
                 this.form.arena = arenas.arena
                 this.form.address = arenas.address
                 this.form.operator = arenas.operator
                 // this.form.contact_number = arenas.contact_number
              
-                this.getEmail(this.form.id)
-                this.getContacts(this.form.id)
+                this.getEmail(arenas.area_code)
+                this.getContacts(arenas.area_code)
                
             },
-            getEmail(id){
-                 axios.get('api/getEmail/'+ id).then((data) => {
+            getEmail(areaCode){
+                 axios.get('api/getEmails/'+ areaCode).then((data) => {
                     console.log(data)
                 //    this.emails = data
                     this.form.email = data.data
@@ -576,8 +592,8 @@
                 })
 
             },
-            getContacts(id){
-                axios.get('api/getContacts/'+ id).then((data) => {
+            getContacts(areaCode){
+                axios.get('api/getContacts/'+ areaCode).then((data) => {
                     console.log('CONTACT>>>',data)
              
                     this.form.contact_number = data.data
@@ -630,6 +646,8 @@
                 console.log(this.form)
                 console.log('dsadsa')
                 this.$Progress.start();
+                const areaCode = this.form.arena.split(' ')[0]
+                this.form.area_code = areaCode
                 this.form.post('api/arena')
                 .then(()=>{
                     Fire.$emit('AfterCreate');

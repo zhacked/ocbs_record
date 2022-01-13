@@ -193,7 +193,7 @@
                 console.log(accounts);
                 
             },
-            loadDetials(){
+            loadDetails(){
                     axios.get("api/Companybanks").then(({ data }) => {
                         this.account = data,
                         console.log(data);
@@ -264,10 +264,10 @@
             }
         },
         created() {
-            this.loadDetials();
+            this.loadDetails();
             this.loadArenaId();
             Fire.$on('AfterCreate',() => {
-                this.loadDetials();
+                this.loadDetails();
             });
         }
     }

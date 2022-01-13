@@ -16,7 +16,10 @@ class CreateContactsTable extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
             $table->string('contact_number');
-            $table->foreignId('arena_id')->index()->nullable()->constrained()->onDelete('cascade');;
+            // $table->foreignId('arena_id')->index()->nullable()->constrained()->onDelete('cascade');;
+            $table->string('area_code');
+            $table->foreign('area_code')->references('area_code')->on('arenas')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,9 +32,9 @@ class CreateContactsTable extends Migration
     public function down()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->dropForeign('contacts_arena_id_foreign');
-            $table->dropIndex('contacts_arena_id_index');
-            $table->dropColumn('arena_id');
+            $table->dropForeign('contacts_area_code_foreign');
+            $table->dropIndex('contacts_area_code_index');
+            $table->dropColumn('area_code');
        });
    }
 }

@@ -12,7 +12,7 @@ class BankAccount extends Model
     protected $guarded = [];
 
     public function arenaDetails(){
-        return $this->hasOne('App\Models\arena','id', 'arenas_id');
+        return $this->hasOne('App\Models\arena','area_code', 'area_code');
     }
 
     protected static $logAttributes = ['account_name','bank_name','bank_number'];
