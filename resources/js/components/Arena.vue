@@ -243,7 +243,7 @@
                                     :rules="[() => !!form.operator || 'This field is required']"
                                 ></v-text-field>
 							
-                                 <v-text-field
+                                 <!-- <v-text-field
                                     label="Contact Number"
                                     placeholder="09121234567"
                                     outlined
@@ -253,7 +253,58 @@
                                         () =>   /^\d+$/.test(form.contact_number) || 'Must be a number',
                                         () =>  form.contact_number && form.contact_number.length >= 11 && form.contact_number.length <= 11|| 'This field must have atleast 11 digits'
                                     ]"
-                                ></v-text-field>
+                                ></v-text-field> -->
+                                    <v-combobox
+                                        v-model="form.contact_number"
+                                        :items="contacts.data"
+                                        label="Contact Number"
+                                        hint="Must be 11 digits"
+                                        multiple
+                                        chips
+                                        outlined
+                                        deletable-chips
+                                        item-text='contact_number'
+                                       
+
+                                    >
+                                    <template v-slot:selection="{item, attrs, selected, disabled, parent}">
+                                   
+                                        <v-chip
+                                        :key="JSON.stringify(item.contact_number)"
+                                        v-bind="attrs"
+                                        :input-value="selected"
+                                        :disabled="disabled"
+                                      
+                                      
+                                        
+                                        >
+                                          <!-- v-if="editmode"  -->
+                                         <!-- @click:close="removeContact(item.id) " -->
+                                        <!-- {{typeof item === 'object' ? item.contact_number : item}} -->
+
+                                            <span class="pr-2">
+                                                {{typeof item === 'object' ? item.contact_number : item}}
+                                            </span>
+                                            <v-icon
+                                                small
+                                                @click="item.id ? removeContact(item.id) : parent.selectItem(item)"
+                                            >
+                                                $delete
+                                            </v-icon>
+                                        </v-chip>
+
+                                        <!-- <v-chip
+                                        :key="JSON.stringify(item.contact_number)"
+                                        v-bind="attrs"
+                                        :input-value="selected"
+                                        :disabled="disabled"
+                                        v-else
+                                        >
+                                       
+                                        {{typeof item === 'object' ? item.contact_number : item}}
+                                        </v-chip> -->
+                                    </template>
+                                    </v-combobox>
 				
                                 <v-combobox
                                     v-model="form.email"
@@ -268,31 +319,43 @@
                                  
                                     :rules="[required]"
                                     >
-                                    <template v-slot:selection="data">
+                                    <!-- <template v-slot:selection="data"> -->
+                                    <template v-slot:selection="{item, attrs, selected, disabled, parent}">
                                    
                                         <v-chip
-                                        :key="JSON.stringify(data.item.email)"
-                                        v-bind="data.attrs"
-                                        :input-value="data.selected"
-                                        :disabled="data.disabled"
-                                        @click:close="selectItem(data.item.id) "
-                                        close
-                                        v-if="editmode"   
+                                        :key="JSON.stringify(item.email)"
+                                        v-bind="attrs"
+                                        :input-value="selected"
+                                        :disabled="disabled"
+                                        
+                                   
+                                      
                                         >
-                                       
-                                        {{typeof data.item === 'object' ? data.item.email : data.item}}
+                                        <!-- v-if="editmode"   -->
+                                        <!-- close @click:close="removeEmail(item.id)" -->
+                                        <!-- {{typeof item === 'object' ? item.email : item}} -->
+                                          <span class="pr-2">
+                                                {{typeof item === 'object' ? item.email : item}}
+                                            </span>
+                                            <v-icon
+                                                small
+                                                @click="item.id ? removeEmail(item.id) : parent.selectItem(item)"
+                                            >
+                                                $delete
+                                            </v-icon>
                                         </v-chip>
-
+<!-- 
                                         <v-chip
-                                        :key="JSON.stringify(data.item.email)"
-                                        v-bind="data.attrs"
-                                        :input-value="data.selected"
-                                        :disabled="data.disabled"
+                                        :key="JSON.stringify(item.email)"
+                                        v-bind="attrs"
+                                        :input-value="selected"
+                                        :disabled="disabled"
                                         v-else
+                                        
                                         >
                                        
-                                        {{typeof data.item === 'object' ? data.item.email : data.item}}
-                                        </v-chip>
+                                        {{typeof item === 'object' ? item.email : item}}
+                                        </v-chip> -->
                                     </template>
                                     </v-combobox>
 
@@ -339,6 +402,7 @@
                 editmode: false,
                 arena : [],
                 emails:[],
+                contacts: [],
                 search: '',
                 searchbank:'',
                 input: '',
@@ -349,7 +413,7 @@
                     arena : '',
                     address: '',
                     operator: '',
-                    contact_number: '',
+                    contact_number: [],
                     email: [],
                 }),
                Bankform: new Form({
@@ -371,15 +435,29 @@
                 }
                     return true;
                 },
-            selectItem(id){
+            removeEmail(id){
                 
                 axios.get('api/emailDelete/'+id).then((data)=>{
                     Fire.$emit('AfterCreate');
-                     $('#addNew').modal('hide');
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Email successfully Deleted'
-                        })
+                    //  $('#addNew').modal('hide');
+                    // Toast.fire({
+                    //     icon: 'success',
+                    //     title: 'Email successfully Deleted'
+                    //     })
+                        this.getEmail(this.form.id)
+                    });
+                    
+            },
+            removeContact(id){
+                
+                axios.delete('api/deleteContact/'+id).then((data)=>{
+                    Fire.$emit('AfterCreate');
+                    // $('#addNew').modal('hide');
+                    // Toast.fire({
+                    //     icon: 'success',
+                    //     title: 'Email successfully Deleted'
+                    //     })
+                    this.getContacts(this.form.id)
                     });
                     
             },
@@ -503,13 +581,26 @@
                 this.form.arena = arenas.arena
                 this.form.address = arenas.address
                 this.form.operator = arenas.operator
-                this.form.contact_number = arenas.contact_number
+                // this.form.contact_number = arenas.contact_number
              
-                // console.log(this.form.id)
-                axios.get('api/getEmail/'+ this.form.id).then((data) => {
+                this.getEmail(this.form.id)
+                this.getContacts(this.form.id)
+               
+            },
+            getEmail(id){
+                 axios.get('api/getEmail/'+ id).then((data) => {
                     console.log(data)
                 //    this.emails = data
                     this.form.email = data.data
+               
+                })
+
+            },
+            getContacts(id){
+                axios.get('api/getContacts/'+ id).then((data) => {
+                    console.log('CONTACT>>>',data)
+             
+                    this.form.contact_number = data.data
                
                 })
 
@@ -552,12 +643,12 @@
             },
             loadArena(){
                     axios.get("api/arena").then((data) => (
-                       
                         this.arena = data
                         ));
             },
             createArena(){
-                console.log(this.form.email)
+                console.log(this.form)
+                console.log('dsadsa')
                 this.$Progress.start();
                 this.form.post('api/arena')
                 .then(()=>{
@@ -573,7 +664,6 @@
                 })
                 .catch((e)=>{
                       console.log(e);
-                     
                 })
             }
         },
@@ -597,7 +687,12 @@
                         this.$nextTick(() => this.form.email.pop())
                     }     
                 },
-            
+            "form.contact_number": function (contacts) {
+                // console.log(contacts);
+                // contacts.forEach(c => {
+                //     if(c.length  !== 11 || !c.startsWith("09")) this.$nextTick(() => this.form.contact_number.pop())
+                // })
+            }
            
         }
     }

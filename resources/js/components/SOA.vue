@@ -1115,6 +1115,7 @@ export default {
             disabledCount: 0,
             selectedItems: [],
             progressvalue: 0,
+            arenaSample: [],
         };
     },
     methods: {
@@ -1618,7 +1619,16 @@ export default {
                         },
                     ]);
 
+                    // sortReport.forEach(sr => {
+                    //     this.arenaSample.push({
+                    //         arenaName: sr.arenaName,
+                    //         operator: 'xxxxxxxx',
+
+                    //     })
+                    // })
+
                     this.ocbsArrayFiltered = sortReport;
+
                 };
                 reader.readAsBinaryString(file);
             } else {
@@ -1670,6 +1680,8 @@ export default {
                                 footer: error,
                             });
                     });
+
+
             }
         },
         async importwithstatus() {

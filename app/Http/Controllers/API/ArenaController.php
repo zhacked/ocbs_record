@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\arena;
 use App\Models\Email;
+use App\Models\Contact;
 use App\Models\BankAccount;
 class ArenaController extends Controller
 {
@@ -52,12 +53,12 @@ class ArenaController extends Controller
     public function store(Request $request)
     {
 
-        
+        // dd($request['contact_number']);
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
             'operator' => 'required|string',
-            'contact_number' => 'required|numeric',
+            // 'contact_number' => 'required|numeric',
          
         ]);
 
@@ -65,9 +66,12 @@ class ArenaController extends Controller
             'arena' => $request['arena'],
             'address' => $request['address'],
             'operator' => $request['operator'],
-            'contact_number' => $request['contact_number'],
+            'contact_number' => 'xxxxx',
         
         ]);
+        
+
+        
 
         foreach ($request['email'] as $email){
              Email::updateOrCreate([
@@ -75,6 +79,17 @@ class ArenaController extends Controller
                 'email' => $email
             ]);
         }
+
+        foreach ($request['contact_number'] as $contact){
+            Contact::updateOrCreate([
+               'arena_id' => $arena->id,
+               'contact_number' => $contact
+           ]);
+       }
+
+      
+
+
         return $arena;
     }
 
@@ -103,11 +118,27 @@ class ArenaController extends Controller
        return $email;
     }
 
+    public function getContacts($id)
+    {
+     
+       $contact =  Contact::where('arena_id',$id)->get();
+     
+       return $contact;
+    }
+
     public function deleteEmail($id){
         $email = Email::findOrFail($id);
        
         $email->delete();
     }
+
+
+    public function deleteContact($id){
+        $contact = Contact::findOrFail($id);
+       
+        $contact    ->delete();
+    }
+
 
     public function updateBankSelection(Request $request, $id) {
     
@@ -136,14 +167,14 @@ class ArenaController extends Controller
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
             'operator' => 'required|string',
-            'contact_number' => 'required|numeric',
+            // 'contact_number' => 'required|numeric',
         ]);
 
         $arena = arena::with('BankDetails')->where('id',$id)->update([
             'arena' => $request['arena'],
             'address' => $request['address'],
             'operator' => $request['operator'],
-            'contact_number' => $request['contact_number'],
+            'contact_number' => 'xxxxxxx',
 
         ]);
    
@@ -155,10 +186,19 @@ class ArenaController extends Controller
                         ]);
                      }
             }
+
+            foreach ($request['contact_number'] as $contact){
+                if(!is_array($contact)){
+                    $data = Contact::Create([
+                        'arena_id' => $request['id'],
+                        'contact_number' => $contact
+                    ]);
+                 }
+        }
   
           
        
-        return ['message' => 'Updated the areana details'];
+        return ['message' => 'Updated the arena details'];
     }
 
     /**
