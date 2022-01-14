@@ -951,14 +951,15 @@
                                                    
                                                       <v-progress-linear
                                                         v-model="progressvalue"
-                                                        color="light-blue darken-3"
+                                                        color="yellow accent-1"
+                                                        class="black--text"
                                                         height="25"
                                                         :buffer-value="progressvalue"
                                                         stream
                                                         >
                                                       
                                                             <template v-slot:default="{ value }">
-                                                                <strong>{{ value === 100 ? 'Complete' : `${Math.ceil(value)}%` }}</strong>
+                                                                <strong class="black--text">{{ value === 100 ? 'Complete' : `${Math.ceil(value)}%` }}</strong>
                                                             </template>
                                                      
                                                         </v-progress-linear>
