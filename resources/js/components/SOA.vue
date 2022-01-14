@@ -223,7 +223,7 @@
                                                     40,
                                                     50,
                                                     100,
-                                                    500
+                                                  
                                                 ],
                                             }"
                                             @toggle-select-all="selectAllToggle"
