@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
-            <v-row class="mt-5">
+            <v-row class="mt-3">
                 <v-col class="col-md-12">
                     <v-card>
                         <v-card-title class="card-header">
@@ -598,6 +598,7 @@
                                                   }
                                         "
                                     />
+                                    <span v-if="item.group === 'Replenish'" class="text-xs my-2" style="color: #E64A19">Please be advised that replenishment are only available during banking days. We allow off setting of pending remittances and replenishments during non-banking days.</span>
 
                                     <BankBox
                                         :bank="bank"
@@ -635,7 +636,7 @@
                                         :userPrepared="userPrepared"
                                         :editmode="editmode"
                                     />
-                                    {{item.for_total}}
+                                 
                                 </v-card-text>
                             </div>
                         </div>
@@ -779,7 +780,7 @@
                                                             computation
                                                         "
                                                     />
-
+                                                    <span v-if="computedAve.depositReplenishText.dateText === 'FR'" class="text-xs my-2" style="color: #E64A19">Please be advised that replenishment are only available during banking days. We allow off setting of pending remittances and replenishments during non-banking days.</span>
                                                     <BankBox
                                                         :bank="bank || {}"
                                                         :banks="banks || []"
@@ -1766,14 +1767,14 @@ export default {
 
         openModel(data) {
             console.log(data)
-            // if (data.arena_details === null) {
-            //     swal.fire({
-            //         icon: "warning",
-            //         title: "Missing",
-            //         text: "Add Arena Details",
-            //         footer: '<a href="/arena">Click here to Add Arena</a>',
-            //     });
-            // } else {
+            if (data.arena_details === null) {
+                swal.fire({
+                    icon: "warning",
+                    title: "Missing",
+                    text: "Add Arena Details",
+                    footer: '<a href="/arena">Click here to Add Arena</a>',
+                });
+            } else {
                 this.dialog = true;
 
                 this.form.reset();
@@ -1854,7 +1855,7 @@ export default {
                         cashWithdrawal: numberFormat(cashWithdrawal),
                     },
 
-                // };
+                };
             }
 
             this.arenaSelectedBank(
@@ -1933,6 +1934,13 @@ export default {
         closeDialog() {
             this.editmode = false;
             this.dialog = false;
+             this.bankDetails = {};
+            this.bank = {};
+            this.bankId= null;
+            this.banks= [];
+            this.bankAccounts= [];
+            this.operator_name = "";
+
             this.form.reset();
             $(".computation").attr("disabled", true);
         },

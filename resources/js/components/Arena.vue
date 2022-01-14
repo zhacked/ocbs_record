@@ -559,27 +559,9 @@
 <script>
 import {
     camelCase,
-    groupBy,
-    map,
-    spread,
-    values,
-    assign,
-    concat,
-    sortBy,
+  
 } from "lodash";
 import XLSX from "xlsx";
-import {
-    numberFormat,
-    numberUnformat,
-    mergeObject,
-    valueSplit,
-} from "../utility";
-
-import VueHtml2pdf from "vue-html2pdf";
-import html2canvas from "html2canvas";
-import JSZip from "jszip";
-import JSZipUtils from "jszip-utils";
-import moment from "moment";
 
 export default {
     data() {
@@ -595,6 +577,7 @@ export default {
             ],
 
             Bankheaders: [
+                { text: "Account Name", value: "account_name" },
                 { text: "Bank Name", value: "bank_name" },
                 { text: "Bank Number", value: "bank_number" },
                 { text: "", value: "actions", sortable: false },

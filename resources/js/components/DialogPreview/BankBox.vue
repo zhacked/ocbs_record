@@ -1,7 +1,7 @@
 <template>
     <v-row>
         
-        <div class="bank-wrapper"  style="padding-left:30px; padding-right:30px; !important;">
+        <div class="bank-wrapper mt-3 mb-2"  style="padding-left:30px; padding-right:30px; !important;">
             <div class="bank-headline mr-6">
                 <span>{{depositReplenishText.bankTitle}}: </span>
             </div>
@@ -9,7 +9,7 @@
             <div   class="bank-container" v-if="depositReplenishText.totalText === 'Deposit'">
                 <div class="bank bank1">
                   
-                      <span>{{bankAccounts.length > 0 ? bankAccounts[0].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
+                      <span class="bank_account-name">{{bankAccounts.length > 0 ? bankAccounts[0].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
                     <span>{{bankAccounts.length > 0 ? bankAccounts[0].bank_name: 'PBB'}}</span>
                     <span>{{bankAccounts.length > 0 ? bankAccounts[0].bank_number: '0050-1001-5156'}}</span>
                 </div>
@@ -18,7 +18,7 @@
                 </div>
                 <div v-if="bankAccounts.length > 1"  class="bank bank2">
                   
-                     <span>{{bankAccounts.length > 1 ? bankAccounts[1].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
+                     <span class="bank_account-name">{{bankAccounts.length > 1 ? bankAccounts[1].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
                     <span>{{bankAccounts.length > 1 ? bankAccounts[1].bank_name: 'PBB'}}</span>
                     <span>{{bankAccounts.length > 1 ? bankAccounts[1].bank_number: '123-1232-1232'}}</span>
                 </div>
@@ -26,7 +26,7 @@
          
             <div class="bank-container d-flex justify-center align-center" v-else >
                 <div class="bank bank1">  
-                    <span class="text-sm font-weight-medium">{{operatorName}}</span>
+                    <span class="text-sm font-weight-medium bank_account-name">{{Object.values(bankTarget).length ? bankTarget.account_name : banks.length > 0 ? banks[0].account_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].account_name : operatorName}}</span>
                    
                     <span v-if="!editmode" class="text-sm font-weight-medium"> {{ Object.values(bankTarget).length ? bankTarget.bank_name : banks.length > 0 ? banks[0].bank_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_name : '' }}</span>
                     <span  class="select-field_container" :class="{'editmode-span': editmode}">

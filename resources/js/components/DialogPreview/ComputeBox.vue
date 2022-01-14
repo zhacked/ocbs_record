@@ -2,7 +2,7 @@
     <fragment>
         <v-row>
             <div
-                class="d-flex my-2 px-1 py-1"
+                class="d-flex mt-1 mb-0 px-1 py-1"
                 style="
                     margin-right: 7px;
                     width: 100%;
