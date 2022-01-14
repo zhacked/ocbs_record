@@ -153,7 +153,7 @@ class importController extends Controller
     }
     public function ConvertToExcel($data){
         
-        return import::Where('date_closed',$data)
+        return import::Where('date_of_soa',$data)
         ->whereNotNull('status')->get();
       
     }

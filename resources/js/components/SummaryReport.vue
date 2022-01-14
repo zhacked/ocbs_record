@@ -81,8 +81,8 @@
                                             :headers="headers"
                                             :items="deposit"
                                             :search="search"
-                                            sort-by="date_closed"
-                                            group-by="date_closed"
+                                            sort-by="date_of_soa"
+                                            group-by="date_of_soa"
                                             class="elevation-1 text-center"
                                              single-expand
                                              :footer-props="{
