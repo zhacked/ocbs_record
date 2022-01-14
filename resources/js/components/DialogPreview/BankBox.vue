@@ -79,6 +79,7 @@
               
 
                     this.bankTarget = {
+                        account_name: selectedBank.account_name,
                         bank_name: selectedBank.bank_name,
                         bank_number: selectedBank.bank_number
                     }

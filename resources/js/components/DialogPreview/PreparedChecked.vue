@@ -17,9 +17,9 @@
                                                                         "
                                                                     >
                                                                        <span class="select-field_container  d-flex justify-center align-center" :class="{'editmode-span': editmode}">
-                                                                           <span v-if="!editmode">Ralph Redoquerio</span>
+                                                                           <span v-if="!editmode">{{this.selectedComputedName || 'Ralph Redoquerio'}}</span>
                                                                             <select v-else class="sign-name select-field_report computation" name="computed" @change="handleComputedBy($event)">
-                                                                                <option>Ralph Redoquerio</option>
+                                                                                <!-- <option>Ralph Redoquerio</option> -->
                                                                                 <option v-for="computed_by in userPrepared.computed" :value="`${computed_by.name} | ${computed_by.position}`" :key="computed_by.id">{{computed_by.name}}</option>
                                                                             </select>
                                                                         </span>
@@ -27,8 +27,8 @@
 
                                                                         <span class="signed-title">
                                                                             
-                                                                           {{computedPosition ? computedPosition : userPrepared.computed.length > 0 ? userPrepared.computed[0].position : "Quality Assurance Staff" }}
-                                                                           
+                                                                           <!-- {{computedPosition ? computedPosition : userPrepared.computed.length > 0 ? userPrepared.computed[0].position : "Quality Assurance Staff" }} -->
+                                                                           {{this.selectedComputedPosition || 'Quality Assurance Staff'}}
                                                                         </span >
                                                                     </div>
                                                                 </div>
@@ -46,16 +46,17 @@
                                                                     >
                                                                     <div class="sign-container">
                                                                          <span class="select-field_container d-flex justify-center align-center" :class="{'editmode-span': editmode}">
-                                                                               <span v-if="!editmode">Clarise A. Valles</span>
+                                                                               <span v-if="!editmode">{{this.selectedPreparedName || 'Clarise A. Valles'}}</span>
                                                                             <select v-else class="sign-name select-field_report computation" name="prepared" disabled @change="handlePreparedBy($event)">
-                                                                                 <option>Clarise A. Valles</option>
+                                                                                 <!-- <option>Clarise A. Valles</option> -->
                                                                                 <option v-for="prepared_by in userPrepared.prepared"  :value="`${prepared_by.name} | ${prepared_by.position}`" :key="prepared_by.id">{{prepared_by.name}}</option>
                                                                             </select>
                                                                         </span>
                                                                         
 
                                                                         <span class="signed-title">
-                                                                           {{preparedPosition ? preparedPosition : userPrepared.prepared.length > 0 ? userPrepared.prepared[0].position : " Finance Assistant - Kiosk" }}
+                                                                           <!-- {{preparedPosition ? preparedPosition : userPrepared.prepared.length > 0 ? userPrepared.prepared[0].position : "Finance Assistant - Kiosk" }} -->
+                                                                         {{this.selectedPreparedPosition || "Finance Assistant - Kiosk"}}
                                                                         </span>
                                                                     </div>
                                                                 </div>
@@ -74,16 +75,18 @@
                                                                     >
                                                                     <div class="sign-container">
                                                                          <span class="select-field_container d-flex justify-center align-center" :class="{'editmode-span': editmode}">
-                                                                               <span v-if="!editmode">Ma. Lourdes Anoba/Leo Tampilic Jr.</span>
+                                                                               <span v-if="!editmode">{{this.selectedCheckedNameOne || 'Ma. Lourdes Anoba/Leo Tampilic Jr.'}}</span>
                                                                             <select v-else class="sign-name select-field_report computation" name="checkedOne" disabled @change="handleCheckedOneBy($event)">
-                                                                             <option>Ma. Lourdes Anoba/Leo Tampilic Jr.</option>
+                                                                             <!-- <option>Ma. Lourdes Anoba/Leo Tampilic Jr.</option> -->
                                                                                 <option v-for="checked_by in userPrepared.checked" :value="`${checked_by.name} | ${checked_by.position}`" :key="checked_by.id">{{checked_by.name}}</option>
                                                                             </select>
                                                                         </span>
                                                                         
 
                                                                         <span class="signed-title">
-                                                                            {{checkedOnePosition ? checkedOnePosition : userPrepared.checked.length > 0 ? userPrepared.checked[0].position : "QA - Team Leader"}}
+                                                                            <!-- {{checkedOnePosition ? checkedOnePosition : userPrepared.checked.length > 0 ? userPrepared.checked[0].position : "QA - Team Leader"}} -->
+                                                                            {{this.selectedCheckedNameOnePosition || "QA - Team Leader"}}
+
                                                                         </span >
                                                                     </div>
                                                                 </div>
@@ -94,17 +97,19 @@
                                                                     <div class="sign-container">
                                                                         
                                                                          <span class="select-field_container d-flex justify-center align-center " :class="{'editmode-span': editmode}">
-                                                                            <span v-if="!editmode">Mariel Pilotos/Jonalyn Bonares</span>
+                                                                            <span v-if="!editmode">{{this.selectedCheckedNameTwo || 'Mariel Pilotos/Jonalyn Bonares'}}</span>
                                                                             <select v-else class="sign-name select-field_report computation" name="checkedTwo" disabled @change="handleCheckedTwoBy($event)">
                                                                             
-                                                                                 <option>Mariel Pilotos/Jonalyn Bonares</option>
+                                                                                 <!-- <option>Mariel Pilotos/Jonalyn Bonares</option> -->
                                                                                 <option v-for="checked_by in userPrepared.checked" :value="`${checked_by.name} | ${checked_by.position}`" :key="checked_by.id">{{checked_by.name}}</option>
                                                                             </select>
                                                                         </span>
                                                                         
 
                                                                         <span class="signed-title">
-                                                                           {{checkedTwoPosition ? checkedTwoPosition : userPrepared.checked.length ? userPrepared.checked[1].position : "Supervisor - Arena/OCBS"}}
+                                                                           <!-- {{checkedTwoPosition ? checkedTwoPosition : userPrepared.checked.length ? userPrepared.checked[1].position : "Supervisor - Arena/OCBS"}} -->
+                                                                          {{this.selectedCheckedNameTwoPosition || "Supervisor - Arena/OCBS"}}
+
                                                                         </span >
                                                                     </div>
                                                                 </div>
@@ -121,7 +126,18 @@
         },
         data(){
             return{
-              
+                selectedComputedName: "",
+                selectedComputedPosition: "",
+
+                selectedPreparedName: "",
+                selectedPreparedPosition: "",
+
+                selectedCheckedNameOne: "",
+                selectedCheckedNameOnePosition: "",
+
+                selectedCheckedNameTwo: "",
+                selectedCheckedNameTwoPosition: "",
+
                 preparedPosition: "",
                 computedPosition: "",
                 checkedOnePosition: "",
@@ -130,20 +146,39 @@
             }
         },
         methods: {
+            selectedComputed(){
+                const cc = this.userPrepared.computed.filter(c => c.assign !== 0);
+                this.selectedComputedName = cc[0]?.name;
+                this.selectedComputedPosition = cc[0]?.position;
+            },
+            selectedPrepared(){
+                const cc = this.userPrepared.prepared.filter(c => c.assign !== 0);
+                this.selectedPreparedName = cc[0]?.name;
+                this.selectedPreparedPosition = cc[0]?.position;
+            },
+            selectedCheckedOne(){
+                const cc = this.userPrepared.checked.filter(c => c.assign !== 0);
+                this.selectedCheckedNameOne = cc[0]?.name;
+                this.selectedCheckedNameOnePosition = cc[0]?.position;
+            },
+            selectedCheckedTwo(){
+                const cc = this.userPrepared.checked.filter(c => c.assign !== 0);
+                this.selectedCheckedNameTwo = cc[1]?.name;
+                this.selectedCheckedNameTwoPosition = cc[1]?.position;
+            },
+
             handlePreparedBy(event){
                
                 const positionPrepared = event.target.value.split(" | ");
-             
+
                 this.preparedPosition =  positionPrepared && positionPrepared[1] || "";
                
                 
             },
             handleComputedBy(event){
         
-             
                 const positionComputed = event.target.value.split(" | ");
                
-             
                 this.computedPosition = positionComputed && positionComputed[1] || "";
               
                 
@@ -158,7 +193,14 @@
 
                 this.checkedTwoPosition = positionCheckedTwo && positionCheckedTwo[1] || "";
                 
-            }
+            },
+           
+        },
+        created(){
+            this.selectedComputed()
+            this.selectedPrepared()
+            this.selectedCheckedOne()
+            this.selectedCheckedTwo()
         }
         
         

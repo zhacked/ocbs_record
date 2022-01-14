@@ -179,6 +179,14 @@
                                             </v-menu>
                                             <!--  -->
                                         </v-col>
+                                         <v-spacer></v-spacer>
+                                        <v-col>
+                                        <v-switch
+                                            v-model="switchPrepared"
+                                            label="Preparation"
+                                            ></v-switch>
+
+                                        </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col>
                                             <v-text-field
@@ -633,6 +641,7 @@
                               
 
                                     <PreparedChecked
+                                        v-show="switchPrepared"
                                         :userPrepared="userPrepared"
                                         :editmode="editmode"
                                     />
@@ -804,6 +813,7 @@
                                                     />
 
                                                     <PreparedChecked
+                                                        v-if="switchPrepared"
                                                         :userPrepared="
                                                             userPrepared
                                                         "
@@ -1136,6 +1146,7 @@ export default {
             selectedItems: [],
             progressvalue: 0,
             arenaSample: [],
+            switchPrepared: false,
         };
     },
     methods: {
@@ -1143,11 +1154,15 @@ export default {
             axios
                 .get("api/employees")
                 .then(
-                    ({ data }) => (
-                        (this.userPrepared.computed = data.computed),
-                        (this.userPrepared.checked = data.checked),
-                        (this.userPrepared.prepared = data.prepared)
-                    )
+                    ({ data }) => 
+                        {
+                        console.log(data.computed)
+                        this.userPrepared.computed = data.computed
+                        this.userPrepared.checked = data.checked
+                        this.userPrepared.prepared = data.prepared
+                        }
+                       
+                    
                 );
         },
         arenaSelectedBank(bankId) {
