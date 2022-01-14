@@ -263,6 +263,7 @@
                                                             hover,
                                                         }"
                                                     >
+                                                
                                                         <v-btn
                                                             icon
                                                             color="primary"
@@ -788,7 +789,7 @@
                                                         :arenaDetails="
                                                             arenaDetails
                                                         "
-                                                        :bankId="{ id: bankId }"
+                                                        :bankId="{ id: bankId } || {}"
                                                         :arenaId="{
                                                             id: arenaId,
                                                         }"
@@ -1019,9 +1020,10 @@ export default {
         return {
             headers: [
                 { text: "#", value: "id" },
+                 { text: "CODE", value: "areaCode" },
                 {text: "ref", value: "refNo"},
                 { text: "Arena Name", value: "arena_name" },
-                { text: "Operator", value: "arena_details.operator" },
+                // { text: "Operator", value: "arena_details.operator" },
               
                 { text: "", value: "actions", sortable: false },
             ],
@@ -1342,7 +1344,7 @@ export default {
                             eventClosedUTC
                     );
 
-                    console.log(eventDateCreated);
+                  
 
                     const objectKeyed = (array) => {
                         let objectKeyReplacedArray = [];
@@ -1558,7 +1560,7 @@ export default {
                                 rake: rest.rake,
                                 draw_unpaid: rest.dUnpaid,
                                 draw_unclaimed: rest.drawUnclaimed,
-                                arena_name: arenaName,
+                                arena_name: arenaName.toUpperCase(),
                                 type,
                                 exempted,
                                 total_meron_wala: totalMWBets,
@@ -1763,14 +1765,15 @@ export default {
         },
 
         openModel(data) {
-            if (data.arena_details == null) {
-                swal.fire({
-                    icon: "warning",
-                    title: "Missing",
-                    text: "Add Arena Details",
-                    footer: '<a href="/arena">Click here to Add Arena</a>',
-                });
-            } else {
+            console.log(data)
+            // if (data.arena_details === null) {
+            //     swal.fire({
+            //         icon: "warning",
+            //         title: "Missing",
+            //         text: "Add Arena Details",
+            //         footer: '<a href="/arena">Click here to Add Arena</a>',
+            //     });
+            // } else {
                 this.dialog = true;
 
                 this.form.reset();
@@ -1851,7 +1854,7 @@ export default {
                         cashWithdrawal: numberFormat(cashWithdrawal),
                     },
 
-                };
+                // };
             }
 
             this.arenaSelectedBank(

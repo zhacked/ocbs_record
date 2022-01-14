@@ -76,7 +76,7 @@ class ArenaController extends Controller
 
         foreach ($request['email'] as $email){
              Email::updateOrCreate([
-                 'arena_id' => $arena->id,
+         
                 'area_code' => $arena->area_code,
                 'email' => $email
             ]);
@@ -93,6 +93,13 @@ class ArenaController extends Controller
 
 
         return $arena;
+    }
+
+    public function importArena(Request $request){
+        $contactImport = arena::upsert($request->all(), ['area_code']);
+
+        
+        return  $contactImport;
     }
 
     /**
@@ -183,7 +190,7 @@ class ArenaController extends Controller
             foreach ($request['email'] as $email){
                     if(!is_array($email)){
                         $data = Email::Create([
-                            'arena_id' => $request['id'],
+                            // 'arena_id' => $request['id'],
                             'area_code' => $request['area_code'],
                             'email' => $email
                         ]);

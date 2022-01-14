@@ -16,9 +16,10 @@
                                                                             sign-container
                                                                         "
                                                                     >
-                                                                       <span class="select-field_container  " :class="{'editmode-span': editmode}">
-                                                                            <select class="sign-name select-field_report computation" name="computed" disabled @change="handleComputedBy($event)">
-                                                                                <!-- <option>Ralph Redoquerio</option> -->
+                                                                       <span class="select-field_container  d-flex justify-center align-center" :class="{'editmode-span': editmode}">
+                                                                           <span v-if="!editmode">Ralph Redoquerio</span>
+                                                                            <select v-else class="sign-name select-field_report computation" name="computed" @change="handleComputedBy($event)">
+                                                                                <option>Ralph Redoquerio</option>
                                                                                 <option v-for="computed_by in userPrepared.computed" :value="`${computed_by.name} | ${computed_by.position}`" :key="computed_by.id">{{computed_by.name}}</option>
                                                                             </select>
                                                                         </span>
@@ -26,7 +27,7 @@
 
                                                                         <span class="signed-title">
                                                                             
-                                                                           {{computedPosition || userPrepared.computed[0].position || "Quality Assurance Staff" }}
+                                                                           {{computedPosition ? computedPosition : userPrepared.computed.length > 0 ? userPrepared.computed[0].position : "Quality Assurance Staff" }}
                                                                            
                                                                         </span >
                                                                     </div>
@@ -44,16 +45,17 @@
                                                                         by:</span
                                                                     >
                                                                     <div class="sign-container">
-                                                                         <span class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                            <select class="sign-name select-field_report computation" name="prepared" disabled @change="handlePreparedBy($event)">
-                                                                                <!-- <option>Clarise A. Valles</option> -->
+                                                                         <span class="select-field_container d-flex justify-center align-center" :class="{'editmode-span': editmode}">
+                                                                               <span v-if="!editmode">Clarise A. Valles</span>
+                                                                            <select v-else class="sign-name select-field_report computation" name="prepared" disabled @change="handlePreparedBy($event)">
+                                                                                 <option>Clarise A. Valles</option>
                                                                                 <option v-for="prepared_by in userPrepared.prepared"  :value="`${prepared_by.name} | ${prepared_by.position}`" :key="prepared_by.id">{{prepared_by.name}}</option>
                                                                             </select>
                                                                         </span>
                                                                         
 
                                                                         <span class="signed-title">
-                                                                           {{preparedPosition || userPrepared.prepared[0].position || " Finance Assistant - Kiosk" }}
+                                                                           {{preparedPosition ? preparedPosition : userPrepared.prepared.length > 0 ? userPrepared.prepared[0].position : " Finance Assistant - Kiosk" }}
                                                                         </span>
                                                                     </div>
                                                                 </div>
@@ -71,16 +73,17 @@
                                                                         by:</span
                                                                     >
                                                                     <div class="sign-container">
-                                                                         <span class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                            <select class="sign-name select-field_report computation" name="checkedOne" disabled @change="handleCheckedOneBy($event)">
-                                                                                <!-- <option default>Ma. Lourdes Anoba/Leo Tampilic Jr.</option> -->
+                                                                         <span class="select-field_container d-flex justify-center align-center" :class="{'editmode-span': editmode}">
+                                                                               <span v-if="!editmode">Ma. Lourdes Anoba/Leo Tampilic Jr.</span>
+                                                                            <select v-else class="sign-name select-field_report computation" name="checkedOne" disabled @change="handleCheckedOneBy($event)">
+                                                                             <option>Ma. Lourdes Anoba/Leo Tampilic Jr.</option>
                                                                                 <option v-for="checked_by in userPrepared.checked" :value="`${checked_by.name} | ${checked_by.position}`" :key="checked_by.id">{{checked_by.name}}</option>
                                                                             </select>
                                                                         </span>
                                                                         
 
                                                                         <span class="signed-title">
-                                                                            {{checkedOnePosition || userPrepared.checked[0].position || "QA - Team Leader"}}
+                                                                            {{checkedOnePosition ? checkedOnePosition : userPrepared.checked.length > 0 ? userPrepared.checked[0].position : "QA - Team Leader"}}
                                                                         </span >
                                                                     </div>
                                                                 </div>
@@ -90,17 +93,18 @@
                                                                     <span class="signedBy">Checked by:</span>
                                                                     <div class="sign-container">
                                                                         
-                                                                         <span class="select-field_container" :class="{'editmode-span': editmode}">
-                                                                            <select class="sign-name select-field_report computation" name="checkedTwo" disabled @change="handleCheckedTwoBy($event)">
-                                                                                <!-- <option>Mariel Pilotos/Jonalyn Bonares</option> -->
-
+                                                                         <span class="select-field_container d-flex justify-center align-center " :class="{'editmode-span': editmode}">
+                                                                            <span v-if="!editmode">Mariel Pilotos/Jonalyn Bonares</span>
+                                                                            <select v-else class="sign-name select-field_report computation" name="checkedTwo" disabled @change="handleCheckedTwoBy($event)">
+                                                                            
+                                                                                 <option>Mariel Pilotos/Jonalyn Bonares</option>
                                                                                 <option v-for="checked_by in userPrepared.checked" :value="`${checked_by.name} | ${checked_by.position}`" :key="checked_by.id">{{checked_by.name}}</option>
                                                                             </select>
                                                                         </span>
                                                                         
 
                                                                         <span class="signed-title">
-                                                                           {{checkedTwoPosition || userPrepared.checked[1].position ||"Supervisor - Arena/OCBS"}}
+                                                                           {{checkedTwoPosition ? checkedTwoPosition : userPrepared.checked.length ? userPrepared.checked[1].position : "Supervisor - Arena/OCBS"}}
                                                                         </span >
                                                                     </div>
                                                                 </div>

@@ -24,7 +24,7 @@ class arena extends Model
     }
     
     public function EmailDetails(){
-        return $this->hasMany('App\Models\Email','arena_id', 'id');
+        return $this->hasMany('App\Models\Email','area_code', 'area_code');
     } 
 
     public function ContactDetails(){

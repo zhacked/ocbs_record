@@ -65,7 +65,7 @@ class BankDetailsController extends Controller
         ]);
 
         return BankAccount::create([
-            'arenas_id' => $request['arenas_id'],
+            // 'arenas_id' => $request['arenas_id'],
             'area_code' => $request['area_code'],
             'account_name'=> $request['account_name'],
             'bank_name' => $request['bank_name'],
@@ -74,6 +74,21 @@ class BankDetailsController extends Controller
         ]);
     }
 
+
+
+    public function bankStore(Request $request)
+    {
+      
+        // dd($request->all());
+
+        $bankImport = BankAccount::upsert($request->all(),['area_code']);
+
+     
+        
+        return  $bankImport;
+        
+
+    }
     /**
      * Display the specified resource.
      *
@@ -113,8 +128,9 @@ class BankDetailsController extends Controller
         ]);
 
         $bank->update([
-            'arenas_id' => $request['arenas_id'],
+            // 'arenas_id' => $request['arenas_id'],
             'account_name'=> $request['account_name'],
+            'area_code' => $request['area_code'],
             'bank_name' => $request['bank_name'],
             'bank_number' => $request['bank_number'],
             'isAdmin' => $request['isAdmin'],

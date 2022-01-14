@@ -52,7 +52,7 @@ class importController extends Controller
         $arena = arena::findOrFail($id);
       
         if($arena->bank_id == null){
-                $bankOwn = BankAccount::where('arenas_id',$id)->first();
+                $bankOwn = BankAccount::where('area_code',$id)->first();
                 $arena->bank_id = $bankOwn->id;
                 $arena->update();
         }
@@ -61,7 +61,7 @@ class importController extends Controller
     }
     public function bankaccountfilter($id)
     {
-        return BankAccount::where('arenas_id',$id)->get();
+        return BankAccount::where('area_code',$id)->get();
     }
    
     
@@ -140,7 +140,7 @@ class importController extends Controller
      */
     public function bankdetialsfilter($id)
     {
-        return BankAccount::where('arenas_id',$id)->get();
+        return BankAccount::where('area_code',$id)->get();
     }
 
     /**

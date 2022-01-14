@@ -24,6 +24,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::apiResources(['import' => App\Http\Controllers\API\ImportController::class]);
     Route::apiResources(['bankaccount' => App\Http\Controllers\API\BankDetailsController::class]);
     Route::apiResources(['employees' => App\Http\Controllers\API\EmployeeController::class]);
+    Route::apiResources(['contactnumbers' => App\Http\Controllers\API\ContactController::class]);
+    Route::apiResources(['emails' => App\Http\Controllers\API\EmailController::class]);
 
     
     Route::get('profile', [App\Http\Controllers\API\UserController::class, 'profile'])->name('profile');
@@ -52,3 +54,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('getposition', [App\Http\Controllers\API\EmployeeController::class, 'getpostionNow']);
     Route::get('deletePosition/{id}', [App\Http\Controllers\API\EmployeeController::class, 'deletepostionNow']);
     Route::put('updateposition/{id}', [App\Http\Controllers\API\EmployeeController::class, 'updatepostionNowwith']);
+
+    Route::post('importArena', [App\Http\Controllers\API\ArenaController::class, 'importArena']);
+    Route::post('bankStore', [App\Http\Controllers\API\BankDetailsController::class, 'bankStore']);
+

@@ -197,6 +197,7 @@ export default {
         return {
             headers: [
                 { text: "#", value: "id" },
+                { text: "CODE", value: "area_code" },
                 { text: "SAO#", value: "Soa_number" },
                 { text: "OCBS Name", value: "arena_name" },
                 { text: "Amount", value: "for_total" },

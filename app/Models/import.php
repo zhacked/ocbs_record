@@ -11,16 +11,16 @@ use Maatwebsite\Excel\Facades\Excel;class import extends Model
     protected $guarded = [];
 
     public function arenaDetails(){
-        return $this->hasOne('App\Models\arena','arena', 'arena_name');
+        return $this->hasOne('App\Models\arena','area_code', 'areaCode');
     }
 
 
     public function BankDetails(){
-        return $this->hasMany('App\Models\BankAccount','arenas_id', 'id');
+        return $this->hasMany('App\Models\BankAccount','area_code', 'area_code');
     }
     
     public function getImport() {
-        $records = DB::table('imports')->select('id','arena_name','for_total')->get()->toArray();
+        $records = DB::table('imports')->select('id','arena_name','for_total', 'area_code')->get()->toArray();
         return $records;
     }
 }
