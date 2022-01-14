@@ -1631,7 +1631,7 @@ export default {
 
 
                     const moLetter = String.fromCharCode(
-                        96 + (moment(eventDateClosed).month() + 1)
+                        96 + (moment(eventDateCreated).month() + 1)
                     ).toUpperCase();
 
 
@@ -1650,7 +1650,7 @@ export default {
                     const newsoa = sortSoa.map(({ soaFr, ...s }, i) => ({
                         refNo:
                             "SO" +
-                            moment(eventDateClosed).format("YYDD") +
+                            moment(eventDateCreated).format("YYDD") +
                             moLetter +
                             `0000${i + 1}`.slice(-4),
                         ...s,
@@ -1658,7 +1658,7 @@ export default {
                     const newfr = sortFr.map(({ soaFr, ...f }, i) => ({
                         refNo:
                             "FR" +
-                            moment(eventDateClosed).format("YYDD") +
+                            moment(eventDateCreated).format("YYDD") +
                             moLetter +
                             `0000${i + 1}`.slice(-4),
                         ...f,
