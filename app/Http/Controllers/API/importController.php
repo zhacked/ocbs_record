@@ -77,55 +77,6 @@ class importController extends Controller
         // dd($request->all());
 
         $import = import::upsert($request->all(),['codeEvent']);
-
-        // foreach ($request->all() as $data ){
-        
-        // $arena= arena::where('arena', $data['arena_name'])->first();
-            
-        //    $import =  import::create([
-        //         'areaCode' => $data['areaCode'],
-        //         'codeEvent' => $data['codeEvent'],
-        //         'refNo' => $data['refNo'],
-        //         'arena_name' => $data['arena_name'],
-        //         'date_of_soa'=> $data['date_of_soa'],
-        //         'meron' => $data['meron'],
-        //         'wala' => $data['wala'],
-        //         'total_meron_wala' => $data['total_meron_wala'],
-        //         'total_payout_paid' => $data['total_payout_paid'],
-        //         'unclaimed' => $data['unclaimed'],
-        //         'rake' => $data['rake'],
-        //         'draw_cancelled' => $data['draw_cancelled'],
-        //         'draw_cancelled_paid' => $data['draw_cancelled_paid'],
-        //         'cancelled_unpaid' => $data['cancelled_unpaid'],
-        //         'draw_paid' => $data['draw_paid'],
-        //         'draw_unpaid' => $data['draw_unpaid'],
-        //         'draw' => $data['draw'],
-        //         'draw_unclaimed' => $data['draw_unclaimed'],
-        //         'draw_unpaid' => $data['draw_unpaid'],
-        //         'type' => $data['type'],
-        //         'totalOthers'=> $data['totalOthers'],
-        //         'salesDeductionTablet'=> $data['salesDeductionTablet'],
-        //         'netOperatorsCommission'=> $data['netOperatorsCommission'],
-        //         'otherCommissionIntel05' => $data['otherCommissionIntel05'],
-        //         'consolidatorsCommission'=> $data['consolidatorsCommission'],
-        //         'safetyFund'=> $data['safetyFund'],
-        //         'paymentForOutstandingBalance'=> $data['paymentForOutstandingBalance'],
-        //         'systemErrorCOArmsi'=> $data['systemErrorCOArmsi'],
-        //         'cashLoad'=> $data['cashLoad'],
-        //         'cashWithdrawal'=> $data['cashWithdrawal'],
-        //         'total_win_mobile'=> $data['total_win_mobile'],
-        //         'draw_mobile'=> $data['draw_mobile'],
-        //         'exempted'=> $data['exempted'],
-        //         'netWinLoss' => $data['netWinLoss'],
-        //         'mwTwo' => $data['mwTwo'],
-        //         'drawTwo' => $data['drawTwo'],
-        //         'mwTwoMobile' => $data['mwTwoMobile'],
-        //         'drawTwoMobile' => $data['drawTwoMobile'],
-        //         'for_total' => $data['for_total'],
-        //         'group' => $data['group']
-
-        //     ]);
-        // }
         
         return  $import;
         
@@ -193,8 +144,8 @@ class importController extends Controller
     }
 
     public function depositedata(){
-        $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereGroup('Deposit')->whereNotNull('status')->get();
-        $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereGroup('Replenish')->whereNotNull('status')->get();
+        $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Deposit')->whereNotNull('status')->get();
+        $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Replenish')->whereNotNull('status')->get();
         return Response()->json([
             'rf' => $reflenish,
             'dp' => $deposit
