@@ -410,17 +410,7 @@
                                     ]"
                                 ></v-text-field>
 
-                                <!-- <v-text-field
-                                    label="Contact Number"
-                                    placeholder="09121234567"
-                                    outlined
-                                    v-model="form.contact_number"
-                                    :rules="[
-                                        () => !!form.contact_number || 'This field is required',
-                                        () =>   /^\d+$/.test(form.contact_number) || 'Must be a number',
-                                        () =>  form.contact_number && form.contact_number.length >= 11 && form.contact_number.length <= 11|| 'This field must have atleast 11 digits'
-                                    ]"
-                                ></v-text-field> -->
+                           
                                 <v-combobox
                                     v-model="form.contact_number"
                                     :items="contacts.data"
@@ -621,7 +611,7 @@ export default {
     },
     methods: {
         onFileChange(event) {
-            let arrayNumbers = [];
+            // let arrayNumbers = [];
             const file = event.target.files ? event.target.files[0] : null;
             this.fileUpload = file;
             const checkfile =
@@ -654,7 +644,7 @@ export default {
                    
 
                     const objectKeyed = (array) => {
-                     
+                        console.log(array)
                         let objectKeyReplacedArray = [];
                         const keysss = array.find(
                             (k) => k.C === "ARENA NAME" || k.B === "CODE"
@@ -680,6 +670,8 @@ export default {
 
                         return objectKeyReplacedArray;
                     };
+
+              
                     const objk = objectKeyed(arrayData[0]);
                     // console.log(objectKeyed(arrayData[0]));
                     console.log(objk);
@@ -780,11 +772,16 @@ export default {
             }
         },
         async proceedAction() {
-          
+          this.$Progress.start();
             await axios.post('api/importArena', this.arenaList)
             await axios.post("api/contactnumbers", this.contactNumbers)
             await axios.post("api/emails", this.emailList)
-            await axios.post("api/bankStore", this.bankList)
+           await axios.post("api/bankStore", this.bankList)
+
+            Fire.$emit("AfterCreate");
+            swal.fire("Successfully!", "Excel Imported", "success");
+            this.$Progress.finish();
+
         },
         testEnter(item) {
             console.log(item);
