@@ -179,6 +179,14 @@
                                             </v-menu>
                                             <!--  -->
                                         </v-col>
+                                         <v-spacer></v-spacer>
+                                        <v-col>
+                                        <v-switch
+                                            v-model="switchPrepared"
+                                            label="Preparation"
+                                            ></v-switch>
+
+                                        </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col>
                                             <v-text-field
@@ -633,6 +641,7 @@
                               
 
                                     <PreparedChecked
+                                        v-show="switchPrepared"
                                         :userPrepared="userPrepared"
                                         :editmode="editmode"
                                     />
@@ -804,6 +813,7 @@
                                                     />
 
                                                     <PreparedChecked
+                                                        v-if="switchPrepared"
                                                         :userPrepared="
                                                             userPrepared
                                                         "
@@ -1136,6 +1146,7 @@ export default {
             selectedItems: [],
             progressvalue: 0,
             arenaSample: [],
+            switchPrepared: false,
         };
     },
     methods: {
@@ -1143,11 +1154,15 @@ export default {
             axios
                 .get("api/employees")
                 .then(
-                    ({ data }) => (
-                        (this.userPrepared.computed = data.computed),
-                        (this.userPrepared.checked = data.checked),
-                        (this.userPrepared.prepared = data.prepared)
-                    )
+                    ({ data }) => 
+                        {
+                        console.log(data.computed)
+                        this.userPrepared.computed = data.computed
+                        this.userPrepared.checked = data.checked
+                        this.userPrepared.prepared = data.prepared
+                        }
+                       
+                    
                 );
         },
         arenaSelectedBank(bankId) {
@@ -1616,7 +1631,7 @@ export default {
 
 
                     const moLetter = String.fromCharCode(
-                        96 + (moment(eventDateClosed).month() + 1)
+                        96 + (moment(eventDateCreated).month() + 1)
                     ).toUpperCase();
 
 
@@ -1635,7 +1650,7 @@ export default {
                     const newsoa = sortSoa.map(({ soaFr, ...s }, i) => ({
                         refNo:
                             "SO" +
-                            moment(eventDateClosed).format("YYDD") +
+                            moment(eventDateCreated).format("YYDD") +
                             moLetter +
                             `0000${i + 1}`.slice(-4),
                         ...s,
@@ -1643,7 +1658,7 @@ export default {
                     const newfr = sortFr.map(({ soaFr, ...f }, i) => ({
                         refNo:
                             "FR" +
-                            moment(eventDateClosed).format("YYDD") +
+                            moment(eventDateCreated).format("YYDD") +
                             moLetter +
                             `0000${i + 1}`.slice(-4),
                         ...f,

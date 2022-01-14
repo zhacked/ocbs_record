@@ -81,8 +81,8 @@
                                             :headers="headers"
                                             :items="deposit"
                                             :search="search"
-                                            sort-by="date_closed"
-                                            group-by="date_closed"
+                                            sort-by="date_of_soa"
+                                            group-by="date_of_soa"
                                             class="elevation-1 text-center"
                                              single-expand
                                              :footer-props="{
@@ -197,8 +197,8 @@ export default {
         return {
             headers: [
                 { text: "#", value: "id" },
-                { text: "CODE", value: "area_code" },
-                { text: "SAO#", value: "Soa_number" },
+            
+                { text: "ref", value: "refNo" },
                 { text: "OCBS Name", value: "arena_name" },
                 { text: "Amount", value: "for_total" },
          

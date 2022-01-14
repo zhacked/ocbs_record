@@ -1,7 +1,10 @@
 
-## About Laravel
+##  Requirements 
+PC / Laptop <br>
+xampp version 7.4.25 <br>
+composer latest version <br>
+nodejs Recommended version 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
 ## Set Up 
 npm install <br>
