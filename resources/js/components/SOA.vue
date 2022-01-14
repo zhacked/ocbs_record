@@ -1634,7 +1634,7 @@ export default {
                     const newsoa = sortSoa.map(({ soaFr, ...s }, i) => ({
                         refNo:
                             "SO" +
-                            moment(eventDateClosed).format("MMDD") +
+                            moment(eventDateClosed).format("YYDD") +
                             moLetter +
                             `0000${i + 1}`.slice(-4),
                         ...s,
@@ -1642,7 +1642,7 @@ export default {
                     const newfr = sortFr.map(({ soaFr, ...f }, i) => ({
                         refNo:
                             "FR" +
-                            moment(eventDateClosed).format("MMDD") +
+                            moment(eventDateClosed).format("YYDD") +
                             moLetter +
                             `0000${i + 1}`.slice(-4),
                         ...f,
