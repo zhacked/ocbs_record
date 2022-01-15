@@ -5,7 +5,7 @@
                 <v-col class="col-md-12">
                     <v-card>
                         <v-card-title class="card-header">
-                            <strong> Arena Detials</strong>
+                            <strong> Arena Details</strong>
                             <v-spacer></v-spacer>
                             <v-card-actions class="card-tools">
                                 <form @submit.prevent="proceedAction()">
@@ -144,7 +144,7 @@
                                 v-show="editmode"
                                 id="addNewLabel"
                             >
-                                Update Bank Detials
+                                Update Bank Details
                             </h5>
 
                             <button
@@ -245,7 +245,7 @@
                                         v-show="editmode"
                                         id="addNewLabel"
                                     >
-                                        Update Bank Detials
+                                        Update Bank Details
                                     </h5>
                                     <v-spacer></v-spacer>
                                     <v-icon color="red" @click="show = false">
@@ -562,7 +562,7 @@ export default {
                 { text: "Arena Name", value: "arena" },
                 { text: "Address", value: "address" },
                 { text: "Operator", value: "operator" },
-                { text: "Bank Detials", value: "bank" },
+                { text: "Bank Details", value: "bank" },
                 { text: "", value: "actions", sortable: false },
             ],
 

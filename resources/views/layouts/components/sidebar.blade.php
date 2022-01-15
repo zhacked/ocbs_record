@@ -1,9 +1,5 @@
 <aside class="main-sidebar  sidebar-dark-primary elevation-4">
-<<<<<<< HEAD
 	<a href="#" class="brand-link">
-=======
-	<a href="index.html" class="brand-link">
->>>>>>> main
 	<img src="image/rooster.png" alt="AdminLTE Logo" class="brand-image "
 		style="opacity: .8">
 	<span class="brand-text font-weight-light">Finance SOA</span>

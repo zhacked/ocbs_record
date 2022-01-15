@@ -239,7 +239,7 @@
                                                     <v-toolbar
                                                         flat
                                                     >
-                                                        <v-toolbar-title>Position Detials</v-toolbar-title>
+                                                        <v-toolbar-title>Position Details</v-toolbar-title>
                                                          <v-divider
                                                             class="mx-4"
                                                             inset
@@ -341,7 +341,7 @@
                                     () =>  /.+@.+\..+/.test(form.email) || 'E-mail must be valid'
                                     ]"
                             ></v-text-field>
-
+<!-- 
                             <v-text-field
                                   
                                     prepend-inner-icon="mdi-phone"
@@ -357,8 +357,8 @@
                                         
                                     ]"
                                     required
-                            ></v-text-field>
-
+                            ></v-text-field> -->
+<!-- 
                              <v-text-field
                                     label="Address"
                                      prepend-inner-icon="mdi-home"
@@ -371,12 +371,28 @@
                                         () => !!form.address && form.address.length <= 25 || 'Address must be less than 25 characters',
                                         ]"
                                     required
-                            ></v-text-field>
+                            ></v-text-field> -->
 
                             <v-autocomplete
-                                :items="groups"
-                                label="Group"
-                                prepend-inner-icon="mdi-account-switch"
+                                :items="teams"
+                                chips
+                                label="Teams"
+                                prepend-inner-icon="mdi-account-group"
+                                hide-details
+                                hide-no-data
+                                hide-selected
+                                outlined
+                                dense
+                                item-text="team"
+                                v-model="form.team"
+                                 class="pb-4"
+                            ></v-autocomplete> 
+                            
+
+                            <v-autocomplete
+                                :items="assigns"
+                                label="Assign"
+                                prepend-inner-icon="mdi-clipboard-account"
                                 hide-details
                                 hide-no-data
                                 hide-selected
@@ -465,9 +481,10 @@
                 headers: [
                     { text: 'Name', value: 'name' },
                     { text: 'Email', value: 'email' },
-                    { text: 'Number', value: 'contact'},
+                    // { text: 'Number', value: 'contact'},
+                    {text: 'Team', value: 'team'},
                     { text: 'Position', value: 'position'},
-                    {text:'Group', value: 'group'},
+                    {text:'Assign', value: 'group'},
 
                     { text: '', value: 'actions', sortable: false },
                 ],
@@ -480,7 +497,7 @@
                 employee : [],
                 length: '',
                 search: '',
-                groups:[
+                assigns:[
                     'computed',
                     'checked',
                     'prepared'
