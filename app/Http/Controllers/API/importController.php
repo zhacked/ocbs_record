@@ -144,18 +144,23 @@ class importController extends Controller
     }
 
     public function depositedata(){
-        $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Deposit')->whereNotNull('status')->get();
-        $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Replenish')->whereNotNull('status')->get();
+//         ->whereNotNull('status')
+// ->whereNotNull('status')
+        $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Deposit')->get();
+        $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Replenish')->get();
         return Response()->json([
             'rf' => $reflenish,
             'dp' => $deposit
         ]);
     }
-    public function ConvertToExcel($data){
-        
-        return import::Where('date_of_soa',$data)
-        ->whereNotNull('status')->get();
-      
+    public function ConvertToExcel($group,$data){
+        // ->whereNotNull('status')
+        // dd($group);
+
+       return import::where('group',$group)
+                        ->where('date_of_soa',$data)
+                        ->get();
+       
     }
 
    

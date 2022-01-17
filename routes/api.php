@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
- Route::apiResources(['user' => App\Http\Controllers\API\UserController::class]);
+    Route::apiResources(['user' => App\Http\Controllers\API\UserController::class]);
     Route::apiResources(['arena' => App\Http\Controllers\API\ArenaController::class]);
     Route::apiResources(['import' => App\Http\Controllers\API\ImportController::class]);
     Route::apiResources(['bankaccount' => App\Http\Controllers\API\BankDetailsController::class]);
@@ -27,9 +27,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::apiResources(['contactnumbers' => App\Http\Controllers\API\ContactController::class]);
     Route::apiResources(['emails' => App\Http\Controllers\API\EmailController::class]);
     Route::apiResources(['teams' => App\Http\Controllers\API\TeamController::class]);
-
-
-    
     Route::get('profile', [App\Http\Controllers\API\UserController::class, 'profile'])->name('profile');
     Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');
     Route::get('arenaId', [App\Http\Controllers\API\BankDetailsController::class, 'show_arena'])->name('arenaId');
@@ -49,7 +46,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::delete('deleteContact/{id}', [App\Http\Controllers\API\ArenaController::class, 'deleteContact']);
     
     Route::get('arenaSelectedBank/{id}', [App\Http\Controllers\API\BankDetailsController::class, 'arenaSelectedBank']);
-    Route::get('convertToExcel/{data}', [App\Http\Controllers\API\ImportController::class, 'ConvertToExcel']);
+    Route::get('convertToExcel/{group}/{data}', [App\Http\Controllers\API\ImportController::class, 'ConvertToExcel']);
     Route::get('validate/{password}', [App\Http\Controllers\API\UserController::class, 'validate_user']);
     Route::put('selected/{id}', [App\Http\Controllers\API\EmployeeController::class, 'selectedbyUser']);
     Route::post('saveposition', [App\Http\Controllers\API\EmployeeController::class, 'savepostionNow']);
@@ -60,3 +57,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::post('importArena', [App\Http\Controllers\API\ArenaController::class, 'importArena']);
     Route::post('bankStore', [App\Http\Controllers\API\BankDetailsController::class, 'bankStore']);
 
+
+
+
+
+
+   

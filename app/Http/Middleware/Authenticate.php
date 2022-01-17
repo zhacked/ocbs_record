@@ -17,5 +17,11 @@ class Authenticate extends Middleware
         if (! $request->expectsJson()) {
             return route('login');
         }
+
+        if (!Auth::user()->isActive()) {
+            Auth::logout();
+        
+            return Redirect::home();
+        }
     }
 }

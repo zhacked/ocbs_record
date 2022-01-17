@@ -81,13 +81,18 @@
                                             :headers="headers"
                                             :items="deposit"
                                             :search="search"
+                                            :items-per-page="10"
                                             sort-by="date_of_soa"
                                             group-by="date_of_soa"
                                             class="elevation-1 text-center"
                                              single-expand
                                              :footer-props="{
                                                 'items-per-page-options': [
-                                                   50
+                                                    10,
+                                                    20,
+                                                    30,
+                                                    40,
+                                                    -1
                                                 ],
                                             }"
                                         >
@@ -109,7 +114,7 @@
                                                       <div class=" float-right">
                                                            <v-btn 
                                                             small  
-                                                            @click="convertToExcel(group)"
+                                                            @click="convertToExcel(group, 'Deposit')"
                                                             outlined
                                                             color="green" 
                                                            >
@@ -138,9 +143,19 @@
                                             :items-per-page="10"
                                             :search="search"
                                             :show-group-by="false"
-                                            sort-by="updated_at"
-                                            group-by="updated_at"
+                                            sort-by="date_of_soa"
+                                            group-by="date_of_soa"
                                             class="elevation-1 text-center"
+                                             single-expand
+                                             :footer-props="{
+                                                'items-per-page-options': [
+                                                    10,
+                                                    20,
+                                                    30,
+                                                    40,
+                                                    -1
+                                                ],
+                                            }"
                                         >
 
                                         <template v-slot:[`group.header`]="{ group, headers, toggle, isOpen }">
@@ -160,7 +175,7 @@
                                                         <div class=" float-right">
                                                             <v-btn 
                                                                 small  
-                                                                @click="convertToExcel(group )"
+                                                                @click="convertToExcel(group, 'Replenish')"
                                                                 outlined
                                                                 color="green" 
                                                             >
@@ -200,6 +215,10 @@ export default {
             
                 { text: "ref", value: "refNo" },
                 { text: "OCBS Name", value: "arena_name" },
+                { text: "Total Commission", value: "totalCommission" },
+                { text: "Othe Commission -M", value: "otherCommissionIntel05" },
+                { text: "Consolidator's Commission", value: "consolidatorsCommission" },
+                { text: "Safety Fund", value: "safetyFund" },
                 { text: "Amount", value: "for_total" },
          
             ],
@@ -220,23 +239,21 @@ export default {
                     this.reflenish = data.rf;
                 });
         },
-        convertToExcel(data){
-            
-            var value = moment(data).format("YYYY-MM-DD LTS");
-            var date = moment(data).format("MMMM-DD-YYYY");
-            
-            console.log(value + '' + date);
+        convertToExcel(data,deprep){
 
-            var workbooks =  XLSX.utils.book_new();
-            var worksheet = '';
+            const value = moment(data).format("YYYY-MM-DD LTS");
+            const date = moment(data).format("MMMM-DD-YYYY");
+        
+            let workbooks =  XLSX.utils.book_new();
+            let worksheet = '';
             let aray = [];
-            axios.get("api/convertToExcel/"+ value).then(({ data }) => (
+            axios.get("api/convertToExcel/"+deprep+"/"+ value).then(({ data }) => (
                 console.log(data),
                 data.forEach((val) => {
 
                     const test = {
-                       'ID': val.id,
-                       'Soa Number': val.refNo,
+                        'ID': val.id,
+                        'Ref Number': val.refNo,
                         'OCBS Name': val.arena_name,
                         'Amount': val.for_total
                     }
@@ -252,15 +269,12 @@ export default {
                 XLSX.write(workbooks,{bookType:'xlsx',type:'binary'}),
                 
                 console.log(worksheet),
-                XLSX.writeFile(workbooks,date + ".xlsx")
+                XLSX.writeFile(workbooks,`${deprep}-${moment(date).format('MMDDYY')}.xlsx`)
 
                 ));
             
         }
         
-      
-       
-       
     },
     created() {
         this.loadSummary();

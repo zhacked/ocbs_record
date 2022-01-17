@@ -23,14 +23,15 @@ Route::get('/', function () {
 // });
 
 // Auth::routes();
-
-Auth::routes([
+Route::middleware('preventBackHistory')->group(function () {
+  Auth::routes([
     'register' => true, // Registration Routes...
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
   ]);
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::get('{path}', [App\Http\Controllers\HomeController::class, 'index'])->where('path', '([A-z]+)?');
+});
+
+
 
