@@ -67,14 +67,17 @@ class LoginController extends Controller
     }
     public function login(Request $request)
     {
+        $login = request()->input('login');
+        $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+ 
         $this->validate($request, [
-            'email' => 'required',
+            $fieldType => 'required',
             'password' => 'required',
         ]);
 
-        $user = \DB::table('users')->where('email', $request->input('email'))->first();
+        $user = \DB::table('users')->where($fieldType, $request->input($fieldType))->first();
 
-        if (auth()->guard('web')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+        if (auth()->guard('web')->attempt([$fieldType => $request->input($fieldType), 'password' => $request->input('password')])) {
 
             $new_sessid   = \Session::getId(); //get new session_id after user sign in
 
