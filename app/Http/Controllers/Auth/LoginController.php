@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+
 class LoginController extends Controller
 {
     /*
@@ -67,6 +72,7 @@ class LoginController extends Controller
     }
     public function login(Request $request)
     {
+     
         $login = request()->input('login');
         $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
  
@@ -75,31 +81,62 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $user = \DB::table('users')->where($fieldType, $request->input($fieldType))->first();
-
+        $user = DB::table('users')->where($fieldType, $request->input($fieldType))->first();
+        
         if (auth()->guard('web')->attempt([$fieldType => $request->input($fieldType), 'password' => $request->input('password')])) {
 
-            $new_sessid   = \Session::getId(); //get new session_id after user sign in
+            $new_sessid   = Session::getId(); //get new session_id after user sign in
 
             if($user->session_id != '') {
-                $last_session = \Session::getHandler()->read($user->session_id); 
+                $last_session = Session::getHandler()->read($user->session_id); 
 
                 if ($last_session) {
-                    if (\Session::getHandler()->destroy($user->session_id)) {
+                    if (Session::getHandler()->destroy($user->session_id)) {
                         
                     }
                 }
             }
-
-            \DB::table('users')->where('id', $user->id)->update(['session_id' => $new_sessid]);
             
+            DB::table('users')->where('id', $user->id)->update(['session_id' => $new_sessid]);
+            $current_date_time = Carbon::now()->toDateTimeString();
+            DB::table('activity_log')->insert([
+                'log_name' => $user->name,
+                'description'=> 'Login',
+                'subject_type' => 'App\Models\User',
+                'subject_id'=>$user->id,
+                'causer_type' =>$user->type,
+                'causer_id' =>$user->id,
+                'created_at'=> $current_date_time
+            ]);
             $user = auth()->guard('web')->user();
-            
+
+          
             return redirect($this->redirectTo);
         }   
-        \Session::put('login_error', 'Your email and password wrong!!');
+        Session::put('login_error', 'Your email and password wrong!!');
         return back();
 
+    }
+
+    public function logout(){
+        $current_date_time = Carbon::now()->toDateTimeString();
+      
+        $user = Auth::user();
+
+        DB::table('activity_log')->insert([
+            'log_name' => $user->name,
+            'description'=> 'Logout',
+            'subject_type' => 'App\Models\User',
+            'subject_id'=>$user->id,
+            'causer_type' =>$user->type,
+            'causer_id' =>$user->id,
+            'created_at'=> $current_date_time
+        ]);
+
+        Session::flush();
+        Redirect::back();
+     
+        return redirect('/');
     }
 
  }
