@@ -26,6 +26,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::apiResources(['employees' => App\Http\Controllers\API\EmployeeController::class]);
     Route::apiResources(['contactnumbers' => App\Http\Controllers\API\ContactController::class]);
     Route::apiResources(['emails' => App\Http\Controllers\API\EmailController::class]);
+    Route::apiResources(['teams' => App\Http\Controllers\API\TeamController::class]);
+
 
     
     Route::get('profile', [App\Http\Controllers\API\UserController::class, 'profile'])->name('profile');

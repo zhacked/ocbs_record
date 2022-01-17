@@ -54,10 +54,12 @@ class UserController extends Controller
 
         return User::create([
             'name' => $request['name'],
+            'username' => $request['username'],
             'email' => $request['email'],
             'type' => $request['type'],
             'bio' => $request['bio'],
             'photo' => $request['photo'],
+            'isAdmin' => $request['isAdmin'],
             'password' => Hash::make($request['password']),
         ]);
     }

@@ -71,12 +71,20 @@
                                 <p>User</p>
                             </router-link>
                         </li>
+						
 						<li class="nav-item">
                             <router-link to="/employee" class="nav-link">
                                 <i class="fa fa-users-cog nav-icon"></i>
                                 <p>Employee</p>
                             </router-link>
                         </li>
+
+						<li class="nav-item">
+							<router-link to="/teams" class="nav-link ">
+								<i class="nav-icon fa fa-users"></i>
+								<p>Teams</p>
+							</router-link>
+						</li>
 					
 						<li class="nav-item">
 							<router-link to="/bankaccount" class="nav-link ">

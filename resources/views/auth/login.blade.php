@@ -16,7 +16,7 @@
                         <h1 class="text-center text-white  login-title">KIOSK SOA</h1>
                         <form method="POST" action="{{ route('login') }}" class="login-form">
                             @csrf
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label for="email"
                                     class="form-label  custom-input__label">{{ __('E-Mail Address') }}</label>
                                 <div class="d-flex flex-column">
@@ -29,6 +29,23 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
+                                </div>
+                            </div> -->
+                            <div class="mb-3">
+                                <label for="login"  class="form-label  custom-input__label">
+                                    {{ __('Username or Email') }}
+                                </label>
+                            
+                                <div class="d-flex flex-column">
+                                    <input id="login" type="text"
+                                        class="custom-input form-control{{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}"
+                                        name="login" value="{{ old('username') ?: old('email') }}" required autofocus>
+                            
+                                    @if ($errors->has('username') || $errors->has('email'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('username') ?: $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
                             <div class="mb-3">

@@ -128,6 +128,9 @@ let routes = [
     {
         path: '/summary', component: require('./components/SummaryReport.vue').default
     },
+    {
+        path: '/teams', component: require('./components/Teams.vue').default
+    },
     
 
     {

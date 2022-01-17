@@ -97,6 +97,17 @@
                                      prepend-inner-icon="mdi-account"
                             ></v-text-field>
 
+
+                            <v-text-field
+                                    prepend-inner-icon="mdi-shield-account"
+                                    label="Username"
+                                    placeholder="johndoe123"
+                                    outlined
+                                    dense
+                                    v-model="form.username"
+                                  
+                            ></v-text-field>
+
 							<v-text-field
                                      prepend-inner-icon="mdi-at"
                                     label="Email"
@@ -105,31 +116,35 @@
                                     dense
                                     v-model="form.email"
                                     :rules="[
-                                    () => !!form.email || 'This field is required',
                                     () =>  /.+@.+\..+/.test(form.email) || 'E-mail must be valid'
                                     ]"
                             ></v-text-field>
-							
+
+                             
                             <v-text-field
-                                     prepend-inner-icon="mdi-at"
-                                    label="Email"
-                                    placeholder="doe@gmail.com"
+                                     prepend-inner-icon="mdi-account-details"
+                                    label="Bio"
+                                    placeholder="administrator"
                                     outlined
                                     dense
                                     v-model="form.bio"
-                                    :rules="[
-                                    () => !!form.bio || 'This field is required',
-                                    ]"
+                                   
                             ></v-text-field>
+
+
                                <v-select
+                                
                                     label="Select Role"
                                     outlined
                                     dense
                                     name="role"
-                                    :item-text="item => `${item.name}`"
+                                   
                                     :items="roles"
-                                    v-model="form.type"
+                                    item-text="name"
+                                  
+                                    v-model="role"
                                     return-object
+                                   @change="selectRole"
                                    
                                 ></v-select>
 							
@@ -142,9 +157,12 @@
                                     outlined
                                     dense
                                     v-model="form.password"
-                                    :rules="[
-                                    () => !!form.password || 'This field is required',
-                                    ]"
+                                    :rules="rules.password"
+                                    @blur="validate"
+                                    @keydown.enter="validate"
+                                    @focus="clearRules"
+                                    @input="clearRules"
+
                             ></v-text-field>
 						
 
@@ -180,26 +198,53 @@
                 length: '',
                 search: '',
                 roles:[
-                    'admin',
-                    'user',
+                    {
+                        name: 'Admin',
+                        value: 1
+                    },
+                      {
+                        name: 'Employee',
+                        value: 0
+                    }
                 ],
+                role: {},
                 form: new Form({
-                    id:'',
+                    // id:'',
                     name : '',
                     email: '',
+                    username: '',
                     password: '',
-                    type: '',
+                    type: 'employee',
                     bio: '',
-                    photo: ''
-                })
+                    photo: '',
+                    isAdmin: 0,
+                }),
+                rules: {
+                    password: []
+                }
+                    
+                
             }
         },
         methods: {
-          
+            selectRole() {
+                console.log(this.role.value)
+                this.form.type = this.role.name.toLowerCase();
+                this.form.isAdmin = this.role.value;
+            },
+            setPasswordRule(){
+                this.rules.password = [(v) => !!v || 'This field is required']
+            },
+            validate(){
+                this.setPasswordRule();
+            },
+            clearRules(){
+                this.rules = {}
+            },
             updateUser(){
                 this.$Progress.start();
-                console.log('Editing data');
-                this.form.put('api/user/'+this.form.id)
+             
+                this.form.put('api/user/'+this.users.id)
                 .then(() => {
                     $('#addNew').modal('hide');
                      swal.fire(
@@ -226,6 +271,7 @@
                 $('#addNew').modal('show');
             },
             deleteUser(id){
+
                 swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -247,11 +293,11 @@
                                     swal.fire("Failed!", "There was something wrong.", "warning");
                                 });
                          }
-                    })
+                })
             },
             loadUsers(){
                 if(this.$gate.isAdmin()){
-                    axios.get("api/user").then(({ data }) => (this.users = data));
+                    axios.get("api/user").then(({ data }) => (this.users = data, console.log(data.data)));
                 }
             },
             createUser(){
