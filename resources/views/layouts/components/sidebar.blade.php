@@ -72,12 +72,12 @@
                             </router-link>
                         </li>
 						
-						<li class="nav-item">
+						{{-- <li class="nav-item">
                             <router-link to="/employee" class="nav-link">
                                 <i class="fa fa-users-cog nav-icon"></i>
                                 <p>Employee</p>
                             </router-link>
-                        </li>
+                        </li> --}}
 
 						<li class="nav-item">
 							<router-link to="/teams" class="nav-link ">
@@ -92,6 +92,20 @@
 								<p>Bank Details</p>
 							</router-link>
 						</li>
+						<li class="nav-item">
+							<router-link to="/position" class="nav-link ">
+								<i class="nav-icon  fas fa-user-secret"></i>
+								<p>Position</p>
+							</router-link>
+						</li>
+						<li class="nav-item">
+							<router-link to="/chooserecord" class="nav-link ">
+								<i class="nav-icon  fas fa-mouse-pointer"></i>
+								<p>Choose Record</p>
+							</router-link>
+						</li>
+						
+						
                     </ul>
                 </li>
             @endcan

@@ -8,8 +8,8 @@ export default class Gate{
        return this.user.type === 'admin';
    }
 
-   isUser(){
-    return this.user.type === 'user';
+   isEmployee(){
+    return this.user.type === 'Employee';
 }
 
 

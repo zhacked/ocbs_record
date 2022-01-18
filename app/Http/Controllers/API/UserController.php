@@ -45,7 +45,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-     
+      
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users',
@@ -58,8 +58,9 @@ class UserController extends Controller
             'email' => $request['email'],
             'type' => $request['type'],
             'bio' => $request['bio'],
-            'photo' => $request['photo'],
-            'isAdmin' => $request['isAdmin'],
+            'team_id' => $request['team_id'],
+            'position_id' => $request['position_id'],
+            'assign' => $request['assign'],
             'password' => Hash::make($request['password']),
         ]);
     }
@@ -68,7 +69,7 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $user = auth('api')->user();
-
+    
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,
@@ -135,15 +136,26 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+     
         $user = User::findOrFail($id);
-
+      
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,
             'password' => 'sometimes|min:6'
         ]);
 
-        $user->update($request->all());
+        $user->update([
+            'name' => $request['name'],
+            'username' => $request['username'],
+            'email' => $request['email'],
+            'type' => $request['type'],
+            'bio' => $request['bio'],
+            'team_id' => $request['team_id'],
+            'position_id' => $request['position_id'],
+            'assign' => $request['assign'],
+            'password' => Hash::make($request['password'])
+        ]);
         return ['message' => 'Updated the user info'];
     }
 

@@ -24,73 +24,13 @@
                                 ></v-text-field>
 						
 						</v-card-title>
-
-                           
-					 <div
-                            class="card card-primary card-outline card-tabs"
-                            style="overflow: auto; !important"
-                        >
-                            <div class="card-header p-0 pt-1 border-bottom-0">
-                                <ul
-                                    class="nav nav-tabs"
-                                    id="custom-tabs-three-tab"
-                                    role="tablist"
+                            <v-data-table
+                                    :headers="headers"
+                                    :items="employee"
+                                    :search="search"
+                                    class="elevation-1 text-center"
+                                
                                 >
-                                    <li class="nav-item">
-                                        <a
-                                            class="nav-link active"
-                                            id="custom-tabs-three-home-tab"
-                                            data-toggle="pill"
-                                            href="#custom-tabs-three-home"
-                                            role="tab"
-                                            aria-controls="custom-tabs-three-home"
-                                            aria-selected="true"
-                                            >Employeement Record</a
-                                        >
-                                    </li>
-                                    <li class="nav-item">
-                                        <a
-                                            class="nav-link"
-                                            id="custom-tabs-three-profile-tab"
-                                            data-toggle="pill"
-                                            href="#custom-tabs-three-profile"
-                                            role="tab"
-                                            aria-controls="custom-tabs-three-profile"
-                                            aria-selected="false"
-                                            >Choose Record</a
-                                        >
-                                    </li>
-                                    <li class="nav-item">
-                                        <a
-                                            class="nav-link "
-                                            id="position-tab"
-                                            data-toggle="pill"
-                                            href="#position"
-                                            role="tab"
-                                            aria-controls="position"
-                                            aria-selected="true"
-                                            >Position List</a
-                                        >
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="card-body">
-                                <div class="tab-content" id="custom-tabs-three-tabContent active show">
-                                    <div
-                                        class="tab-pane fade active show"
-                                        id="custom-tabs-three-home"
-                                        role="tabpanel"
-                                        aria-labelledby="custom-tabs-three-home-tab"
-                                    >
-                                      
-
-                                   <v-data-table
-                                            :headers="headers"
-                                            :items="employee"
-                                            :search="search"
-                                            class="elevation-1 text-center"
-                                        
-                                        >
                                     <template v-slot:top>
                                                 <v-toolbar
                                                     flat
@@ -154,152 +94,7 @@
                                             <span>Delete info User</span>
                                             </v-tooltip>
                                     </template>
-                                    </v-data-table>
-                                      
-                                    </div>
-
-                                    <div
-                                        class="tab-pane fade"
-                                        id="custom-tabs-three-profile"
-                                        role="tabpanel"
-                                        aria-labelledby="custom-tabs-three-profile-tab"
-                                    >
-                                       <v-row>
-                                           <v-col>
-                                                 <v-select
-                                                        label="Computed By"
-                                                        :value="selectComputed"
-                                                        :items="userPrepared.computed"
-                                                        name="computed"
-                                                        :item-text="item => `${item.name} - ${item.position}`"
-                                                        return-object
-                                                        @change="selectedrecord(selectComputed, $event)"
-                                                    ></v-select>
-                                           </v-col>
-                                           <v-col>
-                                                   <v-select
-                                                   
-                                                        label="Checked By"
-                                                        :value="selectChecked1"
-                                                        :items="userPrepared.checked1"
-                                                        name="checked1"
-                                                        :item-text="item => `${item.name} - ${item.position}`"
-                                                    
-                                                        return-object
-                                                       
-                                                        @change="selectedrecord(selectChecked1, $event)"
-                                                    ></v-select>
-                                           </v-col>
-                                       </v-row>
-                                        <v-row>
-                                           <v-col>
-                                                    <v-select
-                                                       
-                                                        label="Prepared By"
-                                                        :value="selectPrepared"
-                                                        :items="userPrepared.prepared"
-                                                        name="prepared"
-                                                       :item-text="item => `${item.name} - ${item.position}`"
-                                                      
-                                                        return-object
-                                                        @change="selectedrecord(selectPrepared, $event)"
-                                                    ></v-select>
-                                           </v-col>
-                                           <v-col>
-                                                    <v-select
-                                                     
-                                                        label="Checked By"
-                                                        :value="selectChecked2"
-                                                        :items="userPrepared.checked2"
-                                                        name="checked2"
-                                                        :item-text="item => `${item.name} - ${item.position}`"
-                                                       
-                                                        return-object
-                                                        @change="selectedrecord(selectChecked2, $event)"
-                                                    ></v-select>
-                                           </v-col>
-                                       </v-row>
-                                    </div>
-
-                                    <div
-                                        class="tab-pane fade"
-                                        id="position"
-                                        role="tabpanel"
-                                        aria-labelledby="position-tab"
-                                    >
-                                        <v-container>
-                                            <v-data-table
-                                                :headers="positionHeaders"
-                                                :items="position"
-                                                :search="search"
-                                                sort-by="calories"
-                                                class="elevation-1"
-                                            >
-                                              <template v-slot:top>
-                                                    <v-toolbar
-                                                        flat
-                                                    >
-                                                        <v-toolbar-title>Position Details</v-toolbar-title>
-                                                         <v-divider
-                                                            class="mx-4"
-                                                            inset
-                                                            vertical
-                                                        ></v-divider>
-                                                        <v-spacer></v-spacer>
-                                                            <v-btn
-                                                                color="primary"
-                                                                dark
-                                                                class="mb-2"
-                                                                @click="addnewPostion()"
-                                                            >
-                                                            Add New Position
-                                                            </v-btn>
-                                                    </v-toolbar>
-                                                    </template>
-                                                     <template v-slot:[`item.PositionAction`]="{ item }">
-
-                                                                <v-tooltip bottom>
-                                                                    <template v-slot:activator="{ on, attrs }">
-                                                                            <v-btn
-                                                                            color="primary"
-                                                                            class="mx-2"
-                                                                            icon
-                                                                            dark
-                                                                            v-bind="attrs"
-                                                                            v-on="on"
-                                                                            @click="editPositionModal(item)"
-                                                                            >
-                                                                            <i class="fas fa-edit"></i>
-                                                                            </v-btn>
-                                                                    </template>
-                                                                <span>Edit User Info</span>
-                                                                </v-tooltip>
-                                                                |
-                                                                <v-tooltip bottom>
-                                                                    <template v-slot:activator="{ on, attrs }">
-                                                                        <v-btn
-                                                                        color="red"
-                                                                        dark
-                                                                        icon
-                                                                        v-bind="attrs"
-                                                                        v-on="on"
-                                                                        class="mx-2"
-                                                                        @click="deletePosition(item.id)"
-                                                                        >
-                                                                        <i class="fa fa-trash"></i>
-                                                                        </v-btn>
-                                                                    </template>
-                                                                <span>Delete info User</span>
-                                                                </v-tooltip>
-                                                        </template>
-                                            </v-data-table>
-                                        </v-container>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <!-- {{this.selectComputed}} -->
+                        </v-data-table>
                     </v-card>
 				</v-col>
 			</v-row>
@@ -341,36 +136,7 @@
                                     () =>  /.+@.+\..+/.test(form.email) || 'E-mail must be valid'
                                     ]"
                             ></v-text-field>
-<!-- 
-                            <v-text-field                               
-                                    prepend-inner-icon="mdi-phone"
-                                    label="Contact Number"
-                                    placeholder="09123456789"
-                                    outlined
-                                    dense
-                                    v-model="form.contact"
-                                    :rules="[
-                                        () => !!form.contact || 'This field is required',
-                                        () =>   /^\d+$/.test(form.contact) || 'Must be a number',
-                                        () =>  form.contact && form.contact.length >= 11 && form.contact.length <= 11 || 'This field must have atleast 11 digits',
-                                        
-                                    ]"
-                                    required
-                            ></v-text-field> -->
-<!-- 
-                             <v-text-field
-                                    label="Address"
-                                     prepend-inner-icon="mdi-home"
-                                    placeholder="street,Barangay,City"
-                                    outlined
-                                    dense
-                                    v-model="form.address"
-                                    :rules="[
-                                        () => !!form.address || 'This field is required',
-                                        () => !!form.address && form.address.length <= 25 || 'Address must be less than 25 characters',
-                                        ]"
-                                    required
-                            ></v-text-field> -->
+
 
                             <v-autocomplete
                                 :items="teams"
@@ -433,42 +199,7 @@
 				</div>
 			</div>
             
-                <!-- Position Modal -->
-            <div class="modal fade" id="addPostion" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add  Position</h5>
-						<h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Position</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<form @submit.prevent="editmode ? updatePosition() : createPosition()">
-						<div class="modal-body">
-                             <v-text-field
-                                    prepend-inner-icon="mdi-crosshairs"
-                                    label="Position"
-                                    placeholder="user position"
-                                    outlined
-                                    dense
-                                    v-model="positionform.position"
-                                    :rules="[
-                                        () => !!positionform.position || 'This field is required',
-    
-                                    ]"
-                                    required
-                            ></v-text-field>
-						</div>
-						<div class="modal-footer">
-							<v-btn type="button" color="error" elevation="2" data-dismiss="modal">Close</v-btn>
-							<v-btn v-show="editmode" type="submit" color="primary" elevation="2">Update</v-btn>
-							<v-btn v-show="!editmode" type="submit" color="success"  elevation="2">Create</v-btn>
-						</div>
-                        </form>
-                        	</div>
-				</div>
-			</div>
+            
 		</v-container>
 	</v-app>
 </template>
@@ -487,11 +218,7 @@
 
                     { text: '', value: 'actions', sortable: false },
                 ],
-                positionHeaders : [
-                  
-                    { text: 'Position', value: 'position' },
-                    { text: '', value: 'PositionAction', sortable: false},
-                ],
+               
                 editmode: false,
                 employee : [],
                 length: '',
@@ -503,8 +230,7 @@
                 ],
                 selected: [],
                 check: false,
-                position:[],
-                positionNew:'',
+               
                 form: new Form({
                     id:'',
                     name : '',
@@ -514,102 +240,16 @@
                     position: '',
                     group:'',
                 }),
-                positionform: new Form({
-                    id:'',
-                    position: '',
-                }),
-                checkbox1: 1,
-                checkbox2: 0,
-                userPrepared: {
-                    computed: [],
-                    checked1: [],
-                    checked2: [],
-                    prepared: [],
-                },
-                selectComputed:null,
-                selectChecked1:null,
-                selectChecked2:null,
-                selectPrepared:null,
-                checks: []
+               
+
             }
         },
         methods: {
-            selectedrecord(val, event){
-                console.log('old',val);
-                console.log('new',event);
-               axios.put(`api/selected/${val?.id}`, {
-                   new: event.id
-               }).then((data)=>{
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'User Created in successfully'
-                        })
-                    Fire.$emit('AfterCreate');
-               });
-
-          
-            },
-            addnewPostion(){
-                $('#addPostion').modal('show');
-                 this.positionform.reset();
-                   this.editmode = false;
-            },
-            createPosition(){
-                this.positionform.post('api/saveposition').then((data)=> {
-                    console.log(data)
-                      Fire.$emit('AfterCreate');
-                      Toast.fire({
-                        icon: 'success',
-                        title: 'Position Added in successfully'
-                        })
-                         $('#addPostion').modal('hide');
-                });
-            },
-            updatePosition(){
-                this.positionform.put('api/updateposition/'+this.positionform.id).then((data)=> {
-             
-                      Fire.$emit('AfterCreate');
-                      Toast.fire({
-                        icon: 'success',
-                        title: 'Position Added in Updated'
-                        })
-                         $('#addPostion').modal('hide');
-                });
-            },
-            editPositionModal(data){
-                this.editmode = true;
-                this.positionform.reset();
-                $('#addPostion').modal('show');
-                this.positionform.fill(data);
-            },
             loadPosition(){
                 axios.get('api/getposition').then((data)=>{
                     this.position = data.data;
                     
                 });
-            },
-            deletePosition(id){
-                  swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                         if (result.value) {
-                              axios.get('api/deletePosition/'+id).then((data)=> {
-                                    swal.fire(
-                                        'Deleted!',
-                                        'Your file has been deleted.',
-                                        'success'
-                                        )
-                                    Fire.$emit('AfterCreate');
-                                });
-                         }
-                    })
-               
             },
            loadEmployee() {
                 axios
@@ -633,8 +273,7 @@
 
                     }
                 );
-           },
-
+            },
             updateUser(){
                 this.$Progress.start();
                 console.log('Editing data');

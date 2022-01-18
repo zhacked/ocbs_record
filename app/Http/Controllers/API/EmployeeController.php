@@ -7,7 +7,7 @@ use App\Models\employee;
 use App\Models\position;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Models\User;
 class EmployeeController extends Controller
 {
     /**
@@ -71,21 +71,17 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
      
+        dd($request->all());
+        // $this->validate($request,[
+        //     'name' => 'required|string|max:191',
+        //     'email' => 'required|string|email|max:191|unique:users',
+        //     'group' => 'required',
+        //     'position' => 'required',
+        // ]);
 
-        $this->validate($request,[
-            'name' => 'required|string|max:191',
-            'email' => 'required|string|email|max:191|unique:users',
-            'contact' => 'required',
-            'address' => 'required',
-            'group' => 'required',
-            'position' => 'required',
-        ]);
-
-        return employee::create([
+        return User::create([
             'name' => $request['name'],
             'email' => $request['email'],
-            'contact' => $request['contact'],
-            'address' => $request['address'],
             'group' => $request['group'],
             'position' =>$request['position'],
         ]);

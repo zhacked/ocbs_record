@@ -4,22 +4,22 @@
 			<v-row class="mt-5 is-blurred" v-if="$gate.isAdmin()">
 				<v-col class="col-md-12">
 					<v-card >
-						<v-card-title class="card-header">
+                        <v-card-title class="card-header">
                              User Management
                              <v-spacer></v-spacer>
-							<v-card-actions class="card-tools">
+                               <v-text-field
+                                    v-model="search"
+                                    append-icon="mdi-magnify"
+                                    label="Search"
+                                    class="mx-4"
+                                ></v-text-field>
+						
+						</v-card-title>
+                           	<v-card-actions class="card-tools">
+                                <v-spacer></v-spacer>
 								<v-btn color="success"
                                     elevation="2"  @click="newModal">Add New User <i class="fas fa-user-plus fa-fw"></i></v-btn>
 							</v-card-actions>
-						</v-card-title>
-
-                      
-                            <v-text-field
-                                v-model="search"
-                                append-icon="mdi-magnify"
-                                label="Search"
-                                class="mx-4"
-                            ></v-text-field>
                    
                             <v-data-table
                                     :headers="headers"
@@ -32,6 +32,7 @@
                                 {{item.updated_at | myDate }}
                             </template>
                             <template v-slot:[`item.actions`]="{ item }">
+                                 
                                     <v-tooltip bottom>
                                         <template v-slot:activator="{ on, attrs }">
                                                 <v-btn
@@ -84,6 +85,7 @@
 						<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
+                    
 					<form @submit.prevent="editmode ? updateUser() : createUser()">
 						<div class="modal-body">
                              <v-text-field
@@ -109,7 +111,7 @@
                             ></v-text-field>
 
 							<v-text-field
-                                     prepend-inner-icon="mdi-at"
+                                    prepend-inner-icon="mdi-at"
                                     label="Email"
                                     placeholder="doe@gmail.com"
                                     outlined
@@ -131,29 +133,86 @@
                                    
                             ></v-text-field>
 
-
-                               <v-select
-                                
-                                    label="Select Role"
+                            <v-autocomplete
+                                    :items="roles"
+                                    label="Roles"
+                                    prepend-inner-icon="mdi-account-tie"
+                                    hide-details
+                                    hide-no-data
+                                    hide-selected
                                     outlined
                                     dense
-                                    name="role"
-                                   
-                                    :items="roles"
                                     item-text="name"
-                                  
-                                    v-model="role"
-                                    return-object
-                                   @change="selectRole"
-                                   
-                                ></v-select>
+                                    v-model="form.type"
+                                    class="pb-4"
+
+                                ></v-autocomplete> 
+                                
+                           
 							
+                            <div v-show="this.form.type == 'employee'">
+                                <v-autocomplete
+                                    :items="teams.data"
+                                    label="Teams"
+                                    prepend-inner-icon="mdi-account-group"
+                                    hide-details
+                                    hide-no-data
+                                    hide-selected
+                                    outlined
+                                    dense
+                                    item-text="name"
+                                    item-value="id"
+                                    v-model="form.team_id"
+                                    class="pb-4"
+                                     :rules="[
+                                            () => !!form.team_id || 'This field is required',
+                                            ]"
+                                ></v-autocomplete> 
+                                
+
+                                <v-autocomplete
+                                    :items="assigns"
+                                    label="Assign"
+                                    prepend-inner-icon="mdi-clipboard-account"
+                                    hide-details
+                                    hide-no-data
+                                    hide-selected
+                                    outlined
+                                    dense
+                                    v-model="form.assign"
+                                    
+                                    class="pb-4"
+                                    :rules="[
+                                            () => !!form.assign || 'This field is required',
+                                            ]"
+                                ></v-autocomplete>
+                            
+
+                            <v-autocomplete
+                                    :items="position"
+                                    label="Position"
+                                    prepend-inner-icon="mdi-shield-account"
+                                    hide-details
+                                    hide-no-data
+                                    hide-selected
+                                    outlined
+                                    dense
+                                    item-text="position"
+                                    item-value="id"
+                                    v-model="form.position_id"
+                                     class="pb-4"
+                                    :rules="[
+                                            () => !!form.position_id || 'This field is required',
+                                            ]"
+                                ></v-autocomplete>
+                            </div>
+                             
 
                             <v-text-field
                                     prepend-inner-icon="mdi-lock"
                                     type="password"
                                     label="Password"
-                                    placeholder="doe@gmail.com"
+                                    placeholder="*****"
                                     outlined
                                     dense
                                     v-model="form.password"
@@ -162,10 +221,9 @@
                                     @keydown.enter="validate"
                                     @focus="clearRules"
                                     @input="clearRules"
-
                             ></v-text-field>
-						
 
+                            {{this.form.role}}
 						</div>
 						<div class="modal-footer">
 							<v-btn type="button" color="error" elevation="2" data-dismiss="modal">Close</v-btn>
@@ -197,27 +255,31 @@
                 users : {},
                 length: '',
                 search: '',
+                teams:[],
+                position:[],
                 roles:[
-                    {
-                        name: 'Admin',
-                        value: 1
-                    },
-                      {
-                        name: 'Employee',
-                        value: 0
-                    }
+                    'admin',
+                    'employee'
+                ],
+                assigns:[
+                    'computed',
+                    'checked',
+                    'prepared'
                 ],
                 role: {},
                 form: new Form({
-                    // id:'',
+                    id:'',
                     name : '',
                     email: '',
                     username: '',
                     password: '',
-                    type: 'employee',
+                    type: '',
                     bio: '',
                     photo: '',
-                    isAdmin: 0,
+                    team_id:'',
+                    position_id:'',
+                    assign:'',
+                  
                 }),
                 rules: {
                     password: []
@@ -227,10 +289,17 @@
             }
         },
         methods: {
-            selectRole() {
-                console.log(this.role.value)
-                this.form.type = this.role.name.toLowerCase();
-                this.form.isAdmin = this.role.value;
+            loadTeams(){
+                 axios.get("api/teams").then((data) => {
+                     this.teams = data
+                     console.log('team' ,data)
+                     });
+            },
+            loadPosition(){
+                axios.get('api/getposition').then((data)=>{
+                    this.position = data.data;
+                    
+                });
             },
             setPasswordRule(){
                 this.rules.password = [(v) => !!v || 'This field is required']
@@ -242,9 +311,9 @@
                 this.rules = {}
             },
             updateUser(){
-                this.$Progress.start();
              
-                this.form.put('api/user/'+this.users.id)
+                this.$Progress.start();
+                this.form.put('api/user/'+this.form.id)
                 .then(() => {
                     $('#addNew').modal('hide');
                      swal.fire(
@@ -258,6 +327,9 @@
                 .catch(() => {
                     this.$Progress.fail();
                 });
+            },
+            ViewModal(user){
+                console.log('user',user);
             },
             editModal(user){
                 this.editmode = true;
@@ -296,9 +368,10 @@
                 })
             },
             loadUsers(){
-                if(this.$gate.isAdmin()){
-                    axios.get("api/user").then(({ data }) => (this.users = data, console.log(data.data)));
-                }
+                    axios.get("api/user").then(({ data }) => {
+                        this.users = data
+                        });
+                
             },
             createUser(){
                 this.$Progress.start();
@@ -318,6 +391,8 @@
         },
         created() {
            this.loadUsers();
+           this.loadTeams();
+           this.loadPosition();
            Fire.$on('AfterCreate',() => {
                this.loadUsers();
            });
