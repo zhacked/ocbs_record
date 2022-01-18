@@ -410,7 +410,7 @@
                                     ]"
                                 ></v-text-field>
 
-                           
+
                                 <v-combobox
                                     v-model="form.contact_number"
                                     :items="contacts.data"
@@ -549,7 +549,7 @@
 <script>
 import {
     camelCase,
-  
+
 } from "lodash";
 import XLSX from "xlsx";
 
@@ -628,7 +628,7 @@ export default {
                     const ws = wb.SheetNames;
 
                     const filteredWS = ws.filter(function (value, index, arr) {
-                        return value === "Details";
+                        return value === "DETAILS" || value === "Details";
                     });
                     filteredWS.forEach((w) => {
                         const singleSheet = wb.Sheets[w];
@@ -641,10 +641,14 @@ export default {
                         );
                     });
 
-                   
+                    console.log(arrayData)
+
+
+
+
 
                     const objectKeyed = (array) => {
-                        console.log(array)
+                        // console.log('>x>x',array)
                         let objectKeyReplacedArray = [];
                         const keysss = array.find(
                             (k) => k.C === "ARENA NAME" || k.B === "CODE"
@@ -671,15 +675,22 @@ export default {
                         return objectKeyReplacedArray;
                     };
 
-              
+
                     const objk = objectKeyed(arrayData[0]);
                     // console.log(objectKeyed(arrayData[0]));
-                    console.log(objk);
+
 
                     const toArrayContactEmail = (contactString) => {
+                        // console.log(typeof contactString)
                         let number = [];
-                        const checkBreak = contactString.includes("\r\n");
-                        const checkForwardSlash = contactString.includes("/");
+                        // const checkBreak =  typeof contactString == "string" && contactString.indexOf("\r\n") > -1;
+                        const checkBreak =  contactString.toString().includes("\r\n");
+                        // contactString.includes("\r\n");
+                        // const checkForwardSlash = typeof contactString == "string" && contactString.indexOf("/") > -1;
+                        const checkForwardSlash = contactString.toString().includes("/");
+                        // contactString.includes("/");
+
+
                         if (contactString != null) {
                             if (checkBreak) {
                                 const contactSplit =
@@ -696,10 +707,10 @@ export default {
                                         .replace(/\-/g, "")
                                         .split(/\(.*?\)/g);
 
-                                    const xxx = replaceContact.filter((ccc) =>
-                                        ccc.includes("09")
-                                    );
-                                    xxx.map((x) => number.push(x.trim()));
+                                    // const xxx = replaceContact.filter((ccc) =>
+                                    //     ccc.includes("09")
+                                    // );
+                                    replaceContact.map((x) => number.push(x.trim()));
                                 });
                             } else if (checkForwardSlash) {
                                 const contactSplit = contactString.split("/");
@@ -727,34 +738,54 @@ export default {
                         }
                     };
 
-                    const filterObjectHeader = objk.filter((obk) => {
-                        if (obk.arenaName !== "ARENA NAME") return obk;
-                    });
                     let contactNo = [];
                     let emailList = []
-                    filterObjectHeader.forEach((foh) => {
+
+                    const removeFirstObjectTitle = objk.filter((oj) => {
+
+                        if (oj.arenaName !== "ARENA NAME") {
+
+                            return oj
+                        };
+
+
+                    });
+
+                    removeFirstObjectTitle.forEach((foh) => {
+
                        if(foh.bankName !== '' || foh.bankNumber !== '') this.bankList.push({
                            account_name: foh.accountName,
                            bank_name: foh.bankName,
                            bank_number: foh.bankNumber,
                            area_code: foh.code
                        })
+
                         this.arenaList.push({arena: foh.arenaName.indexOf("~") > -1
                         ? foh.arenaName.replace(/\~/g, "/")
                         : foh.arenaName, area_code: foh.code, address: foh.address, operator: foh.operatorsName, contact_number: "xxxxxxx"})
 
-                        toArrayContactEmail(foh.contactNumber).forEach(cn => {if(cn !== '') contactNo.push({
-                            area_code: foh.code,
-                            contact_number: cn
 
-                        })})
 
-                        toArrayContactEmail(foh.emailSol).forEach(em => {if(em !== '') emailList.push({
-                           
+                        console.log('TOARRAY>>>', typeof toArrayContactEmail(foh.contactNumber)[0])
+                        toArrayContactEmail(foh.contactNumber).forEach(cn => {
+
+                            if(cn !== '') {
+                                contactNo.push({
+                                    area_code: foh.code,
+                                    contact_number: cn
+
+                                })
+                            }
+                         })
+
+                        toArrayContactEmail(foh.emailSol).forEach(em => {
+                            // console.log('>>>',foh.code,'>>',em);
+                         if(em !== '') emailList.push({
+
                             area_code: foh.code,
                             email: em
                         })})
-                     
+
                     });
 
                     this.emailList = emailList
@@ -773,6 +804,8 @@ export default {
         },
         async proceedAction() {
           this.$Progress.start();
+
+            console.log(this.arenaList)
             await axios.post('api/importArena', this.arenaList)
             await axios.post("api/contactnumbers", this.contactNumbers)
             await axios.post("api/emails", this.emailList)

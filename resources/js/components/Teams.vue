@@ -39,12 +39,13 @@
                             :headers="headers"
                             :items-per-page="10"
                             :search="search"
+                            :items="teams"
                             class="elevation-1 text-center"
                         >
                             <!-- <template v-slot:[`item.modify`]="{ item }">
                                     {{item.updated_at | myDate }}
                                 </template> -->
-                            <template >
+                            <template v-slot:[`item.actions`]="{ item }" >
                                 <v-tooltip bottom>
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-btn
@@ -54,6 +55,7 @@
                                             dark
                                             v-bind="attrs"
                                             v-on="on"
+                                            @click="editDialog(item)"
                                         >
                                             <i class="fas fa-edit"></i>
                                         </v-btn>
@@ -70,6 +72,7 @@
                                             v-bind="attrs"
                                             v-on="on"
                                             class="mx-2"
+                                            @click="deleteDialog(item.id)"
                                         >
                                             <i class="fa fa-trash"></i>
                                         </v-btn>
@@ -97,7 +100,7 @@
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn
-                    
+
                                     medium
                                     icon
                                     v-bind="attrs"
@@ -110,9 +113,9 @@
                             <span>Close Modal</span>
                         </v-tooltip>
                     </v-toolbar>
-              
+
                     <v-card-text>
-    
+
                              <v-text-field
                                     v-model="team.name"
                                     label="Team Name"
@@ -138,7 +141,6 @@ export default {
             headers: [
                 { text: "No", value: "id" },
                 { text: "Name", value: "name" },
-
                 { text: "", value: "actions", sortable: false },
             ],
             search: "",
@@ -146,9 +148,17 @@ export default {
             team: {
                 name: ''
             },
+            teams:[],
         };
     },
     methods: {
+        loadTeam(){
+             axios.get('api/teams').then((data)=>{
+                    console.log('teams',data);
+                    this.teams = data.data;
+
+                });
+        },
         openNewTeam() {
             this.openDialog = true;
             // this.form.reset();
@@ -156,13 +166,22 @@ export default {
         },
         createNewTeam(){
             console.log()
-            axios.post("api/teams",this.team).then((data) => (console.log(data)))
+            axios.post("api/teams",this.team).then((data) => {
+                 console.log(data)
+                      Fire.$emit('AfterCreate');
+                      Toast.fire({
+                        icon: 'success',
+                        title: 'Team Added in successfully'
+                        })
+                        this.openDialog = false
+            })
         }
+
     },
     created() {
-        this.loadUsers();
+        this.loadTeam();
         Fire.$on("AfterCreate", () => {
-            this.loadUsers();
+            this.loadTeam();
         });
     },
 };
