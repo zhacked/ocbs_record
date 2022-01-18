@@ -643,10 +643,6 @@ export default {
 
                     console.log(arrayData)
 
-
-
-
-
                     const objectKeyed = (array) => {
                         // console.log('>x>x',array)
                         let objectKeyReplacedArray = [];
@@ -766,7 +762,7 @@ export default {
 
 
 
-                        console.log('TOARRAY>>>', typeof toArrayContactEmail(foh.contactNumber)[0])
+
                         toArrayContactEmail(foh.contactNumber).forEach(cn => {
 
                             if(cn !== '') {

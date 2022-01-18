@@ -119,7 +119,7 @@
                                                                 <span
                                                                     >Downloading...</span
                                                                 >
-                                                              
+
                                                             </template>
                                                     </v-btn>
                                                 </template>
@@ -147,7 +147,7 @@
                                                                 >mdi-download</v-icon
                                                             >
                                                             PNG
-                                                           
+
                                                         </v-btn>
                                                     </v-list-item>
                                                     <v-list-item >
@@ -172,7 +172,7 @@
                                                                 >mdi-zip-box</v-icon
                                                             >
                                                             Zip
-                                                           
+
                                                         </v-btn>
                                                     </v-list-item>
                                                 </v-list>
@@ -231,14 +231,14 @@
                                                     40,
                                                     50,
                                                     100,
-                                                  
+
                                                 ],
                                             }"
                                             @toggle-select-all="selectAllToggle"
                                         >
-                                       
-                                            
-                                      
+
+
+
                                             <template
                                                 v-slot:[`item.data-table-select`]="{
                                                     item,
@@ -271,7 +271,7 @@
                                                             hover,
                                                         }"
                                                     >
-                                                
+
                                                         <v-btn
                                                             icon
                                                             color="primary"
@@ -299,7 +299,7 @@
                                                 </v-tooltip>
                                             </template>
                                         </v-data-table>
-                                       
+
 
                                         <v-btn
                                             v-show="
@@ -352,7 +352,7 @@
                                                     40,
                                                     50,
                                                     100,
-                                                    
+
                                                 ],
                                             }"
                                             @toggle-select-all="selectAllToggle"
@@ -624,28 +624,28 @@
                                         :depositReplenishText="
                                               item.group === 'Replenish'
                                                     ? {
-                                                         
+
                                                           totalText:
                                                               'Replenish',
                                                           bankTitle:
                                                               'We will replenish to',
                                                       }
                                                     : {
-                                                         
+
                                                           totalText: 'Deposit',
                                                           bankTitle:
                                                               'Kindly Deposit to',
                                                       }
                                         "
                                     />
-                              
+
 
                                     <PreparedChecked
                                         v-show="switchPrepared"
                                         :userPrepared="userPrepared"
                                         :editmode="editmode"
                                     />
-                                 
+
                                 </v-card-text>
                             </div>
                         </div>
@@ -948,17 +948,17 @@
                 <!-- </v-col> -->
             </v-row>
              <!-- PLEASE STAND BY -->
-           
+
                     <v-dialog
                                             v-model="dialog2"
-                                          
+
                                             persistent
                                             width="400"
                                         >
                                             <v-card :color="progressvalue === 100 ? 'light-blue darken-3' : 'light-blue accent-3'" dark>
                                                 <v-card-text>
                                                     {{downloadingReport ? 'Downloading...' :'Please stand by' }}
-                                                   
+
                                                       <v-progress-linear
                                                         v-model="progressvalue"
                                                         color="yellow accent-1"
@@ -967,19 +967,19 @@
                                                         :buffer-value="progressvalue"
                                                         stream
                                                         >
-                                                      
+
                                                             <template v-slot:default="{ value }">
                                                                 <strong class="black--text">{{ value === 100 ? 'Complete' : `${Math.ceil(value)}%` }}</strong>
                                                             </template>
-                                                     
+
                                                         </v-progress-linear>
                                                 </v-card-text>
                                             </v-card>
                                         </v-dialog>
 
-            
 
-                                        
+
+
                                         <!-- PLEASE STAND BY -->
         </v-container>
     </v-app>
@@ -1036,13 +1036,13 @@ export default {
                 {text: "ref", value: "refNo"},
                 { text: "Arena Name", value: "arena_name" },
                 // { text: "Operator", value: "arena_details.operator" },
-              
+
                 { text: "", value: "actions", sortable: false },
             ],
              sortBy: 'refNo',
                 keys: [
                 'CATEGORY',
-               
+
             ],
             userPrepared: {
                 computed: {},
@@ -1053,7 +1053,7 @@ export default {
                 selectChecked2: null,
                 selectPrepared: null,
             },
-            
+
             zIndex: 0,
             perPageOptions: [10, 15, 20, 30],
             singleSelect: false,
@@ -1154,15 +1154,15 @@ export default {
             axios
                 .get("api/employees")
                 .then(
-                    ({ data }) => 
+                    ({ data }) =>
                         {
                         console.log(data.computed)
                         this.userPrepared.computed = data.computed
                         this.userPrepared.checked = data.checked
                         this.userPrepared.prepared = data.prepared
                         }
-                       
-                    
+
+
                 );
         },
         arenaSelectedBank(bankId) {
@@ -1256,14 +1256,14 @@ export default {
                 let eventsCombined = [];
                 let summaryReport = [];
                 let objMobileKiosk = [];
-               
+
 
                 reader.onload = (e) => {
                     // eslint-disable-next-line no-unused-vars
-             
+
                     const bstr = e.target.result;
                     const wb = XLSX.read(bstr, { type: "binary" });
-                   
+
                     const ws = wb.SheetNames;
 
                     const filteredWS = ws.filter(function (value, index, arr) {
@@ -1288,7 +1288,7 @@ export default {
 
                     arrayData[0].map((r) => {
                         if (Object.keys(r).length >= 17) reportCombined.push(r);
-                        
+
                         if (typeof r.A == "string") eventDetailsA.push(r);
                         if (
                             typeof r.A == "string" &&
@@ -1361,7 +1361,7 @@ export default {
                             eventClosedUTC
                     );
 
-                  
+
 
                     const objectKeyed = (array) => {
                         let objectKeyReplacedArray = [];
@@ -1548,8 +1548,8 @@ export default {
                                 parseFloat(totalComputationOthers) -
                                 parseFloat(systemErrorCOArmsi) +
                                 (parseFloat(cashLoad) - parseFloat(cashWithdrawal));
-                            
-                           
+
+
 
                             const soaFr =
                                 parseFloat(depositReplenish) < 0 ? "fr" : "soa";
@@ -1615,10 +1615,12 @@ export default {
                         }
                     );
 
-                    
+
+                    const removeLucky = removeKeyReportObject.filter(removeLuck => (removeLuck.areaCode !== 'LUCKY' || removeLuck.arena_name.split(' ')[0] !== 'LUCKY'))
+                    console.log('LUCKY', removeLucky)
 
                     // group fr and soa
-                    const groupSOAFR = removeKeyReportObject.reduce(function (
+                    const groupSOAFR = removeLucky.reduce(function (
                         r,
                         a
                     ) {
@@ -1671,13 +1673,7 @@ export default {
                         },
                     ]);
 
-                    // sortReport.forEach(sr => {
-                    //     this.arenaSample.push({
-                    //         arenaName: sr.arenaName,
-                    //         operator: 'xxxxxxxx',
-
-                    //     })
-                    // })
+                    console.log(sortReport)
 
                     this.ocbsArrayFiltered = sortReport;
 
@@ -1709,7 +1705,7 @@ export default {
                 });
             } else {
                 this.dialog2 = true;
-              
+
 
                 axios
                     .post("api/import", this.ocbsArrayFiltered)
@@ -1758,7 +1754,7 @@ export default {
         },
         async showData() {
             const data = await axios.get("api/import");
-          
+
 
             const newArray = [];
             data.data.forEach((dObj) => {
@@ -1882,12 +1878,12 @@ export default {
             this.emailFormat = this.defineEmail(
                 data && data.arena_details.email_details
             );
-          
-            this.contactFormat = this.defineContact(data && data.arena_details.contact_details)
-           
-        
 
-           
+            this.contactFormat = this.defineContact(data && data.arena_details.contact_details)
+
+
+
+
         },
 
         closeDialog() {
@@ -2045,7 +2041,7 @@ export default {
             const printCanvas = await html2canvas(el, options);
 
             const link = document.createElement("a");
-    
+
 
             link.download = `${details.arena}.png`;
             link.href = printCanvas.toDataURL("image/png");
@@ -2128,7 +2124,7 @@ export default {
             let statusArenas = [];
             this.downloadingReport = true;
             this.dialog2 = true
-          
+
             // // -----------ZIP--------------- // // //
             const divsss = document.querySelectorAll(".reportsoaoutput");
             const zip = new JSZip();
@@ -2168,14 +2164,14 @@ export default {
                             setTimeout(async () => {
                             this.downloadingReport = false;
                             this.dialog2 = false
-                            
+
                             console.log("done");
-                            this.selected = []; 
+                            this.selected = [];
                         }, 1000);
-                   
+
                     }
                      this.importwithstatus()
-                  
+
             };
             // start benchmark
             const t = new Date();
@@ -2188,9 +2184,9 @@ export default {
                 });
 
                 console.log(`Currently at ${this.selected[i].id}, ${new Date() - t}ms`)
-                
+
                 this.progressvalue = Math.ceil((parseInt(i+1)/parseInt(this.selected.length))*100)
-               
+
 
                 const canvas = await html2canvas(divsss[i], {
                     onclone: function (clonedDoc) {

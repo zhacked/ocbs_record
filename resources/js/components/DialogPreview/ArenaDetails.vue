@@ -135,19 +135,19 @@
                     <div
                         class="
                             custom-span
-                            caption
+                            text-small
                             fullspan
                             d-flex
                             align-center
                         "
                         :class="{'editmode-span': editmode}"
                     >
-                    
+
                         <!-- <input type="text" disabled class="input-field_report computation" v-model="emailFormat"/> -->
                         <span class="input-field_report computation emailFormat">{{emailFormat}}</span>
                     </div>
                 </div>
-             
+
             </v-col>
 </template>
 <script>
@@ -158,13 +158,13 @@
             editmode: Boolean,
             emailFormat: String,
             contactFormat: String
-        },  
+        },
     }
 </script>
 <style scoped>
     .emailFormat{
         color: rgb(0, 123, 238);
-      
+
     }
-   
+
 </style>
