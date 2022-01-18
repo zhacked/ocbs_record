@@ -32,7 +32,7 @@ class UserController extends Controller
     public function index()
     {
 
-        return User::latest()->paginate(10);
+        return User::latest()->get();
     }
 
     
@@ -46,6 +46,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
       
+        
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users',
@@ -138,7 +139,14 @@ class UserController extends Controller
     {
      
         $user = User::findOrFail($id);
-      
+        
+     
+        if($request->type == 'admin'){
+            $request['team_id'] = null;
+           $request['position_id'] = null;
+             $request['assign'] =  null;
+        }
+
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,

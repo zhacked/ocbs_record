@@ -223,7 +223,6 @@
                                     @input="clearRules"
                             ></v-text-field>
 
-                            {{this.form.role}}
 						</div>
 						<div class="modal-footer">
 							<v-btn type="button" color="error" elevation="2" data-dismiss="modal">Close</v-btn>
@@ -368,7 +367,7 @@
                 })
             },
             loadUsers(){
-                    axios.get("api/user").then(({ data }) => {
+                    axios.get("api/user").then((data) => {
                         this.users = data
                         });
                 
