@@ -821,6 +821,7 @@ export default {
                             area_code: foh.code,
                             address: foh.address,
                             operator: foh.operatorsName,
+                            team: foh.team.toLowerCase(),
                             contact_number: "xxxxxxx",
                         });
 
@@ -873,6 +874,8 @@ export default {
             Fire.$emit("AfterCreate");
             swal.fire("Successfully!", "Excel Imported", "success");
             this.$Progress.finish();
+            this.fileUpload = null
+            this.isExcel = false
         },
         testEnter(item) {
             console.log(item);
