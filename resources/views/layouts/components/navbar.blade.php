@@ -7,9 +7,9 @@
     </ul>
 
 
-      <div class="ml-3">
+    <!-- <div class="ml-3">
           <img src="image/alpahred.png" class="brand-image" width="15%">
-    </div>
+    </div> -->
 
 
 

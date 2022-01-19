@@ -1,121 +1,171 @@
 <template>
-    <v-app>
-        <v-container>
+    <v-app style="height: 100%">
+        <v-container style="height: auto">
+            <h1 class="h3">Arena Details</h1>
             <v-row class="mt-5 is-blurred">
                 <v-col class="col-md-12">
-                    <v-card>
-                        <v-card-title class="card-header">
-                            <strong> Arena Details</strong>
-                            <v-spacer></v-spacer>
-                            <v-card-actions class="card-tools">
-                                <form @submit.prevent="proceedAction()">
-                                    <v-card-actions class="card-tools">
-                                        <label
-                                            class="form-control-label"
-                                            for="input-file-import"
-                                        ></label>
-                                        <input
-                                            type="file"
-                                            id="importData"
-                                            class="form-control"
+                
+                    <v-row>
+                        <v-col class="ma-5">
+                            <v-btn
+                                color="success"
+                                elevation="2"
+                                @click="openModal"
+                                >Add Arena<i class="fas fa-plus fa-fw"></i>
+                            </v-btn>
+                        </v-col>
+                        <v-spacer></v-spacer>
+                        <v-spacer></v-spacer>
+                        <v-col>
+                            <form>
+                                <v-row>
+                                    <v-col>
+                                     
+                                        <v-file-input
+                                            dense
+                                            v-model="fileUpload"
+                                            color="deep-purple accent-4"
+                                            outlined
+                                            label="File input"
+                                            multiple
+                                            placeholder="Select your files"
+                                           
+                                            append-outer-icon="mdi-file-import"
+                                            :show-size="1000"
                                             @change="onFileChange"
-                                            accept=".xlsx, .xls, .csv"
-                                        />
-                                        <v-btn
-                                            type="submit"
-                                            color="success"
-                                            elevation="2"
-                                            :loading="loading"
+                                         
+                                            style="width: 400px"
                                         >
-                                            <template v-slot:loader>
-                                                <span>Preparing...</span>
-                                                <span class="custom-loader">
-                                                    <v-icon light
-                                                        >mdi-cached</v-icon
-                                                    >
-                                                </span>
+                                         <template v-slot:append-outer>
+                                            <v-tooltip bottom>
+                                                <template v-slot:activator="{ on }">
+                                                <!-- <v-btn
+                                                    large
+                                                    icon
+                                                    color="green darken-3"
+                                                   
+                                                   
+                                                    > -->
+                                                <v-icon large v-on="on" color="green darken-3" style="cursor: pointer"  @click="proceedAction">
+                                                    mdi-file-import
+                                                </v-icon>
+                                                <!-- </v-btn> -->
                                             </template>
-                                            send</v-btn
-                                        >
-                                    </v-card-actions>
-                                </form>
-                            </v-card-actions>
-                        </v-card-title>
-                        <v-row>
-                            <v-col class="ma-5">
-                                <v-btn
-                                    color="success"
-                                    elevation="2"
-                                    @click="openModal"
-                                    >Add Arena<i class="fas fa-plus fa-fw"></i>
-                                </v-btn>
-                            </v-col>
-                            <v-col>
-                                <v-text-field
-                                    v-model="search"
-                                    append-icon="mdi-magnify"
-                                    label="Search"
-                                    color="primary darken-2"
-                                ></v-text-field>
-                            </v-col>
-                        </v-row>
+                                            <span>Import File</span>
+                                            </v-tooltip>
+                                        </template>
+                                            <template
+                                                v-slot:selection="{
+                                                    index,
+                                                    text,
+                                                }"
+                                            >
+                                                <v-chip
+                                                    v-if="index < 2"
+                                                    color="deep-purple accent-4"
+                                                    dark
+                                                    label
+                                                    small
+                                                >
+                                                    {{ text }}
+                                                </v-chip>
 
-                        <v-data-table
-                            :headers="headers"
-                            :items="arena.data"
-                            :items-per-page="10"
-                            :search="search"
-                            class="elevation-1 text-center"
-                        >
-                            <template v-slot:[`item.bank`]="{ item }">
-                                <v-tooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-btn
-                                            icon
-                                            v-bind="attrs"
-                                            v-on="on"
-                                            color="green"
-                                            @click="openBankModel(item)"
+                                            
+                                            </template>
+                                        </v-file-input>
+                                      
+                                    </v-col>
+                                 
+                                </v-row>
+                            </form>
+                        </v-col>
+                    </v-row>
+                  
+                    <v-row>
+                        <v-col>
+                       
+                            <v-row>
+                                <v-spacer></v-spacer>
+                                <v-col>
+                            <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="Search"
+                                color="primary darken-2"
+                            ></v-text-field>
+                            </v-col>
+                            </v-row>
+                          
+                      
+                            <v-data-table
+                                :headers="headers"
+                                :items="arena.data"
+                                :items-per-page="10"
+                                :search="search"
+                                class="elevation-1 text-center"
+                            >
+                                <template v-slot:[`item.bank`]="{ item }">
+                                    <v-tooltip top>
+                                        <template
+                                            v-slot:activator="{ on, attrs }"
                                         >
-                                            <v-icon small>mdi-bank</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>Bank Information</span>
-                                </v-tooltip>
-                            </template>
+                                            <v-btn
+                                                icon
+                                                v-bind="attrs"
+                                                v-on="on"
+                                                color="green"
+                                                @click="openBankModel(item)"
+                                            >
+                                                <v-icon small>mdi-bank</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>Bank Information</span>
+                                    </v-tooltip>
+                                </template>
 
-                            <template v-slot:[`item.actions`]="{ item }">
-                                <v-tooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-btn
-                                            icon
-                                            v-bind="attrs"
-                                            v-on="on"
-                                            color="primary"
-                                            @click="editModal(item)"
+                                <template v-slot:[`item.actions`]="{ item }">
+                                    <v-tooltip top>
+                                        <template
+                                            v-slot:activator="{ on, attrs }"
                                         >
-                                            <v-icon small>fa fa-edit</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>Update Arena</span>
-                                </v-tooltip>
-                                <v-tooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-btn
-                                            icon
-                                            v-bind="attrs"
-                                            v-on="on"
-                                            color="red"
-                                            @click="deleteArena(item.id)"
+                                            <v-btn
+                                                icon
+                                                v-bind="attrs"
+                                                v-on="on"
+                                                color="primary"
+                                                @click="editModal(item)"
+                                            >
+                                                <v-icon small
+                                                    >fa fa-edit</v-icon
+                                                >
+                                            </v-btn>
+                                        </template>
+                                        <span>Update Arena</span>
+                                    </v-tooltip>
+                                    <v-tooltip top>
+                                        <template
+                                            v-slot:activator="{ on, attrs }"
                                         >
-                                            <v-icon small>fas fa-trash</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>Delete Arena</span>
-                                </v-tooltip>
-                            </template>
-                        </v-data-table>
-                    </v-card>
+                                            <v-btn
+                                                icon
+                                                v-bind="attrs"
+                                                v-on="on"
+                                                color="red"
+                                                @click="deleteArena(item.id)"
+                                            >
+                                                <v-icon small
+                                                    >fas fa-trash</v-icon
+                                                >
+                                            </v-btn>
+                                        </template>
+                                        <span>Delete Arena</span>
+                                    </v-tooltip>
+                                </template>
+                            </v-data-table>
+                      
+                        </v-col>
+                    </v-row>
+                 
                 </v-col>
             </v-row>
 
@@ -410,7 +460,6 @@
                                     ]"
                                 ></v-text-field>
 
-
                                 <v-combobox
                                     v-model="form.contact_number"
                                     :items="contacts.data"
@@ -547,10 +596,7 @@
 </template>
 
 <script>
-import {
-    camelCase,
-
-} from "lodash";
+import { camelCase } from "lodash";
 import XLSX from "xlsx";
 
 export default {
@@ -606,14 +652,18 @@ export default {
             contactNumbers: [],
             emailList: [],
             arenaList: [],
-            bankList: []
+            bankList: [],
+            fileUpload: null,
         };
     },
     methods: {
         onFileChange(event) {
             // let arrayNumbers = [];
-            const file = event.target.files ? event.target.files[0] : null;
-            this.fileUpload = file;
+            // const file = event.target.files ? event.target.files[0] : null;
+            // this.fileUpload = file;
+            const file = this.fileUpload[0];
+            console.log(this.fileUpload);
+
             const checkfile =
                 file.name.includes("xlsx") || file.name.includes("csv");
 
@@ -641,7 +691,7 @@ export default {
                         );
                     });
 
-                    console.log(arrayData)
+                    console.log(arrayData);
 
                     const objectKeyed = (array) => {
                         // console.log('>x>x',array)
@@ -671,21 +721,22 @@ export default {
                         return objectKeyReplacedArray;
                     };
 
-
                     const objk = objectKeyed(arrayData[0]);
                     // console.log(objectKeyed(arrayData[0]));
-
 
                     const toArrayContactEmail = (contactString) => {
                         // console.log(typeof contactString)
                         let number = [];
                         // const checkBreak =  typeof contactString == "string" && contactString.indexOf("\r\n") > -1;
-                        const checkBreak =  contactString.toString().includes("\r\n");
+                        const checkBreak = contactString
+                            .toString()
+                            .includes("\r\n");
                         // contactString.includes("\r\n");
                         // const checkForwardSlash = typeof contactString == "string" && contactString.indexOf("/") > -1;
-                        const checkForwardSlash = contactString.toString().includes("/");
+                        const checkForwardSlash = contactString
+                            .toString()
+                            .includes("/");
                         // contactString.includes("/");
-
 
                         if (contactString != null) {
                             if (checkBreak) {
@@ -706,7 +757,9 @@ export default {
                                     // const xxx = replaceContact.filter((ccc) =>
                                     //     ccc.includes("09")
                                     // );
-                                    replaceContact.map((x) => number.push(x.trim()));
+                                    replaceContact.map((x) =>
+                                        number.push(x.trim())
+                                    );
                                 });
                             } else if (checkForwardSlash) {
                                 const contactSplit = contactString.split("/");
@@ -724,7 +777,9 @@ export default {
                                     // const xxx = replaceContact.filter((ccc) =>
                                     //     ccc.includes("09")
                                     // );
-                                    replaceContact.map((x) => number.push(x.trim()));
+                                    replaceContact.map((x) =>
+                                        number.push(x.trim())
+                                    );
                                 });
                             } else {
                                 number.push(contactString);
@@ -735,57 +790,55 @@ export default {
                     };
 
                     let contactNo = [];
-                    let emailList = []
+                    let emailList = [];
 
                     const removeFirstObjectTitle = objk.filter((oj) => {
-
                         if (oj.arenaName !== "ARENA NAME") {
-
-                            return oj
-                        };
-
-
+                            return oj;
+                        }
                     });
 
                     removeFirstObjectTitle.forEach((foh) => {
+                        if (foh.bankName !== "" || foh.bankNumber !== "")
+                            this.bankList.push({
+                                account_name: foh.accountName,
+                                bank_name: foh.bankName,
+                                bank_number: foh.bankNumber,
+                                area_code: foh.code,
+                            });
 
-                       if(foh.bankName !== '' || foh.bankNumber !== '') this.bankList.push({
-                           account_name: foh.accountName,
-                           bank_name: foh.bankName,
-                           bank_number: foh.bankNumber,
-                           area_code: foh.code
-                       })
+                        this.arenaList.push({
+                            arena:
+                                foh.arenaName.indexOf("~") > -1
+                                    ? foh.arenaName.replace(/\~/g, "/")
+                                    : foh.arenaName,
+                            area_code: foh.code,
+                            address: foh.address,
+                            operator: foh.operatorsName,
+                            contact_number: "xxxxxxx",
+                        });
 
-                        this.arenaList.push({arena: foh.arenaName.indexOf("~") > -1
-                        ? foh.arenaName.replace(/\~/g, "/")
-                        : foh.arenaName, area_code: foh.code, address: foh.address, operator: foh.operatorsName, contact_number: "xxxxxxx"})
-
-
-
-
-                        toArrayContactEmail(foh.contactNumber).forEach(cn => {
-
-                            if(cn !== '') {
+                        toArrayContactEmail(foh.contactNumber).forEach((cn) => {
+                            if (cn !== "") {
                                 contactNo.push({
                                     area_code: foh.code,
-                                    contact_number: cn
-
-                                })
+                                    contact_number: cn,
+                                });
                             }
-                         })
+                        });
 
-                        toArrayContactEmail(foh.emailSol).forEach(em => {
+                        toArrayContactEmail(foh.emailSol).forEach((em) => {
                             // console.log('>>>',foh.code,'>>',em);
-                         if(em !== '') emailList.push({
-
-                            area_code: foh.code,
-                            email: em
-                        })})
-
+                            if (em !== "")
+                                emailList.push({
+                                    area_code: foh.code,
+                                    email: em,
+                                });
+                        });
                     });
 
-                    this.emailList = emailList
-                    this.contactNumbers = contactNo
+                    this.emailList = emailList;
+                    this.contactNumbers = contactNo;
                 };
                 reader.readAsBinaryString(file);
             } else {
@@ -799,18 +852,17 @@ export default {
             }
         },
         async proceedAction() {
-          this.$Progress.start();
+            this.$Progress.start();
 
-            console.log(this.arenaList)
-            await axios.post('api/importArena', this.arenaList)
-            await axios.post("api/contactnumbers", this.contactNumbers)
-            await axios.post("api/emails", this.emailList)
-           await axios.post("api/bankStore", this.bankList)
+            console.log(this.arenaList);
+            await axios.post("api/importArena", this.arenaList);
+            await axios.post("api/contactnumbers", this.contactNumbers);
+            await axios.post("api/emails", this.emailList);
+            await axios.post("api/bankStore", this.bankList);
 
             Fire.$emit("AfterCreate");
             swal.fire("Successfully!", "Excel Imported", "success");
             this.$Progress.finish();
-
         },
         testEnter(item) {
             console.log(item);

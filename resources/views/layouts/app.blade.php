@@ -21,9 +21,9 @@
 		
 
 	</head>
-		<body>
-			<div id="app">
-				<main class>
+		<body >
+			<div id="app" style="height: 50vh !important; border: 1px solid green" >
+				<main style="height: 50vh !important; border: 1px solid green">
 					@yield('content')
 				</main>
 			</div>

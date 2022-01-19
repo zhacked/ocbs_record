@@ -18,17 +18,17 @@
 	<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     
 </head>
-<body class="hold-transition sidebar-mini sidebar-collapse" >
-<div class="wrapper" id="app">
+<body class="hold-transition sidebar-mini sidebar-collapse">
+    <div class="wrapper" id="app">
 
-    @include('layouts.components.navbar')
+        @include('layouts.components.navbar')
 
-    @include('layouts.components.sidebar')
+        @include('layouts.components.sidebar')
 
-    @include('layouts.components.content')
+        @include('layouts.components.content')
 
-    @include('layouts.components.footer')
-</div>
+        @include('layouts.components.footer')
+    </div>
 
 @auth
     <script type="text/javascript">
