@@ -15,6 +15,14 @@
                             </v-btn>
                         </v-col>
                         <v-spacer></v-spacer>
+                          <v-col>
+                            <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="Search"
+                                color="primary darken-2"
+                            ></v-text-field>
+                            </v-col>
                         <v-spacer></v-spacer>
                         <v-col>
                             <form>
@@ -25,31 +33,24 @@
                                             dense
                                             v-model="fileUpload"
                                             color="deep-purple accent-4"
-                                            outlined
+                                          
                                             label="File input"
-                                            multiple
-                                            placeholder="Select your files"
-                                           
-                                            append-outer-icon="mdi-file-import"
+                                            :clearable="false"
+                                            placeholder="Select your file"
+                                           counter
+                                            append-icon="mdi-file-import"
                                             :show-size="1000"
-                                            @change="onFileChange"
+                                            @change="onFileChange($event)"
                                          
-                                            style="width: 400px"
                                         >
-                                         <template v-slot:append-outer>
-                                            <v-tooltip bottom>
+                                         <template v-slot:append>
+                                            <v-tooltip bottom color="success">
                                                 <template v-slot:activator="{ on }">
-                                                <!-- <v-btn
-                                                    large
-                                                    icon
-                                                    color="green darken-3"
-                                                   
-                                                   
-                                                    > -->
-                                                <v-icon large v-on="on" color="green darken-3" style="cursor: pointer"  @click="proceedAction">
+                                              
+                                                <v-icon large :disabled="!isExcel" v-on="on" color="green darken-3" style="cursor: pointer"  @click="proceedAction">
                                                     mdi-file-import
                                                 </v-icon>
-                                                <!-- </v-btn> -->
+                                            
                                             </template>
                                             <span>Import File</span>
                                             </v-tooltip>
@@ -65,7 +66,9 @@
                                                     color="deep-purple accent-4"
                                                     dark
                                                     label
-                                                    small
+                                                    
+                                                    close
+                                                    @click:close="clearFile"
                                                 >
                                                     {{ text }}
                                                 </v-chip>
@@ -83,7 +86,7 @@
                   
                     <v-row>
                         <v-col>
-                       
+<!--                        
                             <v-row>
                                 <v-spacer></v-spacer>
                                 <v-col>
@@ -94,7 +97,7 @@
                                 color="primary darken-2"
                             ></v-text-field>
                             </v-col>
-                            </v-row>
+                            </v-row> -->
                           
                       
                             <v-data-table
@@ -654,6 +657,7 @@ export default {
             arenaList: [],
             bankList: [],
             fileUpload: null,
+            isExcel: false
         };
     },
     methods: {
@@ -661,13 +665,15 @@ export default {
             // let arrayNumbers = [];
             // const file = event.target.files ? event.target.files[0] : null;
             // this.fileUpload = file;
-            const file = this.fileUpload[0];
-            console.log(this.fileUpload);
+            // const file = this.fileUpload ? this.fileUpload[0] : null;
+      const file = event ? event : null;
 
             const checkfile =
-                file.name.includes("xlsx") || file.name.includes("csv");
+                (event.name.includes("xlsx")) || ( event.name.includes("csv"));
+           
 
-            if (file && checkfile) {
+            if (event && checkfile) {
+                this.isExcel = true
                 const reader = new FileReader();
                 let arrayData = [];
 
@@ -678,7 +684,7 @@ export default {
                     const ws = wb.SheetNames;
 
                     const filteredWS = ws.filter(function (value, index, arr) {
-                        return value === "DETAILS" || value === "Details";
+                        return value.toLowerCase() === ("DETAILS").toLowerCase();
                     });
                     filteredWS.forEach((w) => {
                         const singleSheet = wb.Sheets[w];
@@ -842,14 +848,18 @@ export default {
                 };
                 reader.readAsBinaryString(file);
             } else {
+                   this.isExcel = false
                 Fire.$emit("AfterCreate"),
-                    swal.fire({
+                    Toast.fire({
                         icon: "warning",
-                        title: "Oops...",
-                        text: "Make sure you insert correct excel data!",
+                        title: "Make sure you insert correct excel data!",
                     });
-                $("#importData").val("");
+               
             }
+        },
+        clearFile(){
+               this.isExcel = false
+            this.fileUpload = null
         },
         async proceedAction() {
             this.$Progress.start();

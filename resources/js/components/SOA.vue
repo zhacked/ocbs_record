@@ -1,45 +1,74 @@
 <template>
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
+            <h1 class="h3">Statement of Accounts</h1>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
-                    <v-card>
-                        <v-card-title class="card-header">
-                            <strong>Statement of Account</strong>
-
-                            <v-spacer></v-spacer>
-                            <form @submit.prevent="proceedAction()">
-                                <v-card-actions class="card-tools">
-                                    <label
-                                        class="form-control-label"
-                                        for="input-file-import"
-                                    ></label>
-                                    <input
-                                        type="file"
-                                        id="importData"
-                                        class="form-control"
-                                        @change="onFileChange"
-                                        accept=".xlsx, .xls, .csv"
-                                    />
-                                    <v-btn
-                                        type="submit"
-                                        color="success"
-                                        elevation="2"
-                                        :loading="loading"
-                                    >
-                                        <template v-slot:loader>
-                                            <span>Preparing...</span>
-                                            <span class="custom-loader">
-                                                <v-icon light
-                                                    >mdi-cached</v-icon
-                                                >
-                                            </span>
+                  
+                            <v-row>
+                                 <v-spacer></v-spacer>
+                                  <v-spacer></v-spacer>
+                                <v-col>
+                                       <!-- v-model="fileUpload" -->
+                                   <v-file-input
+                                            dense
+                                            v-model="fileUpload"
+                                            color="deep-purple accent-4"
+                                            label="File input"
+                                            placeholder="Select your file"
+                                            :clearable="false"
+                                            counter
+                                            append-icon="mdi-file-import"
+                                            :show-size="1000"
+                                            @change="onFileChange($event)"
+                                         
+                                           
+                                          
+                                        >
+                                         <template v-slot:append >
+                                            <v-tooltip bottom color="success">
+                                                <template v-slot:activator="{ on }">
+                                                <!-- <v-btn
+                                                    
+                                                    dense
+                                                    color="green darken-3"
+                                                 
+                                                   
+                                                    > -->
+                                                <v-icon large  :disabled="!isExcel"  v-on="on" color="green darken-3" style="cursor: pointer"  @click="proceedAction">
+                                                    mdi-file-import
+                                                </v-icon>
+                                                <!-- </v-btn> -->
+                                            </template>
+                                            <span>Import File</span>
+                                            </v-tooltip>
                                         </template>
-                                        send</v-btn
-                                    >
-                                </v-card-actions>
-                            </form>
-                        </v-card-title>
+                                            <template
+                                                v-slot:selection="{
+                                                    index,
+                                                    text,
+                                                }"
+                                            >
+                                                <v-chip
+                                                    v-if="index < 2"
+                                                    color="deep-purple accent-4"
+                                                    dark
+                                                    label
+                                                    
+                                                    close
+                                                    @click:close="clearFile"
+                                                >
+                                                    {{ text }}
+                                                </v-chip>
+
+                                            
+                                            </template>
+                                        </v-file-input>
+                                </v-col>
+                              
+                            </v-row>
+                         
+                    
 
                         <div
                             class="card card-tabs"
@@ -649,7 +678,7 @@
                                 </v-card-text>
                             </div>
                         </div>
-                    </v-card>
+                    <!-- </v-card> -->
                 </v-col>
 
                 <v-dialog
@@ -1084,7 +1113,7 @@ export default {
             loading: false,
             loader: null,
             downloadingReport: false,
-            fileUpload: "",
+            fileUpload: null,
             form: new Form({
                 id: "",
                 arena: "",
@@ -1147,6 +1176,7 @@ export default {
             progressvalue: 0,
             arenaSample: [],
             switchPrepared: false,
+            isExcel: false
         };
     },
     methods: {
@@ -1243,13 +1273,20 @@ export default {
                 }
             });
         },
+      
         onFileChange(event) {
-            const file = event.target.files ? event.target.files[0] : null;
-            this.fileUpload = file;
+       
+            // this.fileUpload = event.target.files ? event.target.files[0] : null;
+            // const file = event.target.files ? event.target.files[0] : null;
+            const file = event ? event : null;
+            // const file = this.fileUpload ? this.fileUpload[0] : null;
+            // this.fileUpload = file;
             const checkfile =
-                file.name.includes("xlsx") || file.name.includes("csv");
+                ( event.name.includes("xlsx")) || ( event.name.includes("csv"));
+              
 
-            if (file && checkfile) {
+            if (event && checkfile) {
+                this.isExcel = true
                 const reader = new FileReader();
                 let arrayData = [];
                 let reportCombined = [];
@@ -1267,9 +1304,11 @@ export default {
                     const ws = wb.SheetNames;
 
                     const filteredWS = ws.filter(function (value, index, arr) {
+                        console.log('SHEET VALUE',camelCase(value))
+                        const accReportComb = "Accounts Report Combined"
+                        const summaryRep = "Summary Report"
                         return (
-                            value === "Accounts Report (Combined)" ||
-                            value === "Summary Report"
+                            camelCase(value) === camelCase(accReportComb) || camelCase(value) === camelCase(summaryRep)
                         );
                     });
 
@@ -1617,7 +1656,7 @@ export default {
 
 
                     const removeLucky = removeKeyReportObject.filter(removeLuck => (removeLuck.areaCode !== 'LUCKY' || removeLuck.arena_name.split(' ')[0] !== 'LUCKY'))
-                    console.log('LUCKY', removeLucky)
+
 
                     // group fr and soa
                     const groupSOAFR = removeLucky.reduce(function (
@@ -1679,16 +1718,20 @@ export default {
 
                 };
                 reader.readAsBinaryString(file);
-            } else {
+            } 
+            else {
+                //  this.fileUpload = null
+                this.isExcel = false
                 Fire.$emit("AfterCreate"),
-                    swal.fire({
+                    Toast.fire({
                         icon: "warning",
-                        title: "Oops...",
-                        text: "Make sure you insert correct excel data!",
+                        title: "Make sure you insert correct excel data!",
+                        
                     });
-                $("#importData").val("");
+               
             }
         },
+   
         proceedAction() {
             this.$Progress.start();
             // var result = $('#importData').val().split('.');
@@ -1698,10 +1741,10 @@ export default {
                 !this.fileUpload.name.includes("xlsx")
             ) {
                 Fire.$emit("AfterCreate");
-                swal.fire({
+                Toast.fire({
                     icon: "warning",
-                    title: "Oops...",
-                    text: "Make sure you insert correct excel data!",
+                    title: "Make sure you insert correct excel data!",
+                    
                 });
             } else {
                 this.dialog2 = true;
@@ -1712,10 +1755,12 @@ export default {
                     .then(({ data }) => {
                         (this.dialog2 = false), $("#importData").val("");
                         Fire.$emit("AfterCreate");
-                        swal.fire("Successfully!", "Excel Imported", "success");
+                        Toast.fire("Successfully!", "Excel Imported", "success");
                         this.$Progress.finish();
                         // location.reload(); // to be removed
                         // this.showData()
+                        this.fileUpload = null
+                         this.isExcel = false
                     })
                     .catch((error) => {
                         (this.dialog2 = false),
@@ -1942,6 +1987,11 @@ export default {
             };
 
             this.editmode = !this.editmode;
+        },
+        clearFile(file) {
+            console.log(file)
+            this.isExcel = false;
+            this.fileUpload = null
         },
         closeDialog() {
             this.editmode = false;
