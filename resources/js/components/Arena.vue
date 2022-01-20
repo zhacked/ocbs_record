@@ -159,12 +159,17 @@
                                     clearable
                                 ></v-text-field>
                                 <v-data-table
-                                    :headers="headers"
-                                    :items="arena.data"
+                                    :headers="activityHeaders"
+                                    :items="arenalogs"
                                     :items-per-page="10"
                                     :search="searchlogs"
                                     class="elevation-1 text-center"
                                 >
+                                <template v-slot:[`item.description`]="{ item }">
+                                    <p> <strong>{{item.description | upText }} {{item.subject_type}}</strong>  details in {{item.properties !== null ? item.properties : 'some'  }} data on <strong>{{item.created_at | myDatewithtime}}</strong></p>
+                                    
+                                </template>
+                              
                                 </v-data-table>
                             </v-container>
  
@@ -622,6 +627,10 @@ export default {
                 { text: "Bank Number", value: "bank_number" },
                 { text: "", value: "actions", sortable: false },
             ],
+            activityHeaders:[
+                { text: "Name", value: "log_name" },
+                { text: "Description", value: "description"}
+            ],
             select: [],
             emailRules: [],
             errorMessages: "",
@@ -630,6 +639,7 @@ export default {
             arena: [],
             emails: [],
             contacts: [],
+            arenalogs:[],
             search: "",
             searchlogs:'',
             searchbank: "",
@@ -663,6 +673,12 @@ export default {
         };
     },
     methods: {
+        loadLogs(){
+             axios.get("api/Logsindex/").then((data) => {
+                console.log('Logs>>>',data)
+                this.arenalogs = data.data
+            });
+        },
         onFileChange(event) {
             // let arrayNumbers = [];
             // const file = event.target.files ? event.target.files[0] : null;
@@ -865,8 +881,11 @@ export default {
         async proceedAction() {
             this.$Progress.start();
 
-            console.log(this.arenaList);
-            await axios.post("api/importArena", this.arenaList);
+          
+            await axios.post("api/importArena", {
+               arenaList  : this.arenaList,
+               Uploadname :  this.fileUpload.name
+            });
             await axios.post("api/contactnumbers", this.contactNumbers);
             await axios.post("api/emails", this.emailList);
             await axios.post("api/bankStore", this.bankList);
@@ -1124,8 +1143,10 @@ export default {
     },
     created() {
         this.loadArena();
+        this.loadLogs()
         Fire.$on("AfterCreate", () => {
             this.loadArena();
+            this.loadLogs();
         });
     },
     watch: {

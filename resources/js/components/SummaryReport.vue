@@ -248,13 +248,18 @@ export default {
             let worksheet = '';
             let aray = [];
             axios.get("api/convertToExcel/"+deprep+"/"+ value).then(({ data }) => (
-                console.log(data),
+               
                 data.forEach((val) => {
-
+                    console.log(val)
                     const test = {
                         'ID': val.id,
                         'Ref Number': val.refNo,
                         'OCBS Name': val.arena_name,
+                        'Total Commission': val.totalCommission,
+                        'Other Commission -M': val.otherCommissionIntel05,
+                        'Consolidators commission': val.consolidatorsCommission,
+                        'Safety Fund' : val.safetyFund, 
+                        'Payment For O/Standing Balance' : val.paymentForOutstandingBalance,
                         'Amount': val.for_total
                     }
                     aray.push(test);

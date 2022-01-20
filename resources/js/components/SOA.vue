@@ -2,6 +2,7 @@
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
+         
             <v-row class="mt-3">
                 <v-col class="col-md-12">
                   
@@ -114,101 +115,7 @@
                                     id="custom-tabs-three-tabContent active show"
                                 >
                                     <v-row>
-                                        <v-col>
-                                            <v-menu
-                                               offset-x
-                                                v-if="this.selected != 0"
-                                                rounded="rounded"
-                                                :loading="downloadingReport"
-                                                :disabled="downloadingReport"
-                                            >
-                                                <template
-                                                    v-slot:activator="{
-                                                        attrs,
-                                                        on,
-                                                    }"
-                                                >
-                                                    <v-btn
-                                                         color="primary lighten-1"
-                                                        v-bind="attrs"
-                                                        v-on="on"
-                                                         :loading="
-                                                                downloadingReport
-                                                            "
-                                                            :disabled="
-                                                                downloadingReport
-                                                            "
-                                                    >
-                                                         <v-icon light
-                                                                >mdi-image</v-icon
-                                                            > Download
-                                                              <template
-                                                                v-slot:loader
-                                                            >
-                                                                <span
-                                                                    >Downloading...</span
-                                                                >
-
-                                                            </template>
-                                                    </v-btn>
-                                                </template>
-
-                                                <v-list >
-                                                    <v-list-item>
-                                                        <v-btn
-                                                            v-show="
-                                                                this.selected !=
-                                                                0
-                                                            "
-                                                            :loading="
-                                                                downloadingReport
-                                                            "
-                                                            :disabled="
-                                                                downloadingReport
-                                                            "
-                                                            color="green lighten-1"
-                                                            class="ma-2 white--text allbtn"
-                                                            @click="
-                                                                multiDownloads
-                                                            "
-                                                        >
-                                                            <v-icon light
-                                                                >mdi-download</v-icon
-                                                            >
-                                                            PNG
-
-                                                        </v-btn>
-                                                    </v-list-item>
-                                                    <v-list-item >
-                                                        <v-btn
-                                                            v-show="
-                                                                this.selected !=
-                                                                0
-                                                            "
-                                                            :loading="
-                                                                downloadingReport
-                                                            "
-                                                            :disabled="
-                                                                downloadingReport
-                                                            "
-                                                            color="yellow darken-3"
-                                                            class="ma-2 white--text allbtn"
-                                                            @click="
-                                                                downloadZip
-                                                            "
-                                                        >
-                                                            <v-icon light
-                                                                >mdi-zip-box</v-icon
-                                                            >
-                                                            Zip
-
-                                                        </v-btn>
-                                                    </v-list-item>
-                                                </v-list>
-                                            </v-menu>
-                                            <!--  -->
-                                        </v-col>
-                                         <v-spacer></v-spacer>
+                                     
                                         <v-col>
                                         <v-switch
                                             v-model="switchPrepared"
@@ -241,6 +148,10 @@
                                             v-model="selected"
                                             :loading="downloadingReport"
                                             :search="search"
+
+                                            show-group-by
+                                            sort-by="date_of_soa"
+                                            group-by="date_of_soa"
                                             :show-select="
                                                 downloadingReport ? false : true
                                             "
@@ -250,6 +161,7 @@
                                             :disable-sort="
                                                 downloadingReport ? true : false
                                             "
+                                            
                                             :single-select="singleSelect"
                                             class="elevation-1 text-center"
                                             :footer-props="{
@@ -267,7 +179,116 @@
                                         >
 
 
+                                        <template v-slot:[`group.header`]="{ group, headers, toggle, isOpen }">
+                                            
+                                        {{isOpen}}
+                                         
+                                        <td :colspan="headers.length">
+                                                <v-row>
+                                                    <v-col class="mt-2 ">
+                                                        <div class=" float-left">
+                                                            <v-btn @click="toggle()" x-small icon :ref="group" class="test"  >
+                                                                <v-icon>
+                                                                    {{ isOpen ? '$minus' : '$plus' }}
+                                                                </v-icon>
+                                                            </v-btn>
+                                                            <span class="mx-5 font-weight-bold">{{ group | myDateSummary }} </span>
+                                                        </div>  
+                                                     
+                                                    </v-col>
+                                                    <v-col>
+                                                      <div class=" float-right"  >
+                                                               <v-menu
+                                                                    offset-x
+                                                                    v-if="selected.length != 0"
+                                                                    rounded="rounded"
+                                                                    :loading="downloadingReport"
+                                                                    :disabled="downloadingReport"
+                                                                    >
+                                                                        <template
+                                                                            v-slot:activator="{
+                                                                                attrs,
+                                                                                on,
+                                                                            }"
+                                                                        >
+                                                                            <v-btn
+                                                                                color="primary lighten-1"
+                                                                                v-bind="attrs"
+                                                                                v-on="on"
+                                                                                :loading="
+                                                                                        downloadingReport
+                                                                                    "
+                                                                                    :disabled="
+                                                                                        downloadingReport
+                                                                                    "
+                                                                            >
+                                                                                <v-icon light
+                                                                                        >mdi-image</v-icon
+                                                                                    > Download
+                                                                                    <template
+                                                                                        v-slot:loader
+                                                                                    >
+                                                                                        <span
+                                                                                            >Downloading...</span
+                                                                                        >
 
+                                                                                    </template>
+                                                                            </v-btn>
+                                                                        </template>
+
+                                                                        <v-list >
+                                                                            <v-list-item>
+                                                                                <v-btn
+
+                                                                                    :loading="
+                                                                                        downloadingReport
+                                                                                    "
+                                                                                    :disabled="
+                                                                                        downloadingReport
+                                                                                    "
+                                                                                    color="green lighten-1"
+                                                                                    class="ma-2 white--text allbtn"
+                                                                                    @click="
+                                                                                        multiDownloads
+                                                                                    "
+                                                                                >
+                                                                                    <v-icon light
+                                                                                        >mdi-download</v-icon
+                                                                                    >
+                                                                                    PNG
+
+                                                                                </v-btn>
+                                                                            </v-list-item>
+                                                                            <v-list-item >
+                                                                                <v-btn
+                                                                                    
+                                                                                    :loading="
+                                                                                        downloadingReport
+                                                                                    "
+                                                                                    :disabled="
+                                                                                        downloadingReport
+                                                                                    "
+                                                                                    color="yellow darken-3"
+                                                                                    class="ma-2 white--text allbtn"
+                                                                                    @click="
+                                                                                        downloadZip
+                                                                                    "
+                                                                                >
+                                                                                    <v-icon light
+                                                                                        >mdi-zip-box</v-icon
+                                                                                    >
+                                                                                    Zip
+
+                                                                                </v-btn>
+                                                                            </v-list-item>
+                                                                        </v-list>
+                                                                    </v-menu>
+                                                      </div>
+                                                    </v-col>
+                                                </v-row>
+                                              
+                                        </td>
+                                        </template >
                                             <template
                                                 v-slot:[`item.data-table-select`]="{
                                                     item,
@@ -334,6 +355,7 @@
                                             v-show="
                                                 arenaData.data &&
                                                 arenaData.data.length > 0
+                                                && $gate.isAdmin()
                                             "
                                             :loading="downloadingReport"
                                             :disabled="downloadingReport"
@@ -1061,13 +1083,13 @@ export default {
         return {
             headers: [
                 { text: "#", value: "id" },
-                 { text: "CODE", value: "areaCode" },
+                { text: "CODE", value: "areaCode" },
                 {text: "ref", value: "refNo"},
                 { text: "Arena Name", value: "arena_name" },
-                // { text: "Operator", value: "arena_details.operator" },
 
-                { text: "", value: "actions", sortable: false },
+                { text: "", value: "actions", sortable: false  },
             ],
+            
              sortBy: 'refNo',
                 keys: [
                 'CATEGORY',
@@ -1082,7 +1104,11 @@ export default {
                 selectChecked2: null,
                 selectPrepared: null,
             },
-
+            group: {
+                header:{
+                     isOpen:false
+                }
+            }, 
             zIndex: 0,
             perPageOptions: [10, 15, 20, 30],
             singleSelect: false,
@@ -2491,7 +2517,14 @@ export default {
             };
         },
     },
-
+    mounted(){
+        const self = this;
+        
+        for (const name of Object.keys(self.$refs)) {
+            console.log(name)
+            // self.$ref.openCache[name] = false;
+        }
+    },
     async created() {
         await this.showData();
         this.importwithstatus();
@@ -2502,6 +2535,8 @@ export default {
             this.importwithstatus();
         });
     },
+   
+   
 };
 </script>
 <style scoped>

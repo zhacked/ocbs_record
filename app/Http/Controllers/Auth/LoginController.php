@@ -99,10 +99,10 @@ class LoginController extends Controller
             
             DB::table('users')->where('id', $user->id)->update(['session_id' => $new_sessid]);
             $current_date_time = Carbon::now()->toDateTimeString();
-            DB::table('activity_log')->insert([
+            DB::table('Activitylogs')->insert([
                 'log_name' => $user->name,
                 'description'=> 'Login',
-                'subject_type' => 'App\Models\User',
+                'subject_type' => 'User',
                 'subject_id'=>$user->id,
                 'causer_type' =>$user->type,
                 'causer_id' =>$user->id,
@@ -123,10 +123,10 @@ class LoginController extends Controller
       
         $user = Auth::user();
 
-        DB::table('activity_log')->insert([
+        DB::table('Activitylogs')->insert([
             'log_name' => $user->name,
             'description'=> 'Logout',
-            'subject_type' => 'App\Models\User',
+            'subject_type' => 'User',
             'subject_id'=>$user->id,
             'causer_type' =>$user->type,
             'causer_id' =>$user->id,

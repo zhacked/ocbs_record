@@ -7,10 +7,12 @@ use App\Models\arena;
 use App\Models\Email;
 use App\Models\Contact;
 use App\Models\BankAccount;
+use App\Models\Activitylogs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\API\ActivitylogsController;
 
 class ArenaController extends Controller
 {
@@ -20,6 +22,8 @@ class ArenaController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+   
+   
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -42,10 +46,7 @@ class ArenaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -91,16 +92,17 @@ class ArenaController extends Controller
                'contact_number' => $contact
            ]);
        }
-
-        $this->arenaLogs('created');
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('created',$arena->arena,'arena');
         return $arena;
     }
 
     public function importArena(Request $request){
+  
+    $contactImport = arena::upsert($request['arenaList'], ['area_code']);
+    $activity_controller = new ActivitylogsController;
 
-        $contactImport = arena::upsert($request->all(), ['area_code']);
-
-       $this->arenaLogs('imported');
+    $activity_controller->arenaLogs('imported',$request['Uploadname'],'arena');
         return  $contactImport;
     }
 
@@ -207,9 +209,9 @@ class ArenaController extends Controller
                     ]);
                  }
         }
+        $activity_controller = new ActivitylogsController;
 
-
-        $this->arenaLogs('updated');
+        $activity_controller->arenaLogs('updated',$arenas->arena,'arena');
         return ['message' => 'Updated the arena details'];
     }
 
@@ -229,23 +231,12 @@ class ArenaController extends Controller
         if($email){
             $email->delete();
         }
-        $this->arenaLogs('deleted');
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('deleted',$arena->arena,'arena');
         $arena->delete();
       
         return ['message' => 'User Deleted'];
     }
 
-    public function arenaLogs($description){
-       $activity=  DB::table('activity_log')->insert([
-            'log_name' => Auth::user()->name,
-            'description'=> $description,
-            'subject_type' => 'App\Models\arena',
-            'subject_id'=>Auth::user()->id,
-            'causer_type' =>Auth::user()->type,
-            'causer_id' =>Auth::user()->id,
-            'created_at'=> Carbon::now()->toDateTimeString()
-        ]);
-
-        return $activity;
-    }
+   
 }

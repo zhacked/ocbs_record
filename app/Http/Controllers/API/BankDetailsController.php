@@ -64,7 +64,7 @@ class BankDetailsController extends Controller
             'bank_number' => 'required|string'
         ]);
 
-        return BankAccount::create([
+        $bank = BankAccount::create([
             // 'arenas_id' => $request['arenas_id'],
             'area_code' => $request['area_code'],
             'account_name'=> $request['account_name'],
@@ -72,6 +72,10 @@ class BankDetailsController extends Controller
             'bank_number' => $request['bank_number'],
             'isAdmin' => $request['isAdmin'],
         ]);
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('created',$bank->account_name,'bank');
+
+        return $bank;
     }
 
 
@@ -83,8 +87,7 @@ class BankDetailsController extends Controller
 
         $bankImport = BankAccount::upsert($request->all(),['area_code']);
 
-     
-        
+    
         return  $bankImport;
         
 
@@ -135,6 +138,10 @@ class BankDetailsController extends Controller
             'bank_number' => $request['bank_number'],
             'isAdmin' => $request['isAdmin'],
         ]);
+
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('updated',$bank->account_name,'bank');
+        
         return ['message' => 'Updated the areana details'];
     }
 
@@ -147,9 +154,12 @@ class BankDetailsController extends Controller
     public function destroy($id)
     {
         $account = BankAccount::findOrFail($id);
-    
-        $account->delete();
 
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('deleted',$account->account_name,'bank');
+        $account->delete();
+       
+        
         return ['message' => 'User Deleted'];
     }
 }

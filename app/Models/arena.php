@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class arena extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory;
     protected $guarded = [];
 
     
@@ -30,8 +30,6 @@ class arena extends Model
     public function ContactDetails(){
         return $this->hasMany('App\Models\Contact','area_code', 'area_code');
     } 
-    // protected static $logAttributes = ['arena','BankDetails.bank_name','BankDetails.bank_number','EmailDetails.email']; // ERROR
-    
-    // protected static $logName = 'arena';
+
     
 }

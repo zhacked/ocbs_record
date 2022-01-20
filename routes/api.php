@@ -41,6 +41,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::put('arenaStatus', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
     Route::put('updateBankSelection/{id}', [App\Http\Controllers\API\ArenaController::class, 'updateBankSelection']);
     Route::get('getEmails/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'getEmails']);
+    Route::get('Logsindex', [App\Http\Controllers\API\ActivitylogsController::class, 'logsIndex']);
     Route::get('getContacts/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'getContacts']);
     Route::get('emailDelete/{id}', [App\Http\Controllers\API\ArenaController::class, 'deleteEmail']);
     Route::delete('deleteContact/{id}', [App\Http\Controllers\API\ArenaController::class, 'deleteContact']);
@@ -56,7 +57,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
     Route::post('importArena', [App\Http\Controllers\API\ArenaController::class, 'importArena']);
     Route::post('bankStore', [App\Http\Controllers\API\BankDetailsController::class, 'bankStore']);
-
+   
 
 
 
