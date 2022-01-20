@@ -1,39 +1,30 @@
 <template>
     <v-app style="height: 100%">
         <v-container style="height: auto">
-            <h1 class="h3">Arena Details</h1>
-            <v-row class="mt-5 is-blurred">
+            <!-- <h1 class="h3">Arena Details</h1> -->
+            <v-row class=" is-blurred">
                 <v-col class="col-md-12">
                 
+
                     <v-row>
-                        <v-col class="ma-5">
-                            <v-btn
-                                color="success"
-                                elevation="2"
-                                @click="openModal"
-                                >Add Arena<i class="fas fa-plus fa-fw"></i>
-                            </v-btn>
-                        </v-col>
-                        <v-spacer></v-spacer>
-                          <v-col>
-                            <v-text-field
-                                v-model="search"
-                                append-icon="mdi-magnify"
-                                label="Search"
-                                color="primary darken-2"
-                            ></v-text-field>
-                            </v-col>
-                        <v-spacer></v-spacer>
                         <v-col>
+                            <h1>Arena Details</h1>
                             <form>
                                 <v-row>
                                     <v-col>
-                                     
+                                        <v-btn
+                                            color="success"
+                                            elevation="2"
+                                            @click="openModal"
+                                            >Add Arena<i class="fas fa-plus fa-fw"></i>
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col>
                                         <v-file-input
+                                          outlined
                                             dense
                                             v-model="fileUpload"
                                             color="deep-purple accent-4"
-                                          
                                             label="File input"
                                             :clearable="false"
                                             placeholder="Select your file"
@@ -81,25 +72,14 @@
                                  
                                 </v-row>
                             </form>
-                        </v-col>
-                    </v-row>
-                  
-                    <v-row>
-                        <v-col>
-<!--                        
-                            <v-row>
-                                <v-spacer></v-spacer>
-                                <v-col>
+                             
                             <v-text-field
                                 v-model="search"
                                 append-icon="mdi-magnify"
-                                label="Search"
-                                color="primary darken-2"
+                                label="Search Arena"
+                                color="purple darken-1"
+                                clearable
                             ></v-text-field>
-                            </v-col>
-                            </v-row> -->
-                          
-                      
                             <v-data-table
                                 :headers="headers"
                                 :items="arena.data"
@@ -165,10 +145,31 @@
                                     </v-tooltip>
                                 </template>
                             </v-data-table>
-                      
                         </v-col>
                     </v-row>
-                 
+                    <v-row>
+                           <v-col>
+                            <v-container>
+                                <h1>Arena Logs</h1>
+                                <v-text-field
+                                    v-model="searchlogs"
+                                    append-icon="mdi-magnify"
+                                    label="Search Logs"
+                                    color="purple darken-1"
+                                    clearable
+                                ></v-text-field>
+                                <v-data-table
+                                    :headers="headers"
+                                    :items="arena.data"
+                                    :items-per-page="10"
+                                    :search="searchlogs"
+                                    class="elevation-1 text-center"
+                                >
+                                </v-data-table>
+                            </v-container>
+ 
+                        </v-col>
+                    </v-row>
                 </v-col>
             </v-row>
 
@@ -182,7 +183,7 @@
                 aria-labelledby="addNewLabel"
                 aria-hidden="true"
             >
-                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5
@@ -511,7 +512,7 @@
                                                           )
                                                 "
                                             >
-                                                $delete
+                                             
                                             </v-icon>
                                         </v-chip>
                                     </template>
@@ -561,7 +562,7 @@
                                                           )
                                                 "
                                             >
-                                                $delete
+                                                
                                             </v-icon>
                                         </v-chip>
                                     </template>
@@ -630,6 +631,7 @@ export default {
             emails: [],
             contacts: [],
             search: "",
+            searchlogs:'',
             searchbank: "",
             input: "",
             loading: false,

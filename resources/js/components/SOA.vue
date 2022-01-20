@@ -8,7 +8,7 @@
                             <v-row>
                                  <v-spacer></v-spacer>
                                   <v-spacer></v-spacer>
-                                <v-col>
+                                <v-col v-show="$gate.isAdmin()">
                                        <!-- v-model="fileUpload" -->
                                    <v-file-input
                                             dense
@@ -926,8 +926,8 @@
                                             <span>Download as PDF</span>
                                         </v-tooltip>
 
-                                        <v-divider vertical></v-divider>
-                                        <v-tooltip bottom>
+                                        <!-- <v-divider vertical></v-divider> -->
+                                        <!-- <v-tooltip bottom>
                                             <template
                                                 v-slot:activator="{ on, attrs }"
                                             >
@@ -966,7 +966,7 @@
                                                     ? "Edit Infomation"
                                                     : "Save Information"
                                             }}</span>
-                                        </v-tooltip>
+                                        </v-tooltip> -->
                                     </v-card-actions>
                                 </v-card>
                             </v-col>

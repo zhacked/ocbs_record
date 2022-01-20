@@ -32,6 +32,6 @@ class arena extends Model
     } 
     // protected static $logAttributes = ['arena','BankDetails.bank_name','BankDetails.bank_number','EmailDetails.email']; // ERROR
     
-    protected static $logName = 'arena';
+    // protected static $logName = 'arena';
     
 }

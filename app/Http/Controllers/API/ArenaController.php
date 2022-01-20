@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\arena;
 use App\Models\Email;
 use App\Models\Contact;
 use App\Models\BankAccount;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
 class ArenaController extends Controller
 {
     /**
@@ -18,7 +22,6 @@ class ArenaController extends Controller
 
     public function __construct()
     {
-
         $this->middleware('auth:api');
 
     }
@@ -53,7 +56,7 @@ class ArenaController extends Controller
     public function store(Request $request)
     {
 
-
+     
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
@@ -89,9 +92,7 @@ class ArenaController extends Controller
            ]);
        }
 
-
-
-
+        $this->arenaLogs('created');
         return $arena;
     }
 
@@ -99,7 +100,7 @@ class ArenaController extends Controller
 
         $contactImport = arena::upsert($request->all(), ['area_code']);
 
-
+       $this->arenaLogs('imported');
         return  $contactImport;
     }
 
@@ -208,7 +209,7 @@ class ArenaController extends Controller
         }
 
 
-
+        $this->arenaLogs('updated');
         return ['message' => 'Updated the arena details'];
     }
 
@@ -225,12 +226,26 @@ class ArenaController extends Controller
         // delete the user
         $email = Email::where('area_code',$arena->area_code);
 
-        if($email || $contact){
+        if($email){
             $email->delete();
         }
-
+        $this->arenaLogs('deleted');
         $arena->delete();
-
+      
         return ['message' => 'User Deleted'];
+    }
+
+    public function arenaLogs($description){
+       $activity=  DB::table('activity_log')->insert([
+            'log_name' => Auth::user()->name,
+            'description'=> $description,
+            'subject_type' => 'App\Models\arena',
+            'subject_id'=>Auth::user()->id,
+            'causer_type' =>Auth::user()->type,
+            'causer_id' =>Auth::user()->id,
+            'created_at'=> Carbon::now()->toDateTimeString()
+        ]);
+
+        return $activity;
     }
 }

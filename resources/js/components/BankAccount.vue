@@ -122,20 +122,7 @@
                                     required
                                      prepend-inner-icon="mdi-ticket-confirmation"
                             ></v-text-field>
-							<!-- <div class="form-group">
-								<input v-model="form.bank_name" type="text" name="bank_name"
-									placeholder="Enter Bank Name"
-									class="form-control" :class="{ 'is-invalid': form.errors.has('bank_name') }">
-								<has-error :form="form" field="bank_name"></has-error>
-							</div>
-
-							<div class="form-group">
-								<input v-model="form.bank_number" type="text" name="bank_number"
-									placeholder="Enter Bank number"
-									class="form-control" :class="{ 'is-invalid': form.errors.has('bank_number') }">
-								<has-error :form="form" field="bank_number"></has-error>
-							</div> -->
-
+					
 						</div>
 						<div class="modal-footer">
 							<v-btn type="button" color="error" elevation="2" data-dismiss="modal">Close</v-btn>
