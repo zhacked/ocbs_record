@@ -27,6 +27,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::apiResources(['contactnumbers' => App\Http\Controllers\API\ContactController::class]);
     Route::apiResources(['emails' => App\Http\Controllers\API\EmailController::class]);
     Route::apiResources(['teams' => App\Http\Controllers\API\TeamController::class]);
+
+
     Route::get('profile', [App\Http\Controllers\API\UserController::class, 'profile'])->name('profile');
     Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');
     Route::get('arenaId', [App\Http\Controllers\API\BankDetailsController::class, 'show_arena'])->name('arenaId');
@@ -56,6 +58,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
     Route::post('importArena', [App\Http\Controllers\API\ArenaController::class, 'importArena']);
     Route::post('bankStore', [App\Http\Controllers\API\BankDetailsController::class, 'bankStore']);
+
+
+    Route::get('getArenaTeam/{team}', [App\Http\Controllers\API\ArenaController::class, 'getArenaTeam']);
+    Route::put('updateArenaTeam/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'updateArenaTeam']);
 
 
 

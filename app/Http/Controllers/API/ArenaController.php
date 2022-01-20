@@ -32,6 +32,13 @@ class ArenaController extends Controller
          return arena::with(['BankDetails','ContactDetails'])->get();
     }
 
+    public function getArenaTeam($team){
+      
+        $arenaTeam = arena::where('team', strtolower($team))->get();
+        return $arenaTeam;
+        
+    }
+
     // public function arenaSelectedBank($bankId)
     // {
     //      return BankAccount::where('bank_id',$bankId)->get();
@@ -211,6 +218,17 @@ class ArenaController extends Controller
 
         $this->arenaLogs('updated');
         return ['message' => 'Updated the arena details'];
+    }
+
+    public function updateArenaTeam(Request $request, $code) {
+        $arena = arena::where('area_code', $code)->firstOrFail();
+        // dd($arena);
+        $team = strtolower($request['team']);
+        $arena->update([
+            'team' => $team,
+        ]);
+
+        return $arena;
     }
 
     /**

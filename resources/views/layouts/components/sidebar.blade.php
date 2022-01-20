@@ -1,4 +1,4 @@
-<aside class="main-sidebar  sidebar-dark-primary elevation-4">
+<aside class="main-sidebar  sidebar-dark-primary elevation-4" style="z-index: 10">
 	<a href="#" class="brand-link">
 	<img src="image/rooster.png" alt="AdminLTE Logo" class="brand-image "
 		style="opacity: .8">
