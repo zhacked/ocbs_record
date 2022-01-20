@@ -1846,7 +1846,7 @@ export default {
                 this.banks = data.arena_details.bank_details;
                 this.arenaId = data.arena_details.id;
                 this.bankId = data.arena_details.bank_id;
-                this.arena_name = data.arena_name;
+                this.arena_name = data.data.arena_details.arena;
                 this.areaCode = data.areaCode;
                 this.codeEvent = data.codeEvent;
                 const totalMWBets = data.total_meron_wala;

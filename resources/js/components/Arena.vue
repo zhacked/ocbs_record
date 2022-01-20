@@ -668,7 +668,7 @@ export default {
             // const file = event.target.files ? event.target.files[0] : null;
             // this.fileUpload = file;
             // const file = this.fileUpload ? this.fileUpload[0] : null;
-      const file = event ? event : null;
+            const file = event ? event : null;
 
             const checkfile =
                 (event.name.includes("xlsx")) || ( event.name.includes("csv"));
@@ -698,8 +698,6 @@ export default {
                             })
                         );
                     });
-
-                    console.log(arrayData);
 
                     const objectKeyed = (array) => {
                         // console.log('>x>x',array)
@@ -1056,7 +1054,7 @@ export default {
         },
         getContacts(areaCode) {
             axios.get("api/getContacts/" + areaCode).then((data) => {
-                // console.log('CONTACT>>>',data)
+                console.log('CONTACT>>>',data)
 
                 this.form.contact_number = data.data;
             });
