@@ -51,14 +51,25 @@ class EmailController extends Controller
      */
     public function store(Request $request)
     {
-      
         // dd($request->all());
+        
+        foreach ($request->all() as $data){
+         
+            if(!Email::where('email',$data['email'])->where('area_code', $data['area_code'])->exists()) {
+                return Email::updateOrCreate([
+                    'area_code' => $data['area_code'],
+                    'email' => $data['email']
+                ]);
+            }
+      
+       }
 
-        $emailImport = Email::upsert($request->all(),['area_code']);
+        
+        // $emailImport = Email::upsert($request->all(),['area_code']);
 
      
         
-        return  $emailImport;
+        // return  $emailImport;
         
 
     }
