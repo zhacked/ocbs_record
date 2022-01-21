@@ -16,7 +16,7 @@
                                             v-bind="attrs"
                                             v-on="on"
                                             class="mx-2"
-                                            @click.stop="viewTeam = true"
+                                            @click.stop="openDialog = true"
                                         >
                                             <v-icon
                                                 >mdi-account-multiple-plus</v-icon
@@ -34,7 +34,7 @@
                             label="Search"
                             class="mx-4"
                         ></v-text-field>
-
+                      
                         <v-data-table
                             :headers="headers"
                             :items-per-page="10"
@@ -42,6 +42,7 @@
                             :items="teams"
                             class="elevation-1 text-center"
                         >
+                       
                             <template v-slot:[`item.actions`]="{ item }">
                                 <v-tooltip color="primary" bottom>
                                     <template v-slot:activator="{ on, attrs }">
@@ -240,6 +241,7 @@ export default {
         },
          async getAllArenaPerTeam(){
             const arenaTeams = await axios.get('api/getArenaTeam/'+this.selectedTeam.name);
+          
             arenaTeams.data.forEach(a => {
                 this.arenaTeams.push({ ...a, team: a.team.toUpperCase()})
             })
@@ -261,6 +263,7 @@ export default {
                     title: "Team Added in successfully",
                 });
                 this.openDialog = false;
+                this.loadTeam();
             });
         },
         
