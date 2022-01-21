@@ -14,7 +14,10 @@
                     <span>{{bankAccounts.length > 0 ? bankAccounts[0].bank_number: '0050-1001-5156'}}</span>
                 </div>
                
-                <div v-show="bankAccounts.length === 0" class="or">
+                <div v-show="bankAccounts.length >= 2" class="or">
+                    OR
+                </div>
+                 <div v-show="bankAccounts.length === 0" class="or">
                     OR
                 </div>
                 <div class="bank bank2">
