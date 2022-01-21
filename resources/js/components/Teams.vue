@@ -155,7 +155,7 @@
                  
                 </v-card>
             </v-dialog> -->
-            <team-management :viewTeam.sync="viewTeam" :selectedTeam.sync="selectedTeam" :arenaTeams.sync="arenaTeams" :teams="teams" :getAllArenaPerTeam="getAllArenaPerTeam"></team-management>
+            <team-management :viewTeam.sync="viewTeam" :selectedTeam.sync="selectedTeam" :arenaTeams.sync="arenaTeams" :teams="teams" :getAllArenaPerTeam="getAllArenaPerTeam" :userTeams.sync="userTeams"></team-management>
             <!-- Modal -->
             <v-dialog
                 transition="dialog-bottom-transition"
@@ -226,6 +226,7 @@ export default {
             },
             teams: [],
             arenaTeams: [],
+            userTeams: [],
             selectedTeam: {
                 name: ""
             }
@@ -247,7 +248,7 @@ export default {
             this.editMode = false;
             this.openDialog = true;
         },
-         async getAllArenaPerTeam(){
+        async getAllArenaPerTeam(){
             const arenaTeams = await axios.get('api/getArenaTeam/'+this.selectedTeam.name);
           
             arenaTeams.data.forEach(a => {
@@ -255,10 +256,20 @@ export default {
             })
         
         },
+        async getAllUserPerTeam(){
+            const userTeams = await axios.get('api/getUserTeam/'+this.selectedTeam.id);
+        
+            userTeams.data.forEach(a => {
+                this.userTeams.push({ team: a.team_details.name.toUpperCase(),team_details: { name: a.team_details.name.toUpperCase()}, ...a,  })
+            })
+            console.log(this.userTeams)
+            // this.userTeams = userTeams.data
+        },
         openViewTeam(item){
             this.viewTeam = true;
             this.selectedTeam = item
-            this.getAllArenaPerTeam(item)
+            this.getAllArenaPerTeam(item);
+            this.getAllUserPerTeam(item)
         },
         updateViewTeam(item){
             this.editMode = true;

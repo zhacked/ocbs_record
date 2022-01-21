@@ -62,9 +62,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
    
 
     Route::get('getArenaTeam/{team}', [App\Http\Controllers\API\ArenaController::class, 'getArenaTeam']);
+    Route::get('getUserTeam/{teamid}', [App\Http\Controllers\API\UserController::class, 'getUserTeam']);
     Route::put('updateArenaTeam/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'updateArenaTeam']);
     Route::post('updateTeam/{id}',[App\Http\Controllers\API\TeamController::class,'update']);
     Route::get('deleteTeam/{id}',[App\Http\Controllers\API\TeamController::class,'destroy']);
+    Route::put('updateUserTeam/{id}', [App\Http\Controllers\API\UserController::class, 'updateUserTeam']);
 
 
 
