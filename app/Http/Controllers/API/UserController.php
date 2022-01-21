@@ -43,6 +43,12 @@ class UserController extends Controller
         return $userTeam;
     }
 
+    public function getStaffs() {
+        $getStaffs = User::with(['positionDetails','teamDetails'])->where('type','!=','admin')->whereNull('team_id')->get();
+
+        return $getStaffs;
+    }
+
     
 
     /**
@@ -177,6 +183,7 @@ class UserController extends Controller
 
     public function updateUserTeam(Request $request, $id){
         $user = User::findOrFail($id);
+        // $userTeam = User::with(['positionDetails','teamDetails'])->where('team_id', $teamId)->get();
 
         $user->update([
             'team_id' => $request['team_id'],
