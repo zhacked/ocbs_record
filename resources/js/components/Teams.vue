@@ -101,61 +101,8 @@
                     </v-card>
                 </v-col>
             </v-row>
-            <!-- <v-dialog
-                v-model="viewTeam"
-                fullscreen
-                hide-overlay
-                transition="dialog-bottom-transition"
-                style="z-index: 9999"
-            >
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                        Open Dialog
-                    </v-btn>
-                </template>
-                <v-card>
-                    <v-toolbar dark color="primary">
-                        <v-btn icon dark @click="closeViewTeam">
-                            <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                        <v-toolbar-title>{{team.name}}</v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-toolbar-items>
-                            <v-btn dark text @click="closeViewTeam">
-                                Save
-                            </v-btn>
-                        </v-toolbar-items>
-                    </v-toolbar>
-                    <v-list three-line subheader>
-                        <v-subheader>User Controls</v-subheader>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title
-                                    >Content filtering</v-list-item-title
-                                >
-                                <v-list-item-subtitle
-                                    >Set the content filtering level to restrict
-                                    apps that can be
-                                    downloaded</v-list-item-subtitle
-                                >
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>Password</v-list-item-title>
-                                <v-list-item-subtitle
-                                    >Require password for purchase or use
-                                    password to restrict
-                                    purchase</v-list-item-subtitle
-                                >
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                    <v-divider></v-divider>
-                 
-                </v-card>
-            </v-dialog> -->
-            <team-management :viewTeam.sync="viewTeam" :selectedTeam.sync="selectedTeam" :arenaTeams.sync="arenaTeams" :teams="teams" :getAllArenaPerTeam="getAllArenaPerTeam" :userTeams.sync="userTeams"></team-management>
+
+            <team-management :viewTeam.sync="viewTeam" :selectedTeam.sync="selectedTeam" :arenaTeams.sync="arenaTeams" :teams="teams" :getAllArenaPerTeam="getAllArenaPerTeam" :userTeams.sync="userTeams" :getAllUserPerTeam="getAllUserPerTeam"></team-management>
             <!-- Modal -->
             <v-dialog
                 transition="dialog-bottom-transition"
@@ -234,13 +181,9 @@ export default {
     },
     methods: {
         loadTeam() {
-            axios.get("api/teams").then((data) => {
-                this.teams = data.data
-                // data.forEach(d => {
-                //    this.teams.push({ ...d,
-                //     name: d.name.toUpperCase()})
-                // })
-              
+            axios.get("api/teams").then(({data}) => {
+                this.teams = data
+          
             });
         },
         openNewTeam() {
@@ -250,20 +193,21 @@ export default {
         },
         async getAllArenaPerTeam(){
             const arenaTeams = await axios.get('api/getArenaTeam/'+this.selectedTeam.name);
-          
+            let arenaTeamsArray = []
             arenaTeams.data.forEach(a => {
-                this.arenaTeams.push({ ...a, team: a.team.toUpperCase()})
+                arenaTeamsArray.push({ ...a, team: a.team.toUpperCase()})
             })
+            this.arenaTeams = arenaTeamsArray;
         
         },
         async getAllUserPerTeam(){
             const userTeams = await axios.get('api/getUserTeam/'+this.selectedTeam.id);
-        
+            let userTeamsArray = []
             userTeams.data.forEach(a => {
-                this.userTeams.push({ team: a.team_details.name.toUpperCase(),team_details: { name: a.team_details.name.toUpperCase()}, ...a,  })
+               userTeamsArray.push({ team: a.team_details.name.toUpperCase(),team_details: { name: a.team_details.name.toUpperCase()}, ...a,  })
             })
-            console.log(this.userTeams)
-            // this.userTeams = userTeams.data
+           
+            this.userTeams = userTeamsArray
         },
         openViewTeam(item){
             this.viewTeam = true;

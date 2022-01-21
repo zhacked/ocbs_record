@@ -43,6 +43,13 @@ class ArenaController extends Controller
         
     }
 
+    public function getArenaNoTeam(){
+      
+        $arenaTeam = arena::whereNull('team')->get();
+        return $arenaTeam;
+        
+    }
+
     // public function arenaSelectedBank($bankId)
     // {
     //      return BankAccount::where('bank_id',$bankId)->get();
@@ -224,9 +231,9 @@ class ArenaController extends Controller
     public function updateArenaTeam(Request $request, $code) {
         $arena = arena::where('area_code', $code)->firstOrFail();
       
-        $team = strtolower($request['team']);
+        $team = $request['team'] ? strtolower($request['team']) : null;
         $arena->update([
-            'team' => $team,
+            'team' => $team ,
         ]);
 
         return $arena;

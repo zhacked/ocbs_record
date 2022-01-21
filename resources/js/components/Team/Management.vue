@@ -33,38 +33,42 @@
 
                         <v-tab-item>
                             <v-data-table :items="arenaTeams" :headers="headers">
-                                <template v-slot:top>
-                                    <v-toolbar flat>                                        
-                                        <v-spacer></v-spacer> 
-                                                <v-tooltip color="blue lighten-1" bottom>
-                                                        <template v-slot:activator="{ on, attrs }">
-                                                            <v-btn
-                                                                color="primary"
-                                                                dark
-                                                                v-bind="attrs"
-                                                                v-on="on"
-                                                                class="mx-2"
-                                                                @click="openArenaSelection"                                                                  
-                                                                >
-                                                                    <v-icon>mdi-stadium-variant</v-icon>
-                                                                    Add Arena
-                                                                </v-btn>
+                                    <template v-slot:top>
+                                            <v-toolbar flat>                                        
+                                                    <v-tooltip color="blue lighten-1" bottom>
+                                                            <template v-slot:activator="{ on, attrs }">
+                                                                <v-btn
+                                                                    color="primary"
+                                                                    dark
+                                                                    v-bind="attrs"
+                                                                    v-on="on"
+                                                                    class="mx-2"
+                                                                    @click="openArenaSelection"                                                                  
+                                                                    >
+                                                                        <v-icon>mdi-stadium-variant</v-icon>
+                                                                        Add Arena
+                                                                    </v-btn>
                                                             </template>
-                                                            <span>Add Arena to {{selectedTeam && selectedTeam.name}}</span>
-                                                        </v-tooltip>
-                                                </v-toolbar>
-                                                  <v-dialog v-model="dialogRemoveItem" max-width="500px">
+                                                        <span>Add Arena to {{selectedTeam && selectedTeam.name}}</span>
+                                                    </v-tooltip>
+                                            </v-toolbar>
+
+
+                                            <v-dialog v-model="dialogRemoveItem" max-width="500px">
                                                     <v-card>
-                                                    <v-card-title class="text-h6">Remove {{selectedArena && selectedArena.area_code}} from {{selectedTeam && selectedTeam.name}}?</v-card-title>
-                                                
-                                                    <v-card-actions>
-                                                        <v-spacer></v-spacer>
-                                                        <v-btn color="blue darken-1" text @click="dialogRemoveItem = false">Cancel</v-btn>
-                                                        <v-btn color="blue darken-1" text @click="removeItemConfirm">OK</v-btn>
-                                                        <v-spacer></v-spacer>
-                                                    </v-card-actions>
+                                                        <v-card-title class="text-h6">Remove {{selectedArena && selectedArena.area_code}} from {{selectedTeam && selectedTeam.name}}?</v-card-title>
+                                                    
+                                                        <v-card-actions>
+                                                            <v-spacer></v-spacer>
+                                                            <v-btn color="blue darken-1" text @click="dialogRemoveItem = false">Cancel</v-btn>
+                                                            <v-btn color="blue darken-1" text @click="removeItemConfirm">OK</v-btn>
+                                                            <v-spacer></v-spacer>
+                                                        </v-card-actions>
                                                     </v-card>
-                                                </v-dialog>
+                                            </v-dialog>
+
+
+                                              
                                     </template>
 
                                 <template v-slot:[`item.team`]="{ item }">
@@ -87,7 +91,7 @@
                                             <v-select
                                                 
                                                 v-model="item.team"
-                                                :items="teamsss"
+                                                :items="teams"
                                                 menu-props="auto"
                                                 label="Team"
                                                 single-line
@@ -103,7 +107,7 @@
                                     </v-edit-dialog>
                                 </template>
                               
-                                  <template v-slot:[`item.actions`]="{ item }">
+                                <template v-slot:[`item.actions`]="{ item }">
 
                                         <v-tooltip color="error" bottom>
                                             <template v-slot:activator="{ on, attrs }">
@@ -122,7 +126,7 @@
                                             </template>
                                             <span>Remove {{ item.name }}</span>
                                         </v-tooltip>
-                                    </template>
+                                </template>
                                
                             </v-data-table>
                          
@@ -142,27 +146,30 @@
                                                                 v-bind="attrs"
                                                                 v-on="on"
                                                                 class="mx-2"
-                                                                @click="openArenaSelection"                                                                  
+                                                                @click="openUserSelection"                                                                  
                                                                 >
-                                                                    <v-icon>mdi-stadium-variant</v-icon>
-                                                                    Add Member
+                                                                    <v-icon>mdi-account-plus</v-icon>
+                                                                    Add User
                                                                 </v-btn>
                                                             </template>
-                                                            <span>Add Arena to {{selectedTeam && selectedTeam.name}}</span>
+                                                            <span>Add User to {{selectedTeam && selectedTeam.name}}</span>
                                                         </v-tooltip>
                                                 </v-toolbar>
-                                                  <v-dialog v-model="dialogRemoveItem" max-width="500px">
+                                                
+                                                   <v-dialog v-model="dialogRemoveUserItem" max-width="500px">
                                                     <v-card>
-                                                    <v-card-title class="text-h6">Remove {{selectedArena && selectedArena.area_code}} from {{selectedTeam && selectedTeam.name}}?</v-card-title>
+                                                    <v-card-title class="text-h6">Remove {{selectedUser && selectedUser.name}} from {{selectedTeam && selectedTeam.name}}?</v-card-title>
                                                 
                                                     <v-card-actions>
                                                         <v-spacer></v-spacer>
-                                                        <v-btn color="blue darken-1" text @click="dialogRemoveItem = false">Cancel</v-btn>
-                                                        <v-btn color="blue darken-1" text @click="removeItemConfirm">OK</v-btn>
+                                                        <v-btn color="blue darken-1" text @click="dialogRemoveUserItem = false">Cancel</v-btn>
+                                                        <v-btn color="blue darken-1" text @click="removeUserItemConfirmation">OK</v-btn>
                                                         <v-spacer></v-spacer>
                                                     </v-card-actions>
                                                     </v-card>
                                                 </v-dialog>
+
+
                                     </template>
 
                                 <template v-slot:[`item.team`]="{ item }">
@@ -185,7 +192,7 @@
                                             <v-select
                                                 v-model="item.team"
                                               
-                                                :items="teamsss"
+                                                :items="teams"
                                                 menu-props="auto"
                                                 label="Team"
                                                 single-line
@@ -214,7 +221,7 @@
                                                     v-bind="attrs"
                                                     v-on="on"
                                                     class="mx-2"
-                                                    @click="removeItem(item)"
+                                                    @click="removeUserItem(item)"
                                                     
                                                 >
                                                     <v-icon>mdi-playlist-remove</v-icon>
@@ -237,7 +244,7 @@
                     <v-card-text>
                         <span class="subtitle-2">Select arena that not yet selected to other team.</span>
                           <v-autocomplete
-                            v-model="addSelectedTeamItem"
+                            v-model="addSelectedArenaTeamItem"
                             :items="arenaNoTeam"
                             color="white"
                             item-text="arena"
@@ -248,11 +255,38 @@
                     </v-card-text>                           
                     <v-card-actions>
                         <v-spacer></v-spacer>                         
-                            <v-btn color="blue darken-1" text >Cancel</v-btn>
+                            <v-btn color="blue darken-1" text @click="addNewArenaItem = false">Cancel</v-btn>
                             <v-btn color="blue darken-1" text @click="addArenaToTeam">ADD</v-btn>
                             
-                </v-card-actions>
-             </v-card>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
+
+                <!-- ADD MEMBER TO TEAM LIST -->
+               <v-dialog internal-activator v-model="addNewUserItem" max-width="500px">
+                <v-card>
+                    <v-card-title class="text-h6">Add user into {{selectedTeam && selectedTeam.name}} team</v-card-title>
+                    
+                    <v-card-text>
+                        <span class="subtitle-2">Select user that not yet selected to other team.</span>
+                          <v-autocomplete
+                            v-model="addSelectedUserTeamItem"
+                            :items="userNoTeam"
+                            color="white"
+                            item-text="name"
+                            label="Staffs"
+                           
+                            return-object
+                        ></v-autocomplete>
+                    </v-card-text>                           
+                    <v-card-actions>
+                        <v-spacer></v-spacer>                         
+                            <v-btn color="blue darken-1" text @click="addNewUserItem = false">Cancel</v-btn>
+                            <v-btn color="blue darken-1" text @click="addUserToTeam">ADD</v-btn>
+                            
+                    </v-card-actions>
+                </v-card>
             </v-dialog>
 
             
@@ -267,6 +301,9 @@
                 {{ snackText }}
 
             </v-snackbar>
+
+
+            
         </v-container>
       
           
@@ -281,6 +318,8 @@ export default {
     userTeams: Array,
     teams: Array,
     getAllArenaPerTeam: Function,
+    getAllUserPerTeam: Function,
+
   },
   data() {
     return {
@@ -300,14 +339,19 @@ export default {
         {text: 'Team', value:'team'},
         { text: "", value: "actions", sortable: false },
       ],
-      teamsss: this.teams,
+
       newSelectedTeam: "",
       newSelectedUserTeam: "",
       dialogRemoveItem: false,
+      dialogRemoveUserItem: false,
       selectedArena: {},
+      selectedUser: {},
       addNewArenaItem: false,
+      addNewUserItem: false,
       arenaNoTeam: [],
-      addSelectedTeamItem: null,
+      userNoTeam: [],
+      addSelectedArenaTeamItem: null,
+      addSelectedUserTeamItem: null,
     };
   },
   methods: {
@@ -315,6 +359,7 @@ export default {
      
       this.$emit("update:viewTeam", false);
       this.$emit("update:arenaTeams", []);
+      this.$emit("update:userTeams", []);
       this.$emit("update:selectedTeam", null);
     },
 
@@ -389,45 +434,90 @@ export default {
       this.addNewArenaItem = true;
       this.getArenasWithoutTeam();
     },
+    openUserSelection(){
+    this.addNewUserItem = true;
+      this.getUsersWithoutTeam();
+    },
     removeItem(item) {
       console.log("RI>>", item);
       this.selectedArena = item;
       this.dialogRemoveItem = true;
     },
-    async removeItemConfirm() {
-      const code = this.selectedArena.area_code;
-      this.$emit(
-        "update:arenaTeams",
-        this.arenaTeams.filter(function (v, i) {
-          console.log("CODE>>>", code);
-          return v.area_code !== code;
-        })
-      );
-      await axios.put("api/updateArenaTeam/" + this.selectedArena.area_code, {
-        team: null,
-      });
-      this.dialogRemoveItem = false;
+     removeUserItem(item) {
+      console.log("USER SELECTED>>", item);
+      this.selectedUser = item;
+      this.dialogRemoveUserItem = true;
     },
+    async removeItemConfirm() {
+            const code = this.selectedArena.area_code;
+        
+          
+            await axios.put("api/updateArenaTeam/" + this.selectedArena.area_code);
+            await Fire.$emit('AfterCreateArenaTeam');
+            this.dialogRemoveItem = false;
+        
+     
+    },
+    async removeUserItemConfirmation() {
+
+            const user = this.selectedUser;
+        
+            // this.$emit(
+            //     "update:userTeams",
+            //     this.userTeams.filter(function (v, i) {
+              
+            //     return v.id !== user.id;
+            //     })
+            // );
+            await axios.put("api/updateUserTeam/" + user.id, {
+                team: null,
+            });
+            await Fire.$emit('AfterCreateUserTeam');
+            this.dialogRemoveUserItem = false;
+    },
+
     async getArenasWithoutTeam() {
       const arena = await axios.get("api/arena");
       const arenaNoTeam = arena.data.filter((a) => a.team == null);
 
       this.arenaNoTeam = arenaNoTeam;
     },
+   async getUsersWithoutTeam() {
+      const users = await axios.get("api/getStaffs");
+
+      this.userNoTeam = users.data;
+    },
+
 
     async addArenaToTeam() {
-      this.addSelectedTeamItem.team = this.selectedTeam.name;
+      this.addSelectedArenaTeamItem.team = this.selectedTeam.name;
       await axios.put(
-        "api/updateArenaTeam/" + this.addSelectedTeamItem.area_code,
+        "api/updateArenaTeam/" + this.addSelectedArenaTeamItem.area_code,
         { team: this.selectedTeam.name }
       );
       this.addNewArenaItem = false;
-      console.log(this.addSelectedTeamItem);
-      let arrayArena = this.arenaTeams;
-      arrayArena.push(this.addSelectedTeamItem);
 
-      this.$emit("update:arenaTeams", arrayArena);
+    //   let arrayArena = this.arenaTeams;
+    //   arrayArena.push(this.addSelectedArenaTeamItem);
+        Fire.$emit('AfterCreateArenaTeam');
+        // this.$emit("update:arenaTeams", arrayArena);
     },
+
+    async addUserToTeam(){
+        this.addSelectedUserTeamItem.team = this.selectedTeam.name;
+        const user = this.addSelectedUserTeamItem
+        const team_id = this.selectedTeam.id
+        await axios.put(
+            "api/updateUserTeam/" + user.id,
+            { team_id }
+        );
+
+         this.addNewUserItem = false;
+        //    let arrayUsers = this.userTeams;
+        //     arrayUsers.push(this.addSelectedUserTeamItem);
+            // this.$emit("update:userTeams", arrayUsers);
+           Fire.$emit('AfterCreateUserTeam');
+    }
   },
   computed: {
     viewingTeam: {
@@ -439,6 +529,15 @@ export default {
       },
     },
   },
+    created(){
+        Fire.$on('AfterCreateUserTeam', () => {
+            this.getAllUserPerTeam()
+        })
+         Fire.$on('AfterCreateArenaTeam', () => {
+            this.getAllArenaPerTeam()
+        })
+    }
+ 
 };
 </script>
 <style lang="">
