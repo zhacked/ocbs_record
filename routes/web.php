@@ -32,6 +32,7 @@ Route::middleware('preventBackHistory')->group(function () {
 Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('{path}', [App\Http\Controllers\HomeController::class, 'index'])->where('path', '([A-z]+)?');
+Route::get('backup', [App\Http\Controllers\API\UserController::class, 'artisancall']);
 });
 
 

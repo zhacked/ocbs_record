@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http;
-
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -68,4 +69,22 @@ class Kernel extends HttpKernel
         'revalidate' => \App\Http\Middleware\RevalidateBackHistory::class,
         'preventBackHistory' => \App\Http\Middleware\PreventBackHistory::class,
     ];
+
+    // protected $commands = [
+    //     Commands\backup::class,
+    // ];
+
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('backup:run')
+        ->everyMinute();
+    }
+
+     
+    // protected function commands()
+    // {
+    //     $this->load(__DIR__.'/Commands');
+
+    //     require base_path('routes/console.php');
+    // }
 }

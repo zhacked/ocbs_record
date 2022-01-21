@@ -251,7 +251,7 @@
                                     </div>
                                 </v-toolbar>
                             </template>
-
+                        
                             <template v-slot:[`item.actions`]="{ item }">
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
@@ -612,7 +612,7 @@ export default {
     data() {
         return {
             headers: [
-                { text: "#", value: "id" },
+                { text: "#", value: "index" },
                 { text: "Code", value: "area_code" },
                 { text: "Arena Name", value: "arena" },
                 { text: "Address", value: "address" },
@@ -620,11 +620,12 @@ export default {
                 { text: "Bank Details", value: "bank" },
                 { text: "", value: "actions", sortable: false },
             ],
-
+    
             Bankheaders: [
                 { text: "Account Name", value: "account_name" },
                 { text: "Bank Name", value: "bank_name" },
                 { text: "Bank Number", value: "bank_number" },
+                 { text: "Modify", value: "modify" },
                 { text: "", value: "actions", sortable: false },
             ],
             activityHeaders:[

@@ -105,7 +105,7 @@ class UserController extends Controller
             }
 
 
-        $user->update($request->all());
+         $user->update($request->all());
         return ['message' => "Success"];
     }
 
@@ -202,6 +202,9 @@ class UserController extends Controller
 
         return ['message' => 'User Deleted'];
     }
-
+    // public function artisancall(){
+    //    return  Artisan::call('backup:run');
+    
+    // }
 
 }

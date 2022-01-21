@@ -2,10 +2,14 @@
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
-         
+            <v-btn 
+            @click="backmeup"
+            color="warning">
+                back up
+            </v-btn>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
-                  
+
                             <v-row>
                                  <v-spacer></v-spacer>
                                   <v-spacer></v-spacer>
@@ -1309,6 +1313,11 @@ export default {
         };
     },
     methods: {
+        backmeup(){
+            axios.get('api/backup').then(({data})=> {
+                console.log(data);
+            });
+        },
         loadEmployee() {
             axios
                 .get("api/employees")
@@ -2620,6 +2629,7 @@ export default {
             };
         },
     },
+    
     mounted(){
     //    console.log('XXXXXXX',Object.values(this.$refs.table.openCache));
         // Object.keys(this.$refs).forEach(k => {

@@ -147,7 +147,7 @@ let routes = [
     {
         path: '/chooserecord', component: require('./components/ChooseRecord.vue').default
     },
-    
+   
 
     {
 
