@@ -20,6 +20,14 @@ class User extends Authenticatable
      */
     protected $guarded = [];
 
+    public function positionDetails(){
+        return $this->hasOne('App\Models\position','id', 'position_id');
+    }
+
+    public function teamDetails(){
+        return $this->hasOne('App\Models\Team','id', 'team_id');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *

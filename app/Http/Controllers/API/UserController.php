@@ -35,6 +35,14 @@ class UserController extends Controller
         return User::latest()->get();
     }
 
+
+    public function getUserTeam(Request $request, $teamId) {
+        $userTeam = User::with(['positionDetails','teamDetails'])->where('team_id', $teamId)->get();
+      
+      
+        return $userTeam;
+    }
+
     
 
     /**
@@ -165,6 +173,16 @@ class UserController extends Controller
             'password' => Hash::make($request['password'])
         ]);
         return ['message' => 'Updated the user info'];
+    }
+
+    public function updateUserTeam(Request $request, $id){
+        $user = User::findOrFail($id);
+
+        $user->update([
+            'team_id' => $request['team_id'],
+        ]);
+
+        return $user;
     }
 
     /**

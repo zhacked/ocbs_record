@@ -223,7 +223,7 @@ class ArenaController extends Controller
 
     public function updateArenaTeam(Request $request, $code) {
         $arena = arena::where('area_code', $code)->firstOrFail();
-        // dd($arena);
+      
         $team = strtolower($request['team']);
         $arena->update([
             'team' => $team,
