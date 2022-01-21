@@ -87,7 +87,6 @@ class ArenaController extends Controller
 
         foreach ($request['email'] as $email){
              Email::updateOrCreate([
-
                 'area_code' => $arena->area_code,
                 'email' => $email
             ]);

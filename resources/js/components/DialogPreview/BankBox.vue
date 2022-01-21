@@ -8,19 +8,20 @@
 
             <div   class="bank-container" v-if="depositReplenishText.totalText === 'Deposit'">
                 <div class="bank bank1">
-                  
+                        
                       <span class="bank_account-name">{{bankAccounts.length > 0 ? bankAccounts[0].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
                     <span>{{bankAccounts.length > 0 ? bankAccounts[0].bank_name: 'PBB'}}</span>
                     <span>{{bankAccounts.length > 0 ? bankAccounts[0].bank_number: '0050-1001-5156'}}</span>
                 </div>
-                <div v-if="bankAccounts.length > 1" class="or">
+               
+                <div v-show="bankAccounts.length === 0" class="or">
                     OR
                 </div>
-                <div v-if="bankAccounts.length > 1"  class="bank bank2">
+                <div class="bank bank2">
                   
-                     <span class="bank_account-name">{{bankAccounts.length > 1 ? bankAccounts[1].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
-                    <span>{{bankAccounts.length > 1 ? bankAccounts[1].bank_name: 'PBB'}}</span>
-                    <span>{{bankAccounts.length > 1 ? bankAccounts[1].bank_number: '123-1232-1232'}}</span>
+                     <span class="bank_account-name">{{bankAccounts.length === 0 ? 'LUCKY 8 STAR QUEST INC.' : bankAccounts.length > 1 ? bankAccounts[1].account_name : ''}}</span>
+                    <span>{{bankAccounts.length === 0 ? 'PBCOM' : bankAccounts.length > 1 ? bankAccounts[1].bank_name : ''}}</span>
+                    <span>{{bankAccounts.length === 0 ? '0248-20-100964-4' : bankAccounts.length > 1 ? bankAccounts[1].bank_number : ''}}</span>
                 </div>
             </div>
          

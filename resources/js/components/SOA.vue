@@ -10,7 +10,7 @@
                                  <v-spacer></v-spacer>
                                   <v-spacer></v-spacer>
                                 <v-col v-show="$gate.isAdmin()">
-                                       <!-- v-model="fileUpload" -->
+                                  
                                    <v-file-input
                                             dense
                                             v-model="fileUpload"
@@ -29,17 +29,11 @@
                                          <template v-slot:append >
                                             <v-tooltip bottom color="success">
                                                 <template v-slot:activator="{ on }">
-                                                <!-- <v-btn
-                                                    
-                                                    dense
-                                                    color="green darken-3"
-                                                 
-                                                   
-                                                    > -->
+                                              
                                                 <v-icon large  :disabled="!isExcel"  v-on="on" color="green darken-3" style="cursor: pointer"  @click="proceedAction">
                                                     mdi-file-import
                                                 </v-icon>
-                                                <!-- </v-btn> -->
+                                              
                                             </template>
                                             <span>Import File</span>
                                             </v-tooltip>
@@ -149,7 +143,6 @@
                                             :loading="downloadingReport"
                                             :search="search"
 
-                                            show-group-by
                                             sort-by="date_of_soa"
                                             group-by="date_of_soa"
                                             :show-select="
@@ -181,13 +174,13 @@
 
                                         <template v-slot:[`group.header`]="{ group, headers, toggle, isOpen }">
                                             
-                                        {{isOpen}}
+                                
                                          
                                         <td :colspan="headers.length">
                                                 <v-row>
                                                     <v-col class="mt-2 ">
                                                         <div class=" float-left">
-                                                            <v-btn @click="toggle()" x-small icon :ref="group" class="test"  >
+                                                            <v-btn @click="toggle" x-small icon :ref="group" class="test"  >
                                                                 <v-icon>
                                                                     {{ isOpen ? '$minus' : '$plus' }}
                                                                 </v-icon>
@@ -1872,7 +1865,7 @@ export default {
                 this.banks = data.arena_details.bank_details;
                 this.arenaId = data.arena_details.id;
                 this.bankId = data.arena_details.bank_id;
-                this.arena_name = data.data.arena_details.arena;
+                this.arena_name = data.arena_details.arena;
                 this.areaCode = data.areaCode;
                 this.codeEvent = data.codeEvent;
                 const totalMWBets = data.total_meron_wala;
@@ -2022,11 +2015,11 @@ export default {
         closeDialog() {
             this.editmode = false;
             this.dialog = false;
-             this.bankDetails = {};
-            this.bank = {};
-            this.bankId= null;
-            this.banks= [];
-            this.bankAccounts= [];
+            // this.bankDetails = {};
+            // this.bank = {};
+            // this.bankId= null;
+            // this.banks= [];
+            // this.bankAccounts= [];
             this.operator_name = "";
 
             this.form.reset();

@@ -85,10 +85,23 @@ class BankDetailsController extends Controller
       
         // dd($request->all());
 
-        $bankImport = BankAccount::upsert($request->all(),['area_code']);
+        // $bankImport = BankAccount::upsert($request->all(),['area_code']);
+        foreach ($request->all() as $data){
+         
+            if(!BankAccount::where('account_name',$data['account_name'])->where('area_code', $data['area_code'])->where('bank_number', $data['bank_number'])->where('bank_name', $data['bank_name'])->exists()) {
+                return BankAccount::updateOrCreate([
+                    'area_code' => $data['area_code'],
+                    'account_name' => $data['account_name'],
+                    'bank_name' => $data['bank_name'],
+                    'bank_number' => $data['bank_number'],
+                    
+                ]);
+            }
+      
+       }
 
     
-        return  $bankImport;
+        // return  $bankImport;
         
 
     }
