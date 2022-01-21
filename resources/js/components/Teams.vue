@@ -16,7 +16,7 @@
                                             v-bind="attrs"
                                             v-on="on"
                                             class="mx-2"
-                                            @click.stop="openDialog = true"
+                                            @click="openNewTeam"
                                         >
                                             <v-icon
                                                 >mdi-account-multiple-plus</v-icon
@@ -42,7 +42,9 @@
                             :items="teams"
                             class="elevation-1 text-center"
                         >
-                       
+                             <template v-slot:[`item.name`]="{ item }">
+                                 {{item.name != null ? item.name.toUpperCase() : item.name }}
+                             </template>
                             <template v-slot:[`item.actions`]="{ item }">
                                 <v-tooltip color="primary" bottom>
                                     <template v-slot:activator="{ on, attrs }">
@@ -70,6 +72,7 @@
                                             dark
                                             v-bind="attrs"
                                             v-on="on"
+                                            @click="updateViewTeam(item)"
                                         >
                                             <i class="fas fa-edit"></i>
                                         </v-btn>
@@ -86,6 +89,7 @@
                                             v-bind="attrs"
                                             v-on="on"
                                             class="mx-2"
+                                            @click="deleteNewTeam(item.id)"
                                         >
                                             <i class="fa fa-trash"></i>
                                         </v-btn>
@@ -161,7 +165,7 @@
                 <v-card>
                     <v-toolbar elevation="0">
                         <v-toolbar-title class="text-h6 pl-0">
-                            Team
+                           {{editMode === true ? 'Update Team' : 'Add New Team'}} 
                         </v-toolbar-title>
                         <v-spacer></v-spacer>
                         <v-tooltip bottom>
@@ -191,8 +195,8 @@
                         ></v-text-field>
                     </v-card-text>
                     <v-card-actions class="justify-end">
-                        <v-btn color="success" @click="createNewTeam"
-                            ><v-icon>mdi-plus</v-icon> Add</v-btn
+                        <v-btn :color="editMode === true ? 'primary' : 'success'" @click="editMode === true ? updateNewTeam() :  createNewTeam()"
+                            ><v-icon>{{editMode === true ? 'mdi-update' : 'mdi-plus ' }}</v-icon> {{editMode === true ? 'Update' : 'Add'}}</v-btn
                         >
                     </v-card-actions>
                 </v-card>
@@ -214,8 +218,10 @@ export default {
             ],
             search: "",
             openDialog: false,
+            editMode: false,
             viewTeam: false,
             team: {
+                id:"",
                 name: "",
             },
             teams: [],
@@ -227,17 +233,19 @@ export default {
     },
     methods: {
         loadTeam() {
-            axios.get("api/teams").then(({data}) => {
-                data.forEach(d => {
-                   this.teams.push({ ...d,
-                    name: d.name.toUpperCase()})
-                })
+            axios.get("api/teams").then((data) => {
+                this.teams = data.data
+                // data.forEach(d => {
+                //    this.teams.push({ ...d,
+                //     name: d.name.toUpperCase()})
+                // })
               
             });
         },
         openNewTeam() {
+            this.team.name = null;
+            this.editMode = false;
             this.openDialog = true;
-           
         },
          async getAllArenaPerTeam(){
             const arenaTeams = await axios.get('api/getArenaTeam/'+this.selectedTeam.name);
@@ -252,27 +260,71 @@ export default {
             this.selectedTeam = item
             this.getAllArenaPerTeam(item)
         },
+        updateViewTeam(item){
+            this.editMode = true;
+            this.openDialog = true;
+            this.team.name = item.name;
+            this.team.id = item.id;
+            // this.selectedTeam = item
+           
+        },
       
         createNewTeam() {
-           
             axios.post("api/teams", this.team).then((data) => {
                 console.log(data);
-                Fire.$emit("AfterCreate");
                 Toast.fire({
                     icon: "success",
                     title: "Team Added in successfully",
                 });
                 this.openDialog = false;
-                this.loadTeam();
+                Fire.$emit("AfterCreate");
             });
         },
+        updateNewTeam(){
+            // console.log(this.team.id)   
+            axios.post('api/updateTeam/'+this.team.id,{
+                team : this.team.name
+            }).then((data) => {
+                Toast.fire({
+                    icon: "success",
+                    title: "Team Updated in successfully",
+                });
+                this.openDialog = false;
+                Fire.$emit("AfterCreate");
+            });
+        },
+        deleteNewTeam(id){
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                        if (result.value) {
+                            axios.get('api/deleteTeam/'+id).then(()=>{
+                                    swal.fire(
+                                    'Deleted!',
+                                    'Your file has been deleted.',
+                                    'success'
+                                    )
+                                Fire.$emit('AfterCreate');
+                            }).catch(()=> {
+                                swal.fire("Failed!", "There was something wrong.", "warning");
+                            });
+                        }
+                })
+
+        }
         
     },
     created() {
         this.loadTeam();
-        // Fire.$on("AfterCreate", () => {
-        //     this.loadTeam();
-        // });
+        Fire.$on("AfterCreate", () => {
+            this.loadTeam();
+        });
     },
 };
 </script>

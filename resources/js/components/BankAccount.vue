@@ -71,9 +71,6 @@
                             </template>
                             </v-data-table>
 
-
-				
-
 					</v-card>
 				</v-col>
 			</v-row>
@@ -228,7 +225,7 @@
                  swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
-                    type: 'warning',
+                    icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',

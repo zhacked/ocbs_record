@@ -4,12 +4,13 @@ namespace App\Http\Controllers\API;
 
 use view;
 use App\Models\Team;
-use Illuminate\Support\Facades\Route;
+use App\Models\arena;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
 class TeamController extends Controller
@@ -71,7 +72,13 @@ class TeamController extends Controller
      */
     public function update(Request $request, $id)
     {
-     
+
+        $this->arena($id,'update',$request->team);
+  
+        return Team::findOrFail($id)->update([
+            'name' => $request->team,
+        ]);
+
     }
 
     /**
@@ -82,8 +89,21 @@ class TeamController extends Controller
      */
     public function destroy($id)
     {
-     
+        $this->arena($id,'delete',null);
+        return Team::findOrFail($id)->delete();
     }
 
+    public function arena($id,$action,$request){
+        $updateteam  = Team::findOrFail($id);
+        $arenateam =  arena::where('team',$updateteam->name)->get();
+      
+        foreach ($arenateam as $data){
+            arena::where('team',$data->team)->$action([
+                'team' => $request,
+            ]);
 
+        }
+    }
+
+    
 }
