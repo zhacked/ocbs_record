@@ -105,7 +105,7 @@
                                         <span>Bank Information</span>
                                     </v-tooltip>
                                 </template>
-
+                              
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-tooltip top>
                                         <template
@@ -165,6 +165,8 @@
                                     :search="searchlogs"
                                     class="elevation-1 text-center"
                                 >
+
+
                                 <template v-slot:[`item.description`]="{ item }">
                                     <p> <strong>{{item.description | upText }} {{item.subject_type}}</strong>  details in {{item.properties !== null ? item.properties : 'some'  }} data on <strong>{{item.created_at | myDatewithtime}}</strong></p>
                                     
@@ -223,6 +225,7 @@
                             :search="searchbank"
                             class="elevation-1 text-center"
                         >
+
                             <template v-slot:top>
                                 <v-toolbar flat>
                                     <v-toolbar-title>
@@ -251,7 +254,18 @@
                                     </div>
                                 </v-toolbar>
                             </template>
-                        
+                            <template v-slot:[`item.modify`]="{ item }">
+                                <div v-for="items in item.bank_activity" :key="items.id">
+                                       <p v-show="items.description =='updated'">
+                                           <strong>{{items.log_name}}</strong>  {{items.description}} it on {{items.created_at | myDatewithtime}}
+                                        </p>
+                                </div>
+                                <!-- <span v-if="item.bank_activity.description=='updated'">
+                                    yes
+                                    
+                                </span> -->
+                                   <!-- {{item.bank_activity}} -->
+                            </template>
                             <template v-slot:[`item.actions`]="{ item }">
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
@@ -937,7 +951,9 @@ export default {
         },
         openBankModel(data) {
             this.show = false;
+            console.log(data.bank_details);
             $("#bankModal").modal("show");
+           
             this.bankDetails = data.bank_details;
             this.Bankform.arenas_id = data.id;
             this.Bankform.area_code = data.area_code;

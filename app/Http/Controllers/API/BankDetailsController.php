@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\BankAccount;
 use App\Models\arena;
+use App\Models\BankAccount;
+use App\Models\Activitylogs;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 class BankDetailsController extends Controller
 {
     /**
@@ -29,6 +31,7 @@ class BankDetailsController extends Controller
         return BankAccount::with(['arenaDetails'])->where('isAdmin',true)->get();
     }
 
+    
     public function show_arena()
     {
           return arena::all();
@@ -72,8 +75,9 @@ class BankDetailsController extends Controller
             'bank_number' => $request['bank_number'],
             'isAdmin' => $request['isAdmin'],
         ]);
+        
         $activity_controller = new ActivitylogsController;
-        $activity_controller->arenaLogs('created',$bank->account_name,'bank');
+        $activity_controller->arenaLogs('created',$bank->account_name,'bank',$bank->id);
 
         return $bank;
     }
@@ -153,7 +157,7 @@ class BankDetailsController extends Controller
         ]);
 
         $activity_controller = new ActivitylogsController;
-        $activity_controller->arenaLogs('updated',$bank->account_name,'bank');
+        $activity_controller->arenaLogs('updated',$bank->account_name,'bank',$bank->id);
         
         return ['message' => 'Updated the areana details'];
     }
@@ -169,7 +173,7 @@ class BankDetailsController extends Controller
         $account = BankAccount::findOrFail($id);
 
         $activity_controller = new ActivitylogsController;
-        $activity_controller->arenaLogs('deleted',$account->account_name,'bank');
+        $activity_controller->arenaLogs('deleted',$account->account_name,'bank',$account->id);
         $account->delete();
        
         

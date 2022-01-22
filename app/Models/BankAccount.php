@@ -15,6 +15,10 @@ class BankAccount extends Model
         return $this->hasOne('App\Models\arena','area_code', 'area_code');
     }
 
+    public function BankActivity(){
+        return $this->hasMany('App\Models\Activitylogs','subject_id', 'id');
+    }
+
    
 
 }   

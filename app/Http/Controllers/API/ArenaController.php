@@ -33,7 +33,7 @@ class ArenaController extends Controller
 
     public function index()
     {
-         return arena::with(['BankDetails','ContactDetails'])->get();
+         return arena::with(['BankDetails.BankActivity','ContactDetails'])->get();
     }
 
     public function getArenaTeam($team){
@@ -106,7 +106,7 @@ class ArenaController extends Controller
            ]);
        }
         $activity_controller = new ActivitylogsController;
-        $activity_controller->arenaLogs('created',$arena->arena,'arena');
+        $activity_controller->arenaLogs('created',$arena->arena,'arena',$arena->id);
         return $arena;
     }
 
@@ -115,7 +115,7 @@ class ArenaController extends Controller
     $contactImport = arena::upsert($request['arenaList'], ['area_code']);
     $activity_controller = new ActivitylogsController;
 
-    $activity_controller->arenaLogs('imported',$request['Uploadname'],'arena');
+    $activity_controller->arenaLogs('imported',$request['Uploadname'],'arena',1);
         return  $contactImport;
     }
 
@@ -224,7 +224,7 @@ class ArenaController extends Controller
         }
         $activity_controller = new ActivitylogsController;
 
-        $activity_controller->arenaLogs('updated',$arenas->arena,'arena');
+        $activity_controller->arenaLogs('updated',$arenas->arena,'arena',$arenas->id);
         return ['message' => 'Updated the arena details'];
     }
 
@@ -256,7 +256,7 @@ class ArenaController extends Controller
             $email->delete();
         }
         $activity_controller = new ActivitylogsController;
-        $activity_controller->arenaLogs('deleted',$arena->arena,'arena');
+        $activity_controller->arenaLogs('deleted',$arena->arena,'arena',$arena->id);
         $arena->delete();
       
         return ['message' => 'User Deleted'];

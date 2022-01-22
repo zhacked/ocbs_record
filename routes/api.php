@@ -70,7 +70,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('deleteTeam/{id}',[App\Http\Controllers\API\TeamController::class,'destroy']);
     Route::put('updateUserTeam/{id}', [App\Http\Controllers\API\UserController::class, 'updateUserTeam']);
     Route::get('backup', [App\Http\Controllers\API\UserController::class, 'artisancall']);
-
+    Route::post('activitybank', [App\Http\Controllers\API\ActivitylogsController::class, 'BankAccount']);
+    
 
 
 

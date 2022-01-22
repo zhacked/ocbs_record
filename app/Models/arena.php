@@ -31,5 +31,10 @@ class arena extends Model
         return $this->hasMany('App\Models\Contact','area_code', 'area_code');
     } 
 
+    public function BankActivity(){
+        return $this->hasMany('App\Models\Activitylogs','subject_id', 'id');
+    }
+
+
     
 }
