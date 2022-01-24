@@ -56,7 +56,7 @@ class EmailController extends Controller
         foreach ($request->all() as $data){
          
             if(!Email::where('email',$data['email'])->where('area_code', $data['area_code'])->exists()) {
-                return Email::updateOrCreate([
+                 Email::updateOrCreate([
                     'area_code' => $data['area_code'],
                     'email' => $data['email']
                 ]);
@@ -71,7 +71,7 @@ class EmailController extends Controller
         
         // return  $emailImport;
         
-
+       return true;
     }
 
     /**

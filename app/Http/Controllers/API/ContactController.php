@@ -58,7 +58,7 @@ class ContactController extends Controller
         foreach ($request->all() as $data){
          
             if(!Contact::where('contact_number',$data['contact_number'])->where('area_code', $data['area_code'])->exists()) {
-                return Contact::updateOrCreate([
+                    Contact::updateOrCreate([
                     'area_code' => $data['area_code'],
                     'contact_number' => $data['contact_number']
                 ]);
@@ -68,7 +68,7 @@ class ContactController extends Controller
 
      
         
-        // return  $contactImport;
+        return  true;
         
 
     }
