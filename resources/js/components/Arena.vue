@@ -87,6 +87,9 @@
                                 :search="search"
                                 class="elevation-1 text-center"
                             >
+                             <template v-slot:[`item.team`]="{ item }">
+                                <span>{{ item.team && item.team.toUpperCase() }}</span>
+                            </template>
                                 <template v-slot:[`item.bank`]="{ item }">
                                     <v-tooltip top>
                                         <template
@@ -632,6 +635,7 @@ export default {
                 { text: "Arena Name", value: "arena" },
                 { text: "Address", value: "address" },
                 { text: "Operator", value: "operator" },
+                { text: "Team", value: "team" },
                 { text: "Bank Details", value: "bank" },
                 { text: "", value: "actions", sortable: false },
             ],

@@ -1,6 +1,6 @@
 <template lang="">
-       <v-container>
-             <v-dialog
+    <v-container>
+    <!-- <v-dialog
                 persistent
                 v-model="viewTeam"
                 fullscreen
@@ -8,9 +8,9 @@
                 transition="dialog-bottom-transition"
                 style="z-index: 20"
                
-            >
+            > -->
                 <v-card>
-                    <v-toolbar elevation="0" dark color="primary" class="px-16">
+                    <v-toolbar elevation="0" dark color="primary">
                             <v-icon class="mr-4">mdi-group</v-icon>
 
                         <v-toolbar-title>{{selectedTeam && selectedTeam.name}}</v-toolbar-title>
@@ -21,12 +21,12 @@
                             </v-btn>
                         </v-toolbar-items>
                     </v-toolbar>
-                    <v-card-text class="px-16">
+                    <v-card-text>
                     <v-tabs
                         color="deep-purple accent-4"
                         right
                         flat
-                       class="px-16"
+                      
                         >
                         <v-tab>Arenas</v-tab>
                         <v-tab>Members</v-tab>
@@ -134,7 +134,8 @@
                         </v-tab-item>
                         <!-- MEMBERS -->
                          <v-tab-item>
-                                <v-data-table :items="userTeams" :headers="headersUser">
+                             
+                                <v-data-table v-model="selected" value="10"  :items="userTeams" item-key="id"  :headers="headersUser" single-select show-select @input="handleChangedSelectedUser">
                                 <template v-slot:top>
                                     <v-toolbar flat>                                        
                                         <v-spacer></v-spacer> 
@@ -146,11 +147,11 @@
                                                                 v-bind="attrs"
                                                                 v-on="on"
                                                                 class="mx-2"
-                                                                @click="openUserSelection"                                                                  
-                                                                >
-                                                                    <v-icon>mdi-account-plus</v-icon>
-                                                                    Add User
-                                                                </v-btn>
+                                                                @click="openUserSelection"
+                                                            >
+                                                                <v-icon>mdi-account-plus</v-icon>
+                                                                Add User
+                                                            </v-btn>
                                                             </template>
                                                             <span>Add User to {{selectedTeam && selectedTeam.name}}</span>
                                                         </v-tooltip>
@@ -172,6 +173,22 @@
 
                                     </template>
 
+
+                                     <template
+                                                v-slot:[`item.data-table-select`]="{
+                                                    item,
+                                                    isSelected,
+                                                    select,
+                                                }"
+                                            >
+                                                <v-simple-checkbox
+                                                    
+                                                    :value="item.id == assignedComputed"
+                                                    @change="handleChangedSelectedUser(item)"
+                                                    @input="select(item)"
+                                                ></v-simple-checkbox>
+                                            </template>
+
                                 <template v-slot:[`item.team`]="{ item }">
                                     <v-edit-dialog
                                     :return-value.sync="item.team"
@@ -188,9 +205,9 @@
                                             <div class="mt-4 text-h6">
                                                 Change Team
                                             </div>
-                                            
+                                             <!-- v-model="item.team" -->
                                             <v-select
-                                                v-model="item.team"
+                                               
                                               
                                                 :items="teams"
                                                 menu-props="auto"
@@ -202,7 +219,7 @@
                                                 item-text='name'
                                                 item-value='id'
                                                 :value="item"
-                                           
+                                                return-object
                                                 @change="handleChangedUserTeam"
                                                
                                             ></v-select>
@@ -235,7 +252,7 @@
                     </v-tabs>
                     </v-card-text>
                 </v-card>
-            </v-dialog>
+            <!-- </v-dialog> -->
 
              <v-dialog internal-activator v-model="addNewArenaItem" max-width="500px">
                 <v-card>
@@ -289,8 +306,7 @@
                 </v-card>
             </v-dialog>
 
-            
-              <v-snackbar
+            <v-snackbar
                 v-model="snack"
                 :timeout="2000"
                 :color="snackColor"
@@ -302,12 +318,9 @@
 
             </v-snackbar>
 
-
-            
-        </v-container>
-      
-          
+    </v-container>
 </template>
+
 <script>
 export default {
   name: "team-management",
@@ -319,7 +332,8 @@ export default {
     teams: Array,
     getAllArenaPerTeam: Function,
     getAllUserPerTeam: Function,
-
+    getAssignUserTeam: Function,
+    assignedComputed: Number,
   },
   data() {
     return {
@@ -334,12 +348,13 @@ export default {
         { text: "", value: "actions", sortable: false },
       ],
       headersUser: [
+   
         { text: "Name", value: "name" },
-        {text: 'Position', value:'position_details.position'},
-        {text: 'Team', value:'team'},
+        { text: "Position", value: "position_details.position" },
+        { text: "Team", value: "team" },
         { text: "", value: "actions", sortable: false },
       ],
-
+      selected: [],
       newSelectedTeam: "",
       newSelectedUserTeam: "",
       dialogRemoveItem: false,
@@ -352,11 +367,12 @@ export default {
       userNoTeam: [],
       addSelectedArenaTeamItem: null,
       addSelectedUserTeamItem: null,
+      assignedCompt: this.assignedComputed,
+      
     };
   },
   methods: {
     closeViewTeam() {
-     
       this.$emit("update:viewTeam", false);
       this.$emit("update:arenaTeams", []);
       this.$emit("update:userTeams", []);
@@ -369,7 +385,7 @@ export default {
       this.snackText = "Data saved";
 
       if (this.newSelectedTeam !== this.selectedTeam.name) {
-          this.$emit(
+        this.$emit(
           "update:arenaTeams",
           this.arenaTeams.filter(function (v, i) {
             return v.area_code !== item.area_code && v.team !== item.team;
@@ -378,18 +394,28 @@ export default {
         await axios.put("api/updateArenaTeam/" + item.area_code, {
           team: item.team,
         });
-        
       }
     },
-    async saveTeamUser(item){
-        this.snack = true;
-        this.snackColor = "success";
-        this.snackText = "Data saved";
+    async saveTeamUser(item) {
+      this.snack = true;
+      this.snackColor = "success";
+      this.snackText = "Data saved";
 
-        console.log(item)
-        const teamId = this.newSelectedUserTeam
-      if (this.newSelectedUserTeam !== this.selectedTeam.id) {
-        this.$emit(
+     
+      const teamId = this.newSelectedUserTeam.id;
+
+      console.log('>>>>>',item)
+    if(teamId === this.selectedTeam.id) {
+        console.log('Not happening')
+       console.log(teamId)       
+       console.log(this.selectedTeam.id)       
+
+    }else if (item.isAssign) {
+        console.log('Not happening IS ASSIGN')
+        console.log(item.isAssign)       
+       console.log(this.selectedTeam.id)  
+    }else {
+          this.$emit(
           "update:userTeams",
           this.userTeams.filter(function (v, i) {
             return v.id !== item.id;
@@ -398,8 +424,19 @@ export default {
         await axios.put("api/updateUserTeam/" + item.id, {
           team_id: teamId,
         });
-       
-      }
+        Fire.$emit("AfterCreateUserTeam")
+    }
+    //   if (this.newSelectedUserTeam !== this.selectedTeam.id || item.isAssign !== 1) {
+    //     this.$emit(
+    //       "update:userTeams",
+    //       this.userTeams.filter(function (v, i) {
+    //         return v.id !== item.id;
+    //       })
+    //     );
+    //     await axios.put("api/updateUserTeam/" + item.id, {
+    //       team_id: teamId,
+    //     });
+    //   }
     },
     cancel() {
       this.snack = true;
@@ -407,35 +444,33 @@ export default {
       this.snackText = "Canceled";
     },
     open() {
-      
-
       this.snack = true;
       this.snackColor = "info";
       this.snackText = "Dialog opened";
     },
-    openUser(item){
-        console.log('OPEN TEAM USER>>',item)
+    openUser(item) {
+      console.log("OPEN TEAM USER>>", item);
     },
     close() {
       console.log("Dialog closed");
     },
-    closeUser(item){
-        console.log(item)
+    closeUser(item) {
+      console.log(item);
     },
     handleChanged(item) {
       this.newSelectedTeam = item;
-      console.log('HANDLE CHANGED++++',this.newSelectedTeam)
+      console.log("HANDLE CHANGED++++", this.newSelectedTeam);
     },
-    handleChangedUserTeam(item){
-        console.log('HANDLE',item)
-        this.newSelectedUserTeam = item
+    handleChangedUserTeam(item) {
+      console.log("HANDLE", item);
+      this.newSelectedUserTeam = item;
     },
     openArenaSelection() {
       this.addNewArenaItem = true;
       this.getArenasWithoutTeam();
     },
-    openUserSelection(){
-    this.addNewUserItem = true;
+    openUserSelection() {
+      this.addNewUserItem = true;
       this.getUsersWithoutTeam();
     },
     removeItem(item) {
@@ -443,37 +478,25 @@ export default {
       this.selectedArena = item;
       this.dialogRemoveItem = true;
     },
-     removeUserItem(item) {
+    removeUserItem(item) {
       console.log("USER SELECTED>>", item);
       this.selectedUser = item;
       this.dialogRemoveUserItem = true;
     },
     async removeItemConfirm() {
-            const code = this.selectedArena.area_code;
-        
-          
-            await axios.put("api/updateArenaTeam/" + this.selectedArena.area_code);
-            await Fire.$emit('AfterCreateArenaTeam');
-            this.dialogRemoveItem = false;
-        
-     
+      const code = this.selectedArena.area_code;
+
+      await axios.put("api/updateArenaTeam/" + this.selectedArena.area_code);
+      await Fire.$emit("AfterCreateArenaTeam");
+      this.dialogRemoveItem = false;
     },
     async removeUserItemConfirmation() {
-
-            const user = this.selectedUser;
-        
-            // this.$emit(
-            //     "update:userTeams",
-            //     this.userTeams.filter(function (v, i) {
-              
-            //     return v.id !== user.id;
-            //     })
-            // );
-            await axios.put("api/updateUserTeam/" + user.id, {
-                team: null,
-            });
-            await Fire.$emit('AfterCreateUserTeam');
-            this.dialogRemoveUserItem = false;
+      const user = this.selectedUser;
+      await axios.put("api/updateUserTeam/" + user.id, {
+        team: null,
+      });
+      await Fire.$emit("AfterCreateUserTeam");
+      this.dialogRemoveUserItem = false;
     },
 
     async getArenasWithoutTeam() {
@@ -482,12 +505,11 @@ export default {
 
       this.arenaNoTeam = arenaNoTeam;
     },
-   async getUsersWithoutTeam() {
+    async getUsersWithoutTeam() {
       const users = await axios.get("api/getStaffs");
 
       this.userNoTeam = users.data;
     },
-
 
     async addArenaToTeam() {
       this.addSelectedArenaTeamItem.team = this.selectedTeam.name;
@@ -497,27 +519,46 @@ export default {
       );
       this.addNewArenaItem = false;
 
-    //   let arrayArena = this.arenaTeams;
-    //   arrayArena.push(this.addSelectedArenaTeamItem);
-        Fire.$emit('AfterCreateArenaTeam');
-        // this.$emit("update:arenaTeams", arrayArena);
+      //   let arrayArena = this.arenaTeams;
+      //   arrayArena.push(this.addSelectedArenaTeamItem);
+      Fire.$emit("AfterCreateArenaTeam");
+      // this.$emit("update:arenaTeams", arrayArena);
     },
 
-    async addUserToTeam(){
-        this.addSelectedUserTeamItem.team = this.selectedTeam.name;
-        const user = this.addSelectedUserTeamItem
-        const team_id = this.selectedTeam.id
-        await axios.put(
-            "api/updateUserTeam/" + user.id,
-            { team_id }
-        );
+    async addUserToTeam() {
+      this.addSelectedUserTeamItem.team = this.selectedTeam.name;
+      const user = this.addSelectedUserTeamItem;
+      const team_id = this.selectedTeam.id;
+      await axios.put("api/updateUserTeam/" + user.id, { team_id });
 
-         this.addNewUserItem = false;
-        //    let arrayUsers = this.userTeams;
-        //     arrayUsers.push(this.addSelectedUserTeamItem);
-            // this.$emit("update:userTeams", arrayUsers);
-           Fire.$emit('AfterCreateUserTeam');
-    }
+      this.addNewUserItem = false;
+      //    let arrayUsers = this.userTeams;
+      //     arrayUsers.push(this.addSelectedUserTeamItem);
+      // this.$emit("update:userTeams", arrayUsers);
+      Fire.$emit("AfterCreateUserTeam");
+    },
+    async handleChangedSelectedUser(){
+        console.log(this.selected[0])
+
+        const assignedd = await axios.put('api/updateAssignedTeam/'+this.selected[0].id, { team_id: this.selectedTeam.id})
+       
+        this.assignedCompt = assignedd.data.id
+        Fire.$emit("AfterAssigned");
+        Fire.$emit("AfterCreateUserTeam");
+        this.$emit("update:assignedComputed",  this.assignedCompt);
+        
+
+    },
+    handleSelectedItem(item){
+        console.log('ITEM',item)
+    },
+
+    // getAssignUserTeam(){
+    //       axios.get('api/assigneduserteam/'+this.selectedTeam.id).then(({data}) => {
+    //         //  this.assignedComputed = data.id.toString();
+    //         this.selected.push({id: data.id})
+    //      });
+    // }
   },
   computed: {
     viewingTeam: {
@@ -529,16 +570,20 @@ export default {
       },
     },
   },
-    created(){
-        Fire.$on('AfterCreateUserTeam', () => {
-            this.getAllUserPerTeam()
-        })
-         Fire.$on('AfterCreateArenaTeam', () => {
-            this.getAllArenaPerTeam()
-        })
-    }
- 
+  created() {
+   
+    Fire.$on("AfterCreateUserTeam", () => {
+      this.getAllUserPerTeam();
+    });
+    Fire.$on("AfterCreateArenaTeam", () => {
+      this.getAllArenaPerTeam();
+    });
+
+    Fire.$on('AfterAssigned', () => {
+        this.getAssignUserTeam();
+    })
+  },
+
 };
 </script>
-<style lang="">
-</style>
+<style lang=""></style>

@@ -2,7 +2,7 @@
     <v-app>
         <v-container>
             <v-row class="mt-5 is-blurred" v-if="$gate.isAdmin()">
-                <v-col class="col-md-12">
+                <v-col class="col-md-6">
                     <v-card>
                         <v-card-title class="card-header">
                             Team Management
@@ -56,6 +56,7 @@
                                             v-bind="attrs"
                                             v-on="on"
                                             @click="openViewTeam(item)"
+                                            
                                         >
                                             <v-icon>mdi-view-column</v-icon>
                                         </v-btn>
@@ -100,9 +101,16 @@
                         </v-data-table>
                     </v-card>
                 </v-col>
+                <v-col  class="col-md-6">
+                    <v-banner
+                    v-if="!viewTeam"
+                    single-line
+                    transition="slide-y-transition"
+                    >No team selected yet</v-banner>
+                    <team-management  v-else :viewTeam.sync="viewTeam" :selectedTeam.sync="selectedTeam" :arenaTeams.sync="arenaTeams" :teams="teams" :getAllArenaPerTeam="getAllArenaPerTeam" :userTeams.sync="userTeams" :getAllUserPerTeam="getAllUserPerTeam" :assignedComputed.sync="assignedComputed" :getAssignUserTeam="getAssignUserTeam"></team-management>
+                </v-col>
             </v-row>
 
-            <team-management :viewTeam.sync="viewTeam" :selectedTeam.sync="selectedTeam" :arenaTeams.sync="arenaTeams" :teams="teams" :getAllArenaPerTeam="getAllArenaPerTeam" :userTeams.sync="userTeams" :getAllUserPerTeam="getAllUserPerTeam"></team-management>
             <!-- Modal -->
             <v-dialog
                 transition="dialog-bottom-transition"
@@ -176,7 +184,8 @@ export default {
             userTeams: [],
             selectedTeam: {
                 name: ""
-            }
+            },
+            assignedComputed: null
         };
     },
     methods: {
@@ -190,6 +199,14 @@ export default {
             this.team.name = null;
             this.editMode = false;
             this.openDialog = true;
+        },
+        getAssignUserTeam(){
+      
+            axios.get('api/assigneduserteam/'+this.selectedTeam.id).then(({data}) => {
+                console.log(data.id)
+                this.assignedComputed = data.id;
+            }); 
+            
         },
         async getAllArenaPerTeam(){
             const arenaTeams = await axios.get('api/getArenaTeam/'+this.selectedTeam.name);
@@ -209,11 +226,15 @@ export default {
            
             this.userTeams = userTeamsArray
         },
+       
         openViewTeam(item){
+         
             this.viewTeam = true;
             this.selectedTeam = item
+            this.getAssignUserTeam(item)
             this.getAllArenaPerTeam(item);
-            this.getAllUserPerTeam(item)
+            this.getAllUserPerTeam(item);
+            
         },
         updateViewTeam(item){
             this.editMode = true;

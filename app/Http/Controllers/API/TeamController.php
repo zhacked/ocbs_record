@@ -47,7 +47,7 @@ class TeamController extends Controller
      
 
         return Team::create([
-            'name' => $request['name'],
+            'name' => strtolower($request['name']),
             
         ]);
     }

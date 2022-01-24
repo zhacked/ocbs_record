@@ -663,7 +663,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.otherCommissionIntel05"
+                                    v-model="computedAve.otherCommissionIntel05"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -703,7 +703,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.consolidatorsCommission"
+                                    v-model="computedAve.consolidatorsCommission"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -743,7 +743,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.safetyFund"
+                                    v-model="computedAve.safetyFund"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -783,7 +783,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computation.paymentForOutstandingBalance"
+                                    v-model="computedAve.paymentForOutstandingBalance"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
