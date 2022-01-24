@@ -118,6 +118,7 @@
                                         <v-switch
                                             v-model="switchPrepared"
                                             label="Preparation"
+                                            @change="handleSwitchPrepared"
                                             ></v-switch>
 
                                         </v-col>
@@ -817,6 +818,7 @@
                                     <PreparedChecked
                                         v-show="switchPrepared"
                                         :userPrepared="userPrepared"
+                                        :arenaDetails="item.arena_details"
                                         :editmode="editmode"
                                     />
 
@@ -991,6 +993,7 @@
                                                         :userPrepared="
                                                             userPrepared
                                                         "
+                                                        :arenaDetails="arenaDetails"
                                                         :editmode="editmode"
                                                     />
                                                 </v-card-text>
@@ -1071,47 +1074,6 @@
                                             <span>Download as PDF</span>
                                         </v-tooltip>
 
-                                        <!-- <v-divider vertical></v-divider> -->
-                                        <!-- <v-tooltip bottom>
-                                            <template
-                                                v-slot:activator="{ on, attrs }"
-                                            >
-                                                <v-chip
-                                                    class="ma-2"
-                                                    :color="
-                                                        !editmode
-                                                            ? 'blue'
-                                                            : 'green'
-                                                    "
-                                                    small
-                                                    outlined
-                                                    v-bind="attrs"
-                                                    v-on="on"
-                                                    @click="
-                                                        !editmode
-                                                            ? updateModal()
-                                                            : saveModal()
-                                                    "
-                                                >
-                                                    {{
-                                                        editmode
-                                                            ? "Save"
-                                                            : "Update"
-                                                    }}
-
-                                                    <v-icon small>{{
-                                                        !editmode
-                                                            ? "mdi-square-edit-outline"
-                                                            : "mdi-content-save"
-                                                    }}</v-icon>
-                                                </v-chip>
-                                            </template>
-                                            <span>{{
-                                                !editmode
-                                                    ? "Edit Infomation"
-                                                    : "Save Information"
-                                            }}</span>
-                                        </v-tooltip> -->
                                     </v-card-actions>
                                 </v-card>
                             </v-col>
@@ -1359,7 +1321,11 @@ export default {
                 this.bank = data;
             });
         },
-
+        handleSwitchPrepared(){
+            // this.switchPrepared = !this.switchPrepared ? true : false ;
+            localStorage.setItem('prepared',this.switchPrepared);
+            
+        },
         truncate() {
             swal.fire({
                 title: "Are you sure?",
@@ -1794,8 +1760,7 @@ export default {
                                 (parseFloat(cashLoad) - parseFloat(cashWithdrawal));
 
 
-                            console.log(rest.areaCode,'>>>',totalCommission)
-
+                      
 
                             const soaFr =
                                 parseFloat(depositReplenish) < 0 ? "fr" : "soa";
@@ -2738,15 +2703,15 @@ export default {
         },
     },
     
-    mounted(){
-    //    console.log('XXXXXXX',Object.values(this.$refs.table.openCache));
-        // Object.keys(this.$refs).forEach(k => {
-        //     console.log(this.$refs[k].$el)
-        //     if (this.$refs[k] && this.$refs[k].$attrs['data-open']) {
-        //         this.$refs[k].$el.click()
-        //     }
-        // })
-    },
+    mounted() {
+            if (localStorage.getItem('prepared')) {
+            try {
+                this.switchPrepared = JSON.parse(localStorage.getItem('prepared'));
+            } catch(e) {
+                localStorage.removeItem('prepared');
+            }
+            }
+  },
     async created() {
         await this.showData();
         this.importwithstatus();

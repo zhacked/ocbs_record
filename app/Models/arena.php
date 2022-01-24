@@ -31,7 +31,6 @@ class arena extends Model
 
     public function UserTeam(){
         return $this->hasOne('App\Models\Team','name','team');
-        // return $this->hasManyThrough('App\Models\User', 'App\Models\Team','id','team_id', 'team','name');
     }
 
     public function ContactDetails(){

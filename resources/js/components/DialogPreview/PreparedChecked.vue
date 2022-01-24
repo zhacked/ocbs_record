@@ -17,18 +17,13 @@
                                                                         "
                                                                     >
                                                                        <span class="select-field_container  d-flex justify-center align-center" :class="{'editmode-span': editmode}">
-                                                                           <span v-if="!editmode">{{this.selectedComputedName || 'Ralph Redoquerio'}}</span>
-                                                                            <select v-else class="sign-name select-field_report computation" name="computed" @change="handleComputedBy($event)">
-                                                                                <!-- <option>Ralph Redoquerio</option> -->
-                                                                                <option v-for="computed_by in userPrepared.computed" :value="`${computed_by.name} | ${computed_by.position}`" :key="computed_by.id">{{computed_by.name}}</option>
-                                                                            </select>
+                                                                           <span>{{arenaDetails.user_team && arenaDetails.user_team.user_details ? arenaDetails.user_team.user_details.name : ''}}</span>
+                                                                          
                                                                         </span>
 
 
-                                                                        <span class="signed-title">
-                                                                            
-                                                                           <!-- {{computedPosition ? computedPosition : userPrepared.computed.length > 0 ? userPrepared.computed[0].position : "Quality Assurance Staff" }} -->
-                                                                           {{this.selectedComputedPosition || 'Quality Assurance Staff'}}
+                                                                        <span class="signed-title">                                                                            
+                                                                           {{arenaDetails.user_team && arenaDetails.user_team.user_details && arenaDetails.user_team.user_details.position_details ? arenaDetails.user_team.user_details.position_details.position : ' '}}
                                                                         </span >
                                                                     </div>
                                                                 </div>
@@ -122,7 +117,8 @@
         name: "PreparedChecked",
         props: {
             userPrepared: Object,
-            editmode: Boolean
+            editmode: Boolean,
+            arenaDetails: Object
         },
         data(){
             return{

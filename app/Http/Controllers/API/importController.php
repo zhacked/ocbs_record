@@ -35,14 +35,14 @@ class importController extends Controller
                 'arenaDetails.BankDetails',
                 'arenaDetails.EmailDetails',
                 'arenaDetails.ContactDetails', 
-                'arenaDetails.UserTeam.User'
+                'arenaDetails.UserTeam.userDetails.positionDetails'
                 ])->whereNull('status')->get();
       
     }
 
     public function withstatus()
     {
-        return import::with(['BankDetails','arenaDetails.BankDetails','arenaDetails.EmailDetails','arenaDetails.ContactDetails', 'arenaDetails.UserTeam.User'])->whereNotNull('status')->get();
+        return import::with(['BankDetails','arenaDetails.BankDetails','arenaDetails.EmailDetails','arenaDetails.ContactDetails', 'arenaDetails.UserTeam.userDetails.positionDetails'])->whereNotNull('status')->get();
     }
 
 
