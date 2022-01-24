@@ -611,6 +611,25 @@
                 </div>
             </div>
         </v-container>
+            <v-dialog
+                v-model="arenaLoading"
+                persistent
+                width="300"
+                >
+                <v-card
+                    color="primary"
+                    dark
+                >
+                    <v-card-text>
+                    Please stand by
+                    <v-progress-linear
+                        indeterminate
+                        color="white"
+                        class="mb-0"
+                    ></v-progress-linear>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
     </v-app>
 </template>
 
@@ -656,6 +675,7 @@ export default {
             searchbank: "",
             input: "",
             loading: false,
+            arenaLoading: false,
             show: false,
             bankDetails: [],
             form: new Form({
@@ -891,8 +911,7 @@ export default {
         },
         async proceedAction() {
             this.$Progress.start();
-
-          
+            this.arenaLoading = true
             await axios.post("api/importArena", {
                arenaList  : this.arenaList,
                Uploadname :  this.fileUpload.name
@@ -904,7 +923,9 @@ export default {
             Fire.$emit("AfterCreate");
             swal.fire("Successfully!", "Excel Imported", "success");
             this.$Progress.finish();
+            this.arenaLoading = false
             this.fileUpload = null
+
             this.isExcel = false
         },
         testEnter(item) {
