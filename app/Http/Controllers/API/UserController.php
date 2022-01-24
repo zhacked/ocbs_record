@@ -44,9 +44,16 @@ class UserController extends Controller
     }
 
     public function getStaffs() {
-        $getStaffs = User::with(['positionDetails','teamDetails'])->where('type','!=','admin')->whereNull('team_id')->get();
+        $getStaffs = User::with(['positionDetails','teamDetails'])->where('assign','==','computed')->where('type','!=','admin')->whereNull('team_id')->get();
 
         return $getStaffs;
+    }
+
+    public function getAssigned(Request $request, $teamid) {
+        // dd($teamid);
+        $getComputedUserTeam = User::with(['positionDetails','teamDetails'])->where('isAssign',true)->where('team_id',$teamid)->first();
+
+        return $getComputedUserTeam;
     }
 
     
@@ -188,6 +195,17 @@ class UserController extends Controller
         $user->update([
             'team_id' => $request['team_id'],
         ]);
+
+        return $user;
+    }
+
+    public function updateAssignedTeam(Request $request, $id){
+        $user = User::findOrFail($id);
+
+        $usersTeam = User::where('team_id', $request['team_id']);
+        $usersTeam->update(['isAssign' => false]);
+
+        $user->update(['isAssign' => true]);
 
         return $user;
     }

@@ -27,6 +27,13 @@ class arena extends Model
         return $this->hasMany('App\Models\Email','area_code', 'area_code');
     } 
 
+ 
+
+    public function UserTeam(){
+        return $this->hasOne('App\Models\Team','name','team');
+        // return $this->hasManyThrough('App\Models\User', 'App\Models\Team','id','team_id', 'team','name');
+    }
+
     public function ContactDetails(){
         return $this->hasMany('App\Models\Contact','area_code', 'area_code');
     } 

@@ -50,6 +50,8 @@ class ArenaController extends Controller
         
     }
 
+    
+
     // public function arenaSelectedBank($bankId)
     // {
     //      return BankAccount::where('bank_id',$bankId)->get();

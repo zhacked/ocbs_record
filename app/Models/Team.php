@@ -9,4 +9,8 @@ class Team extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function User(){
+        return $this->hasOne('App\Models\User', 'team_id', 'id')->where('isAssign', 1);
+    }
 }
