@@ -87,9 +87,6 @@
                                 :search="search"
                                 class="elevation-1 text-center"
                             >
-                             <template v-slot:[`item.team`]="{ item }">
-                                <span>{{ item.team && item.team.toUpperCase() }}</span>
-                            </template>
                                 <template v-slot:[`item.bank`]="{ item }">
                                     <v-tooltip top>
                                         <template
@@ -258,17 +255,12 @@
                                 </v-toolbar>
                             </template>
                             <template v-slot:[`item.modify`]="{ item }">
-                              
-                                <div v-for="items in item.bank_activity" :key="items.id">
-                                      
-                                           <strong>{{items.log_name}}</strong>  {{items.description}} it on {{items.created_at | myDatewithtime}}
-                                       
+                                <!-- {{item.bank_activity.length}} -->
+                                <div v-if="item.bank_activity.length >= 1">
+                                      <strong>{{item.bank_activity[0].log_name}}</strong>  {{item.bank_activity[0].description}} it on {{item.bank_activity[0].created_at | myDatewithtime}}
                                 </div>
-                                <!-- <span v-if="item.bank_activity.description=='updated'">
-                                    yes
-                                    
-                                </span> -->
-                                   <!-- {{item.bank_activity}} -->
+                              
+                              
                             </template>
                             <template v-slot:[`item.actions`]="{ item }">
                                 <v-tooltip top>
@@ -635,7 +627,6 @@ export default {
                 { text: "Arena Name", value: "arena" },
                 { text: "Address", value: "address" },
                 { text: "Operator", value: "operator" },
-                { text: "Team", value: "team" },
                 { text: "Bank Details", value: "bank" },
                 { text: "", value: "actions", sortable: false },
             ],
@@ -956,9 +947,9 @@ export default {
         },
         openBankModel(data) {
             this.show = false;
-            console.log(data.bank_details);
+          
             $("#bankModal").modal("show");
-           
+              console.log('juny gaGO',data);
             this.bankDetails = data.bank_details;
             this.Bankform.arenas_id = data.id;
             this.Bankform.area_code = data.area_code;
@@ -1139,8 +1130,8 @@ export default {
         },
         loadArena() {
             axios.get("api/arena").then((data) => {
-                this.arena = data.data,
-                console.log(data.data)
+                this.arena = data.data
+                
                 });
         },
         createArena() {

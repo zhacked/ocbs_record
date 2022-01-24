@@ -35,10 +35,9 @@ class ArenaController extends Controller
     {
          return arena::with([
             'ContactDetails',
-            'BankDetails.BankActivity' => function ($q) {
-               return  $q->where('description','updated')
-                    ->orderBy('id', 'desc')
-                    ->first();
+            'BankDetails.BankActivity' => function ($q){
+                // dd($q->first());
+               return $q->where('description','updated')->latest();
             } 
          ])->get();
     }
