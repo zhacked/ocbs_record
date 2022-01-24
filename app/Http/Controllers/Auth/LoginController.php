@@ -11,6 +11,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Http\Controllers\API\ActivitylogsController;
 
 class LoginController extends Controller
 {
@@ -98,16 +99,10 @@ class LoginController extends Controller
             }
             
             DB::table('users')->where('id', $user->id)->update(['session_id' => $new_sessid]);
-            $current_date_time = Carbon::now()->toDateTimeString();
-            DB::table('Activitylogs')->insert([
-                'log_name' => $user->name,
-                'description'=> 'Login',
-                'subject_type' => 'User',
-                'subject_id'=>$user->id,
-                'causer_type' =>$user->type,
-                'causer_id' =>$user->id,
-                'created_at'=> $current_date_time
-            ]);
+
+            $activity_controller = new ActivitylogsController;
+            $activity_controller->arenaLogs('login',$user->name,'system',$user->id);
+         
             $user = auth()->guard('web')->user();
 
           
@@ -123,16 +118,9 @@ class LoginController extends Controller
       
         $user = Auth::user();
 
-        DB::table('Activitylogs')->insert([
-            'log_name' => $user->name,
-            'description'=> 'Logout',
-            'subject_type' => 'User',
-            'subject_id'=>$user->id,
-            'causer_type' =>$user->type,
-            'causer_id' =>$user->id,
-            'created_at'=> $current_date_time
-        ]);
-
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('logout',$user->name,'system',$user->id);
+        
         Session::flush();
         Redirect::back();
      

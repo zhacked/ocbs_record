@@ -9,9 +9,10 @@ export default class Gate{
    }
 
    isEmployee(){
-    return this.user.type === 'Employee';
-}
+        return this.user.type === 'employee';
+    }
 
-
-
+    isTech(){
+        return this.user.type === 'tech';
+    }
 }

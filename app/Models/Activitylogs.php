@@ -10,8 +10,8 @@ class Activitylogs extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function BankActivity(){
-        return $this->hasMany('App\Models\BankAccount','id', 'subject_id');
+    public function User(){
+        return $this->hasOne('App\Models\User','id', 'causer_id');
     }
 
 }

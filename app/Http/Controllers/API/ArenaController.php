@@ -33,7 +33,14 @@ class ArenaController extends Controller
 
     public function index()
     {
-         return arena::with(['BankDetails.BankActivity','ContactDetails'])->get();
+         return arena::with([
+            'ContactDetails',
+            'BankDetails.BankActivity' => function ($q) {
+               return  $q->where('description','updated')
+                    ->orderBy('id', 'desc')
+                    ->first();
+            } 
+         ])->get();
     }
 
     public function getArenaTeam($team){

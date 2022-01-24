@@ -53,9 +53,10 @@
 				</router-link>
 			</li>
 
-
 			
-            @can('isAdmin')
+			
+
+			@if(Auth::user()->type === 'tech' || Auth::user()->type === 'admin')
                 <li class="nav-item has-treeview menu-close">
                     <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-cog"></i>
@@ -72,12 +73,6 @@
                             </router-link>
                         </li>
 						
-						{{-- <li class="nav-item">
-                            <router-link to="/employee" class="nav-link">
-                                <i class="fa fa-users-cog nav-icon"></i>
-                                <p>Employee</p>
-                            </router-link>
-                        </li> --}}
 
 						<li class="nav-item">
 							<router-link to="/teams" class="nav-link ">
@@ -108,8 +103,15 @@
 						
                     </ul>
                 </li>
-            @endcan
-
+            @endif
+			@if(Auth::user()->type === 'tech')
+				<li class="nav-item">
+					<router-link to="/activitylogs" class="nav-link ">
+						<i class="nav-icon  fas fa-cogs"></i>
+						<p>Activity logs</p>
+					</router-link>
+				</li>
+			@endif
 
 			</ul>
 		</nav>

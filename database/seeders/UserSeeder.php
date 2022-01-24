@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
                 'name' => 'tech',
                 'email' => 'technical@gmail.com',
                 'username' => 'tech',
-                'type' => 'admin',
+                'type' => 'tech',
                 'bio' =>'technical department',
                 'photo' => null,
                 'password' => Hash::make('password'),

@@ -82,7 +82,7 @@
                             ></v-text-field>
                             <v-data-table
                                 :headers="headers"
-                                :items="arena.data"
+                                :items="arena"
                                 :items-per-page="10"
                                 :search="search"
                                 class="elevation-1 text-center"
@@ -147,7 +147,7 @@
                             </v-data-table>
                         </v-col>
                     </v-row>
-                    <v-row>
+                    <!-- <v-row>
                            <v-col>
                             <v-container>
                                 <h1>Arena Logs</h1>
@@ -176,7 +176,7 @@
                             </v-container>
  
                         </v-col>
-                    </v-row>
+                    </v-row> -->
                 </v-col>
             </v-row>
 
@@ -255,10 +255,11 @@
                                 </v-toolbar>
                             </template>
                             <template v-slot:[`item.modify`]="{ item }">
+                              
                                 <div v-for="items in item.bank_activity" :key="items.id">
-                                       <p v-show="items.description =='updated'">
+                                      
                                            <strong>{{items.log_name}}</strong>  {{items.description}} it on {{items.created_at | myDatewithtime}}
-                                        </p>
+                                       
                                 </div>
                                 <!-- <span v-if="item.bank_activity.description=='updated'">
                                     yes
@@ -688,12 +689,12 @@ export default {
         };
     },
     methods: {
-        loadLogs(){
-             axios.get("api/Logsindex/").then((data) => {
-                console.log('Logs>>>',data)
-                this.arenalogs = data.data
-            });
-        },
+        // loadLogs(){
+        //      axios.get("api/Logsindex/").then((data) => {
+        //         console.log('Logs>>>',data)
+        //         this.arenalogs = data.data
+        //     });
+        // },
         onFileChange(event) {
             // let arrayNumbers = [];
             // const file = event.target.files ? event.target.files[0] : null;
@@ -1133,7 +1134,10 @@ export default {
             });
         },
         loadArena() {
-            axios.get("api/arena").then((data) => (this.arena = data));
+            axios.get("api/arena").then((data) => {
+                this.arena = data.data,
+                console.log(data.data)
+                });
         },
         createArena() {
             console.log(this.form);
@@ -1160,10 +1164,10 @@ export default {
     },
     created() {
         this.loadArena();
-        this.loadLogs()
+     
         Fire.$on("AfterCreate", () => {
             this.loadArena();
-            this.loadLogs();
+      
         });
     },
     watch: {
