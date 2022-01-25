@@ -414,6 +414,7 @@ export default {
         await axios.put("api/updateArenaTeam/" + item.area_code, {
           team: item.team,
         });
+         await Fire.$emit("AfterCreateUserTeam")
       }
     },
     async saveTeamUser(item) {
@@ -428,16 +429,16 @@ export default {
     }else if (item.isAssign) {
         console.log('Not happening IS ASSIGN')
     }else {
-        //   this.$emit(
-        //   "update:userTeams",
-        //   this.userTeams.filter(function (v, i) {
-        //     return v.id !== item.id;
-        //   })
-        // );
+          this.$emit(
+          "update:userTeams",
+          this.userTeams.filter(function (v, i) {
+            return v.id !== item.id;
+          })
+        );
         await axios.put("api/updateUserTeam/" + item.id, {
           team_id: teamId,
         });
-        Fire.$emit("AfterCreateUserTeam")
+        await Fire.$emit("AfterCreateUserTeam")
     }
    
     },
@@ -490,7 +491,15 @@ export default {
       const code = this.selectedArena.area_code;
 
       await axios.put("api/updateArenaTeam/" + code);
+
+        this.$emit(
+          "update:arenaTeams",
+          this.arenaTeams.filter(function (v, i) {
+            return v.area_code !== code;
+          })
+        );
       await Fire.$emit("AfterCreateArenaTeam");
+
       this.selectedArena = {}
       this.dialogRemoveItem = false;
     },
@@ -499,6 +508,15 @@ export default {
       await axios.put("api/updateUserTeam/" + user.id, {
         team: null,
       });
+
+         this.$emit(
+          "update:userTeams",
+          this.userTeams.filter(function (v, i) {
+            return v.id !== user.id;
+          })
+        );
+
+
       await Fire.$emit("AfterCreateUserTeam");
       this.selectedUser = {}
       this.dialogRemoveUserItem = false;
