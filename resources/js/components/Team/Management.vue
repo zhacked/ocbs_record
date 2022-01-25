@@ -452,20 +452,20 @@ export default {
       this.snackText = "Dialog opened";
     },
     openUser(item) {
-      console.log("OPEN TEAM USER>>", item);
+      console.log("OPEN TEAM ");
     },
     close() {
       console.log("Dialog closed");
     },
     closeUser(item) {
-      console.log(item);
+     
     },
     handleChanged(item) {
       this.newSelectedTeam = item;
-      console.log("HANDLE CHANGED++++", this.newSelectedTeam);
+  
     },
     handleChangedUserTeam(item) {
-      console.log("HANDLE", item);
+   
       this.newSelectedUserTeam = item;
     },
     openArenaSelection() {
@@ -477,12 +477,12 @@ export default {
       this.getUsersWithoutTeam();
     },
     removeItem(item) {
-      console.log("RI>>", item);
+ 
       this.selectedArena = item;
       this.dialogRemoveItem = true;
     },
     removeUserItem(item) {
-      console.log("USER SELECTED>>", item);
+
       this.selectedUser = item;
       this.dialogRemoveUserItem = true;
     },

@@ -199,7 +199,6 @@ export default {
     methods: {
         loadTeam() {
             axios.get("api/teams").then(({data}) => {
-               
                 this.teams = data
             });
         },
@@ -211,7 +210,7 @@ export default {
         getAssignUserTeam(){
       
             axios.get('api/assigneduserteam/'+this.selectedTeam.id).then(({data}) => {
-                console.log(data.id)
+             
                 this.assignedComputed = data.id;
             }); 
             
@@ -255,7 +254,7 @@ export default {
       
         createNewTeam() {
             axios.post("api/teams", this.team).then((data) => {
-                console.log(data);
+           
                 Toast.fire({
                     icon: "success",
                     title: "Team Added in successfully",
@@ -265,7 +264,7 @@ export default {
             });
         },
         updateNewTeam(){
-            // console.log(this.team.id)   
+    
             axios.post('api/updateTeam/'+this.team.id,{
                 team : this.team.name
             }).then((data) => {
