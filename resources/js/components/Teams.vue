@@ -254,7 +254,6 @@ export default {
       
         createNewTeam() {
             axios.post("api/teams", this.team).then((data) => {
-           
                 Toast.fire({
                     icon: "success",
                     title: "Team Added in successfully",

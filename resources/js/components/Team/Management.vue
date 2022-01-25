@@ -53,15 +53,15 @@
                                                     </v-tooltip>
                                             </v-toolbar>
 
-                                            <v-dialog v-model="dialogRemoveItem" max-width="500px">
+                                            <v-dialog v-model="dialogRemoveItem" max-width="500px"  persistent>
                                                     <v-card>
-                                                        <v-card-title class="text-h6">Remove {{selectedArena && selectedArena.area_code}} from {{selectedTeam && selectedTeam.name.toUpperCase()}}?</v-card-title>
+                                                        <v-card-title class="text-h6"> Remove {{selectedArena && selectedArena.area_code}} from {{selectedTeam && selectedTeam.name.toUpperCase()}}?</v-card-title>
                                                     
-                                                        <v-card-actions>
+                                                        <v-card-actions >
                                                             <v-spacer></v-spacer>
-                                                            <v-btn color="blue darken-1" text @click="dialogRemoveItem = false">Cancel</v-btn>
+                                                            <v-btn color="red darken-1" text @click="dialogRemoveItem = false">Cancel</v-btn>
                                                             <v-btn color="blue darken-1" text @click="removeItemConfirm">OK</v-btn>
-                                                            <v-spacer></v-spacer>
+                                                            
                                                         </v-card-actions>
                                                     </v-card>
                                             </v-dialog>                                             
@@ -159,9 +159,9 @@
                                                 
                                                     <v-card-actions>
                                                         <v-spacer></v-spacer>
-                                                        <v-btn color="blue darken-1" text @click="dialogRemoveUserItem = false">Cancel</v-btn>
+                                                        <v-btn color="red darken-1" text @click="dialogRemoveUserItem = false">Cancel</v-btn>
                                                         <v-btn color="blue darken-1" text @click="removeUserItemConfirmation">OK</v-btn>
-                                                        <v-spacer></v-spacer>
+                                                       
                                                     </v-card-actions>
                                                     </v-card>
                                                 </v-dialog>
@@ -283,7 +283,7 @@
                     </v-card-text>                           
                     <v-card-actions>
                         <v-spacer></v-spacer>                         
-                            <v-btn color="blue darken-1" text @click="() => {addNewArenaItem = false; this.selectedArenasToTeam = []}">Cancel</v-btn>
+                            <v-btn color="red darken-1" text @click="() => {addNewArenaItem = false; this.selectedArenasToTeam = []}">Cancel</v-btn>
                             <!-- <v-btn color="blue darken-1" text @click="addArenaToTeam">ADD</v-btn> -->
                             <v-btn :disabled="selectedArenasToTeam < 1 ? true : false" color="blue darken-1" text @click="addArenaSelectedToTeam">ADD</v-btn>
                             
@@ -311,7 +311,7 @@
                     </v-card-text>                           
                     <v-card-actions>
                         <v-spacer></v-spacer>                         
-                            <v-btn color="blue darken-1" text @click="() => {addNewUserItem = false}">Cancel</v-btn>
+                            <v-btn color="red darken-1" text @click="() => {addNewUserItem = false}">Cancel</v-btn>
                             <v-btn color="blue darken-1" text @click="addUserToTeam">ADD</v-btn>
                             
                     </v-card-actions>
@@ -505,6 +505,7 @@ export default {
 
       this.selectedArena = {}
       this.dialogRemoveItem = false;
+      
     },
     async removeUserItemConfirmation() {
       const user = this.selectedUser;
@@ -518,11 +519,13 @@ export default {
             return v.id !== user.id;
           })
         );
+    any
 
 
       await Fire.$emit("AfterCreateUserTeam");
       this.selectedUser = {}
       this.dialogRemoveUserItem = false;
+      
     },
 
     async getArenasWithoutTeam() {
@@ -556,9 +559,9 @@ export default {
         const user = this.addSelectedUserTeamItem;
         const team_id = this.selectedTeam.id;
         await axios.put("api/updateUserTeam/" + user.id, { team_id });
-
         this.addNewUserItem = false;
         Fire.$emit("AfterCreateUserTeam");
+
     },
     async handleChangedSelectedUser(){
         const assignedd = await axios.put('api/updateAssignedTeam/'+this.selected[0].id, { team_id: this.selectedTeam.id})
