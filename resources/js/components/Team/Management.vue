@@ -489,8 +489,9 @@ export default {
     async removeItemConfirm() {
       const code = this.selectedArena.area_code;
 
-      await axios.put("api/updateArenaTeam/" + this.selectedArena.area_code);
+      await axios.put("api/updateArenaTeam/" + code);
       await Fire.$emit("AfterCreateArenaTeam");
+      this.selectedArena = {}
       this.dialogRemoveItem = false;
     },
     async removeUserItemConfirmation() {
@@ -499,6 +500,7 @@ export default {
         team: null,
       });
       await Fire.$emit("AfterCreateUserTeam");
+      this.selectedUser = {}
       this.dialogRemoveUserItem = false;
     },
 
