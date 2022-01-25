@@ -167,6 +167,10 @@ class EmployeeController extends Controller
     {
   
         $position = position::findorfail($id);
+
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('deleted',$position->position,'position',$id);
+        
         $position->delete();
     }
 

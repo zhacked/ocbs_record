@@ -44,7 +44,7 @@ class UserController extends Controller
     }
 
     public function getStaffs() {
-        $getStaffs = User::with(['positionDetails','teamDetails'])->where('assign','==','computed')->where('type','!=','admin')->whereNull('team_id')->get();
+        $getStaffs = User::with(['positionDetails','teamDetails'])->where('assign','computed')->where('type','!=','admin')->whereNull('team_id')->get();
 
         return $getStaffs;
     }

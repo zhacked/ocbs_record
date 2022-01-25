@@ -31,7 +31,7 @@ class TeamController extends Controller
     public function index()
     {
 
-        return Team::with(['userDetails.positionDetails','arenaDetails'])->latest()->get();
+        return Team::latest()->get();
     }
 
     
@@ -46,10 +46,14 @@ class TeamController extends Controller
     {
      
 
-        return Team::create([
-            'name' => strtolower($request['name']),
-            
+        $team =  Team::create([
+            'name' => $request['name'],
         ]);
+
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('created',$team->name,'arena',$team->id);
+
+        return $team;
     }
 
 
@@ -73,11 +77,15 @@ class TeamController extends Controller
     public function update(Request $request, $id)
     {
 
-        $this->arena($id,'update',$request->team);
-  
+     
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('updated',$request->team,'arena',$id); 
+
         return Team::findOrFail($id)->update([
             'name' => $request->team,
         ]);
+
+       
 
     }
 
@@ -89,8 +97,16 @@ class TeamController extends Controller
      */
     public function destroy($id)
     {
-        $this->arena($id,'delete',null);
-        return Team::findOrFail($id)->delete();
+  
+        $team = Team::findOrFail($id);
+        
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('deleted',$team->team,'arena',$id); 
+
+        $team->delete();
+
+
+        
     }
 
     public function arena($id,$action,$request){
@@ -98,10 +114,13 @@ class TeamController extends Controller
         $arenateam =  arena::where('team',$updateteam->name)->get();
       
         foreach ($arenateam as $data){
-            arena::where('team',$data->team)->$action([
+            $arena = arena::where('team',$data->team)->$action([
                 'team' => $request,
             ]);
 
+            $activity_controller = new ActivitylogsController;
+            $activity_controller->arenaLogs($action,$arena->team,'arena',$id); 
+    
         }
     }
 
