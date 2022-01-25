@@ -557,8 +557,11 @@ export default {
 
         const team = this.selectedTeam.name
         await axios.put(`api/updateSelectedArenaToTeam/${team}`, this.selectedArenasToTeam);
+        Fire.$emit("AfterCreateArenaTeam");
         Fire.$emit("AfterAddSelected");
-        // this.addNewArenaItem = false;
+        
+        this.addNewArenaItem = false;
+         this.selectedArenasToTeam = []
     },
 
     // getAssignUserTeam(){
