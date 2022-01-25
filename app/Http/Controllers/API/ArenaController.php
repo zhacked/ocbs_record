@@ -246,6 +246,23 @@ class ArenaController extends Controller
         return $arena;
     }
 
+    public function updateSelectedArenaToTeam(Request $request,$team) {
+        // $updateArenasTeam = arena::upsert($request->all(), ['area_code']);
+
+        // return $updateArenasTeam;
+        // dd($request->all());
+        
+        foreach($request->all() as $data){
+            $arena = arena::where('area_code', $data['area_code']);
+
+            $arena->update([
+                'team' => $team
+            ]);
+        };
+
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *

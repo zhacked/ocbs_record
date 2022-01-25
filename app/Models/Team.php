@@ -13,4 +13,8 @@ class Team extends Model
     public function userDetails(){
         return $this->hasOne('App\Models\User', 'team_id', 'id')->where('isAssign', 1);
     }
+
+    public function arenaDetails(){
+        return $this->hasMany('App\Models\Arena', 'team', 'name');
+    }
 }
