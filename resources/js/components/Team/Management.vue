@@ -283,7 +283,7 @@
                     </v-card-text>                           
                     <v-card-actions>
                         <v-spacer></v-spacer>                         
-                            <v-btn color="blue darken-1" text @click="addNewArenaItem = false">Cancel</v-btn>
+                            <v-btn color="blue darken-1" text @click="() => {addNewArenaItem = false; this.selectedArenasToTeam = []}">Cancel</v-btn>
                             <!-- <v-btn color="blue darken-1" text @click="addArenaToTeam">ADD</v-btn> -->
                             <v-btn :disabled="selectedArenasToTeam < 1 ? true : false" color="blue darken-1" text @click="addArenaSelectedToTeam">ADD</v-btn>
                             
@@ -311,7 +311,7 @@
                     </v-card-text>                           
                     <v-card-actions>
                         <v-spacer></v-spacer>                         
-                            <v-btn color="blue darken-1" text @click="addNewUserItem = false">Cancel</v-btn>
+                            <v-btn color="blue darken-1" text @click="() => {addNewUserItem = false}">Cancel</v-btn>
                             <v-btn color="blue darken-1" text @click="addUserToTeam">ADD</v-btn>
                             
                     </v-card-actions>
@@ -446,6 +446,7 @@ export default {
       this.snack = true;
       this.snackColor = "error";
       this.snackText = "Canceled";
+      
     },
     open() {
       this.snack = true;
@@ -456,7 +457,9 @@ export default {
       console.log("OPEN TEAM ");
     },
     close() {
+     
       console.log("Dialog closed");
+
     },
     closeUser(item) {
      
