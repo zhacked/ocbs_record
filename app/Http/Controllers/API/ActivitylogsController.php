@@ -10,6 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class ActivitylogsController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+
+    }
+
     public function AcitivityIndex(){
        return  Activitylogs::with(['User'])->get();
     }
@@ -20,7 +31,8 @@ class ActivitylogsController extends Controller
     // }
 
     public function arenaLogs($description,$properties,$model,$subject_id){
-        $activity=  Activitylogs::insert([
+
+        $activity =  Activitylogs::insert([
              'log_name'     => Auth::user()->name,
              'description'  => $description,
              'subject_type' => $model,

@@ -114,8 +114,7 @@ class LoginController extends Controller
     }
 
     public function logout(){
-        $current_date_time = Carbon::now()->toDateTimeString();
-      
+    
         $user = Auth::user();
 
         $activity_controller = new ActivitylogsController;

@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\API\ActivitylogsController;
 
 class ArenaController extends Controller
 {
@@ -115,6 +114,7 @@ class ArenaController extends Controller
        }
         $activity_controller = new ActivitylogsController;
         $activity_controller->arenaLogs('created',$arena->arena,'arena',$arena->id);
+
         return $arena;
     }
 
@@ -122,9 +122,8 @@ class ArenaController extends Controller
   
     $contactImport = arena::upsert($request['arenaList'], ['area_code']);
     $activity_controller = new ActivitylogsController;
-
     $activity_controller->arenaLogs('imported',$request['Uploadname'],'arena',1);
-        return  $contactImport;
+    return  $contactImport;
     }
 
     /**

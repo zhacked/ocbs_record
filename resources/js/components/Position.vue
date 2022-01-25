@@ -19,7 +19,7 @@
                     ></v-divider>
                     <v-spacer></v-spacer>
                         <v-btn
-                            color="primary"
+                            color="success"
                             dark
                             class="mb-2"
                             @click="addnewPostion()"

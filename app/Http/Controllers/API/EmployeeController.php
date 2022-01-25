@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use Throwable;
+use App\Models\User;
 use App\Models\employee;
 use App\Models\position;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Http\Controllers\API\ActivitylogsController;
+
 class EmployeeController extends Controller
 {
     /**
@@ -15,6 +17,14 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+        
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+
+    }
+
     public function index()
     {
         $computed =  employee::where('group','computed')->get();
@@ -118,10 +128,16 @@ class EmployeeController extends Controller
             'position' => 'required',
         ]);
 
-        return position::create([
+     
+        $position = position::create([
             'position' => $request->position
         ]);
-        
+
+
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('created',$position->position,'position',$position->id);
+
+
     }
 
     public function getpostionNow()
@@ -129,13 +145,19 @@ class EmployeeController extends Controller
         return position::latest()->get();
     }
     public function updatepostionNowwith(request $request,$id){
-        $position = position::findOrFail($id);
-
+        
         $this->validate($request,[
             'position' => 'required',
         ]);
 
-        $position->update($request->all());
+        $position = position::findOrFail($id)->update([
+            'position' => $request->position
+        ]);
+
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('updated',$request->position,'position',$id);
+     
+
         return ['message' => 'Updated the user info'];
 
     }
