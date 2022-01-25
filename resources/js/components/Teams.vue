@@ -42,15 +42,23 @@
                             :items="teams"
                             class="elevation-1 text-center"
                         >
-                             <template v-slot:[`item.name`]="{ item }">
-                                 {{item.name != null ? item.name.toUpperCase() : item.name }}
+                            <template v-slot:[`item.name`]="{ item }">
+                                 <span class="font-weight-medium">{{item.name != null ? item.name.toUpperCase() : item.name }}</span>
+                            </template>
+                            <template v-slot:[`item.user_details`]="{ item }">
+                                <div class="d-flex flex-column">
+                                    <span class="font-weight-medium">{{ item.user_details && item.user_details.name }}</span>
+                                    <span class="caption">{{ (item.user_details && item.user_details.position_details) ? item.user_details.position_details.position : ''}}</span>
+                                </div>                          
+                            </template>
+                            <template v-slot:[`item.arena_details`]="{ item }">
+                                <span class="font-weight-medium">{{ item.arena_details && item.arena_details.length }}</span>               
                              </template>
                             <template v-slot:[`item.actions`]="{ item }">
                                 <v-tooltip color="primary" bottom>
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-btn
                                             color="primary"
-                                            class="mx-2"
                                             icon
                                             dark
                                             v-bind="attrs"
@@ -68,7 +76,6 @@
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-btn
                                             color="yellow darken-4"
-                                            class="mx-2"
                                             icon
                                             dark
                                             v-bind="attrs"
@@ -89,7 +96,6 @@
                                             icon
                                             v-bind="attrs"
                                             v-on="on"
-                                            class="mx-2"
                                             @click="deleteNewTeam(item.id)"
                                         >
                                             <i class="fa fa-trash"></i>
@@ -107,7 +113,7 @@
                     single-line
                     transition="slide-y-transition"
                     >No team selected yet</v-banner>
-                    <team-management  v-else :viewTeam.sync="viewTeam" :selectedTeam.sync="selectedTeam" :arenaTeams.sync="arenaTeams" :teams="teams" :getAllArenaPerTeam="getAllArenaPerTeam" :userTeams.sync="userTeams" :getAllUserPerTeam="getAllUserPerTeam" :assignedComputed.sync="assignedComputed" :getAssignUserTeam="getAssignUserTeam"></team-management>
+                    <team-management  v-else :loadTeam="loadTeam" :viewTeam.sync="viewTeam" :selectedTeam.sync="selectedTeam" :arenaTeams.sync="arenaTeams" :teams="teams" :getAllArenaPerTeam="getAllArenaPerTeam" :userTeams.sync="userTeams" :getAllUserPerTeam="getAllUserPerTeam" :assignedComputed.sync="assignedComputed" :getAssignUserTeam="getAssignUserTeam"></team-management>
                 </v-col>
             </v-row>
 
@@ -167,8 +173,9 @@ export default {
     data() {
         return {
             headers: [
-                { text: "No", value: "id" },
                 { text: "Name", value: "name" },
+                { text: "Computed By", value: "user_details" },
+                { text: "No. of Arenas", value: "arena_details" },
                 { text: "", value: "actions", sortable: false },
             ],
             search: "",
@@ -185,14 +192,15 @@ export default {
             selectedTeam: {
                 name: ""
             },
-            assignedComputed: null
+            assignedComputed: null,
+            arenaCount: 0,
         };
     },
     methods: {
         loadTeam() {
             axios.get("api/teams").then(({data}) => {
+               
                 this.teams = data
-          
             });
         },
         openNewTeam() {
