@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-container>
-            <v-row class="mt-5 is-blurred" v-if="$gate.isAdmin()">
+            <v-row class="mt-5 is-blurred" v-if="$gate.isAdminTech()">
                 <v-col class="col-md-6">
                     <v-card>
                         <v-card-title class="card-header">

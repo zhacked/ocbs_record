@@ -74,7 +74,7 @@ class UserController extends Controller
             'password' => 'required|string|min:6'
         ]);
 
-        return User::create([
+        $user =  User::create([
             'name' => $request['name'],
             'username' => $request['username'],
             'email' => $request['email'],
@@ -85,19 +85,23 @@ class UserController extends Controller
             'assign' => $request['assign'],
             'password' => Hash::make($request['password']),
         ]);
+
+        $this->Profileactivity('created',$user->username,'profile',$user->id);
+        return $user;
     }
 
 
     public function updateProfile(Request $request)
     {
-        $user = auth('api')->user();
-    
+       
+    $user = auth('api')->user();
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,
             'password' => 'sometimes|required|min:6'
         ]);
 
+       
 
         $currentPhoto = $user->photo;
             if($request->photo != $currentPhoto){
@@ -117,8 +121,8 @@ class UserController extends Controller
                 $request->merge(['password' => Hash::make($request['password'])]);
             }
 
-
-         $user->update($request->all());
+        $this->Profileactivity('updated',$user->username,'profile',$user->id);
+        $user->update($request->all());
         return ['message' => "Success"];
     }
 
@@ -141,6 +145,7 @@ class UserController extends Controller
             //     '--only-db' => true,
             // ]);
              $import =  import::truncate();
+             $this->Profileactivity('truncate',Auth::user()->name,'profile',Auth::user()->id);
              return 'success';
         }else{
             return 'error';
@@ -185,17 +190,21 @@ class UserController extends Controller
             'assign' => $request['assign'],
             'password' => Hash::make($request['password'])
         ]);
+
+        $this->Profileactivity('updated',$user->username,'profile',$user->id);
+
         return ['message' => 'Updated the user info'];
     }
 
     public function updateUserTeam(Request $request, $id){
         $user = User::findOrFail($id);
         // $userTeam = User::with(['positionDetails','teamDetails'])->where('team_id', $teamId)->get();
-
+       
         $user->update([
             'team_id' => $request['team_id'],
         ]);
 
+        $this->Profileactivity('updated',$user->username,'team',$user->id);
         return $user;
     }
 
@@ -231,5 +240,10 @@ class UserController extends Controller
     //    return  Artisan::call('backup:run');
     
     // }
+
+    public function Profileactivity($action,$description,$model,$id){
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs($action,$description,$model,$id); 
+    }
 
 }

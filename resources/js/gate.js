@@ -12,7 +12,7 @@ export default class Gate{
         return this.user.type === 'employee';
     }
 
-    isTech(){
-        return this.user.type === 'tech';
+    isAdminTech(){
+        return this.user.type === 'tech' || this.user.type === 'admin';
     }
 }

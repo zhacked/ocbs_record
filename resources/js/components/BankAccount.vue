@@ -194,10 +194,10 @@
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
-                    toast({
-                        type: 'success',
-                        title: 'User Created in successfully'
-                        })
+                    Toast.fire({
+                        icon: "success",
+                        title: "Company account added  successfully",
+                     });
                     this.$Progress.finish();
                 })
                 .catch(()=>{
@@ -209,11 +209,10 @@
                 this.form.put('api/bankaccount/'+this.form.id)
                 .then(() => {
                     $('#addNew').modal('hide');
-                     swal.fire(
-                        'Updated!',
-                        'Information has been updated.',
-                        'success'
-                        )
+                     Toast.fire({
+                        icon: "success",
+                        title: "Company account updated  successfully",
+                     });
                         this.$Progress.finish();
                          Fire.$emit('AfterCreate');
                 })

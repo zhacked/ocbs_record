@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Carbon\Carbon;
 use App\Models\Activitylogs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,7 +33,7 @@ class ActivitylogsController extends Controller
 
     public function arenaLogs($description,$properties,$model,$subject_id){
 
-        $activity =  Activitylogs::insert([
+        $activity =  DB::connection('mysql2')->table('activityslogs')->insert([
              'log_name'     => Auth::user()->name,
              'description'  => $description,
              'subject_type' => $model,

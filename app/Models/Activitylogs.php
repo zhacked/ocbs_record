@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Activitylogs extends Model
 {
     use HasFactory;
-    protected $guarded = [];
 
+    protected $connection = "mysql2";
+    protected $guarded = [];
+    protected $table = 'activityslogs';
+        
     public function User(){
-        return $this->hasOne('App\Models\User','id', 'causer_id');
+        return $this->setConnection('mysql')->belongsTo('App\Models\User','causer_id','id');
     }
 
 }
