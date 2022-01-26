@@ -2473,7 +2473,9 @@ export default {
                 const ee = emailMap.reduce((prev, current) => {
                     return current + " " + prev;
                 }, "");
-                return ee.trim().replace(/\s/g, " / ");
+                // return ee.trim().replace(/\s/g, " / ");
+                return ee.trim();
+                // return arrayEmail[0].email;
             }
         },
          defineContact(arrayContact) {
@@ -2484,7 +2486,8 @@ export default {
                 const ee = emailMap.reduce((prev, current) => {
                     return current + " " + prev;
                 }, "");
-                return ee.trim().replace(/\s/g, " / ");
+                // return ee.trim().replace(/\s/g, " / ");
+                return ee.trim();
             }
         },
 

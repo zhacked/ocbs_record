@@ -785,16 +785,13 @@ export default {
                     const toArrayContactEmail = (contactString) => {
                         // console.log(typeof contactString)
                         let number = [];
-                        // const checkBreak =  typeof contactString == "string" && contactString.indexOf("\r\n") > -1;
                         const checkBreak = contactString
                             .toString()
                             .includes("\r\n");
-                        // contactString.includes("\r\n");
-                        // const checkForwardSlash = typeof contactString == "string" && contactString.indexOf("/") > -1;
+                      
                         const checkForwardSlash = contactString
                             .toString()
                             .includes("/");
-                        // contactString.includes("/");
 
                         if (contactString != null) {
                             if (checkBreak) {
@@ -808,16 +805,18 @@ export default {
                                 );
 
                                 filteredContact.map((cs) => {
-                                    const replaceContact = cs
-                                        .replace(/\-/g, "")
-                                        .split(/\(.*?\)/g);
+                                    // const replaceContact = cs
+                                    //     .replace(/\-/g, "")
+                                    //     .split(/\(.*?\)/g);
 
                                     // const xxx = replaceContact.filter((ccc) =>
                                     //     ccc.includes("09")
                                     // );
-                                    replaceContact.map((x) =>
-                                        number.push(x.trim())
-                                    );
+                                    // replaceContact.map((x) =>
+                                    //     number.push(x.trim())
+                                    // );
+
+                                     number.push(cs.trim())
                                 });
                             } else if (checkForwardSlash) {
                                 const contactSplit = contactString.split("/");
@@ -828,22 +827,23 @@ export default {
                                 );
 
                                 filteredContact.map((cs) => {
-                                    const replaceContact = cs
-                                        .replace(/\-/g, "")
-                                        .split(/\(.*?\)/g);
+                                    // const replaceContact = cs
+                                    //     .replace(/\-/g, "")
+                                    //     .split(/\(.*?\)/g);
 
                                     // const xxx = replaceContact.filter((ccc) =>
                                     //     ccc.includes("09")
                                     // );
-                                    replaceContact.map((x) =>
-                                        number.push(x.trim())
-                                    );
+                                    // replaceContact.map((x) =>
+                                    //     number.push(x.trim())
+                                    // );
+                                    number.push(cs.trim())
                                 });
                             } else {
                                 number.push(contactString);
                             }
 
-                            return number;
+                            return number.join(" / ");
                         }
                     };
 
@@ -877,23 +877,26 @@ export default {
                             contact_number: "xxxxxxx",
                         });
 
-                        toArrayContactEmail(foh.contactNumber).forEach((cn) => {
-                            if (cn !== "") {
-                                contactNo.push({
-                                    area_code: foh.code,
-                                    contact_number: cn,
-                                });
-                            }
-                        });
+                        if(toArrayContactEmail(foh.contactNumber) !== "") contactNo.push({area_code: foh.code, contact_number: toArrayContactEmail(foh.contactNumber)})
+                        if(toArrayContactEmail(foh.emailSol) !== "") emailList.push({area_code: foh.code, email: toArrayContactEmail(foh.emailSol)})
 
-                        toArrayContactEmail(foh.emailSol).forEach((em) => {
-                            // console.log('>>>',foh.code,'>>',em);
-                            if (em !== "")
-                                emailList.push({
-                                    area_code: foh.code,
-                                    email: em,
-                                });
-                        });
+                        // toArrayContactEmail(foh.contactNumber).forEach((cn) => {
+                        //     if (cn !== "") {
+                        //         contactNo.push({
+                        //             area_code: foh.code,
+                        //             contact_number: cn,
+                        //         });
+                        //     }
+                        // });
+
+                        // toArrayContactEmail(foh.emailSol).forEach((em) => {
+                        //     // console.log('>>>',foh.code,'>>',em);
+                        //     if (em !== "")
+                        //         emailList.push({
+                        //             area_code: foh.code,
+                        //             email: em,
+                        //         });
+                        // });
                     });
 
                     this.emailList = emailList;

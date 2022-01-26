@@ -54,21 +54,21 @@ class ContactController extends Controller
       
         // dd($request->all());
 
-        // $contactImport = Contact::upsert($request->all(),['area_code']);
-        foreach ($request->all() as $data){
+        $contactImport = Contact::upsert($request->all(),['area_code']);
+    //     foreach ($request->all() as $data){
          
-            if(!Contact::where('contact_number',$data['contact_number'])->where('area_code', $data['area_code'])->exists()) {
-                    Contact::updateOrCreate([
-                    'area_code' => $data['area_code'],
-                    'contact_number' => $data['contact_number']
-                ]);
-            }
+    //         if(!Contact::where('contact_number',$data['contact_number'])->where('area_code', $data['area_code'])->exists()) {
+    //                 Contact::updateOrCreate([
+    //                 'area_code' => $data['area_code'],
+    //                 'contact_number' => $data['contact_number']
+    //             ]);
+    //         }
       
-       }
+    //    }
 
      
         
-        return  true;
+        return  $contactImport;
         
 
     }
