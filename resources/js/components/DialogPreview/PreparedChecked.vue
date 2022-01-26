@@ -5,6 +5,11 @@
                                                                 <div
                                                                     class="
                                                                         sign-wrapper
+                                                                          d-flex
+                                                                      
+                                                                            align-center
+                                                                        mt-2
+                                                                      
                                                                     "
                                                                 >
                                                                     <span class="signedBy"
@@ -14,15 +19,19 @@
                                                                     <div
                                                                         class="
                                                                             sign-container
+                                                                            d-flex
+                                                                            justify-center
+                                                                            align-center
+                                                                            flex-column
                                                                         "
                                                                     >
                                                                        <span class="select-field_container  d-flex justify-center align-center" :class="{'editmode-span': editmode}">
-                                                                           <span>{{arenaDetails.user_team && arenaDetails.user_team.user_details ? arenaDetails.user_team.user_details.name : ''}}</span>
+                                                                           <span class="text-sm-body-2">{{arenaDetails.user_team && arenaDetails.user_team.user_details ? arenaDetails.user_team.user_details.name : ''}}</span>
                                                                           
                                                                         </span>
 
 
-                                                                        <span class="signed-title">                                                                            
+                                                                        <span class="signed-title text-sm-body-2">                                                                            
                                                                            {{arenaDetails.user_team && arenaDetails.user_team.user_details && arenaDetails.user_team.user_details.position_details ? arenaDetails.user_team.user_details.position_details.position : ' '}}
                                                                         </span >
                                                                     </div>
@@ -33,15 +42,21 @@
                                                                     class="
                                                                         sign-wrapper
                                                                         scbottom
+                                                                        d-flex
+                                                                        align-center
+                                                                        mt-5
                                                                     "
                                                                 >
                                                                     <span class="signedBy"
                                                                         >Prepared
                                                                         by:</span
                                                                     >
-                                                                    <div class="sign-container">
+                                                                    <div class="sign-container   d-flex
+                                                                            justify-center
+                                                                            align-center
+                                                                            flex-column">
                                                                          <span class="select-field_container d-flex justify-center align-center" :class="{'editmode-span': editmode}">
-                                                                               <span v-if="!editmode">{{this.selectedPreparedName || 'Clarise A. Valles'}}</span>
+                                                                               <span class="text-sm-body-2" v-if="!editmode">{{this.selectedPreparedName || 'Clarise A. Valles'}}</span>
                                                                             <select v-else class="sign-name select-field_report computation" name="prepared" disabled @change="handlePreparedBy($event)">
                                                                                  <!-- <option>Clarise A. Valles</option> -->
                                                                                 <option v-for="prepared_by in userPrepared.prepared"  :value="`${prepared_by.name} | ${prepared_by.position}`" :key="prepared_by.id">{{prepared_by.name}}</option>
@@ -49,7 +64,7 @@
                                                                         </span>
                                                                         
 
-                                                                        <span class="signed-title">
+                                                                        <span class="signed-title text-sm-body-2">
                                                                            <!-- {{preparedPosition ? preparedPosition : userPrepared.prepared.length > 0 ? userPrepared.prepared[0].position : "Finance Assistant - Kiosk" }} -->
                                                                          {{this.selectedPreparedPosition || "Finance Assistant - Kiosk"}}
                                                                         </span>
@@ -62,15 +77,22 @@
                                                                 <div
                                                                     class="
                                                                         sign-wrapper
+                                                                          d-flex
+                                                                            mt-2
+                                                                            align-center
                                                                     "
                                                                 >
                                                                     <span class="signedBy"
                                                                         >Checked
                                                                         by:</span
                                                                     >
-                                                                    <div class="sign-container">
+                                                                    <div class="sign-container
+                                                                            d-flex
+                                                                            justify-center
+                                                                            align-center
+                                                                            flex-column">
                                                                          <span class="select-field_container d-flex justify-center align-center" :class="{'editmode-span': editmode}">
-                                                                               <span v-if="!editmode">{{this.selectedCheckedNameOne || 'Ma. Lourdes Anoba/Leo Tampilic Jr.'}}</span>
+                                                                               <span class="text-sm-body-2" v-if="!editmode">{{this.selectedCheckedNameOne || 'Ma. Lourdes Anoba/Leo Tampilic Jr.'}}</span>
                                                                             <select v-else class="sign-name select-field_report computation" name="checkedOne" disabled @change="handleCheckedOneBy($event)">
                                                                              <!-- <option>Ma. Lourdes Anoba/Leo Tampilic Jr.</option> -->
                                                                                 <option v-for="checked_by in userPrepared.checked" :value="`${checked_by.name} | ${checked_by.position}`" :key="checked_by.id">{{checked_by.name}}</option>
@@ -78,7 +100,7 @@
                                                                         </span>
                                                                         
 
-                                                                        <span class="signed-title">
+                                                                        <span class="signed-title text-sm-body-2">
                                                                             <!-- {{checkedOnePosition ? checkedOnePosition : userPrepared.checked.length > 0 ? userPrepared.checked[0].position : "QA - Team Leader"}} -->
                                                                             {{this.selectedCheckedNameOnePosition || "QA - Team Leader"}}
 
@@ -87,12 +109,19 @@
                                                                 </div>
                                                             </v-row>
                                                             <v-row>
-                                                                <div class="sign-wrapper scbottom">
+                                                                <div class="sign-wrapper scbottom
+                                                                            d-flex
+                                                                            mt-5
+                                                                            align-center
+                                                                            ">
                                                                     <span class="signedBy">Checked by:</span>
-                                                                    <div class="sign-container">
+                                                                    <div class="sign-container   d-flex
+                                                                            justify-center
+                                                                            align-center
+                                                                            flex-column">
                                                                         
                                                                          <span class="select-field_container d-flex justify-center align-center " :class="{'editmode-span': editmode}">
-                                                                            <span v-if="!editmode">{{this.selectedCheckedNameTwo || 'Mariel Pilotos/Jonalyn Bonares'}}</span>
+                                                                            <span class="text-sm-body-2" v-if="!editmode">{{this.selectedCheckedNameTwo || 'Mariel Pilotos/Jonalyn Bonares'}}</span>
                                                                             <select v-else class="sign-name select-field_report computation" name="checkedTwo" disabled @change="handleCheckedTwoBy($event)">
                                                                             
                                                                                  <!-- <option>Mariel Pilotos/Jonalyn Bonares</option> -->
@@ -101,7 +130,7 @@
                                                                         </span>
                                                                         
 
-                                                                        <span class="signed-title">
+                                                                        <span class="signed-title text-sm-body-2">
                                                                            <!-- {{checkedTwoPosition ? checkedTwoPosition : userPrepared.checked.length ? userPrepared.checked[1].position : "Supervisor - Arena/OCBS"}} -->
                                                                           {{this.selectedCheckedNameTwoPosition || "Supervisor - Arena/OCBS"}}
 
