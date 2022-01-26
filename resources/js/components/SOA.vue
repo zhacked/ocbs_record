@@ -2571,16 +2571,6 @@ export default {
                     totalPayOutsBal || "0.00"
                 );
 
-            // console.log(this.computation.otherCommissionIntel05, " ",this.computation.otherCommIntMob)
-            // console.log(this.computation.consolidatorsCommission, " ", this.computation.consolCommMob)
-            // console.log(this.computation.paymentForOutstandingBalance, " ", this.computation.payOutsBalMob)
-            // console.log(numberUnformat(this.computation.safetyFund) + this.computation.safetyFundMob)
-            console.log('commintel',totalCommIntel)
-            console.log('consol',totalConsolComm)
-            console.log('payoutsbal',totalPayOutsBal)
-            console.log('safetyfund',totalSafetyFund)
-            console.log('netopcomm',netOpCommTotal)
-            console.log('totalComm',totalComm)
 
             const netOpCommission = numberFormat(netOpCommTotal || 0);
             const totalCommission = numberFormat(totalComm || 0);
@@ -2702,6 +2692,7 @@ export default {
                 paymentForOutstandingBalance,
                 totalMWMobile,
                 totalDrawMobile,
+              
             };
         },
     },

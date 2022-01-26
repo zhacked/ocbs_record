@@ -826,7 +826,7 @@
                                     computation-total
                                 "
                             >
-                                <span class="ctotal-text">{{computedAve.totalComputationOthers}}</span>
+                                <span class="ctotal-text">{{computedAve.totalCommission}}</span>
                             </div>
                         </div>
                     </div>
