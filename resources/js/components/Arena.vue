@@ -485,8 +485,8 @@
                                 ></v-text-field>
 
                                 <v-combobox
-                                    v-model="form.contact_number"
-                                    :items="contacts.data"
+                                    v-model="contactNos"
+                                    :items="contacts"
                                     label="Contact Number"
                                     hint="Must be 11 digits"
                                     multiple
@@ -539,8 +539,8 @@
                                 </v-combobox>
 
                                 <v-combobox
-                                    v-model="form.email"
-                                    :items="emails.data"
+                                    v-model="emailsArr"
+                                    :items="emails"
                                     label="Email Address"
                                     hint="Maximum of 5 Emails"
                                     multiple
@@ -589,13 +589,13 @@
                                 </v-combobox>
                             </div>
                             <div class="modal-footer">
-                                <v-btn
+                                <!-- <v-btn
                                     type="button"
                                     color="error"
                                     elevation="2"
                                     data-dismiss="modal"
                                     >Close</v-btn
-                                >
+                                > -->
                                 <v-btn
                                     v-show="editmode"
                                     type="submit"
@@ -701,6 +701,8 @@ export default {
             }),
 
             contactNumbers: [],
+            contactNos: [], // to removed
+            emailsArr: [],
             emailList: [],
             arenaList: [],
             bankList: [],
@@ -1075,6 +1077,8 @@ export default {
             this.$Progress.start();
             const areaCode = this.form.arena.split(" ")[0];
             this.form.area_code = areaCode;
+            this.form.contact_number = this.contactNos.join(" / ");
+            this.form.email = this.emailsArr.join(" / ");    
 
             this.form
                 .put("api/arena/" + this.form.id)
@@ -1107,17 +1111,17 @@ export default {
             this.getContacts(arenas.area_code);
         },
         getEmail(areaCode) {
-            axios.get("api/getEmails/" + areaCode).then((data) => {
-                console.log(data);
-                //    this.emails = data
-                this.form.email = data.data;
+            axios.get("api/getEmails/" + areaCode).then(({data}) => {
+         
+                const em = data[0].email.includes(" / ") ?  data[0].email.split(" / ") : [data[0].email]
+                this.emailsArr = em;
+              
             });
         },
         getContacts(areaCode) {
-            axios.get("api/getContacts/" + areaCode).then((data) => {
-                console.log('CONTACT>>>',data)
-
-                this.form.contact_number = data.data;
+            axios.get("api/getContacts/" + areaCode).then(({data}) => {
+                const contacts = data[0].contact_number.includes(" / ") ? data[0].contact_number.split(" / ") :  [data[0].contact_number]
+                this.contactNos = contacts
             });
         },
         openModal() {
@@ -1169,6 +1173,8 @@ export default {
             this.$Progress.start();
             const areaCode = this.form.arena.split(" ")[0];
             this.form.area_code = areaCode;
+            this.form.contact_number = this.contactNos.join(" / ");
+            this.form.email = this.emailsArr.join(" / ");    
             this.form
                 .post("api/arena")
                 .then(() => {
@@ -1198,13 +1204,13 @@ export default {
         "form.email": function (val) {
             // val.forEach((x) =>  {
             //     if(!(/.+@.+\..+/.test(x))){
-            //       this.$nextTick(() => this.form.email.pop())
+            //       this.$nextTick(() => this.emailsArr.pop())
             //     }
             // });
 
-            if (val.length > 5) {
-                this.$nextTick(() => this.form.email.pop());
-            }
+            // if (val.length > 5) {
+            //     this.$nextTick(() => this.form.email.pop());
+            // }
         },
         "form.contact_number": function (contacts) {
             // console.log(contacts);

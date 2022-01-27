@@ -89,19 +89,19 @@ class ArenaController extends Controller
 
 
 
-        foreach ($request['email'] as $email){
+        // foreach ($request['email'] as $email){
              Email::updateOrCreate([
                 'area_code' => $arena->area_code,
                 'email' => $email
             ]);
-        }
+        // }
 
-        foreach ($request['contact_number'] as $contact){
+        // foreach ($request['contact_number'] as $contact){
             Contact::updateOrCreate([
                'area_code' => $arena->area_code,
                'contact_number' => $contact
            ]);
-       }
+    //    }
         $activity_controller = new ActivitylogsController;
         $activity_controller->arenaLogs('created',$arena->arena,'arena',$arena->id);
 
@@ -203,23 +203,33 @@ class ArenaController extends Controller
 
         ]);
 
-            foreach ($request['email'] as $email){
-                    if(!is_array($email)){
-                        $data = Email::Create([
-                            'area_code' => $request['area_code'],
-                            'email' => $email
-                        ]);
-                     }
-            }
+            // foreach ($request['email'] as $email){
+                    // if(!is_array($email)){
+                    //    Email::updateOrCreate([
+                    //         'area_code' => $request['area_code'],
+                    //         'email' => $request['email']
+                    //     ]);
 
-            foreach ($request['contact_number'] as $contact){
-                if(!is_array($contact)){
-                    $data = Contact::Create([
-                        'area_code' => $request['area_code'],
-                        'contact_number' => $contact
+                        Email::where('area_code', $request['area_code'])->update([
+                            'email' => $request['email']
+                        ]);
+                    //  }
+            // }
+
+            // foreach ($request['contact_number'] as $contact){
+                // if(!is_array($contact)){
+                //    Contact::updateOrCreate([
+                //         'area_code' => $request['area_code'],
+                //         'contact_number' => $request['contact_number']
+                //     ]);
+
+                Contact::where('area_code', $request['area_code'])->update([
+                        'contact_number' => $request['contact_number']
                     ]);
-                 }
-        }
+
+
+                //  }
+        // }
      
         $this->Arenaactivity('updated',$arenas->arena,'arena',$arenas->id);
         return ['message' => 'Updated the arena details'];
