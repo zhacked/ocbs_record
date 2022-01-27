@@ -124,7 +124,7 @@
                                      prepend-inner-icon="mdi-account"
                             ></v-text-field>
 
-                            <v-text-field
+                            <!-- <v-text-field
                                      prepend-inner-icon="mdi-at"
                                     label="Email"
                                     placeholder="doe@gmail.com"
@@ -135,7 +135,7 @@
                                     () => !!form.email || 'This field is required',
                                     () =>  /.+@.+\..+/.test(form.email) || 'E-mail must be valid'
                                     ]"
-                            ></v-text-field>
+                            ></v-text-field> -->
 
 
                             <v-autocomplete
