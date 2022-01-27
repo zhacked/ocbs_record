@@ -290,7 +290,7 @@
                                 "
                             >
                                 <span class="ctotal-text">{{
-                                    computedAve.netWinLoss
+                                    computation.netWinLoss
                                 }}</span>
                             </div>
                         </div>
@@ -335,7 +335,7 @@
                                 "
                             >
                                 <span class="ctotal-text">{{
-                                     computedAve.netWinLoss
+                                     computation.netWinLoss
                                 }}</span>
                             </div>
                         </div>
@@ -626,7 +626,7 @@
                                     align-center
                                 "
                             >
-                                <span>{{ computedAve.netOpCommission }}</span>
+                                <span>{{ computation.netOpCommission }}</span>
                             </div>
                         </div>
                     </div>
@@ -663,7 +663,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.otherCommissionIntel05"
+                                    v-model="computation.otherCommissionIntel05"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -703,7 +703,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.consolidatorsCommission"
+                                    v-model="computation.consolidatorsCommission"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -743,7 +743,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.safetyFund"
+                                    v-model="computation.safetyFund"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -783,7 +783,7 @@
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
-                                    v-model="computedAve.paymentForOutstandingBalance"
+                                    v-model="computation.paymentForOutstandingBalance"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
                                 />
@@ -826,7 +826,7 @@
                                     computation-total
                                 "
                             >
-                                <span class="ctotal-text">{{computedAve.totalCommission}}</span>
+                                <span class="ctotal-text">{{computation.totalCommission}}</span>
                             </div>
                         </div>
                     </div>
@@ -1032,7 +1032,7 @@
                             "
                         >
                             <span class="ctotal-text">{{
-                                computedAve.depositReplenish
+                                computation.depositReplenish
                             }}</span>
                         </div>
                     </div>

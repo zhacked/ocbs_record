@@ -687,9 +687,56 @@
                                                    
                                                         item.paymentForOutstandingBalance || 0
                                                 ),
-                                            mwTotalPercent: numberFormat(
+                                                totalCommission: numberFormat(item.totalCommission || 0),
+                                                mwTotalPercent: numberFormat(
                                                 item.mwTwo || 0
+                                                ),
+                                                depositReplenish: numberFormat(
+                                                    item.for_total || 0
+                                                ),
+                                                netWinLoss: numberFormat(
+                                                    item.netWinLoss || 0
+                                                ),
+
+                                                mwTotalPercent: numberFormat(
+                                                    item.mwTwo || 0
+                                                ),
+
+                                                   mwTotalPercent: numberFormat(
+                                                    item.mwTwo || 0
+                                                ),
+                                                drawTotalPercent: numberFormat(
+                                                    item.drawTwo || 0
+                                                ),
+                                                mwMobileTotalPercent: numberFormat(
+                                                    item.mwTwoMobile || 0
+                                                ),
+                                                drawMobileTotalPercent:
+                                                    numberFormat(
+                                                        item.drawTwoMobile ||
+                                                            0
+                                                    ),
+                                                safetyFund: numberFormat(
+                                                    (parseFloat(item.safetyFund)+parseFloat(item.safetyFundMob)) || 0
+                                                ),
+                                                otherCommissionIntel05:
+                                                    numberFormat(
+                                                            (parseFloat(item.otherCommissionIntel05)+parseFloat(item.otherCommIntMob)) || 0
+                                                    ),
+                                                consolidatorsCommission:
+                                                    numberFormat(
+                                                    
+                                                            (parseFloat(item.consolidatorsCommission)+parseFloat(item.consolCommMob)) || 0
+                                                    ),
+                                                paymentForOutstandingBalance:
+                                                    numberFormat(
+                                                    
+                                                            (parseFloat(item.paymentForOutstandingBalance)+parseFloat(item.payOutsBalMob)) || 0
+                                                    ),
+                                                       netOpCommission: numberFormat(
+                                                item.netOperatorsCommission || 0
                                             ),
+
 
                                             mobile: {
                                                 totalMWBets: numberFormat(
@@ -707,57 +754,7 @@
                                             },
                                         }"
                                         :computedAve="{
-                                            netWinLoss: numberFormat(
-                                                item.netWinLoss || 0
-                                            ),
-                                            mwTotalPercent: numberFormat(
-                                                item.mwTwo || 0
-                                            ),
-
-                                            totalOthers: numberFormat(
-                                                item.totalOthers || 0
-                                            ),
-                                            totalCommission: numberFormat(
-                                                item.totalCommission || 0
-                                            ),
-
-                                            depositReplenish: numberFormat(
-                                                item.for_total || 0
-                                            ),
-                                            mwTotalPercent: numberFormat(
-                                                item.mwTwo || 0
-                                            ),
-                                            drawTotalPercent: numberFormat(
-                                                item.drawTwo || 0
-                                            ),
-                                            mwMobileTotalPercent: numberFormat(
-                                                item.mwTwoMobile || 0
-                                            ),
-                                            drawMobileTotalPercent:
-                                                numberFormat(
-                                                    item.drawTwoMobile ||
-                                                        0
-                                                ),
-                                             safetyFund: numberFormat(
-                                                (parseFloat(item.safetyFund)+parseFloat(item.safetyFundMob)) || 0
-                                            ),
-                                              otherCommissionIntel05:
-                                                numberFormat(
-                                                        (parseFloat(item.otherCommissionIntel05)+parseFloat(item.otherCommIntMob)) || 0
-                                                ),
-                                            consolidatorsCommission:
-                                                numberFormat(
-                                                   
-                                                        (parseFloat(item.consolidatorsCommission)+parseFloat(item.consolCommMob)) || 0
-                                                ),
-                                            paymentForOutstandingBalance:
-                                                numberFormat(
-                                                   
-                                                         (parseFloat(item.paymentForOutstandingBalance)+parseFloat(item.payOutsBalMob)) || 0
-                                                ),
-                                            netOpCommission: numberFormat(
-                                                item.netOperatorsCommission || 0
-                                            ),
+                                         
                                             totalComputationOthers:
                                                 item.exempted.toUpperCase() === 'NOT EXEMPTED' ||  item.exempted.toUpperCase() === 'NOT'
                                                     ? numberFormat(
@@ -1550,27 +1547,7 @@ export default {
                                     : data.classification
                                     ? data.classification
                                     : null,
-                                // totalCommission: data.totalCommission || 0,
-                                // totalOthers: data.totalOthers || 0,
-                                // salesDeductionTablet:
-                                //     data.salesDeductionTablet || 0,
-                                // otherCommissionInteldata05:
-                                //     data.otherCommissionInteldata05 || 0,
-                                // consolidatorsCommission:
-                                //     data.consolidatorsCommission || 0,
-                                // safetyFund: data.safetyFund || 0,
-                                // paymentForOutstandingBalance:
-                                //     data.paymentForOutstandingBalance || 0,
-                                // systemErrorCOArmsi: data.systemErrorCOArmsi
-                                //     ? data.systemErrorCOArmsi
-                                //     : 0,
-                                // cashLoad: data.cashLoad ? data.cashLoad : 0,
-                                // cashWithdrawal: data.cashWithdrawal || 0,
-                                // netOperatorsCommission:
-                                //     data.netOperatorsCommission || 0,
-                                // otherCommissionIntel05:
-                                //     data.otherCommissionIntel05 || 0,
-
+                               
                                 drawMobile: 0,
                                 totalMWMobile: 0,
                                 safetyFundMob: 0,
@@ -1677,9 +1654,13 @@ export default {
                             return obk;
                     });
 
+
+
                     const removeKeyReportObject = filterObjectHeader.map(
                         ({ key, ...rest }) => {
                             const type = rest.type || rest.classification;
+
+                           console.log(rest)
 
                             const exempted = rest.exempted;
                             const totalMWBets = rest.meron + rest.wala;
@@ -1694,13 +1675,14 @@ export default {
                             const otherCommIntMob = rest.otherCommIntMob;
                             const consolCommMob = rest.consolCommMob;
                             const payOutsBalMob = rest.payOutsBalMob;
-                            const netWinLoss =
-                                totalMWBets +
-                                totalCancelledBets +
-                                totalDrawBets -
-                                totalPayoutPaid -
-                                totalCDPaid -
-                                totalDrawPaid;
+                            const netWinLoss = rest.netWinLoss
+                            // const netWinLoss =
+                            //     totalMWBets +
+                            //     totalCancelledBets +
+                            //     totalDrawBets -
+                            //     totalPayoutPaid -
+                            //     totalCDPaid -
+                            //     totalDrawPaid;
                             const mwTwo = totalMWBets * 0.02;
                             const drawTwo = totalDrawBets * 0.02;
                             const mwTwoMobile = totalMWMobile * 0.02;
@@ -1708,14 +1690,15 @@ export default {
                             const totalUnclaimed = rest.unclaimed;
                             const totalCUnpaid = rest.cUnpaid;
                             const salesDeduction = rest.salesDeductionTablet;
-                            const netOperatorsCommission =
-                                parseFloat(mwTwo) +
-                                parseFloat(drawTwo) +
-                                parseFloat(mwTwoMobile) +
-                                parseFloat(drawTwoMobile) +
-                                parseFloat(totalUnclaimed) +
-                                parseFloat(totalCUnpaid) -
-                                parseFloat(salesDeduction);
+                            const netOperatorsCommission = rest.netOperatorsCommission
+                            // const netOperatorsCommission =
+                            //     parseFloat(mwTwo) +
+                            //     parseFloat(drawTwo) +
+                            //     parseFloat(mwTwoMobile) +
+                            //     parseFloat(drawTwoMobile) +
+                            //     parseFloat(totalUnclaimed) +
+                            //     parseFloat(totalCUnpaid) -
+                            //     parseFloat(salesDeduction);
                             const otherCommissionIntel =
                                 rest.otherCommissionIntel05;
                             const consolidatorsCommission =
@@ -1727,18 +1710,18 @@ export default {
                             const paymentForOutstandingBalance =
                                 rest.paymentForOutstandingBalance;
 
-                            const totalSafetyFund = parseFloat(safetyFund) + parseFloat(safetyFundMob)
-                            const totalPaymentForOutstandingBalance = parseFloat(paymentForOutstandingBalance) + parseFloat(payOutsBalMob)
-                            const totalConsolComm = parseFloat(consolidatorsCommission) + parseFloat(consolCommMob)
-                            const totalOtherCommIntel = parseFloat(otherCommissionIntel) + parseFloat(otherCommIntMob)
+                            // const totalSafetyFund = parseFloat(safetyFund) + parseFloat(safetyFundMob)
+                            // const totalPaymentForOutstandingBalance = parseFloat(paymentForOutstandingBalance) + parseFloat(payOutsBalMob)
+                            // const totalConsolComm = parseFloat(consolidatorsCommission) + parseFloat(consolCommMob)
+                            // const totalOtherCommIntel = parseFloat(otherCommissionIntel) + parseFloat(otherCommIntMob)
 
-                            const totalCommission =
-                                parseFloat(netOperatorsCommission) +
-                                parseFloat(totalOtherCommIntel) -
-                                parseFloat(totalConsolComm) -
-                                parseFloat(totalSafetyFund) -
-                                parseFloat(totalPaymentForOutstandingBalance);
-
+                            // const totalCommission =
+                            //     parseFloat(netOperatorsCommission) +
+                            //     parseFloat(totalOtherCommIntel) -
+                            //     parseFloat(totalConsolComm) -
+                            //     parseFloat(totalSafetyFund) -
+                            //     parseFloat(totalPaymentForOutstandingBalance);
+                            const totalCommission = rest.totalCommission;
 
                            
 
@@ -1749,15 +1732,17 @@ export default {
 
 
 
-                            const totalComputationOthers =
-                                exempted.toUpperCase() === "NOT EXEMPTED" ||  exempted.toUpperCase() === "NOT"
-                                    ? totalOthers
-                                    : totalCommission;
-                            const depositReplenish =
-                                parseFloat(netWinLoss) -
-                                parseFloat(totalComputationOthers) -
-                                parseFloat(systemErrorCOArmsi) +
-                                (parseFloat(cashLoad) - parseFloat(cashWithdrawal));
+                            // const totalComputationOthers =
+                            //     exempted.toUpperCase() === "NOT EXEMPTED" ||  exempted.toUpperCase() === "NOT"
+                            //         ? totalOthers
+                            //         : totalCommission;
+                            // const depositReplenish =
+                            //     parseFloat(netWinLoss) -
+                            //     parseFloat(totalComputationOthers) -
+                            //     parseFloat(systemErrorCOArmsi) +
+                            //     (parseFloat(cashLoad) - parseFloat(cashWithdrawal));
+
+                            const depositReplenish = forDepositReplenish
 
 
                       
@@ -2054,7 +2039,10 @@ export default {
                 const otherCommIntMob = data.otherCommIntMob;
                 const consolCommMob = data.consolCommMob;
                 const payOutsBalMob = data.payOutsBalMob;
-
+                const depositReplenish = data.for_total
+                const totalCommission = data.totalCommission
+                const netOpCommission = data.netOperatorsCommission
+            
                 // const totalSafetyFund = parseFloat(safetyFund)+parseFloat(safetyFundMob)
                 // const totalOtherCommIntel = parseFloat(otherCommissionIntel05)+parseFloat(otherCommIntMob)
                 // const totalConsolComm = parseFloat(consolidatorsCommission)+parseFloat(consolCommMob)
@@ -2095,6 +2083,9 @@ export default {
                     otherCommIntMob: numberFormat(otherCommIntMob),
                     consolCommMob: numberFormat(consolCommMob),
                     payOutsBalMob: numberFormat(payOutsBalMob),
+                    depositReplenish: numberFormat(depositReplenish),
+                    totalCommission: numberFormat(totalCommission),
+                    netOpCommission: numberFormat(netOpCommission),
 
                     mobile: {
                         totalMWBets: numberFormat(totalMWMobile),
