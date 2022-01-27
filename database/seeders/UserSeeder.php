@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use DateTime;
 
 class UserSeeder extends Seeder
 {
@@ -26,6 +27,7 @@ class UserSeeder extends Seeder
                 'bio' =>'administrator',
                 'photo' => null,
                 'password' => Hash::make('password'),
+                'updated_at' => new DateTime(),
                 'isAdmin' => 1,
            
             ],
@@ -37,6 +39,7 @@ class UserSeeder extends Seeder
                 'bio' =>'technical department',
                 'photo' => null,
                 'password' => Hash::make('password'),
+                'updated_at' => new DateTime(),
                 'isAdmin' => 1
             ]
         ]);

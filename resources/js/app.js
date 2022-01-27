@@ -80,6 +80,7 @@ Vue.filter('numbro', function (number) {
 })
 
 Vue.prototype.$gate = new Gate(window.user)
+Vue.prototype.$moment = moment
 
 Vue.use(VueCompositionAPI);
 Vue.use(Plugin)

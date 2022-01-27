@@ -29,7 +29,7 @@
                                     class="elevation-1 text-center"
                                 >
                             <template v-slot:[`item.modify`]="{ item }">
-                                {{item.updated_at | myDate }}
+                                {{$moment(item.updated_at).format('LL LTS') }}
                             </template>
                             <template v-slot:[`item.actions`]="{ item }">
                                  
@@ -110,7 +110,7 @@
                                   
                             ></v-text-field>
 
-							<v-text-field
+							<!-- <v-text-field
                                     prepend-inner-icon="mdi-at"
                                     label="Email"
                                     placeholder="doe@gmail.com"
@@ -120,7 +120,7 @@
                                     :rules="[
                                     () =>  /.+@.+\..+/.test(form.email) || 'E-mail must be valid'
                                     ]"
-                            ></v-text-field>
+                            ></v-text-field> -->
 
                              
                             <v-text-field
@@ -245,7 +245,7 @@
             return {
                 headers: [
                     { text: 'Name', value: 'name' },
-                    { text: 'Email', value: 'email' },
+                    { text: 'Username', value: 'username' },
                     { text: 'Type', value: 'type'},
                     { text: 'Modify', value: 'modify'},
                     { text: '', value: 'actions', sortable: false },
