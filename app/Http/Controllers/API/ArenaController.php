@@ -92,14 +92,14 @@ class ArenaController extends Controller
         // foreach ($request['email'] as $email){
              Email::updateOrCreate([
                 'area_code' => $arena->area_code,
-                'email' => $email
+                'email' => $request['email']
             ]);
         // }
 
         // foreach ($request['contact_number'] as $contact){
             Contact::updateOrCreate([
                'area_code' => $arena->area_code,
-               'contact_number' => $contact
+               'contact_number' => $request['contact_number']
            ]);
     //    }
         $activity_controller = new ActivitylogsController;
