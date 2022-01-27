@@ -494,7 +494,7 @@
                                     outlined
                                     deletable-chips
                                     item-text="contact_number"
-                                    @mousedown="testEnter"
+                                 
                                 >
                                     <template
                                         v-slot:selection="{
@@ -938,9 +938,7 @@ export default {
 
             this.isExcel = false
         },
-        testEnter(item) {
-            console.log(item);
-        },
+       
         required(value) {
             if (value instanceof Array && value.length == 0) {
                 return "Email is Required.";
