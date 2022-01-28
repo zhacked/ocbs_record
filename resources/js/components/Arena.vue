@@ -1174,8 +1174,9 @@ export default {
             this.$Progress.start();
             const areaCode = this.form.arena.split(" ")[0];
             this.form.area_code = areaCode;
-            this.form.contact_number = this.contactNos.join(" / ");
-            this.form.email = this.emailsArr.join(" / "); 
+            this.form.contact_number = this.contactNos.length > 1 ? this.contactNos.join(" / "): this.contactNos.toString();
+            this.form.email = this.emailsArr.length > 1 ? this.emailsArr.join(" / ") : this.emailsArr.toString();    
+
             
             
             this.form
