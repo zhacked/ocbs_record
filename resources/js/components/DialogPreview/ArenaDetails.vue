@@ -55,7 +55,7 @@
                         "
                         :class="{'editmode-span': editmode}"
                     >
-                        <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.address"/>
+                        <input type="text" style="text-transform: uppercase;" disabled class="input-field_report computation" v-model="arenaDetails.address"/>
                     </div>
                 </div>
                 <div
@@ -83,7 +83,7 @@
                         "
                         :class="{'editmode-span': editmode}"
                     >
-                        <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.operator"/>
+                        <input type="text" style="text-transform: uppercase;" disabled class="input-field_report computation" v-model="arenaDetails.operator"/>
                     </div>
                 </div>
                 <div
