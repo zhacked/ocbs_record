@@ -490,10 +490,12 @@
                                     label="Contact Number"
                                     hint="Must be 11 digits"
                                     multiple
-                                    chips
                                     outlined
                                     deletable-chips
                                     item-text="contact_number"
+                                    :rules="[ () =>
+                                            !!contactNos ||
+                                            'This field is required']"
                                  
                                 >
                                     <template
@@ -548,7 +550,9 @@
                                     outlined
                                     deletable-chips
                                     item-text="email"
-                                    :rules="[required]"
+                                    :rules="[ () =>
+                                            !!emailsArr ||
+                                            'This field is required']"
                                 >
                                     <template
                                         v-slot:selection="{
@@ -581,8 +585,7 @@
                                                               item
                                                           )
                                                 "
-                                            >
-                                                
+                                            >   
                                             </v-icon>
                                         </v-chip>
                                     </template>
@@ -690,7 +693,6 @@ export default {
                 address: "",
                 operator: "",
                 contact_number: [],
-                email: [],
             }),
             Bankform: new Form({
                 id: "",
@@ -1128,7 +1130,8 @@ export default {
         openModal() {
             this.editmode = false;
             this.form.reset();
-
+            this.emailsArr = '';
+            this.contactNos = '';
             $("#addNew").modal("show");
         },
         deleteArena(id) {
