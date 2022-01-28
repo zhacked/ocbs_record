@@ -89,19 +89,17 @@ class ArenaController extends Controller
 
 
 
-        // foreach ($request['email'] as $email){
+   
              Email::updateOrCreate([
                 'area_code' => $arena->area_code,
                 'email' => strtoupper($request['email'])
             ]);
-        // }
-
-        // foreach ($request['contact_number'] as $contact){
+      
             Contact::updateOrCreate([
                'area_code' => $arena->area_code,
                'contact_number' => $request['contact_number']
            ]);
-    //    }
+ 
         $activity_controller = new ActivitylogsController;
         $activity_controller->arenaLogs('created',$arena->arena,'arena',$arena->id);
 
@@ -272,9 +270,18 @@ class ArenaController extends Controller
         $arena = arena::findOrFail($id);
         // delete the user
         $email = Email::where('area_code',$arena->area_code);
-
+        $contact = Contact::where('area_code',$arena->area_code);
+        $bank = BankAccount::where('area_code',$arena->area_code);
         if($email){
             $email->delete();
+        }
+
+        if($contact){
+            $contact->delete();
+        }
+
+        if($bank){
+            $bank->delete();
         }
 
         $this->Arenaactivity('deleted',$arena->arena,'arena',$arena->id);
