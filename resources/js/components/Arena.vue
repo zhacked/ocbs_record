@@ -1072,12 +1072,13 @@ export default {
             this.form.arenas_id = accounts.arenas_id;
         },
         updateArena() {
+           
             this.$Progress.start();
             const areaCode = this.form.arena.split(" ")[0];
             this.form.area_code = areaCode;
-            this.form.contact_number = this.contactNos.join(" / ");
-            this.form.email = this.emailsArr.join(" / ");    
-
+            this.form.contact_number = this.contactNos.length > 1 ? this.contactNos.join(" / "): this.contactNos.toString();
+            this.form.email = this.emailsArr.length > 1 ? this.emailsArr.join(" / ") : this.emailsArr.toString();    
+       
             this.form
                 .put("api/arena/" + this.form.id)
                 .then(() => {
@@ -1110,8 +1111,10 @@ export default {
         },
         getEmail(areaCode) {
             axios.get("api/getEmails/" + areaCode).then(({data}) => {
-         
-                const em = data[0].email.includes(" / ") ?  data[0].email.split(" / ") : [data[0].email]
+                        //   const contacts = data.length > 0 && typeof data[0].contact_number == "string" && data[0].contact_number.indexOf(' / ') > -1 ?  data[0].contact_number.split(" / ") : data.length > 0 ? [data[0].contact_number] : []
+
+                const em = data.length > 0 && data[0].email.includes(" / ") ?  data[0].email.split(" / ") : data.length > 0 ? [data[0].email] : []
+                
                 this.emailsArr = em;
               
             });
@@ -1172,7 +1175,9 @@ export default {
             const areaCode = this.form.arena.split(" ")[0];
             this.form.area_code = areaCode;
             this.form.contact_number = this.contactNos.join(" / ");
-            this.form.email = this.emailsArr.join(" / ");    
+            this.form.email = this.emailsArr.join(" / "); 
+            
+            
             this.form
                 .post("api/arena")
                 .then(() => {

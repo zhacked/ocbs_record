@@ -27,7 +27,7 @@
                         "
                         :class="{'editmode-span': editmode}"
                     >
-                        <input type="text" disabled class="input-field_report computation" v-model="arenaDetails.arena"/>
+                        <input type="text" style="text-transform: uppercase;" disabled class="input-field_report computation" v-model="arenaDetails.arena"/>
                     </div>
                 </div>
                 <div

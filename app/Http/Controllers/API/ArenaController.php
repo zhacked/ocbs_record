@@ -203,33 +203,33 @@ class ArenaController extends Controller
 
         ]);
 
-            // foreach ($request['email'] as $email){
-                    // if(!is_array($email)){
-                    //    Email::updateOrCreate([
-                    //         'area_code' => $request['area_code'],
-                    //         'email' => $request['email']
-                    //     ]);
-
-                        Email::where('area_code', $request['area_code'])->update([
-                            'email' => $request['email']
-                        ]);
-                    //  }
-            // }
-
-            // foreach ($request['contact_number'] as $contact){
-                // if(!is_array($contact)){
-                //    Contact::updateOrCreate([
-                //         'area_code' => $request['area_code'],
-                //         'contact_number' => $request['contact_number']
-                //     ]);
-
-                Contact::where('area_code', $request['area_code'])->update([
+    
+                        if(Email::where('area_code',$request['area_code'])->exists()) {
+                            Email::where('area_code',$request['area_code'])->update([
+                                'email' => $request['email']
+                            ]);
+                        }else{
+                            Email::updateOrCreate([
+                                'area_code' => $request['area_code'],
+                                'email' => $request['email']
+                            ]);
+                        }
+                        
+        
+                if(Contact::where('area_code',$request['area_code'])->exists()) {
+                    Contact::where('area_code',$request['area_code'])->update([
                         'contact_number' => $request['contact_number']
                     ]);
+                }else{
+                    Contact::create([
+                        'area_code' => $request['area_code'],
+                        'contact_number' => $request['contact_number']
+                    ]);
+                }
 
 
-                //  }
-        // }
+
+            
      
         $this->Arenaactivity('updated',$arenas->arena,'arena',$arenas->id);
         return ['message' => 'Updated the arena details'];
