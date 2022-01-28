@@ -78,10 +78,10 @@ class ArenaController extends Controller
         ]);
 
         $arena =  arena::create([
-            'area_code' => $request['area_code'],
-            'arena' => $request['arena'],
-            'address' => $request['address'],
-            'operator' => $request['operator'],
+            'area_code' => strtoupper($request['area_code']),
+            'arena' => strtoupper($request['arena']),
+            'address' => strtoupper($request['address']),
+            'operator' => strtoupper($request['operator']),
             'contact_number' => 'xxxxx',
 
         ]);
@@ -92,7 +92,7 @@ class ArenaController extends Controller
         // foreach ($request['email'] as $email){
              Email::updateOrCreate([
                 'area_code' => $arena->area_code,
-                'email' => $request['email']
+                'email' => strtoupper($request['email'])
             ]);
         // }
 
@@ -187,7 +187,7 @@ class ArenaController extends Controller
 
         $arenas = arena::with('BankDetails')->findOrFail($id);
 
-
+        
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
@@ -196,9 +196,9 @@ class ArenaController extends Controller
         ]);
 
         $arena = arena::with('BankDetails')->where('id',$id)->update([
-            'arena' => $request['arena'],
-            'address' => $request['address'],
-            'operator' => $request['operator'],
+            'arena' => strtoupper($request['arena']),
+            'address' => strtoupper($request['address']),
+            'operator' => strtoupper($request['operator']),
             'contact_number' => 'xxxxxxx',
 
         ]);
@@ -206,12 +206,12 @@ class ArenaController extends Controller
     
                         if(Email::where('area_code',$request['area_code'])->exists()) {
                             Email::where('area_code',$request['area_code'])->update([
-                                'email' => $request['email']
+                                'email' => strtoupper($request['email'])
                             ]);
                         }else{
                             Email::updateOrCreate([
-                                'area_code' => $request['area_code'],
-                                'email' => $request['email']
+                                'area_code' => strtoupper($request['area_code']),
+                                'email' => strtoupper($request['email'])
                             ]);
                         }
                         

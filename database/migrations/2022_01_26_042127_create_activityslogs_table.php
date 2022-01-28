@@ -32,6 +32,6 @@ class CreateActivityslogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('activityslogs');
+        Schema::connection('mysql2')->dropIfExists('activityslogs');
     }
 }

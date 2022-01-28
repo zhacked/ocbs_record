@@ -9,13 +9,15 @@
             </v-btn> -->
             <v-row class="mt-3">
                 <v-col class="col-md-12">
-
                             <v-row>
                                  <v-spacer></v-spacer>
                                   <v-spacer></v-spacer>
-                                <v-col v-show="$gate.isAdmin()">
-                                  
-                                   <v-file-input
+                                <v-tooltip top color="success">
+                                <template v-slot:activator="{ on, attrs }">
+                                <v-col v-show="$gate.isAdmin()"   v-bind="attrs"
+                                            v-on="on">
+                                   
+                                        <v-file-input
                                             dense
                                             v-model="fileUpload"
                                             color="deep-purple accent-4"
@@ -26,6 +28,7 @@
                                             append-icon="mdi-file-import"
                                             :show-size="1000"
                                             @change="onFileChange($event)"
+                                          
                                          
                                            
                                           
@@ -59,11 +62,12 @@
                                                 >
                                                     {{ text }}
                                                 </v-chip>
-
-                                            
                                             </template>
-                                        </v-file-input>
+                                        </v-file-input>    
                                 </v-col>
+                                </template>
+                                    <span ><v-icon class="white--text">mdi-information-variant</v-icon>Click it and start upload your excel file</span>
+                                </v-tooltip>
                               
                             </v-row>
                          
@@ -113,14 +117,24 @@
                                     id="custom-tabs-three-tabContent active show"
                                 >
                                     <v-row>
-                                     
-                                        <v-col>
-                                        <v-switch
-                                            v-model="switchPrepared"
-                                            label="Preparation"
-                                            @change="handleSwitchPrepared"
+                                        <v-col >
+                                            <v-tooltip bottom color="success">
+                                            <template v-slot:activator="{ on, attrs }">
+                                            <div
+                                                v-bind="attrs"
+                                                v-on="on"
+                                            >
+                                            
+                                            <v-switch
+                                                v-model="switchPrepared"
+                                                label="Preparation"
+                                                @change="handleSwitchPrepared"
+                                                
                                             ></v-switch>
-
+                                            </div>
+                                            </template>
+                                            <span ><v-icon class="white--text">mdi-information-variant</v-icon>{{switchPrepared === true ? "On" : 'Off'}}</span>
+                                            </v-tooltip>  
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col>
