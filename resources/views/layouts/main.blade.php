@@ -9,7 +9,7 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
-	<title>{{ config('app.name', 'OCBS Report') }}</title>
+	<title>{{ config('', 'Kiosk SOA') }}</title>
 	<link rel="shortcut icon" href="{{ asset('image/icons8-calculator-48.png') }}">
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/custom.css') }}" rel="stylesheet">
