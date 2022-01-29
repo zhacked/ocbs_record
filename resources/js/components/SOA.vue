@@ -66,7 +66,7 @@
                                         </v-file-input>    
                                 </v-col>
                                 </template>
-                                    <span ><v-icon class="white--text">mdi-information-variant</v-icon>Click it and start upload your excel file</span>
+                                    <span ><v-icon class="white--text">mdi-information-variant</v-icon>Click and Start upload your Excel File</span>
                                 </v-tooltip>
                               
                             </v-row>
@@ -120,20 +120,19 @@
                                         <v-col >
                                             <v-tooltip bottom color="success">
                                             <template v-slot:activator="{ on, attrs }">
-                                            <div
-                                                v-bind="attrs"
-                                                v-on="on"
-                                            >
-                                            
-                                            <v-switch
-                                                v-model="switchPrepared"
-                                                label="Preparation"
-                                                @change="handleSwitchPrepared"
-                                                
-                                            ></v-switch>
-                                            </div>
+                                                <div
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                >
+                                                    <v-switch
+                                                        v-model="switchPrepared"
+                                                        label="Preparation"
+                                                        @change="handleSwitchPrepared"
+                                                        
+                                                    ></v-switch>
+                                                </div>
                                             </template>
-                                            <span ><v-icon class="white--text">mdi-information-variant</v-icon>{{switchPrepared === true ? "On" : 'Off'}}</span>
+                                            <span ><v-icon class="white--text">mdi-information-variant</v-icon>{{switchPrepared === true ? 'Signature is Available, Click here to HIDE' : 'Signature is Hidden, Click here to SHOW'}}</span>
                                             </v-tooltip>  
                                         </v-col>
                                         <v-spacer></v-spacer>
@@ -361,24 +360,31 @@
                                             </template>
                                         </v-data-table>
 
-
-                                        <v-btn
-                                            v-show="
-                                                arenaData.data &&
-                                                arenaData.data.length > 0
-                                                && $gate.isAdmin()
-                                            "
-                                            :loading="downloadingReport"
-                                            :disabled="downloadingReport"
-                                            @click="truncate"
-                                            color="red lighten-1"
-                                            class="ma-2 white--text"
-                                        >
-                                            Clear Data
-                                            <v-icon right dark>
-                                                mdi-backspace
-                                            </v-icon>
-                                        </v-btn>
+                                         <v-tooltip bottom color="error">
+                                            <template v-slot:activator="{ on, attrs }">
+                                               <v-btn
+                                                    v-show="
+                                                        arenaData.data &&
+                                                        arenaData.data.length > 0
+                                                        && $gate.isAdmin()
+                                                    "
+                                                    :loading="downloadingReport"
+                                                    :disabled="downloadingReport"
+                                                    @click="truncate"
+                                                    color="red lighten-1"
+                                                    class="ma-2 white--text"
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                >
+                                                    Clear Data
+                                                    <v-icon right dark>
+                                                        mdi-backspace
+                                                    </v-icon>
+                                                </v-btn>
+                                            </template>
+                                          <span ><v-icon class="white--text">mdi-alert-outline</v-icon> Please call admin/technical before to clear all data</span>
+                                        </v-tooltip>
+                                       
                                     </div>
 
                                     <div
@@ -422,8 +428,9 @@
                                             }"
                                             @toggle-select-all="selectAllToggle"
                                         >
-                                         <template v-slot:[`group.header`]="{ group, headers, toggle, isOpen }">
-                                 
+                                        
+                                        <template v-slot:[`group.header`]="{ group, headers, toggle, isOpen }">
+                                            
                                         <td :colspan="headers.length">
                                                 <v-row>
                                                     <v-col class="mt-2 ">
@@ -976,8 +983,10 @@
                                                             computation
                                                         "
                                                     />
+                                                   
                                                     <span v-if="computedAve.depositReplenishText.dateText === 'FR'" class="text-xs my-2" style="color: #E64A19">Please be advised that replenishment are only available during banking days. We allow offsetting of pending remittances and replenishments during non-banking days.</span>
                                                     <BankBox
+                                                        v-show="computedAve.depositReplenishText.dateText === 'SOA' || (computedAve.depositReplenishText.dateText === 'FR' && this.banks.length != 0)"
                                                         :bank="bank || {}"
                                                         :banks="banks || []"
                                                         :bankAccounts="

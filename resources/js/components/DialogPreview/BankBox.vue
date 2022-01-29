@@ -2,7 +2,7 @@
     <v-row>
         
         <div class="bank-wrapper mt-3 mb-2"  style="padding-left:30px; padding-right:30px; !important;">
-            <div class="bank-headline mr-6">
+            <div class="bank-headline mr-6"     >
                 <span>{{depositReplenishText.bankTitle}}: </span>
             </div>
 
@@ -29,7 +29,7 @@
             </div>
          
             <div class="bank-container d-flex justify-center align-center" v-else >
-                <div class="bank bank1">  
+                <div class="bank bank1" >  
                     <span class="text-sm font-weight-medium bank_account-name">{{Object.values(bankTarget).length ? bankTarget.account_name : banks.length > 0 ? banks[0].account_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].account_name : operatorName}}</span>
                    
                     <span v-if="!editmode" class="text-sm font-weight-medium"> {{ Object.values(bankTarget).length ? bankTarget.bank_name : banks.length > 0 ? banks[0].bank_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_name : '' }}</span>
