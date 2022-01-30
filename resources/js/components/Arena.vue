@@ -994,7 +994,7 @@ export default {
             this.bankDetails = data.bank_details;
             this.Bankform.arenas_id = data.id;
             this.Bankform.area_code = data.area_code;
-            this.Bankform.account_name = data.operator;
+            // this.Bankform.account_name = data.operator;
         },
         createBank() {
             this.$Progress.start();

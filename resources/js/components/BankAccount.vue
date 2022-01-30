@@ -44,7 +44,7 @@
                                                 dark
                                                 v-bind="attrs"
                                                 v-on="on"
-                                                @click="editModal(item)"
+                                                @click="editModal"
                                                 >
                                                 <i class="fas fa-edit"></i>
                                                 </v-btn>
@@ -168,13 +168,13 @@
                 this.form.reset();
                 $('#addNew').modal('show');
             },
-            editModal(accounts){
+            editModal(){
                 this.editmode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
-                this.form.fill(accounts);
+                // this.form.fill(accounts);
                 this.form.arenas_id = accounts.arenas_id;
-                console.log(accounts);
+                // console.log(accounts);
                 
             },
             loadDetails(){

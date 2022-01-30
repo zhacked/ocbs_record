@@ -2117,16 +2117,16 @@ export default {
                 };
             }
 
-            this.arenaSelectedBank(
-                data && data.arena_details.bank_id
-            );
+            // this.arenaSelectedBank(
+            //     data && data.arena_details.bank_id
+            // );
 
 
-            this.emailFormat = this.defineEmail(
+            this.emailFormat =  (data.arena_details && data.arena_details.email_details) && this.defineEmail(
                 data && data.arena_details.email_details
             );
 
-            this.contactFormat = this.defineContact(data && data.arena_details.contact_details)
+            this.contactFormat = (data.arena_details && data.arena_details.contact_details) && this.defineContact(data && data.arena_details.contact_details)
 
 
 
