@@ -492,12 +492,26 @@
                                     multiple
                                     outlined
                                     deletable-chips
-                                    item-text="contact_number"
+                                
+                                    item-text="id"
+                                    item-value="id"
                                     :rules="[ () =>
                                             !!contactNos ||
                                             'This field is required']"
                                  
                                 >
+
+                                    <!-- small-chips -->
+
+                                  <!-- :key="
+                                                JSON.stringify(
+                                                    item.contact_number
+                                                )
+                                            " -->
+
+                                              <!-- typeof item === "object"
+                                                        ? item.contact_number
+                                                        : item -->
                                     <template
                                         v-slot:selection="{
                                             item,
@@ -507,21 +521,19 @@
                                             parent,
                                         }"
                                     >
+
+                                     
                                         <v-chip
-                                            :key="
-                                                JSON.stringify(
-                                                    item.contact_number
-                                                )
-                                            "
+                                            :key="item.id"
                                             v-bind="attrs"
                                             :input-value="selected"
                                             :disabled="disabled"
+                                            
                                         >
+                                      
                                             <span class="pr-2">
                                                 {{
-                                                    typeof item === "object"
-                                                        ? item.contact_number
-                                                        : item
+                                                    item
                                                 }}
                                             </span>
                                             <v-icon
@@ -534,7 +546,7 @@
                                                           )
                                                 "
                                             >
-                                             
+                                             mdi-close
                                             </v-icon>
                                         </v-chip>
                                     </template>
@@ -693,6 +705,7 @@ export default {
                 address: "",
                 operator: "",
                 contact_number: [],
+                email: []
             }),
             Bankform: new Form({
                 id: "",
@@ -959,6 +972,7 @@ export default {
             });
         },
         removeContact(id) {
+            console.log(id)
             console.log(this.form.area_code);
             axios.delete("api/deleteContact/" + id).then((data) => {
                 Fire.$emit("AfterCreate");
@@ -1074,13 +1088,13 @@ export default {
             this.form.arenas_id = accounts.arenas_id;
         },
         updateArena() {
-           
+         
             this.$Progress.start();
             const areaCode = this.form.arena.split(" ")[0];
             this.form.area_code = areaCode;
-            this.form.contact_number = this.contactNos.length > 1 ? this.contactNos.join(" / "): this.contactNos.toString();
-            this.form.email = this.emailsArr.length > 1 ? this.emailsArr.join(" / ") : this.emailsArr.toString();    
-       
+            this.form.contact_number = this.contactNos == "" ? null : this.contactNos.length > 1 ? this.contactNos.join(" / "): this.contactNos.toString();
+            this.form.email = this.emailsArr == "" ? null : this.emailsArr.length > 1 ? this.emailsArr.join(" / ") : this.emailsArr.toString();    
+            console.log(this.form)
             this.form
                 .put("api/arena/" + this.form.id)
                 .then(() => {
@@ -1110,12 +1124,14 @@ export default {
 
             this.getEmail(arenas.area_code);
             this.getContacts(arenas.area_code);
+
+            console.log(arenas)
         },
         getEmail(areaCode) {
             axios.get("api/getEmails/" + areaCode).then(({data}) => {
                         //   const contacts = data.length > 0 && typeof data[0].contact_number == "string" && data[0].contact_number.indexOf(' / ') > -1 ?  data[0].contact_number.split(" / ") : data.length > 0 ? [data[0].contact_number] : []
 
-                const em = data.length > 0 && data[0].email.includes(" / ") ?  data[0].email.split(" / ") : data.length > 0 ? [data[0].email] : []
+                const em = data.length > 0 && data[0].email?.includes(" / ") ?  data[0].email.split(" / ") : data.length > 0 ? [data[0].email] : []
                 
                 this.emailsArr = em;
               
@@ -1123,7 +1139,9 @@ export default {
         },
         getContacts(areaCode) {
             axios.get("api/getContacts/" + areaCode).then(({data}) => {
-                const contacts = data[0].contact_number.includes(" / ") ? data[0].contact_number.split(" / ") :  [data[0].contact_number]
+          
+                const contacts = data.length > 0 && data[0].contact_number?.includes(" / ") ? data[0].contact_number.split(" / ") :  data.length > 0 ? [data[0].contact_number] : []
+              
                 this.contactNos = contacts
             });
         },
@@ -1177,26 +1195,29 @@ export default {
             this.$Progress.start();
             const areaCode = this.form.arena.split(" ")[0];
             this.form.area_code = areaCode;
-            this.form.contact_number = this.contactNos.length > 1 ? this.contactNos.join(" / "): this.contactNos.toString();
-            this.form.email = this.emailsArr.length > 1 ? this.emailsArr.join(" / ") : this.emailsArr.toString();    
+            this.form.contact_number = !this.contactNos ? null : this.contactNos.length > 1 ? this.contactNos.join(" / "): this.contactNos.toString();
+            this.form.email = !this.emailsArr ? null : this.emailsArr.length > 1 ? this.emailsArr.join(" / ") : this.emailsArr.toString();  
+            
+            
+            
 
             
             
-            this.form
-                .post("api/arena")
-                .then(() => {
-                    Fire.$emit("AfterCreate");
-                    $("#addNew").modal("hide");
-                    Toast.fire({
-                        icon: "success",
-                        title: "Successfully Created",
-                    });
+            // this.form
+            //     .post("api/arena")
+            //     .then(() => {
+            //         Fire.$emit("AfterCreate");
+            //         $("#addNew").modal("hide");
+            //         Toast.fire({
+            //             icon: "success",
+            //             title: "Successfully Created",
+            //         });
 
-                    this.$Progress.finish();
-                })
-                .catch((e) => {
-                    console.log(e);
-                });
+            //         this.$Progress.finish();
+            //     })
+            //     .catch((e) => {
+            //         console.log(e);
+            //     });
         },
     },
     created() {

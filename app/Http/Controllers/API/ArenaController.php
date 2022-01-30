@@ -34,6 +34,7 @@ class ArenaController extends Controller
     {
          return arena::with([
             'ContactDetails',
+            'EmailDetails',
             'BankDetails.BankActivity' => function ($q){
                return $q->where('description','updated')->latest();
             } 
@@ -89,16 +90,22 @@ class ArenaController extends Controller
 
 
 
-   
-             Email::updateOrCreate([
+        if($request['email']) {
+            Email::updateOrCreate([
                 'area_code' => $arena->area_code,
                 'email' => strtoupper($request['email'])
             ]);
-      
+        }
+        
+        if($request['contact_number']) {
             Contact::updateOrCreate([
-               'area_code' => $arena->area_code,
-               'contact_number' => $request['contact_number']
-           ]);
+                'area_code' => $arena->area_code,
+                'contact_number' => $request['contact_number']
+            ]);
+        }
+             
+      
+           
  
         $activity_controller = new ActivitylogsController;
         $activity_controller->arenaLogs('created',$arena->arena,'arena',$arena->id);
@@ -201,29 +208,37 @@ class ArenaController extends Controller
 
         ]);
 
-    
-                        if(Email::where('area_code',$request['area_code'])->exists()) {
-                            Email::where('area_code',$request['area_code'])->update([
-                                'email' => strtoupper($request['email'])
-                            ]);
-                        }else{
-                            Email::updateOrCreate([
-                                'area_code' => strtoupper($request['area_code']),
-                                'email' => strtoupper($request['email'])
-                            ]);
-                        }
-                        
-        
-                if(Contact::where('area_code',$request['area_code'])->exists()) {
-                    Contact::where('area_code',$request['area_code'])->update([
-                        'contact_number' => $request['contact_number']
-                    ]);
-                }else{
-                    Contact::create([
-                        'area_code' => $request['area_code'],
-                        'contact_number' => $request['contact_number']
-                    ]);
+        if($request['email']) {
+            if(Email::where('area_code',$request['area_code'])->exists()) {
+                Email::where('area_code',$request['area_code'])->update([
+                    'email' => $request['email']
+            ]);
+            }else{
+                Email::updateOrCreate([
+                    'area_code' => strtoupper($request['area_code']),
+                        'email' => $request['email']
+                        ]);
                 }
+                     
+        }else if(Email::where('area_code',$request['area_code'])->exists() && !$request['email']){
+            Email::where('area_code',$request['area_code'])->delete();
+        }
+          
+        if($request['contact_number']) {
+            if(Contact::where('area_code',$request['area_code'])->exists()) {
+                Contact::where('area_code',$request['area_code'])->update([
+                    'contact_number' => $request['contact_number']
+                ]);
+            }else{
+                Contact::create([
+                    'area_code' => $request['area_code'],
+                    'contact_number' => $request['contact_number']
+                ]);
+            }
+        }else if(Contact::where('area_code',$request['area_code'])->exists() && !$request['contact_number']){
+            Contact::where('area_code',$request['area_code'])->delete();
+        }
+              
 
 
 
