@@ -30,7 +30,7 @@
          
             <div class="bank-container d-flex justify-center align-center" v-else >
                 <div class="bank bank1" >  
-                    <span class="text-sm font-weight-medium bank_account-name">{{Object.values(bankTarget).length ? bankTarget.account_name : banks.length > 0 ? banks[0].account_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].account_name : operatorName}}</span>
+                    <span class="text-sm font-weight-medium bank_account-name">{{Object.values(bankTarget).length ? bankTarget.account_name : banks.length > 0 ? banks[0].account_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].account_name : ''}}</span>
                    
                     <span v-if="!editmode" class="text-sm font-weight-medium"> {{ Object.values(bankTarget).length ? bankTarget.bank_name : banks.length > 0 ? banks[0].bank_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_name : '' }}</span>
                     <span  class="select-field_container" :class="{'editmode-span': editmode}">
