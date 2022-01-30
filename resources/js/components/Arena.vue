@@ -492,12 +492,10 @@
                                     multiple
                                     outlined
                                     deletable-chips
-                                
-                                    item-text="id"
-                                    item-value="id"
-                                    :rules="[ () =>
-                                            !!contactNos ||
-                                            'This field is required']"
+                                    chips
+                                    item-text="contact_number"
+                               
+                                   
                                  
                                 >
 
@@ -512,7 +510,7 @@
                                               <!-- typeof item === "object"
                                                         ? item.contact_number
                                                         : item -->
-                                    <template
+                                    <!-- <template
                                         v-slot:selection="{
                                             item,
                                             attrs,
@@ -549,7 +547,7 @@
                                              mdi-close
                                             </v-icon>
                                         </v-chip>
-                                    </template>
+                                    </template> -->
                                 </v-combobox>
 
                                 <v-combobox
@@ -562,11 +560,9 @@
                                     outlined
                                     deletable-chips
                                     item-text="email"
-                                    :rules="[ () =>
-                                            !!emailsArr ||
-                                            'This field is required']"
+                                    
                                 >
-                                    <template
+                                    <!-- <template
                                         v-slot:selection="{
                                             item,
                                             attrs,
@@ -600,7 +596,7 @@
                                             >   
                                             </v-icon>
                                         </v-chip>
-                                    </template>
+                                    </template> -->
                                 </v-combobox>
                             </div>
                             <div class="modal-footer">
