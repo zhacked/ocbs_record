@@ -1,7 +1,7 @@
 <template>
     <v-row>
         
-        <div class="bank-wrapper mt-3 mb-2"  style="padding-left:30px; padding-right:30px; !important;">
+        <div class="bank-wrapper mt-3 mb-2"  style="padding-left:30px; padding-right:30px; !important; min-height: 50px;">
             <div class="bank-headline mr-6"     >
                 <span>{{depositReplenishText.bankTitle}}: </span>
             </div>
