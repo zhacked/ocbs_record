@@ -12,10 +12,8 @@
                             <v-row>
                                  <v-spacer></v-spacer>
                                   <v-spacer></v-spacer>
-                                <v-tooltip top color="success">
-                                <template v-slot:activator="{ on, attrs }">
-                                <v-col v-show="$gate.isAdmin()"   v-bind="attrs"
-                                            v-on="on">
+                               
+                                <v-col v-show="$gate.isAdmin()">
                                    
                                         <v-file-input
                                             dense
@@ -63,12 +61,10 @@
                                                     {{ text }}
                                                 </v-chip>
                                             </template>
-                                        </v-file-input>    
+                                        </v-file-input>
+                                        
                                 </v-col>
-                                </template>
-                                    <span ><v-icon class="white--text">mdi-information-variant</v-icon>Click and Start upload your Excel File</span>
-                                </v-tooltip>
-                              
+                                
                             </v-row>
                          
                     
@@ -118,22 +114,14 @@
                                 >
                                     <v-row>
                                         <v-col >
-                                            <v-tooltip bottom color="success">
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <div
-                                                    v-bind="attrs"
-                                                    v-on="on"
-                                                >
+                                            
                                                     <v-switch
                                                         v-model="switchPrepared"
-                                                        label="Preparation"
+                                                        :label="`Signatory ${switchPrepared ? 'On': 'Off'}`"
                                                         @change="handleSwitchPrepared"
                                                         
                                                     ></v-switch>
-                                                </div>
-                                            </template>
-                                            <span ><v-icon class="white--text">mdi-information-variant</v-icon>{{switchPrepared === true ? 'Signature is Available, Click here to HIDE' : 'Signature is Hidden, Click here to SHOW'}}</span>
-                                            </v-tooltip>  
+                                            
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col>
