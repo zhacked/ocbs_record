@@ -870,6 +870,7 @@ export default {
                     });
 
                     removeFirstObjectTitle.forEach((foh) => {
+                        console.log(foh)
                         if (foh.bankName !== "" || foh.bankNumber !== "")
                             this.bankList.push({
                                 account_name: foh.accountName,
@@ -886,7 +887,7 @@ export default {
                             area_code: foh.code,
                             address: foh.address,
                             operator: foh.operatorsName,
-                            team: foh.team.toLowerCase(),
+                            team: foh.team && foh.team.toLowerCase(),
                             contact_number: "xxxxxxx",
                         });
 
@@ -1199,21 +1200,21 @@ export default {
 
             
             
-            // this.form
-            //     .post("api/arena")
-            //     .then(() => {
-            //         Fire.$emit("AfterCreate");
-            //         $("#addNew").modal("hide");
-            //         Toast.fire({
-            //             icon: "success",
-            //             title: "Successfully Created",
-            //         });
+            this.form
+                .post("api/arena")
+                .then(() => {
+                    Fire.$emit("AfterCreate");
+                    $("#addNew").modal("hide");
+                    Toast.fire({
+                        icon: "success",
+                        title: "Successfully Created",
+                    });
 
-            //         this.$Progress.finish();
-            //     })
-            //     .catch((e) => {
-            //         console.log(e);
-            //     });
+                    this.$Progress.finish();
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
         },
     },
     created() {
