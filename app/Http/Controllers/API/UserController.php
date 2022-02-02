@@ -122,6 +122,7 @@ class UserController extends Controller
             }
 
         $this->Profileactivity('updated',$user->username,'profile',$user->id);
+        
         $user->update($request->all());
         return ['message' => "Success"];
     }
