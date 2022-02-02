@@ -46,7 +46,7 @@
                                  <span class="font-weight-medium">{{item.name != null ? item.name.toUpperCase() : item.name }}</span>
                             </template>
                             <template v-slot:[`item.user_details`]="{ item }">
-                                <div class="d-flex flex-column">
+                                <div class="d-flex flex-column text-center">
                                     <span class="font-weight-medium">{{ item.user_details && item.user_details.name }}</span>
                                     <span class="caption">{{ (item.user_details && item.user_details.position_details) ? item.user_details.position_details.position : ''}}</span>
                                 </div>                          

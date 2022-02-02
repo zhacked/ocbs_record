@@ -111,17 +111,25 @@
                                                      
                                                     </v-col>
                                                     <v-col>
+
                                                       <div class=" float-right">
+                                                        <v-tooltip top color="green">
+                                                            <template v-slot:activator="{ on, attrs }"> 
                                                            <v-btn 
                                                             small  
                                                             @click="convertToExcel(group, 'Deposit')"
                                                             outlined
                                                             color="green" 
+                                                            v-bind="attrs"
+                                                            v-on="on"
                                                            >
                                                                <v-icon left>
                                                                     mdi-download
                                                                 </v-icon>  Download
                                                             </v-btn>
+                                                          </template>
+                                                        <span>Convert to Excel</span>
+                                                        </v-tooltip>
                                                       </div>
                                                     </v-col>
                                                 </v-row>
