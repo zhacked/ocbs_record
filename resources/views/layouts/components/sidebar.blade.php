@@ -68,7 +68,7 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <router-link to="/users" class="nav-link">
-                                <i class="fa fa-users-cog nav-icon"></i>
+                                <i class="fa fa-users-cog "></i>
                                 <p>User</p>
                             </router-link>
                         </li>
@@ -76,26 +76,26 @@
 
 						<li class="nav-item">
 							<router-link to="/teams" class="nav-link ">
-								<i class="nav-icon fa fa-users"></i>
+								<i class="fa fa-users"></i>
 								<p>Teams</p>
 							</router-link>
 						</li>
 					
 						<li class="nav-item">
 							<router-link to="/bankaccount" class="nav-link ">
-								<i class="nav-icon fa fa-money-check-alt"></i>
+								<i class="fa fa-money-check-alt"></i>
 								<p>Bank Details</p>
 							</router-link>
 						</li>
 						<li class="nav-item">
 							<router-link to="/position" class="nav-link ">
-								<i class="nav-icon  fas fa-user-secret"></i>
+								<i class="fas fa-user-secret"></i>
 								<p>Position</p>
 							</router-link>
 						</li>
 						<li class="nav-item">
 							<router-link to="/chooserecord" class="nav-link ">
-								<i class="nav-icon  fas fa-mouse-pointer"></i>
+								<i class="fas fa-mouse-pointer"></i>
 								<p>Choose Record</p>
 							</router-link>
 						</li>
