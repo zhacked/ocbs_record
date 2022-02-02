@@ -1197,9 +1197,6 @@ export default {
             
             
             
-
-            
-            
             this.form
                 .post("api/arena")
                 .then(() => {
