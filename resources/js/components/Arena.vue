@@ -91,7 +91,7 @@
                                     <span>{{item.team && item.team.toUpperCase()}}</span>
                                 </template>
                                 <template v-slot:[`item.bank`]="{ item }">
-                                    <v-tooltip top>
+                                    <v-tooltip top color="green">
                                         <template
                                             v-slot:activator="{ on, attrs }"
                                         >
@@ -110,7 +110,7 @@
                                 </template>
                               
                                 <template v-slot:[`item.actions`]="{ item }">
-                                    <v-tooltip top>
+                                    <v-tooltip top color="primary">
                                         <template
                                             v-slot:activator="{ on, attrs }"
                                         >
@@ -128,7 +128,7 @@
                                         </template>
                                         <span>Update Arena</span>
                                     </v-tooltip>
-                                    <v-tooltip top>
+                                    <v-tooltip top color="red">
                                         <template
                                             v-slot:activator="{ on, attrs }"
                                         >
@@ -150,36 +150,7 @@
                             </v-data-table>
                         </v-col>
                     </v-row>
-                    <!-- <v-row>
-                           <v-col>
-                            <v-container>
-                                <h1>Arena Logs</h1>
-                                <v-text-field
-                                    v-model="searchlogs"
-                                    append-icon="mdi-magnify"
-                                    label="Search Logs"
-                                    color="purple darken-1"
-                                    clearable
-                                ></v-text-field>
-                                <v-data-table
-                                    :headers="activityHeaders"
-                                    :items="arenalogs"
-                                    :items-per-page="10"
-                                    :search="searchlogs"
-                                    class="elevation-1 text-center"
-                                >
-
-
-                                <template v-slot:[`item.description`]="{ item }">
-                                    <p> <strong>{{item.description | upText }} {{item.subject_type}}</strong>  details in {{item.properties !== null ? item.properties : 'some'  }} data on <strong>{{item.created_at | myDatewithtime}}</strong></p>
-                                    
-                                </template>
-                              
-                                </v-data-table>
-                            </v-container>
- 
-                        </v-col>
-                    </v-row> -->
+            
                 </v-col>
             </v-row>
 

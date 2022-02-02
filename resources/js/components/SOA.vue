@@ -311,7 +311,7 @@
                                                     item,
                                                 }"
                                             >
-                                                <v-tooltip top>
+                                                <v-tooltip top color="primary">
                                                     <template
                                                         v-slot:activator="{
                                                             on,
@@ -530,7 +530,7 @@
                                                     item,
                                                 }"
                                             >
-                                                <v-tooltip top>
+                                                <v-tooltip top color="primary">
                                                     <template
                                                         v-slot:activator="{
                                                             on,
