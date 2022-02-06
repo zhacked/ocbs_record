@@ -300,7 +300,6 @@ export default {
                 XLSX.write(workbooks,{bookType:'xlsx',type:'buffer'}),
                 XLSX.write(workbooks,{bookType:'xlsx',type:'binary'}),
                 
-                console.log(worksheet),
                 XLSX.writeFile(workbooks,`${deprep}-${moment(date).format('MMDDYY')}.xlsx`)
 
                 ));
