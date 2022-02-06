@@ -307,6 +307,15 @@
                                                     @input="select($event)"
                                                 ></v-simple-checkbox>
                                             </template>
+                                             <template v-slot:[`item.areaCode`]="{ item }">
+                                               <span class="font-weight-medium">{{item.arena_details.area_code}}</span>
+                                            </template>
+                                             <template v-slot:[`item.refNo`]="{ item }">
+                                               <span class="font-weight-medium">{{item.refNo}}</span>
+                                            </template>
+                                            <template v-slot:[`item.arena_name`]="{ item }">
+                                               <span class="font-weight-medium">{{item.arena_details.arena}}</span>
+                                            </template>
 
                                            
 
@@ -1578,18 +1587,15 @@ export default {
 
                     const objKeySummary = objectKeyed(summaryReport, 6);
 
-                    console.log('xxxxxxxxxxxxxxx',objKeySummary)
-
                     objKeySummary.forEach(function (item) {
-                        // console.log('ITEMxxxx',item)
+                    
                         const existing = objMobileKiosk.filter((v, i) => {
                             
                             if (
                                 v.type === "KIOSK" &&
                                 v.areaCode == item.areaCode
                             ){
-                                // console.log(v.type,  v.areaCode)
-
+                              
                                  return v.areaCode == item.areaCode;
                             }
                                
@@ -1623,7 +1629,6 @@ export default {
                         }
                     });
 
-                     console.log('OBJMOBILEKIOSK>>>>',objMobileKiosk)
 
                     let helper = {};
                     const result = objMobileKiosk.reduce(function (r, o) {
@@ -1737,15 +1742,10 @@ export default {
                             //     parseFloat(totalSafetyFund) -
                             //     parseFloat(totalPaymentForOutstandingBalance);
                             const totalCommission = rest.totalCommission;
-
-                           
-
                             const cashLoad = rest.cashLoad;
                             const cashWithdrawal = rest.cashWithdrawal;
                             const totalOthers = rest.totalOthers;
                             const systemErrorCOArmsi = rest.systemErrorCOArmsi;
-
-
 
                             // const totalComputationOthers =
                             //     exempted.toUpperCase() === "NOT EXEMPTED" ||  exempted.toUpperCase() === "NOT"
@@ -1758,9 +1758,6 @@ export default {
                             //     (parseFloat(cashLoad) - parseFloat(cashWithdrawal));
 
                             const depositReplenish = rest.forDepositReplenish
-
-
-                      
 
                             const soaFr =
                                 parseFloat(depositReplenish) < 0 ? "fr" : "soa";
@@ -1830,9 +1827,7 @@ export default {
                         }
                     );
 
-
                     const removeLucky = removeKeyReportObject.filter(removeLuck => (removeLuck.areaCode !== 'LUCKY' || removeLuck.arena_name.split(' ')[0] !== 'LUCKY'))
-
 
                     // group fr and soa
                     const groupSOAFR = removeLucky.reduce(function (
@@ -1845,12 +1840,9 @@ export default {
                     },
                     Object.create(null));
 
-
-
                     const moLetter = String.fromCharCode(
                         96 + (moment(eventDateCreated).month() + 1)
                     ).toUpperCase();
-
 
                     const sortSoa = sortBy(groupSOAFR.soa, [
                         function (o) {
@@ -1887,8 +1879,6 @@ export default {
                             return o.areaCode;
                         },
                     ]);
-
-                    console.log(sortReport)
 
                     this.ocbsArrayFiltered = sortReport;
 

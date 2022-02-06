@@ -67969,6 +67969,16 @@ readers do not read off random characters that represent icons */
   overflow: hidden;
   }
 
+  .custom-textarea{
+    height: 48px;
+  }
+  .custom-textarea_field{
+    resize: none;
+    overflow: hidden !important;
+    width: 100%;
+    word-wrap: break-word
+  }
+
   .editmode-span {
 	border: 1px solid #40916C;
   }
