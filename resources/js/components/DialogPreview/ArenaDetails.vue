@@ -28,7 +28,9 @@
                         "
                         :class="{'editmode-span': editmode}"
                     >
-                        <input type="text" style="text-transform: uppercase;" disabled class="input-field_report computation font-weight-bold" v-model="arenaDetails.arena"/>
+                        <!-- <input type="text" style="text-transform: uppercase;" disabled class="input-field_report computation font-weight-bold" v-model="arenaDetails.arena"/> -->
+                        <span style="text-transform: uppercase;" class="input-field_report computation">{{arenaDetails.arena}}</span>
+
                     </div>
                 </div>
                 <div
@@ -58,7 +60,7 @@
                         :class="{'editmode-span': editmode}"
                     >
                         <!-- <textarea type="text" style="text-transform: uppercase;" disabled class="input-field_report computation custom-textarea_field" v-model="arenaDetails.address"></textarea> -->
-                        <span style="text-transform: uppercase;" class="input-field_report computation custom-textarea_field">{{arenaDetails.address}}</span>
+                        <span style="text-transform: uppercase;" class="input-field_report computation">{{arenaDetails.address}}</span>
                     </div>
                 </div>
                 <div

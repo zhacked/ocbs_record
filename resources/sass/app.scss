@@ -67961,22 +67961,17 @@ readers do not read off random characters that represent icons */
   .custom-span{
 	border: 1px solid rgba(0, 0, 0, 0.3);
 	width: 150px;
-	height: 23px;
+	min-height: 23px;
 	margin-bottom: 3px;
 	font-size: 9px;
 	border-radius: 3px;
 	padding: 0.3px 3px;
   overflow: hidden;
+  max-height: 60px;
   }
 
   .custom-textarea{
-    height: 48px;
-  }
-  .custom-textarea_field{
-    resize: none;
-    overflow: hidden !important;
-    width: 100%;
-    word-wrap: break-word
+    max-height: 60px;
   }
 
   .editmode-span {
