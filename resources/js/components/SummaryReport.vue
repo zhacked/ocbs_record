@@ -137,15 +137,20 @@
                                         </td>
                                         </template>
                                         
-
+                                             <template v-slot:[`item.totalCommission`]="{ item }">
+                                               <span>{{formatNumber(item.totalCommission) }}</span>
+                                            </template>
                                            <template v-slot:[`item.otherCommissionIntel05`]="{ item }">
-                                               <span>{{parseFloat(item.otherCommissionIntel05)+parseFloat(item.otherCommIntMob) }}</span>
+                                               <span>{{formatNumber(parseFloat(item.otherCommissionIntel05)+parseFloat(item.otherCommIntMob)) }}</span>
                                             </template>
                                              <template v-slot:[`item.consolidatorsCommission`]="{ item }">
-                                               <span>{{parseFloat(item.consolidatorsCommission)+parseFloat(item.consolCommMob)}}</span>
+                                               <span>{{formatNumber(parseFloat(item.consolidatorsCommission)+parseFloat(item.consolCommMob))}}</span>
                                             </template>
                                              <template v-slot:[`item.safetyFund`]="{ item }">
-                                               <span>{{parseFloat(item.safetyFund)+parseFloat(item.safetyFundMob)}}</span>
+                                               <span>{{formatNumber(parseFloat(item.safetyFund)+parseFloat(item.safetyFundMob))}}</span>
+                                            </template>
+                                             <template v-slot:[`item.for_total`]="{ item }">
+                                               <span>{{formatNumber(item.for_total)}}</span>
                                             </template>
                                         </v-data-table>
                                     </div>
@@ -301,10 +306,14 @@ export default {
 
                 ));
             
+        },
+        formatNumber(number){
+            return this.numberFormat(number)
         }
         
     },
     created() {
+
         this.loadSummary();
     }
 };
