@@ -284,10 +284,10 @@ export default {
                         'Ref Number': val.refNo,
                         'OCBS Name': val.arena_name,
                         'Total Commission': val.totalCommission,
-                        'Other Commission -M': val.otherCommissionIntel05,
-                        'Consolidators commission': val.consolidatorsCommission,
-                        'Safety Fund' : val.safetyFund, 
-                        'Payment For O/Standing Balance' : val.paymentForOutstandingBalance,
+                        'Other Commission -M': parseFloat(val.otherCommissionIntel05)+parseFloat(val.otherCommIntMob),
+                        'Consolidators commission': parseFloat(val.consolidatorsCommission)+parseFloat(val.consolCommMob),
+                        'Safety Fund' : parseFloat(item.safetyFund)+parseFloat(item.safetyFundMob), 
+                        'Payment For O/Standing Balance' : parseFloat(val.paymentForOutstandingBalance)+parseFloat(val.payOutsBalMob),
                         'Amount': val.for_total
                     }
                     aray.push(test);
