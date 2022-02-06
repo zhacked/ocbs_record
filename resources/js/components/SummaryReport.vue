@@ -278,8 +278,7 @@ export default {
             axios.get("api/convertToExcel/"+deprep+"/"+ value).then(({ data }) => (
                
                 data.forEach((val) => {
-                    console.log(val)
-                    const test = {
+                    const objVal = {
                         'ID': val.id,
                         'Ref Number': val.refNo,
                         'OCBS Name': val.arena_name,
@@ -290,7 +289,7 @@ export default {
                         'Payment For O/Standing Balance' : parseFloat(val.paymentForOutstandingBalance)+parseFloat(val.payOutsBalMob),
                         'Amount': val.for_total
                     }
-                    aray.push(test);
+                    aray.push(objVal);
 
                 }),
 
