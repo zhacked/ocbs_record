@@ -286,7 +286,7 @@ export default {
                         'Total Commission': val.totalCommission,
                         'Other Commission -M': parseFloat(val.otherCommissionIntel05)+parseFloat(val.otherCommIntMob),
                         'Consolidators commission': parseFloat(val.consolidatorsCommission)+parseFloat(val.consolCommMob),
-                        'Safety Fund' : parseFloat(item.safetyFund)+parseFloat(item.safetyFundMob), 
+                        'Safety Fund' : parseFloat(val.safetyFund)+parseFloat(val.safetyFundMob), 
                         'Payment For O/Standing Balance' : parseFloat(val.paymentForOutstandingBalance)+parseFloat(val.payOutsBalMob),
                         'Amount': val.for_total
                     }
