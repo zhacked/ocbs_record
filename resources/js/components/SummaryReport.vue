@@ -136,6 +136,17 @@
                                               
                                         </td>
                                         </template>
+                                        
+
+                                           <template v-slot:[`item.otherCommissionIntel05`]="{ item }">
+                                               <span>{{parseFloat(item.otherCommissionIntel05)+parseFloat(item.otherCommIntMob) }}</span>
+                                            </template>
+                                             <template v-slot:[`item.consolidatorsCommission`]="{ item }">
+                                               <span>{{parseFloat(item.consolidatorsCommission)+parseFloat(item.consolCommMob)}}</span>
+                                            </template>
+                                             <template v-slot:[`item.safetyFund`]="{ item }">
+                                               <span>{{parseFloat(item.safetyFund)+parseFloat(item.safetyFundMob)}}</span>
+                                            </template>
                                         </v-data-table>
                                     </div>
 
@@ -214,6 +225,9 @@
 <script>
 import moment from "moment";
 import XLSX from "xlsx";
+import {
+    numberFormat,
+} from "../utility";
 export default {
     
     data() {
@@ -235,6 +249,7 @@ export default {
             search:'',
             myBlob:'',
             filteredData:{},
+            numberFormat
         };  
     },
     methods: {

@@ -287,6 +287,8 @@
                                               
                                         </td>
                                         </template >
+
+
                                             <template
                                                 v-slot:[`item.data-table-select`]="{
                                                     item,
@@ -305,6 +307,8 @@
                                                     @input="select($event)"
                                                 ></v-simple-checkbox>
                                             </template>
+
+                                           
 
                                             <template
                                                 v-slot:[`item.actions`]="{
