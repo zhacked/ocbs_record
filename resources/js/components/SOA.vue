@@ -2283,6 +2283,7 @@ export default {
             const options = {
                 type: "dataURL",
                 backgroundColor: "#fafafa",
+                scale: 0.9
             };
             const printCanvas = await html2canvas(el, options);
 
@@ -2330,7 +2331,8 @@ export default {
                         }
                     },
                     type: "dataURL",
-                    backgroundColor: "#fafafa",
+                    backgroundColor: "#ffffff",
+                    scale: 0.9
                 });
 
                 const link = document.createElement("a");
@@ -2443,7 +2445,8 @@ export default {
                         }
                     },
                     type: "dataURL",
-                    backgroundColor: "#fafafa",
+                    backgroundColor: "#ffffff",
+                    scale: 0.9
                 });
 
                 const link = document.createElement("a");
