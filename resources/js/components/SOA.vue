@@ -904,21 +904,23 @@
                                         <vue-html2pdf
                                             :show-layout="false"
                                             :float-layout="false"
-                                            :enable-download="true"
+                                            :enable-download="false"
                                             :preview-modal="false"
-                                            :paginate-elements-by-height="2000"
+                                          
                                             :filename="arenaDetails.arena"
                                             :pdf-quality="2"
-                                            :manual-pagination="false"
-                                            pdf-format="a4"
+                                            :manual-pagination="true"
+                                            pdf-format="letter"
                                             pdf-orientation="portrait"
                                             pdf-content-width="90%"
                                             ref="html2Pdf"
                                             class="vuehtmlpdf"
+                                            @beforeDownload="beforeDownload($event)"
                                         >
                                             <section
                                                 slot="pdf-content"
                                                 class="pdf-content"
+                                             
                                             >
                                                 <v-card-title
                                                     class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
@@ -2263,9 +2265,9 @@ export default {
         },
 
         generateReport(codeEvent) {
-            console.log("generating pdf..");
+            console.log("generating pdf..",this.$refs.html2Pdf);
 
-            this.$refs.html2Pdf.generatePdf();
+            this.$refs.html2Pdf.downloadPdf();
 
             axios
                 .put("api/arenaStatus", [{ codeEvent, status: "done" }])
@@ -2276,6 +2278,34 @@ export default {
                         swal.fire("convert to pdf!", "successfully", "success")
                     )
                 );
+        },
+        async beforeDownload ({ html2pdf, options, pdfContent }) {
+           const opts = {
+               ...options,
+               html2canvas: {
+                   scale: 1.5,
+                   useCORS: true
+               }
+           }
+
+            pdfContent.style.transform = "scale(0.75)"
+            pdfContent.style.height = "1000px"
+
+
+            await html2pdf().set(opts).from(pdfContent).toPdf().get('pdf').then((pdf) => {
+                console.log(pdf)
+                const totalPages = pdf.internal.getNumberOfPages()
+                for (let i = 1; i <= totalPages; i++) {
+                    pdf.setPage(i)
+                    pdf.setFontSize(9)
+                    pdf.setTextColor(150)
+                    pdf.text('Page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() * 0.88), (pdf.internal.pageSize.getHeight() - 0.3))
+                } 
+            }).save().then(() => {
+                pdfContent.style.transform = "scale(1)"
+                 pdfContent.style.height = "auto"
+            
+            })
         },
         async downloadImg(details, codeEvent) {
             const el = this.$refs.soaReport;

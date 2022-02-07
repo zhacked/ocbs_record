@@ -29,7 +29,7 @@
                         :class="{'editmode-span': editmode}"
                     >
                         <!-- <input type="text" style="text-transform: uppercase;" disabled class="input-field_report computation font-weight-bold" v-model="arenaDetails.arena"/> -->
-                        <span style="text-transform: uppercase;" class="input-field_report computation">{{arenaDetails.arena}}</span>
+                        <span style="text-transform: uppercase; font-weight: bold" class="input-field_report computation" >{{arenaDetails.arena}}</span>
 
                     </div>
                 </div>

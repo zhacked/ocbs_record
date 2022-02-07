@@ -2,7 +2,7 @@
     <v-row>
         <v-col>
             <v-row>
-                <div class="sign-wrapper d-flex align-center mt-2">
+                <div class="sign-wrapper d-flex align-center mt-2"  style="display: flex; align-items: center; margin-top: 8px">
                     <span class="signedBy">Computed by:</span>
                     <div
                         class="sign-container d-flex justify-center align-center flex-column"
@@ -34,7 +34,7 @@
                 </div>
             </v-row>
             <v-row>
-                <div class="sign-wrapper scbottom d-flex align-center mt-5">
+                <div class="sign-wrapper scbottom d-flex align-center mt-5" style="display: flex; align-items: center; margin-top: 20px">
                     <span class="signedBy">Prepared by:</span>
                     <div
                         class="sign-container d-flex justify-center align-center flex-column"
@@ -64,7 +64,7 @@
         </v-col>
         <v-col>
             <v-row>
-                <div class="sign-wrapper d-flex mt-2 align-center">
+                <div class="sign-wrapper d-flex mt-2 align-center" style="display: flex; align-items: center; margin-top: 8px">
                     <span class="signedBy">Checked by:</span>
                     <div
                         class="sign-container d-flex justify-center align-center flex-column"
@@ -94,7 +94,7 @@
                 </div>
             </v-row>
             <v-row>
-                <div class="sign-wrapper scbottom d-flex mt-5 align-center">
+                <div class="sign-wrapper scbottom d-flex mt-5 align-center"  style="display: flex; align-items: center; margin-top: 20px">
                     <span class="signedBy">Checked by:</span>
                     <div
                         class="sign-container d-flex justify-center align-center flex-column"
