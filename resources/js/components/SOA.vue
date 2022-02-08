@@ -307,15 +307,15 @@
                                                     @input="select($event)"
                                                 ></v-simple-checkbox>
                                             </template>
-                                             <!-- <template v-slot:[`item.areaCode`]="{ item }">
-                                               <span class="font-weight-medium">{{item.arena_details.area_code}}</span>
-                                            </template> -->
-                                             <!-- <template v-slot:[`item.refNo`]="{ item }">
+                                             <template v-slot:[`item.areaCode`]="{ item }">
+                                               <span class="font-weight-medium">{{item.arena_details && item.arena_details.area_code}}</span>
+                                            </template>
+                                             <template v-slot:[`item.refNo`]="{ item }">
                                                <span class="font-weight-medium">{{item.refNo}}</span>
                                             </template>
                                             <template v-slot:[`item.arena_name`]="{ item }">
-                                               <span class="font-weight-medium">{{item.arena_details.arena}}</span>
-                                            </template> -->
+                                               <span class="font-weight-medium">{{item.arena_details && item.arena_details.arena}}</span>
+                                            </template>
 
                                            
 
