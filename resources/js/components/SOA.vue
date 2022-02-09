@@ -1113,36 +1113,28 @@
              <!-- PLEASE STAND BY -->
 
                     <v-dialog
-                                            v-model="dialog2"
-
-                                            persistent
-                                            width="400"
-                                        >
-                                            <v-card :color="progressvalue === 100 ? 'blue darken-3' : '#002050'" dark>
-                                                <v-card-text>
-                                                    {{downloadingReport ? 'Downloading...' :'Please stand by' }}
-
-                                                      <v-progress-linear
-                                                       indeterminate
-                                                 
-                                                        :color="progressvalue === 100 ? '#6BB3EF' : '#6BB3EF'"
-                                                     
-                                                        class="black--text"
-                                                        height="7"
-                                                        stream
-                                                   
-                                                        >
-
-                                                            <!-- <template v-slot:default="{ value }">
-                                                                <strong :class="[progressvalue > 50 ? 'black--text' :'white--text']" class="text-xs">{{ value === 100 ? 'Complete' : `${Math.ceil(value)}%` }}</strong>
-                                                            </template> -->
-
-                                                        </v-progress-linear>
-                                                </v-card-text>
-                                            </v-card>
-                                        </v-dialog>
-
-
+                        v-model="dialog2"
+                        persistent
+                        width="400"
+                    >
+                        <v-card :color="progressvalue === 100 ? '#6BB3EF' : '#002050'" dark>
+                            <v-card-text>
+                                {{downloadingReport ? 'Downloading...' :'Please stand by' }}
+                                <v-progress-linear
+                                    v-model="progressvalue"                                                 
+                                    :color="progressvalue === 100 ? '#6BB3EF' : '#6BB3EF'"            
+                                    class="black--text"
+                                    height="14"
+                                    stream
+                                    :buffer-value="progressvalue"               
+                                >
+                                    <template v-slot:default="{ value }">
+                                        <strong :class="[progressvalue > 50 ? 'black--text' :'white--text']" class="text-xs">{{ value === 100 ? 'Complete' : `${Math.ceil(value)}%` }}</strong>
+                                    </template>
+                                </v-progress-linear>
+                            </v-card-text>
+                        </v-card>
+                    </v-dialog>
 
 
                                         <!-- PLEASE STAND BY -->
@@ -2410,52 +2402,52 @@ export default {
 
         },
         async downloadZip() {
-            // let statusArenas = [];
+            let statusArenas = [];
             this.downloadingReport = true;
             this.dialog2 = true
 
             // // -----------ZIP--------------- // // //
             const divsss = document.querySelectorAll(".reportsoaoutput");
-            const { downloadingReport, dialog2, progressvalue} = await downloadZipping(this.selected, divsss, this.downloadingReport, this.dialog2, this.progressvalue, this.arenaData, this.importwithstatus)
-            this.downloadingReport = downloadingReport
-            this.dialog2 = dialog2
-            this.progressvalue = progressvalue
+            // const { downloadingReport, dialog2, progressvalue} = await downloadZipping(this.selected, divsss, this.downloadingReport, this.dialog2, this.progressvalue, this.arenaData, this.importwithstatus)
+            // this.downloadingReport = downloadingReport
+            // this.dialog2 = dialog2
+            // this.progressvalue = progressvalue
 
-            console.log(progressvalue)
+            // console.log(progressvalue)
 
-            // const zip = new JSZip();
+            const zip = new JSZip();
 
-            // const urlToPromise = async (url) => {
-            //     return new Promise(function (resolve, reject) {
-            //         JSZipUtils.getBinaryContent(url, function (err, data) {
-            //             if (err) {
-            //                 reject(err);
-            //             } else {
-            //                 resolve(data);
-            //                 console.log(data);
-            //             }
-            //         });
-            //     });
-            // };
+            const urlToPromise = async (url) => {
+                return new Promise(function (resolve, reject) {
+                    JSZipUtils.getBinaryContent(url, function (err, data) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(data);
+                            console.log(data);
+                        }
+                    });
+                });
+            };
 
-            // const generateZipFile = async (zip) => {
-            //     const blob = await zip.generateAsync({ type: "blob" });
-            //     await saveAs(
-            //         blob,
-            //         `report-${moment(this.selected[0].date_closed).format(
-            //             "MMDYY"
-            //         )}.zip`
-            //     );
-            //     console.log("zip generated");
-            //      await axios.put("api/arenaStatus", statusArenas);
-            //         const c = this.arenaData.data.filter(
-            //             (arena) =>
-            //                 !this.selected.find(
-            //                     (select) => select.areaCode === arena.areaCode
-            //                 )
-            //         );
+            const generateZipFile = async (zip) => {
+                const blob = await zip.generateAsync({ type: "blob" });
+                await saveAs(
+                    blob,
+                    `report-${moment(this.selected[0].date_closed).format(
+                        "MMDYY"
+                    )}.zip`
+                );
+                console.log("zip generated");
+                 await axios.put("api/arenaStatus", statusArenas);
+                    const c = this.arenaData.data.filter(
+                        (arena) =>
+                            !this.selected.find(
+                                (select) => select.areaCode === arena.areaCode
+                            )
+                    );
 
-            //         this.arenaData.data = c;
+                    this.arenaData.data = c;
                         if(this.progressvalue === 100) {
                             setTimeout(async () => {
                             this.downloadingReport = false;
@@ -2466,59 +2458,59 @@ export default {
                         }, 1000);
 
                     }
-            //          this.importwithstatus()
+                     this.importwithstatus()
 
-            // };
-            // // start benchmark
-            // const t = new Date();
-            // // some xml processing
+            };
+            // start benchmark
+            const t = new Date();
+            // some xml processing
 
-            // for (let i = 0; i < this.selected.length; i++) {
-            //     statusArenas.push({
-            //         codeEvent: this.selected[i].codeEvent,
-            //         status: "done",
-            //     });
+            for (let i = 0; i < this.selected.length; i++) {
+                statusArenas.push({
+                    codeEvent: this.selected[i].codeEvent,
+                    status: "done",
+                });
 
-            //     console.log(`Currently at ${i}, ${(new Date() - t) / 1000} secs`)
+                console.log(`Currently at ${i}, ${(new Date() - t) / 1000} secs`)
 
-            //     this.progressvalue = Math.ceil((parseInt(i+1)/parseInt(this.selected.length))*100)
+                this.progressvalue = Math.ceil((parseInt(i+1)/parseInt(this.selected.length))*100)
 
 
-            //     const canvas = await html2canvas(divsss[i], {
-            //         onclone: function (clonedDoc) {
-            //             const elems =
-            //                 clonedDoc.getElementsByClassName("reportsoaoutput");
-            //             for (let i = 0; i < elems.length; i++) {
-            //                 elems[i].style.display = "block";
-            //             }
-            //         },
-            //         type: "dataURL",
-            //         backgroundColor: "#ffffff",
-            //         scale: 0.9
-            //     });
+                const canvas = await html2canvas(divsss[i], {
+                    onclone: function (clonedDoc) {
+                        const elems =
+                            clonedDoc.getElementsByClassName("reportsoaoutput");
+                        for (let i = 0; i < elems.length; i++) {
+                            elems[i].style.display = "block";
+                        }
+                    },
+                    type: "dataURL",
+                    backgroundColor: "#ffffff",
+                    scale: 0.9
+                });
 
-            //     const link = document.createElement("a");
-            //     // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
-            //     link.download = `${this.selected[i].arena_name}.png`;
-            //     link.href = await canvas.toDataURL("image/png");
-            //     const url = link.href;
+                const link = document.createElement("a");
+                // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
+                link.download = `${this.selected[i].arena_name}.png`;
+                link.href = await canvas.toDataURL("image/png");
+                const url = link.href;
 
-            //     const folderName =
-            //         parseFloat(this.selected[i].for_total) < 0 ? "fr" : "soa";
+                const folderName =
+                    parseFloat(this.selected[i].for_total) < 0 ? "fr" : "soa";
 
-            //     const arenaName =
-            //         (await this.selected[i].arena_name.indexOf("/")) > -1
-            //             ? this.selected[i].arena_name.replace(/\//g, "-")
-            //             : this.selected[i].arena_name;
-            //     const filename = `${folderName}/${arenaName}.png`;
+                const arenaName =
+                    (await this.selected[i].arena_name.indexOf("/")) > -1
+                        ? this.selected[i].arena_name.replace(/\//g, "-")
+                        : this.selected[i].arena_name;
+                const filename = `${folderName}/${arenaName}.png`;
 
-            //     await zip.file(filename, await urlToPromise(url), {
-            //         binary: true,
-            //     }); //Create new zip file with filename and content
-            // }
+                await zip.file(filename, await urlToPromise(url), {
+                    binary: true,
+                }); //Create new zip file with filename and content
+            }
 
-            // //Generate zip file
-            // await generateZipFile(zip);
+            //Generate zip file
+            await generateZipFile(zip);
         },
         defineEmail(arrayEmail) {
          
@@ -2644,7 +2636,7 @@ export default {
             const totalComputationOthers =
                 this.computation.exempted.toUpperCase() === "NOT EXEMPTED" ||  this.computation.exempted.toUpperCase() === "NOT"
                     ? numberFormat(totalOthers)
-                    : numberFormat(this.computation.totalCommission); // to fixed
+                    : numberFormat(totalCommission); // to fixed
 
             const depositReplenish = numberFormat(
                 (numberUnformat(netWinLoss) - numberUnformat(totalComputationOthers)  - numberUnformat(this.computation.systemErrorCOArmsi)) + (numberUnformat(this.computation.mobile.cashLoad) - numberUnformat(this.computation.mobile.cashWithdrawal))
