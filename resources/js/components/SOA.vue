@@ -311,7 +311,7 @@
                                                 ></v-simple-checkbox>
                                             </template>
                                              <template v-slot:[`item.areaCode`]="{ item }">
-                                               <span class="font-weight-medium">{{item.arena_details ? item.arena_details.area_code : item.area_code}}</span>
+                                               <span class="font-weight-medium">{{item.arena_details ? item.arena_details.area_code : item.areaCode}}</span>
                                             </template>
                                              <template v-slot:[`item.refNo`]="{ item }">
                                                <span class="font-weight-medium">{{item.refNo}}</span>
