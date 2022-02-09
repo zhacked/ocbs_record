@@ -91,16 +91,9 @@
 
                 Fire.$emit('AfterCreated')
             },
-        //   loadDetials(){
-        //             axios.get("api/Companybanks").then(({ data }) => {
-        //                 this.account = data,
-        //                 console.log('ACCOUNT',data);
-        //                 });
-        //     },
+        
         },
-        created(){
-            // this.loadDetials()
-        }
+      
     }
 </script>
 <style scoped>

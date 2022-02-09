@@ -711,7 +711,7 @@
                                                 numberFormat(
                                                         item.paymentForOutstandingBalance || 0
                                                 ),
-                                                totalCommission: numberFormat(item.totalCommission || 0),
+                                                totalCommission: numberFormat(moneyFormat(numberUnformat(numberFormat(parseFloat(item.totalCommission),3))) || 0),
                                                 mwTotalPercent: numberFormat(
                                                 item.mwTwo || 0
                                                 ),
@@ -1912,7 +1912,6 @@ export default {
    
         proceedAction() {
             this.$Progress.start();
-            // var result = $('#importData').val().split('.');
 
             if (
                 $("#importData").val() === "" ||
@@ -2017,7 +2016,6 @@ export default {
                 this.operator_name = data.arena_details.operator;
                 this.dateCreated = moment(data.date_closed).format("LL");
                 this.dateEvent = moment(data.date_of_soa).format("LL");
-                console.log(data.exempted);
                 this.refNo = data.refNo;
 
                 this.arenaDetails = data.arena_details;
@@ -2065,25 +2063,6 @@ export default {
                 const totalConsolComm = parseFloat(consolidatorsCommission)+parseFloat(consolCommMob)
                 const totalPayOutBal = parseFloat(paymentForOutstandingBalance)+parseFloat(payOutsBalMob)
 
-
-                const totalCommComputation = netOpCommission + otherCommissionIntel05 - consolidatorsCommission - safetyFund - paymentForOutstandingBalance
-                const totalDepRep = netWinLoss - totalCommComputation - systemErrorCOArmsi + cashLoad - cashWithdrawal
-
-
-                console.log("COMPUTE netOpCommission>>>>", netOpCommission)
-                console.log("COMPUTE otherCommissionIntel05>>>>", otherCommissionIntel05)
-                console.log("COMPUTE consolidatorsCommission>>>>", consolidatorsCommission)
-                console.log("COMPUTE safetyFund>>>>", safetyFund)
-                console.log("COMPUTE paymentForOutstandingBalance>>>>", paymentForOutstandingBalance)
-                console.log("COMPUTE systemErrorCOArmsi>>>>", systemErrorCOArmsi)
-                console.log("COMPUTE cashLoad>>>>", cashLoad)
-                console.log("COMPUTE cashWithdrawal>>>>", cashWithdrawal)
-                console.log("COMPUTE totalCommComputation>>>>", totalCommComputation)
-                console.log("COMPUTE totalDepRep>>>>", totalDepRep)
-                console.log('OPEN data>>>>',moneyFormat(numberUnformat(numberFormat(parseFloat(depositReplenish),3))));
-                console.log('OPEN TOTAL COMMISSION>>>>',totalCommission);
-
-
                 
                 this.computation = {
                     totalMWBets: numberFormat(totalMWBets),
@@ -2118,8 +2097,8 @@ export default {
                     otherCommIntMob: numberFormat(otherCommIntMob),
                     consolCommMob: numberFormat(consolCommMob),
                     payOutsBalMob: numberFormat(payOutsBalMob),
-                    depositReplenish: moneyFormat(numberUnformat(numberFormat(parseFloat(depositReplenish),3))),
-                    totalCommission: numberFormat(totalCommission),
+                    depositReplenish: numberFormat(moneyFormat(numberUnformat(numberFormat(parseFloat(depositReplenish),3)))),
+                    totalCommission: numberFormat(moneyFormat(numberUnformat(numberFormat(parseFloat(totalCommission),3)))),
                     netOpCommission: numberFormat(netOpCommission),
                     // totalSafetyFund: numberFormat(totalSafetyFund),
                     // totalOtherCommIntel: numberFormat(totalOtherCommIntel),
