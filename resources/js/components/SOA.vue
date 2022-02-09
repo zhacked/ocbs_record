@@ -1759,6 +1759,14 @@ export default {
                             //     parseFloat(systemErrorCOArmsi) +
                             //     (parseFloat(cashLoad) - parseFloat(cashWithdrawal));
 
+
+
+                            // const totalComm = netOperatorsCommission + totalOtherCommIntel - totalConsolComm - totalSafetyFund - totalPaymentForOutstandingBalance 
+                            // const totalOthersComputation = totalUnclaimed + totalCUnpaid
+                            // const totalCommComputation = exempted.toUpperCase() === "NOT EXEMPTED" ||  this.computation.exempted.toUpperCase() === "NOT" ? totalOthersComputation : totalComm;
+                            // const totalDepRep = netWinLoss - totalCommComputation - systemErrorCOArmsi + cashLoad - cashWithdrawal
+                            
+
                             const depositReplenish = rest.forDepositReplenish
 
                             const soaFr =
@@ -1782,45 +1790,45 @@ export default {
                                 codeEvent,
                                 date_of_soa: rest.eventCreated,
                                 date_closed: rest.eventClosed,
-                                meron: rest.meron,
-                                wala: rest.wala,
-                                rake: rest.rake,
-                                draw_unpaid: rest.dUnpaid,
-                                draw_unclaimed: rest.drawUnclaimed,
+                                meron: rest.meron.toString(),
+                                wala: rest.wala.toString(),
+                                rake: rest.rake.toString(),
+                                draw_unpaid: rest.dUnpaid.toString(),
+                                draw_unclaimed: rest.drawUnclaimed.toString(),
                                 arena_name: arenaName.toUpperCase(),
                                 type,
                                 exempted,
-                                total_meron_wala: totalMWBets,
-                                draw_cancelled: totalCancelledBets,
-                                draw: totalDrawBets,
-                                total_payout_paid: totalPayoutPaid,
-                                draw_cancelled_paid: totalCDPaid,
-                                draw_paid: totalDrawPaid,
-                                netWinLoss,
-                                mwTwo,
-                                drawTwo,
-                                mwTwoMobile,
-                                drawTwoMobile,
-                                unclaimed: totalUnclaimed,
-                                cancelled_unpaid: totalCUnpaid,
-                                salesDeductionTablet: salesDeduction,
-                                netOperatorsCommission,
-                                otherCommissionIntel05: otherCommissionIntel,
-                                consolidatorsCommission,
-                                safetyFund,
-                                paymentForOutstandingBalance,
-                                totalCommission,
-                                total_win_mobile: totalMWMobile,
-                                draw_mobile: totalDrawMobile,
-                                cashLoad,
-                                cashWithdrawal,
-                                for_total: depositReplenish,
-                                totalOthers,
-                                systemErrorCOArmsi,
-                                safetyFundMob,
-                                otherCommIntMob,
-                                consolCommMob, 
-                                payOutsBalMob,
+                                total_meron_wala: totalMWBets.toString(),
+                                draw_cancelled: totalCancelledBets.toString(),
+                                draw: totalDrawBets.toString(),
+                                total_payout_paid: totalPayoutPaid.toString(),
+                                draw_cancelled_paid: totalCDPaid.toString(),
+                                draw_paid: totalDrawPaid.toString(),
+                                netWinLoss: netWinLoss.toString(),
+                                mwTwo: mwTwo.toString(),
+                                drawTwo: drawTwo.toString(),
+                                mwTwoMobile: mwTwoMobile.toString(),
+                                drawTwoMobile: drawTwoMobile.toString(),
+                                unclaimed: totalUnclaimed.toString(),
+                                cancelled_unpaid: totalCUnpaid.toString(),
+                                salesDeductionTablet: salesDeduction.toString(),
+                                netOperatorsCommission: netOperatorsCommission.toString(),
+                                otherCommissionIntel05: otherCommissionIntel.toString(),
+                                consolidatorsCommission: consolidatorsCommission.toString(),
+                                safetyFund: safetyFund.toString(),
+                                paymentForOutstandingBalance: paymentForOutstandingBalance.toString(),
+                                totalCommission: totalCommission.toString(),
+                                total_win_mobile: totalMWMobile.toString(),
+                                draw_mobile: totalDrawMobile.toString(),
+                                cashLoad: cashLoad.toString(),
+                                cashWithdrawal: cashWithdrawal.toString(),
+                                for_total: depositReplenish.toString(),
+                                totalOthers: totalOthers.toString(),
+                                systemErrorCOArmsi: systemErrorCOArmsi.toString(),
+                                safetyFundMob: safetyFundMob.toString(),
+                                otherCommIntMob: otherCommIntMob.toString(),
+                                consolCommMob: consolCommMob.toString(), 
+                                payOutsBalMob: payOutsBalMob.toString(),
                                 soaFr,
                                 group,
                             };
@@ -2056,8 +2064,10 @@ export default {
                 const totalPayOutBal = parseFloat(paymentForOutstandingBalance)+parseFloat(payOutsBalMob)
 
 
-                const totalCommTest = netOpCommission + otherCommissionIntel05 - consolidatorsCommission - safetyFund - paymentForOutstandingBalance
-                const totalDepRep = netWinLoss - totalCommTest - systemErrorCOArmsi + cashLoad - cashWithdrawal
+                const totalCommComputation = netOpCommission + otherCommissionIntel05 - consolidatorsCommission - safetyFund - paymentForOutstandingBalance
+                const totalDepRep = netWinLoss - totalCommComputation - systemErrorCOArmsi + cashLoad - cashWithdrawal
+
+
                 console.log("COMPUTE netOpCommission>>>>", netOpCommission)
                 console.log("COMPUTE otherCommissionIntel05>>>>", otherCommissionIntel05)
                 console.log("COMPUTE consolidatorsCommission>>>>", consolidatorsCommission)
@@ -2066,9 +2076,9 @@ export default {
                 console.log("COMPUTE systemErrorCOArmsi>>>>", systemErrorCOArmsi)
                 console.log("COMPUTE cashLoad>>>>", cashLoad)
                 console.log("COMPUTE cashWithdrawal>>>>", cashWithdrawal)
-                console.log("COMPUTE totalCommTest>>>>", totalCommTest)
+                console.log("COMPUTE totalCommComputation>>>>", totalCommComputation)
                 console.log("COMPUTE totalDepRep>>>>", totalDepRep)
-                console.log('OPEN data>>>>',depositReplenish);
+                console.log('OPEN data>>>>',parseFloat(depositReplenish));
                 console.log('OPEN TOTAL COMMISSION>>>>',totalCommission);
 
 
@@ -2106,7 +2116,7 @@ export default {
                     otherCommIntMob: numberFormat(otherCommIntMob),
                     consolCommMob: numberFormat(consolCommMob),
                     payOutsBalMob: numberFormat(payOutsBalMob),
-                    depositReplenish: numberFormat(depositReplenish),
+                    depositReplenish: numberFormat(parseFloat(depositReplenish)),
                     totalCommission: numberFormat(totalCommission),
                     netOpCommission: numberFormat(netOpCommission),
                     // totalSafetyFund: numberFormat(totalSafetyFund),
