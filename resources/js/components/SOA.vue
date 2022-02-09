@@ -2058,6 +2058,14 @@ export default {
 
                 const totalCommTest = netOpCommission + otherCommissionIntel05 - consolidatorsCommission - safetyFund - paymentForOutstandingBalance
                 const totalDepRep = netOpCommission - totalCommTest - systemErrorCOArmsi + cashLoad - cashWithdrawal
+                console.log("COMPUTE netOpCommission>>>>", netOpCommission)
+                console.log("COMPUTE otherCommissionIntel05>>>>", otherCommissionIntel05)
+                console.log("COMPUTE consolidatorsCommission>>>>", consolidatorsCommission)
+                console.log("COMPUTE safetyFund>>>>", safetyFund)
+                console.log("COMPUTE paymentForOutstandingBalance>>>>", paymentForOutstandingBalance)
+                console.log("COMPUTE systemErrorCOArmsi>>>>", systemErrorCOArmsi)
+                console.log("COMPUTE cashLoad>>>>", cashLoad)
+                console.log("COMPUTE cashWithdrawal>>>>", cashWithdrawal)
                 console.log("COMPUTE totalCommTest>>>>", totalCommTest)
                 console.log("COMPUTE totalDepRep>>>>", totalDepRep)
                 console.log('OPEN data>>>>',depositReplenish);
