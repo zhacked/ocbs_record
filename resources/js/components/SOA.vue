@@ -716,7 +716,7 @@
                                                 item.mwTwo || 0
                                                 ),
                                                 depositReplenish: numberFormat(
-                                                    item.for_total || 0
+                                                   numberFormat(parseFloat(item.for_total).toFixed(2)) || 0
                                                 ),
                                                 netWinLoss: numberFormat(
                                                     item.netWinLoss || 0
@@ -2082,7 +2082,7 @@ export default {
                 console.log('OPEN TOTAL COMMISSION>>>>',totalCommission);
 
 
-
+                
                 this.computation = {
                     totalMWBets: numberFormat(totalMWBets),
                     drawCancelled: numberFormat(drawCancelled),
@@ -2116,7 +2116,7 @@ export default {
                     otherCommIntMob: numberFormat(otherCommIntMob),
                     consolCommMob: numberFormat(consolCommMob),
                     payOutsBalMob: numberFormat(payOutsBalMob),
-                    depositReplenish: numberFormat(parseFloat(depositReplenish)),
+                    depositReplenish: numberFormat(parseFloat(depositReplenish).toFixed(2)),
                     totalCommission: numberFormat(totalCommission),
                     netOpCommission: numberFormat(netOpCommission),
                     // totalSafetyFund: numberFormat(totalSafetyFund),
