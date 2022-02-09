@@ -1032,7 +1032,7 @@
                             "
                         >
                             <span class="ctotal-text">{{
-                                computedAve.depositReplenish
+                                computation.depositReplenish
                             }}</span>
                         </div>
                     </div>

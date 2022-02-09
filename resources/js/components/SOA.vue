@@ -2067,9 +2067,7 @@ export default {
                     unclaimed: numberFormat(unclaimed),
                     cUnpaid: numberFormat(cUnpaid),
                     salesDeduction: numberFormat(salesDeduction),
-                    otherCommissionIntel05: numberFormat(
-                        otherCommissionIntel05
-                    ),
+                 
                     systemErrorCOArmsi: numberFormat(systemErrorCOArmsi),
                     consolidatorsCommission: numberFormat(
                         consolidatorsCommission
@@ -2124,8 +2122,12 @@ export default {
 
             this.contactFormat = (data.arena_details && data.arena_details.contact_details) && this.defineContact(data && data.arena_details.contact_details)
 
-
-            console.log('OPEN>>>>',this.computation.depositReplenish);
+            const totalCommTest = netOpCommission + otherCommissionIntel05 - consolidatorsCommission - safetyFund - paymentForOutstandingBalance
+            const totalDepRep = netOpCommission - totalCommTest - systemErrorCOArmsi + cashLoad - cashWithdrawal
+            console.log("COMPUTE totalCommTest>>>>", totalCommTest)
+            console.log("COMPUTE totalDepRep>>>>", totalDepRep)
+            console.log('OPEN data>>>>',this.computation.depositReplenish);
+            console.log('OPEN TOTAL COMMISSION>>>>',this.computation.totalCommission);
 
         },
 
