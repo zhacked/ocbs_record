@@ -2125,9 +2125,7 @@ export default {
             this.contactFormat = (data.arena_details && data.arena_details.contact_details) && this.defineContact(data && data.arena_details.contact_details)
 
 
-            const test = numberFormat(parseFloat(26195.86-6456.47))
-
-            console.log(test)
+            console.log('OPEN>>>>',this.computation.depositReplenish);
 
         },
 
