@@ -716,7 +716,7 @@
                                                 item.mwTwo || 0
                                                 ),
                                                 depositReplenish: numberFormat(
-                                                   numberFormat(parseFloat(item.for_total).toFixed(2)) || 0
+                                                   moneyFormat(numberUnformat(numberFormat(parseFloat(item.for_total),3))) || 0
                                                 ),
                                                 netWinLoss: numberFormat(
                                                     item.netWinLoss || 0
@@ -1261,7 +1261,8 @@ export default {
 
             moment,
             numberFormat,
-
+            numberUnformat,
+            moneyFormat,
             computation: {
                 totalMWBets: 0,
                 drawCancelled: 0,
@@ -2117,7 +2118,7 @@ export default {
                     otherCommIntMob: numberFormat(otherCommIntMob),
                     consolCommMob: numberFormat(consolCommMob),
                     payOutsBalMob: numberFormat(payOutsBalMob),
-                    depositReplenish: numberFormat(parseFloat(depositReplenish).toFixed(2)),
+                    depositReplenish: moneyFormat(numberUnformat(numberFormat(parseFloat(depositReplenish),3))),
                     totalCommission: numberFormat(totalCommission),
                     netOpCommission: numberFormat(netOpCommission),
                     // totalSafetyFund: numberFormat(totalSafetyFund),
