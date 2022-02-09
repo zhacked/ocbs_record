@@ -2636,7 +2636,7 @@ export default {
             const totalComputationOthers =
                 this.computation.exempted.toUpperCase() === "NOT EXEMPTED" ||  this.computation.exempted.toUpperCase() === "NOT"
                     ? numberFormat(totalOthers)
-                    : numberFormat(totalCommission); // to fixed
+                    : numberFormat(this.computation.totalCommission); // to fixed
 
             const depositReplenish = numberFormat(
                 (numberUnformat(netWinLoss) - numberUnformat(totalComputationOthers)  - numberUnformat(this.computation.systemErrorCOArmsi)) + (numberUnformat(this.computation.mobile.cashLoad) - numberUnformat(this.computation.mobile.cashWithdrawal))
