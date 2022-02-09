@@ -1158,6 +1158,7 @@ import {
     numberUnformat,
     mergeObject,
     valueSplit,
+    moneyFormat
 } from "../utility";
 
 import VueHtml2pdf from "vue-html2pdf";
@@ -2078,7 +2079,7 @@ export default {
                 console.log("COMPUTE cashWithdrawal>>>>", cashWithdrawal)
                 console.log("COMPUTE totalCommComputation>>>>", totalCommComputation)
                 console.log("COMPUTE totalDepRep>>>>", totalDepRep)
-                console.log('OPEN data>>>>',parseFloat(depositReplenish));
+                console.log('OPEN data>>>>',moneyFormat(numberUnformat(numberFormat(parseFloat(depositReplenish),3))));
                 console.log('OPEN TOTAL COMMISSION>>>>',totalCommission);
 
 
