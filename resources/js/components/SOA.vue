@@ -2056,8 +2056,8 @@ export default {
                 const totalPayOutBal = parseFloat(paymentForOutstandingBalance)+parseFloat(payOutsBalMob)
 
 
-                const totalCommTest = netOpCommission + otherCommissionIntel05 - consolidatorsCommission - safetyFund - paymentForOutstandingBalance
-                const totalDepRep = netOpCommission - totalCommTest - systemErrorCOArmsi + cashLoad - cashWithdrawal
+                const totalCommTest = netWinLoss + otherCommissionIntel05 - consolidatorsCommission - safetyFund - paymentForOutstandingBalance
+                const totalDepRep = netWinLoss - totalCommTest - systemErrorCOArmsi + cashLoad - cashWithdrawal
                 console.log("COMPUTE netOpCommission>>>>", netOpCommission)
                 console.log("COMPUTE otherCommissionIntel05>>>>", otherCommissionIntel05)
                 console.log("COMPUTE consolidatorsCommission>>>>", consolidatorsCommission)
