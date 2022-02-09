@@ -30,16 +30,16 @@
          
             <div class="bank-container d-flex justify-center align-center" v-else >
                 <div class="bank bank1" >  
-                    <span class="text-sm font-weight-medium bank_account-name" style="text-transform: uppercase; font-weight:700">{{Object.values(bankTarget).length ? bankTarget.account_name : banks.length > 0 ? banks[0].account_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].account_name : ''}}</span>
+                    <span class="text-sm font-weight-medium bank_account-name detailed" >{{Object.values(bankTarget).length ? bankTarget.account_name : banks.length > 0 ? banks[0].account_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].account_name : ''}}</span>
                    
-                    <span v-if="!editmode" class="text-sm font-weight-medium" style="text-transform: uppercase; font-weight:700"> {{ Object.values(bankTarget).length ? bankTarget.bank_name : banks.length > 0 ? banks[0].bank_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_name : '' }}</span>
+                    <span v-if="!editmode" class="text-sm font-weight-medium detailed" > {{ Object.values(bankTarget).length ? bankTarget.bank_name : banks.length > 0 ? banks[0].bank_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_name : '' }}</span>
                     <span  class="select-field_container" :class="{'editmode-span': editmode}">
                         <select v-if="editmode"  class="text-sm font-weight-medium medium sign-name select-field_report"  @change="filterbank($event)" >
                             <option selected disabled>Select Bank</option>
                             <option v-for="b in arenaDetails.bank_details" :key="b.id"  :value="b.id" >{{b.bank_name}}</option>
                         </select>
                     </span>
-                    <span class="text-sm font-weight-medium" style="text-transform: uppercase; font-weight:700">{{  Object.values(bankTarget).length ? bankTarget.bank_number : banks.length > 0 ? banks[0].bank_number : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_number  : '' }}</span>
+                    <span class="text-sm font-weight-medium detailed" >{{  Object.values(bankTarget).length ? bankTarget.bank_number : banks.length > 0 ? banks[0].bank_number : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_number  : '' }}</span>
     
                 </div> 
                 
@@ -103,3 +103,9 @@
         }
     }
 </script>
+<style scoped>
+    .detailed{
+        text-transform: uppercase; 
+        font-weight: bold
+    }
+</style>

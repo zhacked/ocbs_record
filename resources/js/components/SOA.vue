@@ -197,7 +197,10 @@
                                                     <v-col>
                                                       <div class=" float-right"  >
                                                                <v-menu
-                                                                    offset-x
+                                                              
+                                                                    bottom
+                                                                    origin="center center"
+                                                                    transition="scale-transition"
                                                                     v-if="selected.length != 0"
                                                                     rounded="rounded"
                                                                     :loading="downloadingReport"
@@ -706,7 +709,6 @@
                                                 ),
                                             paymentForOutstandingBalance:
                                                 numberFormat(
-                                                   
                                                         item.paymentForOutstandingBalance || 0
                                                 ),
                                                 totalCommission: numberFormat(item.totalCommission || 0),
@@ -758,7 +760,9 @@
                                             },
                                         }"
                                         :computedAve="{
-                                         
+                                                depositReplenish: numberFormat(
+                                                    item.for_total || 0
+                                                ),
                                                 mwTotalPercent: numberFormat(
                                                     item.mwTwo || 0
                                                 ),
@@ -1114,22 +1118,24 @@
                                             persistent
                                             width="400"
                                         >
-                                            <v-card :color="progressvalue === 100 ? 'light-blue darken-3' : 'light-blue accent-3'" dark>
+                                            <v-card :color="progressvalue === 100 ? 'blue darken-3' : '#002050'" dark>
                                                 <v-card-text>
                                                     {{downloadingReport ? 'Downloading...' :'Please stand by' }}
 
                                                       <v-progress-linear
-                                                        v-model="progressvalue"
-                                                        color="yellow accent-1"
+                                                       indeterminate
+                                                 
+                                                        :color="progressvalue === 100 ? '#6BB3EF' : '#6BB3EF'"
+                                                     
                                                         class="black--text"
-                                                        height="25"
-                                                        :buffer-value="progressvalue"
+                                                        height="7"
                                                         stream
+                                                   
                                                         >
 
-                                                            <template v-slot:default="{ value }">
-                                                                <strong class="black--text">{{ value === 100 ? 'Complete' : `${Math.ceil(value)}%` }}</strong>
-                                                            </template>
+                                                            <!-- <template v-slot:default="{ value }">
+                                                                <strong :class="[progressvalue > 50 ? 'black--text' :'white--text']" class="text-xs">{{ value === 100 ? 'Complete' : `${Math.ceil(value)}%` }}</strong>
+                                                            </template> -->
 
                                                         </v-progress-linear>
                                                 </v-card-text>
@@ -1175,6 +1181,8 @@ import BankBox from "./DialogPreview/BankBox.vue";
 import PreparedChecked from "./DialogPreview/PreparedChecked.vue";
 
 import BounceLoader from "vue-spinner/src/BounceLoader.vue";
+
+import { downloadZipping } from '../methods/downloads'
 
 export default {
     components: {
@@ -1330,7 +1338,7 @@ export default {
                 .then(
                     ({ data }) =>
                         {
-                        console.log(data.computed)
+                      
                         this.userPrepared.computed = data.computed
                         this.userPrepared.checked = data.checked
                         this.userPrepared.prepared = data.prepared
@@ -1991,7 +1999,7 @@ export default {
         },
 
         openModel(data) {
-            console.log('OPEN SOA|>>',data)
+         
             if (data.arena_details === null) {
                 swal.fire({
                     icon: "warning",
@@ -2125,7 +2133,9 @@ export default {
             this.contactFormat = (data.arena_details && data.arena_details.contact_details) && this.defineContact(data && data.arena_details.contact_details)
 
 
+            const test = numberFormat(parseFloat(26195.86-6456.47))
 
+            console.log(test)
 
         },
 
@@ -2194,11 +2204,6 @@ export default {
         closeDialog() {
             this.editmode = false;
             this.dialog = false;
-            // this.bankDetails = {};
-            // this.bank = {};
-            // this.bankId= null;
-            // this.banks= [];
-            // this.bankAccounts= [];
             this.operator_name = "";
 
             this.form.reset();
@@ -2206,62 +2211,62 @@ export default {
         },
 
         saveModal() {
-            $(".computation").attr("disabled", true);
-            this.editmode = !this.editmode;
+            // $(".computation").attr("disabled", true);
+            // this.editmode = !this.editmode;
 
-            this.computation = {
-                totalMWBets: numberFormat(this.computation.totalMWBets),
-                drawCancelled: numberFormat(this.computation.drawCancelled),
-                draw: numberFormat(this.computation.draw),
-                totalPayoutPaid: numberFormat(this.computation.totalPayoutPaid),
-                cdPaid: numberFormat(this.computation.cdPaid),
-                drawPaid: numberFormat(this.computation.drawPaid),
-                unclaimed: numberFormat(this.computation.unclaimed),
-                cUnpaid: numberFormat(this.computation.cUnpaid),
-                salesDeduction: numberFormat(this.computation.salesDeduction),
-                otherCommissionIntel05: numberFormat(
-                    this.computation.otherCommissionIntel05
-                ),
-                systemErrorCOArmsi: numberFormat(
-                    this.computation.systemErrorCOArmsi
-                ),
-                consolidatorsCommission: numberFormat(
-                    this.computation.consolidatorsCommission
-                ),
-                safetyFund: numberFormat(this.computation.safetyFund),
-                paymentForOutstandingBalance: numberFormat(
-                    this.computation.paymentForOutstandingBalance
-                ),
-                exempted: this.computation.exempted,
-                totalMWMobile: numberFormat(this.computation.totalMWMobile),
-                drawMobile: numberFormat(this.computation.drawMobile),
+            // this.computation = {
+            //     totalMWBets: numberFormat(this.computation.totalMWBets),
+            //     drawCancelled: numberFormat(this.computation.drawCancelled),
+            //     draw: numberFormat(this.computation.draw),
+            //     totalPayoutPaid: numberFormat(this.computation.totalPayoutPaid),
+            //     cdPaid: numberFormat(this.computation.cdPaid),
+            //     drawPaid: numberFormat(this.computation.drawPaid),
+            //     unclaimed: numberFormat(this.computation.unclaimed),
+            //     cUnpaid: numberFormat(this.computation.cUnpaid),
+            //     salesDeduction: numberFormat(this.computation.salesDeduction),
+            //     otherCommissionIntel05: numberFormat(
+            //         this.computation.otherCommissionIntel05
+            //     ),
+            //     systemErrorCOArmsi: numberFormat(
+            //         this.computation.systemErrorCOArmsi
+            //     ),
+            //     consolidatorsCommission: numberFormat(
+            //         this.computation.consolidatorsCommission
+            //     ),
+            //     safetyFund: numberFormat(this.computation.safetyFund),
+            //     paymentForOutstandingBalance: numberFormat(
+            //         this.computation.paymentForOutstandingBalance
+            //     ),
+            //     exempted: this.computation.exempted,
+            //     totalMWMobile: numberFormat(this.computation.totalMWMobile),
+            //     drawMobile: numberFormat(this.computation.drawMobile),
 
-                netWinLoss: numberFormat(this.computation.netWinLoss),
-                mwTwo: numberFormat(this.computation.mwTwo),
-                drawTwo: numberFormat(this.computation.drawTwo),
-                mwTwoMobile: numberFormat(this.computation.mwTwoMobile),
-                drawTwoMobile: numberFormat(this.computation.drawTwoMobile),
-                mobile: {
-                    totalMWBets: numberFormat(
-                        this.computation.totalMWMobile || 0
-                    ),
-                    totalDrawBets: numberFormat(
-                        this.computation.drawMobile || 0
-                    ),
-                    cashLoad: numberFormat(
-                        this.computation.mobile.cashLoad || 0
-                    ),
-                    cashWithdrawal: numberFormat(
-                        this.computation.mobile.cashWithdrawal || 0
-                    ),
-                },
+            //     netWinLoss: numberFormat(this.computation.netWinLoss),
+            //     mwTwo: numberFormat(this.computation.mwTwo),
+            //     drawTwo: numberFormat(this.computation.drawTwo),
+            //     mwTwoMobile: numberFormat(this.computation.mwTwoMobile),
+            //     drawTwoMobile: numberFormat(this.computation.drawTwoMobile),
+            //     mobile: {
+            //         totalMWBets: numberFormat(
+            //             this.computation.totalMWMobile || 0
+            //         ),
+            //         totalDrawBets: numberFormat(
+            //             this.computation.drawMobile || 0
+            //         ),
+            //         cashLoad: numberFormat(
+            //             this.computation.mobile.cashLoad || 0
+            //         ),
+            //         cashWithdrawal: numberFormat(
+            //             this.computation.mobile.cashWithdrawal || 0
+            //         ),
+            //     },
 
-                netOperatorsCommission: numberFormat(
-                    this.computation.netOperatorsCommission
-                ),
-            };
+            //     netOperatorsCommission: numberFormat(
+            //         this.computation.netOperatorsCommission
+            //     ),
+            // };
 
-            Fire.$emit("AfterCreate");
+            // Fire.$emit("AfterCreate");
         },
 
         generateReport(codeEvent) {
@@ -2344,9 +2349,11 @@ export default {
             this.downloadingReport = true;
             this.dialog2 = true
             const divsss = document.querySelectorAll(".reportsoaoutput");
+            const start = new Date();
 
             for (let i = 0; i < this.selected.length; i++) {
                 this.progressvalue = Math.ceil((parseInt(i+1)/parseInt(this.selected.length))*100)
+                console.log(`Currently at ${i}, ${(new Date() - start) / 1000} s`)
                 statusArenas.push({
                     codeEvent: this.selected[i].codeEvent,
                     status: "done",
@@ -2366,7 +2373,6 @@ export default {
                 });
 
                 const link = document.createElement("a");
-                // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
                 link.download = `${this.selected[i].arena_name}.png`;
                 link.href = canvas.toDataURL("image/png");
                 document.body.appendChild(link);
@@ -2397,47 +2403,59 @@ export default {
                 }
             }
 
+            const end = new Date();
+            console.log("Without promise.all ", ((end - start) / 1000), " secs")
+
+            
+
         },
         async downloadZip() {
-            let statusArenas = [];
+            // let statusArenas = [];
             this.downloadingReport = true;
             this.dialog2 = true
 
             // // -----------ZIP--------------- // // //
             const divsss = document.querySelectorAll(".reportsoaoutput");
-            const zip = new JSZip();
+            const { downloadingReport, dialog2, progressvalue} = await downloadZipping(this.selected, divsss, this.downloadingReport, this.dialog2, this.progressvalue, this.arenaData, this.importwithstatus)
+            this.downloadingReport = downloadingReport
+            this.dialog2 = dialog2
+            this.progressvalue = progressvalue
 
-            const urlToPromise = async (url) => {
-                return new Promise(function (resolve, reject) {
-                    JSZipUtils.getBinaryContent(url, function (err, data) {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve(data);
-                            console.log(data);
-                        }
-                    });
-                });
-            };
+            console.log(progressvalue)
 
-            const generateZipFile = async (zip) => {
-                const blob = await zip.generateAsync({ type: "blob" });
-                await saveAs(
-                    blob,
-                    `report-${moment(this.selected[0].date_closed).format(
-                        "MMDYY"
-                    )}.zip`
-                );
-                console.log("zip generated");
-                 await axios.put("api/arenaStatus", statusArenas);
-                    const c = this.arenaData.data.filter(
-                        (arena) =>
-                            !this.selected.find(
-                                (select) => select.areaCode === arena.areaCode
-                            )
-                    );
+            // const zip = new JSZip();
 
-                    this.arenaData.data = c;
+            // const urlToPromise = async (url) => {
+            //     return new Promise(function (resolve, reject) {
+            //         JSZipUtils.getBinaryContent(url, function (err, data) {
+            //             if (err) {
+            //                 reject(err);
+            //             } else {
+            //                 resolve(data);
+            //                 console.log(data);
+            //             }
+            //         });
+            //     });
+            // };
+
+            // const generateZipFile = async (zip) => {
+            //     const blob = await zip.generateAsync({ type: "blob" });
+            //     await saveAs(
+            //         blob,
+            //         `report-${moment(this.selected[0].date_closed).format(
+            //             "MMDYY"
+            //         )}.zip`
+            //     );
+            //     console.log("zip generated");
+            //      await axios.put("api/arenaStatus", statusArenas);
+            //         const c = this.arenaData.data.filter(
+            //             (arena) =>
+            //                 !this.selected.find(
+            //                     (select) => select.areaCode === arena.areaCode
+            //                 )
+            //         );
+
+            //         this.arenaData.data = c;
                         if(this.progressvalue === 100) {
                             setTimeout(async () => {
                             this.downloadingReport = false;
@@ -2448,62 +2466,62 @@ export default {
                         }, 1000);
 
                     }
-                     this.importwithstatus()
+            //          this.importwithstatus()
 
-            };
-            // start benchmark
-            const t = new Date();
-            // some xml processing
+            // };
+            // // start benchmark
+            // const t = new Date();
+            // // some xml processing
 
-            for (let i = 0; i < this.selected.length; i++) {
-                statusArenas.push({
-                    codeEvent: this.selected[i].codeEvent,
-                    status: "done",
-                });
+            // for (let i = 0; i < this.selected.length; i++) {
+            //     statusArenas.push({
+            //         codeEvent: this.selected[i].codeEvent,
+            //         status: "done",
+            //     });
 
-                console.log(`Currently at ${this.selected[i].id}, ${new Date() - t}ms`)
+            //     console.log(`Currently at ${i}, ${(new Date() - t) / 1000} secs`)
 
-                this.progressvalue = Math.ceil((parseInt(i+1)/parseInt(this.selected.length))*100)
+            //     this.progressvalue = Math.ceil((parseInt(i+1)/parseInt(this.selected.length))*100)
 
 
-                const canvas = await html2canvas(divsss[i], {
-                    onclone: function (clonedDoc) {
-                        const elems =
-                            clonedDoc.getElementsByClassName("reportsoaoutput");
-                        for (let i = 0; i < elems.length; i++) {
-                            elems[i].style.display = "block";
-                        }
-                    },
-                    type: "dataURL",
-                    backgroundColor: "#ffffff",
-                    scale: 0.9
-                });
+            //     const canvas = await html2canvas(divsss[i], {
+            //         onclone: function (clonedDoc) {
+            //             const elems =
+            //                 clonedDoc.getElementsByClassName("reportsoaoutput");
+            //             for (let i = 0; i < elems.length; i++) {
+            //                 elems[i].style.display = "block";
+            //             }
+            //         },
+            //         type: "dataURL",
+            //         backgroundColor: "#ffffff",
+            //         scale: 0.9
+            //     });
 
-                const link = document.createElement("a");
-                // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
-                link.download = `${this.selected[i].arena_name}.png`;
-                link.href = await canvas.toDataURL("image/png");
-                const url = link.href;
+            //     const link = document.createElement("a");
+            //     // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
+            //     link.download = `${this.selected[i].arena_name}.png`;
+            //     link.href = await canvas.toDataURL("image/png");
+            //     const url = link.href;
 
-                const folderName =
-                    parseFloat(this.selected[i].for_total) < 0 ? "fr" : "soa";
+            //     const folderName =
+            //         parseFloat(this.selected[i].for_total) < 0 ? "fr" : "soa";
 
-                const arenaName =
-                    (await this.selected[i].arena_name.indexOf("/")) > -1
-                        ? this.selected[i].arena_name.replace(/\//g, "-")
-                        : this.selected[i].arena_name;
-                const filename = `${folderName}/${arenaName}.png`;
+            //     const arenaName =
+            //         (await this.selected[i].arena_name.indexOf("/")) > -1
+            //             ? this.selected[i].arena_name.replace(/\//g, "-")
+            //             : this.selected[i].arena_name;
+            //     const filename = `${folderName}/${arenaName}.png`;
 
-                await zip.file(filename, await urlToPromise(url), {
-                    binary: true,
-                }); //Create new zip file with filename and content
-            }
+            //     await zip.file(filename, await urlToPromise(url), {
+            //         binary: true,
+            //     }); //Create new zip file with filename and content
+            // }
 
-            //Generate zip file
-            await generateZipFile(zip);
+            // //Generate zip file
+            // await generateZipFile(zip);
         },
         defineEmail(arrayEmail) {
-            console.log(arrayEmail);
+         
             if (arrayEmail != null) {
                 const emailMap = arrayEmail.map((ed) => ed["email"]);
 
@@ -2516,7 +2534,7 @@ export default {
             }
         },
          defineContact(arrayContact) {
-            console.log(arrayContact);
+        
             if (arrayContact != null) {
                 const emailMap = arrayContact.map((ed) => ed["contact_number"]);
 
@@ -2530,7 +2548,7 @@ export default {
 
         loadBankDetails() {
             axios.get("api/Companybanks").then(({ data }) => {
-                (this.bankAccounts = data), console.log("ACCOUNT", data);
+                (this.bankAccounts = data);
             });
         },
         selectAllToggle(props) {
@@ -2626,17 +2644,10 @@ export default {
             const totalComputationOthers =
                 this.computation.exempted.toUpperCase() === "NOT EXEMPTED" ||  this.computation.exempted.toUpperCase() === "NOT"
                     ? numberFormat(totalOthers)
-                    : numberFormat(totalCommission);
+                    : numberFormat(this.computation.totalCommission); // to fixed
 
             const depositReplenish = numberFormat(
-                (numberUnformat(netWinLoss) -
-                    numberUnformat(totalComputationOthers) ||
-                    0 - numberUnformat(this.computation.systemErrorCOArmsi) ||
-                    0) +
-                    (numberUnformat(this.computation.mobile.cashLoad) -
-                        numberUnformat(
-                            this.computation.mobile.cashWithdrawal
-                        ) || 0)
+                (numberUnformat(netWinLoss) - numberUnformat(totalComputationOthers)  - numberUnformat(this.computation.systemErrorCOArmsi)) + (numberUnformat(this.computation.mobile.cashLoad) - numberUnformat(this.computation.mobile.cashWithdrawal))
             );
 
             const depositReplenishText =
