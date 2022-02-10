@@ -33,12 +33,12 @@
                     <span class="text-sm font-weight-medium bank_account-name detailed" >{{Object.values(bankTarget).length ? bankTarget.account_name : banks.length > 0 ? banks[0].account_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].account_name : ''}}</span>
                    
                     <span v-if="!editmode" class="text-sm font-weight-medium detailed" > {{ Object.values(bankTarget).length ? bankTarget.bank_name : banks.length > 0 ? banks[0].bank_name : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_name : '' }}</span>
-                    <span  class="select-field_container" :class="{'editmode-span': editmode}">
+                    <!-- <span  class="select-field_container" :class="{'editmode-span': editmode}">
                         <select v-if="editmode"  class="text-sm font-weight-medium medium sign-name select-field_report"  @change="filterbank($event)" >
                             <option selected disabled>Select Bank</option>
                             <option v-for="b in arenaDetails.bank_details" :key="b.id"  :value="b.id" >{{b.bank_name}}</option>
                         </select>
-                    </span>
+                    </span> -->
                     <span class="text-sm font-weight-medium detailed" >{{  Object.values(bankTarget).length ? bankTarget.bank_number : banks.length > 0 ? banks[0].bank_number : arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_number  : '' }}</span>
     
                 </div> 
@@ -57,8 +57,8 @@
             bankAccounts: Array,
             banks: Array,
             arenaDetails: Object,
-            arenaId: Object,
-            bankId: Object,
+            // arenaId: Object,
+            // bankId: Object,
            
             operatorName: String,
             editmode: Boolean,
@@ -74,22 +74,22 @@
            
             filterbank(event){
               
-                const bankId = event.target.value
+                // const bankId = event.target.value
 
-                axios.put('api/updateBankSelection/'+this.arenaId.id, {
-                    bank_id: bankId
-                }).then(({data}) => {
-                 const selectedBank = data.bank_details.find(sb => sb.id === parseInt(data.bank_id));
+                // axios.put('api/updateBankSelection/'+this.arenaId.id, {
+                //     bank_id: bankId
+                // }).then(({data}) => {
+                //  const selectedBank = data.bank_details.find(sb => sb.id === parseInt(data.bank_id));
               
 
-                    this.bankTarget = {
-                        account_name: selectedBank.account_name,
-                        bank_name: selectedBank.bank_name,
-                        bank_number: selectedBank.bank_number
-                    }
-                })
+                //     this.bankTarget = {
+                //         account_name: selectedBank.account_name,
+                //         bank_name: selectedBank.bank_name,
+                //         bank_number: selectedBank.bank_number
+                //     }
+                // })
 
-                Fire.$emit('AfterCreated')
+                // Fire.$emit('AfterCreated')
             },
         
         },

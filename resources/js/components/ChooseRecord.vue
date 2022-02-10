@@ -18,33 +18,6 @@
 						
 						</v-card-title>
                         <div class="ma-5">
-                            <!-- <v-row> -->
-                                <!-- <v-col>
-                                        <v-select
-                                            label="Computed By"
-                                            :value="selectComputed"
-                                            :items="userPrepared.computed"
-                                            name="computed"
-                                            :item-text="item => `${item.name} - ${item.position}`"
-                                            return-object
-                                            @change="selectedrecord(selectComputed, $event)"
-                                        ></v-select>
-                                </v-col> -->
-                                <!-- <v-col>
-                                        <v-select
-                                        
-                                            label="Checked By"
-                                            :value="selectChecked1"
-                                            :items="userPrepared.checked1"
-                                            name="checked1"
-                                            :item-text="item => `${item.name} - ${item.position}`"
-                                        
-                                            return-object
-                                            
-                                            @change="selectedrecord(selectChecked1, $event)"
-                                        ></v-select>
-                                </v-col>
-                            </v-row> -->
                             <v-row>
                                  
                                 <v-col>

@@ -9,845 +9,923 @@
             </v-btn> -->
             <v-row class="mt-3">
                 <v-col class="col-md-12">
-                            <v-row>
-                                 <v-spacer></v-spacer>
-                                  <v-spacer></v-spacer>
-                               
-                                <v-col v-show="$gate.isAdmin()">
-                                   
-                                        <v-file-input
-                                            dense
-                                            v-model="fileUpload"
-                                            color="deep-purple accent-4"
-                                            label="File input"
-                                            placeholder="Select your file"
-                                            :clearable="false"
-                                            counter
-                                            append-icon="mdi-file-import"
-                                            :show-size="1000"
-                                            @change="onFileChange($event)"
-                                          
-                                         
-                                           
-                                          
-                                        >
-                                         <template v-slot:append >
-                                            <v-tooltip bottom color="success">
-                                                <template v-slot:activator="{ on }">
-                                              
-                                                <v-icon large  :disabled="!isExcel"  v-on="on" color="green darken-3" style="cursor: pointer"  @click="proceedAction">
-                                                    mdi-file-import
-                                                </v-icon>
-                                              
-                                            </template>
-                                            <span>Import File</span>
-                                            </v-tooltip>
-                                        </template>
-                                            <template
-                                                v-slot:selection="{
-                                                    index,
-                                                    text,
-                                                }"
-                                            >
-                                                <v-chip
-                                                    v-if="index < 2"
-                                                    color="deep-purple accent-4"
-                                                    dark
-                                                    label
-                                                    
-                                                    close
-                                                    @click:close="clearFile"
-                                                >
-                                                    {{ text }}
-                                                </v-chip>
-                                            </template>
-                                        </v-file-input>
-                                        
-                                </v-col>
-                                
-                            </v-row>
-                         
-                    
-
-                        <div
-                            class="card card-tabs"
-                            style="overflow: auto; !important"
-                        >
-                            <div class="card-header p-0 pt-1 border-bottom-0">
-                                <ul
-                                    class="nav nav-tabs"
-                                    id="custom-tabs-three-tab"
-                                    role="tablist"
-                                >
-                                    <li class="nav-item">
-                                        <a
-                                            class="nav-link active"
-                                            id="custom-tabs-three-home-tab"
-                                            data-toggle="pill"
-                                            href="#custom-tabs-three-home"
-                                            role="tab"
-                                            aria-controls="custom-tabs-three-home"
-                                            aria-selected="true"
-                                            @click="() => this.selected = []"
-                                            >On Going</a
-                                        >
-                                    </li>
-                                    <li class="nav-item">
-                                        <a
-                                            class="nav-link"
-                                            id="custom-tabs-three-profile-tab"
-                                            data-toggle="pill"
-                                            href="#custom-tabs-three-profile"
-                                            role="tab"
-                                            aria-controls="custom-tabs-three-profile"
-                                            aria-selected="false"
-                                            @click="() => this.selected = []"
-                                            >Converted</a
-                                        >
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="card-body">
-                                <div
-                                    class="tab-content"
-                                    id="custom-tabs-three-tabContent active show"
-                                >
-                                    <v-row>
-                                        <v-col >
-                                            
-                                                    <v-switch
-                                                        v-model="switchPrepared"
-                                                        :label="`Signatory ${switchPrepared ? 'On': 'Off'}`"
-                                                        @change="handleSwitchPrepared"
-                                                        
-                                                    ></v-switch>
-                                            
-                                        </v-col>
-                                        <v-spacer></v-spacer>
-                                        <v-col>
-                                            <v-text-field
-                                                v-model="search"
-                                                append-icon="mdi-magnify"
-                                                label="Search"
-                                                color="primary darken-2"
-                                            ></v-text-field>
-                                        </v-col>
-                                    </v-row>
-
-                                    <div
-                                        class="tab-pane fade active show"
-                                        id="custom-tabs-three-home"
-                                        role="tabpanel"
-                                        aria-labelledby="custom-tabs-three-home-tab"
-                                    >
-                                        <v-data-table
-                                            item-key="codeEvent"
-                                            :headers="headers"
-                                            :items="arenaData.data"
-                                            :items-per-page="10"
-                                            v-model="selected"
-                                            :loading="downloadingReport"
-                                            ref="table"
-                                            :search="search"
-                                            sort-by="date_of_soa"
-                                            group-by="date_of_soa"
-                                            :show-select="
-                                                downloadingReport ? false : true
-                                            "
-                                            :disable-filtering="
-                                                downloadingReport ? true : false
-                                            "
-                                            :disable-sort="
-                                                downloadingReport ? true : false
-                                            "
-                                            
-                                            :single-select="singleSelect"
-                                            class="elevation-1 text-center"
-                                            :footer-props="{
-                                                'items-per-page-options': [
-                                                    -1,
-                                                    10,
-                                                    20,
-                                                    30,
-                                                    40,
-                                                    50,
-                                                    100,
-                                                    
-                                                ],
-                                            }"
-                                            @toggle-select-all="selectAllToggle"
-                                        >
-
-
-                                        <template v-slot:[`group.header`]="{ group, headers, toggle, isOpen }">
-                                 
-                                        <td :colspan="headers.length">
-                                                <v-row>
-                                                    <v-col class="mt-2 ">
-                                                        <div class=" float-left">
-                                                            <v-btn @click="toggle" x-small icon :ref="group"  >
-                                                                <v-icon>
-                                                                    {{ isOpen ? '$minus' : '$plus' }}
-                                                                </v-icon>
-                                                            </v-btn>
-                                                            <span class="mx-5 font-weight-bold">{{ group | myDateSummary }} </span>
-                                                        </div>  
-                                                     
-                                                    </v-col>
-                                                    <v-col>
-                                                      <div class=" float-right"  >
-                                                               <v-menu
-                                                              
-                                                                    bottom
-                                                                    origin="center center"
-                                                                    transition="scale-transition"
-                                                                    v-if="selected.length != 0"
-                                                                    rounded="rounded"
-                                                                    :loading="downloadingReport"
-                                                                    :disabled="downloadingReport"
-                                                                    >
-                                                                        <template
-                                                                            v-slot:activator="{
-                                                                                attrs,
-                                                                                on,
-                                                                            }"
-                                                                        >
-                                                                            <v-btn
-                                                                                color="primary lighten-1"
-                                                                                v-bind="attrs"
-                                                                                v-on="on"
-                                                                                :loading="
-                                                                                        downloadingReport
-                                                                                    "
-                                                                                    :disabled="
-                                                                                        downloadingReport
-                                                                                    "
-                                                                            >
-                                                                                <v-icon light
-                                                                                        >mdi-image</v-icon
-                                                                                    > Download
-                                                                                    <template
-                                                                                        v-slot:loader
-                                                                                    >
-                                                                                        <span
-                                                                                            >Downloading...</span
-                                                                                        >
-
-                                                                                    </template>
-                                                                            </v-btn>
-                                                                        </template>
-
-                                                                        <v-list >
-                                                                            <v-list-item>
-                                                                                <v-btn
-
-                                                                                    :loading="
-                                                                                        downloadingReport
-                                                                                    "
-                                                                                    :disabled="
-                                                                                        downloadingReport
-                                                                                    "
-                                                                                    color="green lighten-1"
-                                                                                    class="ma-2 white--text allbtn"
-                                                                                    @click="
-                                                                                        multiDownloads
-                                                                                    "
-                                                                                >
-                                                                                    <v-icon light
-                                                                                        >mdi-download</v-icon
-                                                                                    >
-                                                                                    PNG
-
-                                                                                </v-btn>
-                                                                            </v-list-item>
-                                                                            <v-list-item >
-                                                                                <v-btn
-                                                                                    
-                                                                                    :loading="
-                                                                                        downloadingReport
-                                                                                    "
-                                                                                    :disabled="
-                                                                                        downloadingReport
-                                                                                    "
-                                                                                    color="yellow darken-3"
-                                                                                    class="ma-2 white--text allbtn"
-                                                                                    @click="
-                                                                                        downloadZip
-                                                                                    "
-                                                                                >
-                                                                                    <v-icon light
-                                                                                        >mdi-zip-box</v-icon
-                                                                                    >
-                                                                                    Zip
-
-                                                                                </v-btn>
-                                                                            </v-list-item>
-                                                                        </v-list>
-                                                                    </v-menu>
-                                                      </div>
-                                                    </v-col>
-                                                </v-row>
-                                              
-                                        </td>
-                                        </template >
-
-
-                                            <template
-                                                v-slot:[`item.data-table-select`]="{
-                                                    item,
-                                                    isSelected,
-                                                    select,
-                                                }"
-                                            >
-                                                <v-simple-checkbox
-                                                    :value="isSelected"
-                                                    :readonly="item.disabled"
-                                                    :disabled="
-                                                        item.arena_details
-                                                            ? false
-                                                            : true
-                                                    "
-                                                    @input="select($event)"
-                                                ></v-simple-checkbox>
-                                            </template>
-                                             <template v-slot:[`item.areaCode`]="{ item }">
-                                               <span class="font-weight-medium">{{item.arena_details ? item.arena_details.area_code : item.areaCode}}</span>
-                                            </template>
-                                             <template v-slot:[`item.refNo`]="{ item }">
-                                               <span class="font-weight-medium">{{item.refNo}}</span>
-                                            </template>
-                                            <template v-slot:[`item.arena_name`]="{ item }">
-                                               <span class="font-weight-medium">{{item.arena_details ? item.arena_details.arena : item.arena_name}}</span>
-                                            </template>
-
-                                           
-
-                                            <template
-                                                v-slot:[`item.actions`]="{
-                                                    item,
-                                                }"
-                                            >
-                                                <v-tooltip top color="primary">
-                                                    <template
-                                                        v-slot:activator="{
-                                                            on,
-                                                            attrs,
-                                                            hover,
-                                                        }"
-                                                    >
-
-                                                        <v-btn
-                                                            icon
-                                                            color="primary"
-                                                            dark
-                                                            small
-                                                            v-bind="attrs"
-                                                            v-on="on"
-                                                            @click="
-                                                                openModel(item)
-                                                            "
-                                                            :class="{
-                                                                'on-hover':
-                                                                    hover,
-                                                            }"
-                                                            :disabled="
-                                                                downloadingReport
-                                                            "
-                                                        >
-                                                            <v-icon
-                                                                >mdi-eye</v-icon
-                                                            >
-                                                        </v-btn>
-                                                    </template>
-                                                    <span>View Account</span>
-                                                </v-tooltip>
-                                            </template>
-                                        </v-data-table>
-
-                                         <v-tooltip bottom color="error">
-                                            <template v-slot:activator="{ on, attrs }">
-                                               <v-btn
-                                                    v-show="
-                                                        arenaData.data &&
-                                                        arenaData.data.length > 0
-                                                        && $gate.isAdmin()
-                                                    "
-                                                    :loading="downloadingReport"
-                                                    :disabled="downloadingReport"
-                                                    @click="truncate"
-                                                    color="red lighten-1"
-                                                    class="ma-2 white--text"
-                                                    v-bind="attrs"
-                                                    v-on="on"
-                                                >
-                                                    Clear Data
-                                                    <v-icon right dark>
-                                                        mdi-backspace
-                                                    </v-icon>
-                                                </v-btn>
-                                            </template>
-                                          <span ><v-icon class="white--text">mdi-alert-outline</v-icon> Please call admin/technical before to clear all data</span>
-                                        </v-tooltip>
-                                       
-                                    </div>
-
-                                    <div
-                                        class="tab-pane fade"
-                                        id="custom-tabs-three-profile"
-                                        role="tabpanel"
-                                        aria-labelledby="custom-tabs-three-profile-tab"
-                                    >
-                                        <v-data-table
-                                             item-key="codeEvent"
-                                            :headers="headers"
-                                            :items="arenaDatastatus.data"
-                                            :items-per-page="10"
-                                            v-model="selected"
-                                            sort-by="date_of_soa"
-                                            group-by="date_of_soa"
-                                            :loading="downloadingReport"
-                                            :search="search"
-                                            :show-select="
-                                                downloadingReport ? false : true
-                                            "
-                                            :disable-filtering="
-                                                downloadingReport ? true : false
-                                            "
-                                            :disable-sort="
-                                                downloadingReport ? true : false
-                                            "
-                                            :single-select="singleSelect"
-                                            class="elevation-1 text-center"
-                                            :footer-props="{
-                                                'items-per-page-options': [
-                                                    -1,
-                                                    10,
-                                                    20,
-                                                    30,
-                                                    40,
-                                                    50,
-                                                    100,
-
-                                                ],
-                                            }"
-                                            @toggle-select-all="selectAllToggle"
-                                        >
-                                        
-                                        <template v-slot:[`group.header`]="{ group, headers, toggle, isOpen }">
-                                            
-                                        <td :colspan="headers.length">
-                                                <v-row>
-                                                    <v-col class="mt-2 ">
-                                                        <div class=" float-left">
-                                                            <v-btn @click="toggle" x-small icon :ref="group"  >
-                                                                <v-icon>
-                                                                    {{ isOpen ? '$minus' : '$plus' }}
-                                                                </v-icon>
-                                                            </v-btn>
-                                                            <span class="mx-5 font-weight-bold">{{ group | myDateSummary }} </span>
-                                                        </div>  
-                                                     
-                                                    </v-col>
-                                                    <v-col>
-                                                      <div class=" float-right"  >
-                                                               <v-menu
-                                                                    offset-x
-                                                                    v-if="selected.length != 0"
-                                                                    rounded="rounded"
-                                                                    :loading="downloadingReport"
-                                                                    :disabled="downloadingReport"
-                                                                    >
-                                                                        <template
-                                                                            v-slot:activator="{
-                                                                                attrs,
-                                                                                on,
-                                                                            }"
-                                                                        >
-                                                                            <v-btn
-                                                                                color="primary lighten-1"
-                                                                                v-bind="attrs"
-                                                                                v-on="on"
-                                                                                :loading="
-                                                                                        downloadingReport
-                                                                                    "
-                                                                                    :disabled="
-                                                                                        downloadingReport
-                                                                                    "
-                                                                            >
-                                                                                <v-icon light
-                                                                                        >mdi-image</v-icon
-                                                                                    > Redownload
-                                                                                    <template
-                                                                                        v-slot:loader
-                                                                                    >
-                                                                                        <span
-                                                                                            >Downloading...</span
-                                                                                        >
-
-                                                                                    </template>
-                                                                            </v-btn>
-                                                                        </template>
-
-                                                                        <v-list >
-                                                                            <v-list-item>
-                                                                                <v-btn
-
-                                                                                    :loading="
-                                                                                        downloadingReport
-                                                                                    "
-                                                                                    :disabled="
-                                                                                        downloadingReport
-                                                                                    "
-                                                                                    color="green lighten-1"
-                                                                                    class="ma-2 white--text allbtn"
-                                                                                    @click="
-                                                                                        multiDownloads
-                                                                                    "
-                                                                                >
-                                                                                    <v-icon light
-                                                                                        >mdi-download</v-icon
-                                                                                    >
-                                                                                    PNG
-
-                                                                                </v-btn>
-                                                                            </v-list-item>
-                                                                            <v-list-item >
-                                                                                <v-btn
-                                                                                    
-                                                                                    :loading="
-                                                                                        downloadingReport
-                                                                                    "
-                                                                                    :disabled="
-                                                                                        downloadingReport
-                                                                                    "
-                                                                                    color="yellow darken-3"
-                                                                                    class="ma-2 white--text allbtn"
-                                                                                    @click="
-                                                                                        downloadZip
-                                                                                    "
-                                                                                >
-                                                                                    <v-icon light
-                                                                                        >mdi-zip-box</v-icon
-                                                                                    >
-                                                                                    Zip
-
-                                                                                </v-btn>
-                                                                            </v-list-item>
-                                                                        </v-list>
-                                                                    </v-menu>
-                                                      </div>
-                                                    </v-col>
-                                                </v-row>
-                                              
-                                        </td>
-                                        </template >
-                                            <template
-                                                v-slot:[`item.actions`]="{
-                                                    item,
-                                                }"
-                                            >
-                                                <v-tooltip top color="primary">
-                                                    <template
-                                                        v-slot:activator="{
-                                                            on,
-                                                            attrs,
-                                                            hover,
-                                                        }"
-                                                    >
-                                                        <v-btn
-                                                            icon
-                                                            color="primary"
-                                                            dark
-                                                            small
-                                                            v-bind="attrs"
-                                                            v-on="on"
-                                                            @click="
-                                                                openModel(item)
-                                                            "
-                                                            :class="{
-                                                                'on-hover':
-                                                                    hover,
-                                                            }"
-                                                        >
-                                                            <v-icon
-                                                                >mdi-eye</v-icon
-                                                            >
-                                                        </v-btn>
-                                                    </template>
-                                                    <span>View Account</span>
-                                                </v-tooltip>
-                                            </template>
-                                        </v-data-table>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div
-                                v-for="item in selected"
-                                :key="item.codeEvent"
-                                style="
-                                    padding: 5px 30px;
-                                    width: 800px;
-                                    display: none;
-                                "
-                                ref="soaReport"
-                                id="reportsoaoutput"
-                                class="reportsoaoutput"
+                    <v-row>
+                        <v-spacer></v-spacer>
+                        <v-spacer></v-spacer>
+                        <v-col v-show="$gate.isAdmin()">
+                            <v-file-input
+                                dense
+                                v-model="fileUpload"
+                                color="deep-purple accent-4"
+                                label="File input"
+                                placeholder="Select your file"
+                                :clearable="false"
+                                counter
+                                append-icon="mdi-file-import"
+                                :show-size="1000"
+                                @change="onFileChange($event)"
                             >
-                                <v-card-title
-                                    class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
+                                <template v-slot:append>
+                                    <v-tooltip bottom color="success">
+                                        <template v-slot:activator="{ on }">
+                                            <v-icon
+                                                large
+                                                :disabled="!isExcel"
+                                                v-on="on"
+                                                color="green darken-3"
+                                                style="cursor: pointer"
+                                                @click="proceedAction"
+                                            >
+                                                mdi-file-import
+                                            </v-icon>
+                                        </template>
+                                        <span>Import File</span>
+                                    </v-tooltip>
+                                </template>
+                                <template v-slot:selection="{ index, text }">
+                                    <v-chip
+                                        v-if="index < 2"
+                                        color="deep-purple accent-4"
+                                        dark
+                                        label
+                                        close
+                                        @click:close="clearFile"
+                                    >
+                                        {{ text }}
+                                    </v-chip>
+                                </template>
+                            </v-file-input>
+                        </v-col>
+                    </v-row>
+
+                    <div
+                        class="card card-tabs"
+                        style="overflow: auto; !important"
+                    >
+                        <div class="card-header p-0 pt-1 border-bottom-0">
+                            <ul
+                                class="nav nav-tabs"
+                                id="custom-tabs-three-tab"
+                                role="tablist"
+                            >
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link active"
+                                        id="custom-tabs-three-home-tab"
+                                        data-toggle="pill"
+                                        href="#custom-tabs-three-home"
+                                        role="tab"
+                                        aria-controls="custom-tabs-three-home"
+                                        aria-selected="true"
+                                        @click="() => (this.selected = [])"
+                                        >On Going</a
+                                    >
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link"
+                                        id="custom-tabs-three-profile-tab"
+                                        data-toggle="pill"
+                                        href="#custom-tabs-three-profile"
+                                        role="tab"
+                                        aria-controls="custom-tabs-three-profile"
+                                        aria-selected="false"
+                                        @click="() => (this.selected = [])"
+                                        >Converted</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div
+                                class="tab-content"
+                                id="custom-tabs-three-tabContent active show"
+                            >
+                                <v-row>
+                                    <v-col>
+                                        <v-switch
+                                            v-model="switchPrepared"
+                                            :label="`Signatory ${
+                                                switchPrepared ? 'On' : 'Off'
+                                            }`"
+                                            @change="handleSwitchPrepared"
+                                        ></v-switch>
+                                    </v-col>
+                                    <v-spacer></v-spacer>
+                                    <v-col>
+                                        <v-text-field
+                                            v-model="search"
+                                            append-icon="mdi-magnify"
+                                            label="Search"
+                                            color="primary darken-2"
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
+
+                                <div
+                                    class="tab-pane fade active show"
+                                    id="custom-tabs-three-home"
+                                    role="tabpanel"
+                                    aria-labelledby="custom-tabs-three-home-tab"
                                 >
-                                    <span>{{
-                                        item.group === "Replenish"
-                                            ? "For Replenishment"
-                                            : "Statement of Account"
-                                    }}</span>
-                                </v-card-title>
-                                <v-card-text class="text-sm-body-2">
-                                    <v-row>
-                                        <v-spacer></v-spacer>
-                                        <v-spacer></v-spacer>
-                                        <DateSOA
-                                            :depositReplenishText="
-                                                item.group === 'Replenish'
-                                                    ? {
-                                                          title: 'For Replenishment',
-                                                          dateText: 'FR',
-                                                          totalText:
-                                                              'Replenish',
-                                                          bankTitle:
-                                                              'We will replenish to',
-                                                      }
-                                                    : {
-                                                          title: 'Statement of Account',
-                                                          dateText: 'SOA',
-                                                          totalText: 'Deposit',
-                                                          bankTitle:
-                                                              'Kindly Deposit to',
-                                                      }
-                                            "
-                                            :refNo="item.refNo"
-                                            :dateEvent="
-                                                moment(item.date_of_soa).format(
-                                                    'LL'
-                                                )
-                                            "
-                                            :dateSoa="moment(item.date_closed).format('LL')"
-                                        />
-                                    </v-row>
-                                    <v-row>
-                                        <ArenaDetails
-                                            :arenaDetails="
+                                    <v-data-table
+                                        item-key="codeEvent"
+                                        :headers="headers"
+                                        :items="arenaData.data"
+                                        :items-per-page="10"
+                                        v-model="selected"
+                                        :loading="downloadingReport"
+                                        ref="table"
+                                        :search="search"
+                                        sort-by="date_of_soa"
+                                        group-by="date_of_soa"
+                                        :show-select="
+                                            downloadingReport ? false : true
+                                        "
+                                        :disable-filtering="
+                                            downloadingReport ? true : false
+                                        "
+                                        :disable-sort="
+                                            downloadingReport ? true : false
+                                        "
+                                        :single-select="singleSelect"
+                                        class="elevation-1 text-center"
+                                        :footer-props="{
+                                            'items-per-page-options': [
+                                                -1, 10, 20, 30, 40, 50, 100,
+                                            ],
+                                        }"
+                                        @toggle-select-all="selectAllToggle"
+                                    >
+                                        <template
+                                            v-slot:[`group.header`]="{
+                                                group,
+                                                headers,
+                                                toggle,
+                                                isOpen,
+                                            }"
+                                        >
+                                            <td :colspan="headers.length">
+                                                <v-row>
+                                                    <v-col class="mt-2">
+                                                        <div class="float-left">
+                                                            <v-btn
+                                                                @click="toggle"
+                                                                x-small
+                                                                icon
+                                                                :ref="group"
+                                                            >
+                                                                <v-icon>
+                                                                    {{
+                                                                        isOpen
+                                                                            ? "$minus"
+                                                                            : "$plus"
+                                                                    }}
+                                                                </v-icon>
+                                                            </v-btn>
+                                                            <span
+                                                                class="mx-5 font-weight-bold"
+                                                                >{{
+                                                                    group
+                                                                        | myDateSummary
+                                                                }}
+                                                            </span>
+                                                        </div>
+                                                    </v-col>
+                                                    <v-col>
+                                                        <div
+                                                            class="float-right"
+                                                        >
+                                                            <v-menu
+                                                                bottom
+                                                                origin="center center"
+                                                                transition="scale-transition"
+                                                                v-if="
+                                                                    selected.length !=
+                                                                    0
+                                                                "
+                                                                rounded="rounded"
+                                                                :loading="
+                                                                    downloadingReport
+                                                                "
+                                                                :disabled="
+                                                                    downloadingReport
+                                                                "
+                                                            >
+                                                                <template
+                                                                    v-slot:activator="{
+                                                                        attrs,
+                                                                        on,
+                                                                    }"
+                                                                >
+                                                                    <v-btn
+                                                                        color="primary lighten-1"
+                                                                        v-bind="
+                                                                            attrs
+                                                                        "
+                                                                        v-on="
+                                                                            on
+                                                                        "
+                                                                        :loading="
+                                                                            downloadingReport
+                                                                        "
+                                                                        :disabled="
+                                                                            downloadingReport
+                                                                        "
+                                                                    >
+                                                                        <v-icon
+                                                                            light
+                                                                            >mdi-image</v-icon
+                                                                        >
+                                                                        Download
+                                                                        <template
+                                                                            v-slot:loader
+                                                                        >
+                                                                            <span
+                                                                                >Downloading...</span
+                                                                            >
+                                                                        </template>
+                                                                    </v-btn>
+                                                                </template>
+
+                                                                <v-list>
+                                                                    <v-list-item>
+                                                                        <v-btn
+                                                                            :loading="
+                                                                                downloadingReport
+                                                                            "
+                                                                            :disabled="
+                                                                                downloadingReport
+                                                                            "
+                                                                            color="green lighten-1"
+                                                                            class="ma-2 white--text allbtn"
+                                                                            @click="
+                                                                                multiDownloads
+                                                                            "
+                                                                        >
+                                                                            <v-icon
+                                                                                light
+                                                                                >mdi-download</v-icon
+                                                                            >
+                                                                            PNG
+                                                                        </v-btn>
+                                                                    </v-list-item>
+                                                                    <v-list-item>
+                                                                        <v-btn
+                                                                            :loading="
+                                                                                downloadingReport
+                                                                            "
+                                                                            :disabled="
+                                                                                downloadingReport
+                                                                            "
+                                                                            color="yellow darken-3"
+                                                                            class="ma-2 white--text allbtn"
+                                                                            @click="
+                                                                                downloadZip
+                                                                            "
+                                                                        >
+                                                                            <v-icon
+                                                                                light
+                                                                                >mdi-zip-box</v-icon
+                                                                            >
+                                                                            Zip
+                                                                        </v-btn>
+                                                                    </v-list-item>
+                                                                </v-list>
+                                                            </v-menu>
+                                                        </div>
+                                                    </v-col>
+                                                </v-row>
+                                            </td>
+                                        </template>
+
+                                        <template
+                                            v-slot:[`item.data-table-select`]="{
+                                                item,
+                                                isSelected,
+                                                select,
+                                            }"
+                                        >
+                                            <v-simple-checkbox
+                                                :value="isSelected"
+                                                :readonly="item.disabled"
+                                                :disabled="
+                                                    item.arena_details
+                                                        ? false
+                                                        : true
+                                                "
+                                                @input="select($event)"
+                                            ></v-simple-checkbox>
+                                        </template>
+                                        <template
+                                            v-slot:[`item.areaCode`]="{ item }"
+                                        >
+                                            <span class="font-weight-medium">{{
                                                 item.arena_details
                                                     ? item.arena_details
-                                                    : { arena: item.arena_name }
-                                            "
-                                            :editmode="false"
-                                            :emailFormat="
+                                                          .area_code
+                                                    : item.areaCode
+                                            }}</span>
+                                        </template>
+                                        <template
+                                            v-slot:[`item.refNo`]="{ item }"
+                                        >
+                                            <span class="font-weight-medium">{{
+                                                item.refNo
+                                            }}</span>
+                                        </template>
+                                        <template
+                                            v-slot:[`item.arena_name`]="{
+                                                item,
+                                            }"
+                                        >
+                                            <span class="font-weight-medium">{{
                                                 item.arena_details
-                                                    ? defineEmail(
-                                                          item.arena_details
-                                                              .email_details
-                                                      )
-                                                    : ''
-                                            "
-                                            :contactFormat=" item.arena_details
-                                                    ? defineContact(
-                                                          item.arena_details
-                                                              .contact_details
-                                                      )
-                                                    : ''"
-                                        />
-                                    </v-row>
-                                    <v-row>
-                                        <div class="computation-banner">
-                                            Computation
-                                        </div>
-                                    </v-row>
-                                    <ComputeBox
-                                        :computation="{
-                                            totalMWBets: numberFormat(
-                                                item.total_meron_wala || 0
-                                            ),
-                                            drawCancelled: numberFormat(
-                                                item.draw_cancelled || 0
-                                            ),
-                                            draw: numberFormat(item.draw || 0),
-                                            totalPayoutPaid: numberFormat(
-                                                item.total_payout_paid || 0
-                                            ),
-                                            cdPaid: numberFormat(
-                                                item.draw_cancelled_paid || 0
-                                            ),
-                                            drawPaid: numberFormat(
-                                                item.draw_paid || 0
-                                            ),
-                                            systemErrorCOArmsi: numberFormat(
-                                                item.systemErrorCOArmsi || 0
-                                            ),
-                                            safetyFund: numberFormat(
-                                               item.safetyFund || 0
-                                            ),
-                                            salesDeduction:
-                                                numberFormat(
-                                                    item.salesDeductionTablet
-                                                ) || 0,
-                                            unclaimed: numberFormat(
-                                                item.unclaimed || 0
-                                            ),
-                                            cUnpaid: numberFormat(
-                                                item.cancelled_unpaid || 0
-                                            ),
-                                            otherCommissionIntel05:
-                                                numberFormat(
-                                                        item.otherCommissionIntel05 || 0
-                                                ),
-                                            consolidatorsCommission:
-                                                numberFormat(
-                                                   
-                                                       item.consolidatorsCommission || 0
-                                                ),
-                                            paymentForOutstandingBalance:
-                                                numberFormat(
-                                                        item.paymentForOutstandingBalance || 0
-                                                ),
-                                                totalCommission: numberFormat(moneyFormat(numberUnformat(numberFormat(parseFloat(item.totalCommission),3))) || 0),
-                                                mwTotalPercent: numberFormat(
-                                                item.mwTwo || 0
-                                                ),
-                                                depositReplenish: numberFormat(
-                                                   moneyFormat(numberUnformat(numberFormat(parseFloat(item.for_total),3))) || 0
-                                                ),
-                                                netWinLoss: numberFormat(
-                                                    item.netWinLoss || 0
-                                                ),
+                                                    ? item.arena_details.arena
+                                                    : item.arena_name
+                                            }}</span>
+                                        </template>
 
-                                                safetyFund: numberFormat(
-                                                    (parseFloat(item.safetyFund)+parseFloat(item.safetyFundMob)) || 0
-                                                ),
-                                                otherCommissionIntel05:
-                                                    numberFormat(
-                                                            (parseFloat(item.otherCommissionIntel05)+parseFloat(item.otherCommIntMob)) || 0
-                                                    ),
-                                                consolidatorsCommission:
-                                                    numberFormat(
-                                                    
-                                                            (parseFloat(item.consolidatorsCommission)+parseFloat(item.consolCommMob)) || 0
-                                                    ),
-                                                paymentForOutstandingBalance:
-                                                    numberFormat(
-                                                    
-                                                            (parseFloat(item.paymentForOutstandingBalance)+parseFloat(item.payOutsBalMob)) || 0
-                                                    ),
-                                                       netOpCommission: numberFormat(
-                                                item.netOperatorsCommission || 0
-                                            ),
+                                        <template
+                                            v-slot:[`item.actions`]="{ item }"
+                                        >
+                                            <v-tooltip top color="primary">
+                                                <template
+                                                    v-slot:activator="{
+                                                        on,
+                                                        attrs,
+                                                        hover,
+                                                    }"
+                                                >
+                                                    <v-btn
+                                                        icon
+                                                        color="primary"
+                                                        dark
+                                                        small
+                                                        v-bind="attrs"
+                                                        v-on="on"
+                                                        @click="openModel(item)"
+                                                        :class="{
+                                                            'on-hover': hover,
+                                                        }"
+                                                        :disabled="
+                                                            downloadingReport
+                                                        "
+                                                    >
+                                                        <v-icon>mdi-eye</v-icon>
+                                                    </v-btn>
+                                                </template>
+                                                <span>View Account</span>
+                                            </v-tooltip>
+                                        </template>
+                                    </v-data-table>
 
+                                    <v-tooltip bottom color="error">
+                                        <template
+                                            v-slot:activator="{ on, attrs }"
+                                        >
+                                            <v-btn
+                                                v-show="
+                                                    arenaData.data &&
+                                                    arenaData.data.length > 0 &&
+                                                    $gate.isAdmin()
+                                                "
+                                                :loading="downloadingReport"
+                                                :disabled="downloadingReport"
+                                                @click="truncate"
+                                                color="red lighten-1"
+                                                class="ma-2 white--text"
+                                                v-bind="attrs"
+                                                v-on="on"
+                                            >
+                                                Clear Data
+                                                <v-icon right dark>
+                                                    mdi-backspace
+                                                </v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span
+                                            ><v-icon class="white--text"
+                                                >mdi-alert-outline</v-icon
+                                            >
+                                            Please call admin/technical before
+                                            to clear all data</span
+                                        >
+                                    </v-tooltip>
+                                </div>
 
-                                            mobile: {
-                                                totalMWBets: numberFormat(
-                                                    item.total_win_mobile || 0
-                                                ),
-                                                totalDrawBets: numberFormat(
-                                                    item.draw_mobile || 0
-                                                ),
-                                                cashLoad: numberFormat(
-                                                    item.cashLoad || 0
-                                                ),
-                                                cashWithdrawal: numberFormat(
-                                                    item.cashWithdrawal || 0
-                                                ),
-                                            },
+                                <div
+                                    class="tab-pane fade"
+                                    id="custom-tabs-three-profile"
+                                    role="tabpanel"
+                                    aria-labelledby="custom-tabs-three-profile-tab"
+                                >
+                                    <v-data-table
+                                        item-key="codeEvent"
+                                        :headers="headers"
+                                        :items="arenaDatastatus.data"
+                                        :items-per-page="10"
+                                        v-model="selected"
+                                        sort-by="date_of_soa"
+                                        group-by="date_of_soa"
+                                        :loading="downloadingReport"
+                                        :search="search"
+                                        :show-select="
+                                            downloadingReport ? false : true
+                                        "
+                                        :disable-filtering="
+                                            downloadingReport ? true : false
+                                        "
+                                        :disable-sort="
+                                            downloadingReport ? true : false
+                                        "
+                                        :single-select="singleSelect"
+                                        class="elevation-1 text-center"
+                                        :footer-props="{
+                                            'items-per-page-options': [
+                                                -1, 10, 20, 30, 40, 50, 100,
+                                            ],
                                         }"
-                                        :computedAve="{
-                                                depositReplenish: numberFormat(
-                                                    item.for_total || 0
-                                                ),
-                                                mwTotalPercent: numberFormat(
-                                                    item.mwTwo || 0
-                                                ),
+                                        @toggle-select-all="selectAllToggle"
+                                    >
+                                        <template
+                                            v-slot:[`group.header`]="{
+                                                group,
+                                                headers,
+                                                toggle,
+                                                isOpen,
+                                            }"
+                                        >
+                                            <td :colspan="headers.length">
+                                                <v-row>
+                                                    <v-col class="mt-2">
+                                                        <div class="float-left">
+                                                            <v-btn
+                                                                @click="toggle"
+                                                                x-small
+                                                                icon
+                                                                :ref="group"
+                                                            >
+                                                                <v-icon>
+                                                                    {{
+                                                                        isOpen
+                                                                            ? "$minus"
+                                                                            : "$plus"
+                                                                    }}
+                                                                </v-icon>
+                                                            </v-btn>
+                                                            <span
+                                                                class="mx-5 font-weight-bold"
+                                                                >{{
+                                                                    group
+                                                                        | myDateSummary
+                                                                }}
+                                                            </span>
+                                                        </div>
+                                                    </v-col>
+                                                    <v-col>
+                                                        <div
+                                                            class="float-right"
+                                                        >
+                                                            <v-menu
+                                                                offset-x
+                                                                v-if="
+                                                                    selected.length !=
+                                                                    0
+                                                                "
+                                                                rounded="rounded"
+                                                                :loading="
+                                                                    downloadingReport
+                                                                "
+                                                                :disabled="
+                                                                    downloadingReport
+                                                                "
+                                                            >
+                                                                <template
+                                                                    v-slot:activator="{
+                                                                        attrs,
+                                                                        on,
+                                                                    }"
+                                                                >
+                                                                    <v-btn
+                                                                        color="primary lighten-1"
+                                                                        v-bind="
+                                                                            attrs
+                                                                        "
+                                                                        v-on="
+                                                                            on
+                                                                        "
+                                                                        :loading="
+                                                                            downloadingReport
+                                                                        "
+                                                                        :disabled="
+                                                                            downloadingReport
+                                                                        "
+                                                                    >
+                                                                        <v-icon
+                                                                            light
+                                                                            >mdi-image</v-icon
+                                                                        >
+                                                                        Redownload
+                                                                        <template
+                                                                            v-slot:loader
+                                                                        >
+                                                                            <span
+                                                                                >Downloading...</span
+                                                                            >
+                                                                        </template>
+                                                                    </v-btn>
+                                                                </template>
 
-                                                   mwTotalPercent: numberFormat(
-                                                    item.mwTwo || 0
-                                                ),
-                                                drawTotalPercent: numberFormat(
-                                                    item.drawTwo || 0
-                                                ),
-                                                mwMobileTotalPercent: numberFormat(
-                                                    item.mwTwoMobile || 0
-                                                ),
-                                                drawMobileTotalPercent:
-                                                    numberFormat(
-                                                        item.drawTwoMobile ||
-                                                            0
-                                                    ),
-                                            totalComputationOthers:
-                                                item.exempted.toUpperCase() === 'NOT EXEMPTED' ||  item.exempted.toUpperCase() === 'NOT'
-                                                    ? numberFormat(
-                                                          item.totalOthers || 0
-                                                      )
-                                                    : numberFormat(
-                                                          item.totalCommission ||
-                                                              0
-                                                      ),
-                                        }"
-                                        :commissionPercent="commission_percent"
-                                        :editmode="editmode"
-                                        :depositReplenishTxt="
-                                            item.group === 'Replenish'
-                                                ? {
-                                                      totalText:
-                                                          'Replenishment',
-                                                  }
-                                                : {
-                                                      totalText: 'Deposit',
-                                                  }
-                                        "
-                                    />
-                                    <span v-if="item.group === 'Replenish'" class="text-xs my-2" style="color: #E64A19">Please be advised that replenishment are only available during banking days. We allow off setting of pending remittances and replenishments during non-banking days.</span>
-
-                                    <BankBox
-                                        :bank="bank"
-                                         :banks="banks || []"
-                                        :bankAccounts="bankAccounts || []"
-                                        :arenaDetails="item.arena_details"
-                                        :bankId="{ id: bankId }"
-                                        :arenaId="{ id: arenaId }"
-                                        :operatorName="
-                                            item.arena_details
-                                                ? item.arena_details.operator
-                                                : ''
-                                        "
-                                        :editmode="editmode"
-                                        :depositReplenishText="
-                                              item.group === 'Replenish'
-                                                    ? {
-
-                                                          totalText:
-                                                              'Replenish',
-                                                          bankTitle:
-                                                              'We will replenish to',
-                                                      }
-                                                    : {
-
-                                                          totalText: 'Deposit',
-                                                          bankTitle:
-                                                              'Kindly Deposit to',
-                                                      }
-                                        "
-                                    />
-
-
-                                    <PreparedChecked
-                                        v-show="switchPrepared"
-                                        :userPrepared="userPrepared"
-                                        :arenaDetails="item.arena_details"
-                                        :editmode="editmode"
-                                    />
-
-                                </v-card-text>
+                                                                <v-list>
+                                                                    <v-list-item>
+                                                                        <v-btn
+                                                                            :loading="
+                                                                                downloadingReport
+                                                                            "
+                                                                            :disabled="
+                                                                                downloadingReport
+                                                                            "
+                                                                            color="green lighten-1"
+                                                                            class="ma-2 white--text allbtn"
+                                                                            @click="
+                                                                                multiDownloads
+                                                                            "
+                                                                        >
+                                                                            <v-icon
+                                                                                light
+                                                                                >mdi-download</v-icon
+                                                                            >
+                                                                            PNG
+                                                                        </v-btn>
+                                                                    </v-list-item>
+                                                                    <v-list-item>
+                                                                        <v-btn
+                                                                            :loading="
+                                                                                downloadingReport
+                                                                            "
+                                                                            :disabled="
+                                                                                downloadingReport
+                                                                            "
+                                                                            color="yellow darken-3"
+                                                                            class="ma-2 white--text allbtn"
+                                                                            @click="
+                                                                                downloadZip
+                                                                            "
+                                                                        >
+                                                                            <v-icon
+                                                                                light
+                                                                                >mdi-zip-box</v-icon
+                                                                            >
+                                                                            Zip
+                                                                        </v-btn>
+                                                                    </v-list-item>
+                                                                </v-list>
+                                                            </v-menu>
+                                                        </div>
+                                                    </v-col>
+                                                </v-row>
+                                            </td>
+                                        </template>
+                                        <template
+                                            v-slot:[`item.actions`]="{ item }"
+                                        >
+                                            <v-tooltip top color="primary">
+                                                <template
+                                                    v-slot:activator="{
+                                                        on,
+                                                        attrs,
+                                                        hover,
+                                                    }"
+                                                >
+                                                    <v-btn
+                                                        icon
+                                                        color="primary"
+                                                        dark
+                                                        small
+                                                        v-bind="attrs"
+                                                        v-on="on"
+                                                        @click="openModel(item)"
+                                                        :class="{
+                                                            'on-hover': hover,
+                                                        }"
+                                                    >
+                                                        <v-icon>mdi-eye</v-icon>
+                                                    </v-btn>
+                                                </template>
+                                                <span>View Account</span>
+                                            </v-tooltip>
+                                        </template>
+                                    </v-data-table>
+                                </div>
                             </div>
                         </div>
+
+                        <div
+                            v-for="item in selected"
+                            :key="item.codeEvent"
+                            style="
+                                padding: 5px 30px;
+                                width: 800px;
+                                display: none;
+                            "
+                            ref="soaReport"
+                            id="reportsoaoutput"
+                            class="reportsoaoutput"
+                        >
+                            <v-card-title
+                                class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
+                            >
+                                <span>{{
+                                    item.group === "Replenish"
+                                        ? "For Replenishment"
+                                        : "Statement of Account"
+                                }}</span>
+                            </v-card-title>
+                            <v-card-text class="text-sm-body-2">
+                                <v-row>
+                                    <v-spacer></v-spacer>
+                                    <v-spacer></v-spacer>
+                                    <DateSOA
+                                        :depositReplenishText="
+                                            item.group === 'Replenish'
+                                                ? {
+                                                      title: 'For Replenishment',
+                                                      dateText: 'FR',
+                                                      totalText: 'Replenish',
+                                                      bankTitle:
+                                                          'We will replenish to',
+                                                  }
+                                                : {
+                                                      title: 'Statement of Account',
+                                                      dateText: 'SOA',
+                                                      totalText: 'Deposit',
+                                                      bankTitle:
+                                                          'Kindly Deposit to',
+                                                  }
+                                        "
+                                        :refNo="item.refNo"
+                                        :dateEvent="
+                                            moment(item.date_of_soa).format(
+                                                'LL'
+                                            )
+                                        "
+                                        :dateSoa="
+                                            moment(item.date_closed).format(
+                                                'LL'
+                                            )
+                                        "
+                                    />
+                                </v-row>
+                                <v-row>
+                                    <ArenaDetails
+                                        :arenaDetails="
+                                            item.arena_details
+                                                ? item.arena_details
+                                                : { arena: item.arena_name }
+                                        "
+                                        :editmode="false"
+                                        :emailFormat="
+                                            item.arena_details
+                                                ? defineEmail(
+                                                      item.arena_details
+                                                          .email_details
+                                                  )
+                                                : ''
+                                        "
+                                        :contactFormat="
+                                            item.arena_details
+                                                ? defineContact(
+                                                      item.arena_details
+                                                          .contact_details
+                                                  )
+                                                : ''
+                                        "
+                                    />
+                                </v-row>
+                                <v-row>
+                                    <div class="computation-banner">
+                                        Computation
+                                    </div>
+                                </v-row>
+                                <ComputeBox
+                                    :computation="{
+                                        totalMWBets: numberFormat(
+                                            item.total_meron_wala || 0
+                                        ),
+                                        drawCancelled: numberFormat(
+                                            item.draw_cancelled || 0
+                                        ),
+                                        draw: numberFormat(item.draw || 0),
+                                        totalPayoutPaid: numberFormat(
+                                            item.total_payout_paid || 0
+                                        ),
+                                        cdPaid: numberFormat(
+                                            item.draw_cancelled_paid || 0
+                                        ),
+                                        drawPaid: numberFormat(
+                                            item.draw_paid || 0
+                                        ),
+                                        systemErrorCOArmsi: numberFormat(
+                                            item.systemErrorCOArmsi || 0
+                                        ),
+                                        safetyFund: numberFormat(
+                                            item.safetyFund || 0
+                                        ),
+                                        salesDeduction:
+                                            numberFormat(
+                                                item.salesDeductionTablet
+                                            ) || 0,
+                                        unclaimed: numberFormat(
+                                            item.unclaimed || 0
+                                        ),
+                                        cUnpaid: numberFormat(
+                                            item.cancelled_unpaid || 0
+                                        ),
+                                        otherCommissionIntel05: numberFormat(
+                                            item.otherCommissionIntel05 || 0
+                                        ),
+                                        consolidatorsCommission: numberFormat(
+                                            item.consolidatorsCommission || 0
+                                        ),
+                                        paymentForOutstandingBalance:
+                                            numberFormat(
+                                                item.paymentForOutstandingBalance ||
+                                                    0
+                                            ),
+                                        totalCommission: numberFormat(
+                                            moneyFormat(
+                                                numberUnformat(
+                                                    numberFormat(
+                                                        parseFloat(
+                                                            item.totalCommission
+                                                        ),
+                                                        3
+                                                    )
+                                                )
+                                            ) || 0
+                                        ),
+                                        mwTotalPercent: numberFormat(
+                                            item.mwTwo || 0
+                                        ),
+                                        depositReplenish: numberFormat(
+                                            moneyFormat(
+                                                numberUnformat(
+                                                    numberFormat(
+                                                        parseFloat(
+                                                            item.for_total
+                                                        ),
+                                                        3
+                                                    )
+                                                )
+                                            ) || 0
+                                        ),
+                                        netWinLoss: numberFormat(
+                                            item.netWinLoss || 0
+                                        ),
+
+                                        safetyFund: numberFormat(
+                                            parseFloat(item.safetyFund) +
+                                                parseFloat(
+                                                    item.safetyFundMob
+                                                ) || 0
+                                        ),
+                                        otherCommissionIntel05: numberFormat(
+                                            parseFloat(
+                                                item.otherCommissionIntel05
+                                            ) +
+                                                parseFloat(
+                                                    item.otherCommIntMob
+                                                ) || 0
+                                        ),
+                                        consolidatorsCommission: numberFormat(
+                                            parseFloat(
+                                                item.consolidatorsCommission
+                                            ) +
+                                                parseFloat(
+                                                    item.consolCommMob
+                                                ) || 0
+                                        ),
+                                        paymentForOutstandingBalance:
+                                            numberFormat(
+                                                parseFloat(
+                                                    item.paymentForOutstandingBalance
+                                                ) +
+                                                    parseFloat(
+                                                        item.payOutsBalMob
+                                                    ) || 0
+                                            ),
+                                        netOpCommission: numberFormat(
+                                            item.netOperatorsCommission || 0
+                                        ),
+
+                                        mobile: {
+                                            totalMWBets: numberFormat(
+                                                item.total_win_mobile || 0
+                                            ),
+                                            totalDrawBets: numberFormat(
+                                                item.draw_mobile || 0
+                                            ),
+                                            cashLoad: numberFormat(
+                                                item.cashLoad || 0
+                                            ),
+                                            cashWithdrawal: numberFormat(
+                                                item.cashWithdrawal || 0
+                                            ),
+                                        },
+                                    }"
+                                    :computedAve="{
+                                        depositReplenish: numberFormat(
+                                            item.for_total || 0
+                                        ),
+                                        mwTotalPercent: numberFormat(
+                                            item.mwTwo || 0
+                                        ),
+
+                                        mwTotalPercent: numberFormat(
+                                            item.mwTwo || 0
+                                        ),
+                                        drawTotalPercent: numberFormat(
+                                            item.drawTwo || 0
+                                        ),
+                                        mwMobileTotalPercent: numberFormat(
+                                            item.mwTwoMobile || 0
+                                        ),
+                                        drawMobileTotalPercent: numberFormat(
+                                            item.drawTwoMobile || 0
+                                        ),
+                                        totalComputationOthers:
+                                            item.exempted.toUpperCase() ===
+                                                'NOT EXEMPTED' ||
+                                            item.exempted.toUpperCase() ===
+                                                'NOT'
+                                                ? numberFormat(
+                                                      item.totalOthers || 0
+                                                  )
+                                                : numberFormat(
+                                                      item.totalCommission || 0
+                                                  ),
+                                    }"
+                                    :commissionPercent="commission_percent"
+                                    :editmode="editmode"
+                                    :depositReplenishTxt="
+                                        item.group === 'Replenish'
+                                            ? {
+                                                  totalText: 'Replenishment',
+                                              }
+                                            : {
+                                                  totalText: 'Deposit',
+                                              }
+                                    "
+                                />
+                                <span
+                                    v-if="item.group === 'Replenish'"
+                                    class="text-xs my-2"
+                                    style="color: #e64a19"
+                                    >Please be advised that replenishment are
+                                    only available during banking days. We allow
+                                    off setting of pending remittances and
+                                    replenishments during non-banking
+                                    days.</span
+                                >
+
+                                <BankBox
+                                    :bank="bank"
+                                    :banks="banks || []"
+                                    :bankAccounts="bankAccounts || []"
+                                    :arenaDetails="item.arena_details"
+                                    :bankId="{ id: bankId }"
+                                    :arenaId="{ id: arenaId }"
+                                    :operatorName="
+                                        item.arena_details
+                                            ? item.arena_details.operator
+                                            : ''
+                                    "
+                                    :editmode="editmode"
+                                    :depositReplenishText="
+                                        item.group === 'Replenish'
+                                            ? {
+                                                  totalText: 'Replenish',
+                                                  bankTitle:
+                                                      'We will replenish to',
+                                              }
+                                            : {
+                                                  totalText: 'Deposit',
+                                                  bankTitle:
+                                                      'Kindly Deposit to',
+                                              }
+                                    "
+                                />
+
+                                <PreparedChecked
+                                    v-show="switchPrepared"
+                                    :userPrepared="userPrepared"
+                                    :arenaDetails="item.arena_details"
+                                    :editmode="editmode"
+                                />
+                            </v-card-text>
+                        </div>
+                    </div>
                     <!-- </v-card> -->
                 </v-col>
 
@@ -910,7 +988,6 @@
                                             :float-layout="false"
                                             :enable-download="false"
                                             :preview-modal="false"
-                                          
                                             :filename="arenaDetails.arena"
                                             :pdf-quality="2"
                                             :manual-pagination="true"
@@ -919,12 +996,13 @@
                                             pdf-content-width="90%"
                                             ref="html2Pdf"
                                             class="vuehtmlpdf"
-                                            @beforeDownload="beforeDownload($event)"
+                                            @beforeDownload="
+                                                beforeDownload($event)
+                                            "
                                         >
                                             <section
                                                 slot="pdf-content"
                                                 class="pdf-content"
-                                             
                                             >
                                                 <v-card-title
                                                     class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
@@ -963,7 +1041,9 @@
                                                             :emailFormat="
                                                                 emailFormat
                                                             "
-                                                            :contactFormat="contactFormat"
+                                                            :contactFormat="
+                                                                contactFormat
+                                                            "
                                                         />
                                                     </v-row>
                                                     <v-row>
@@ -990,25 +1070,33 @@
                                                             computation
                                                         "
                                                     />
-                                                   
-                                                    <span v-if="computedAve.depositReplenishText.dateText === 'FR'" class="text-xs my-2" style="color: #E64A19">Please be advised that replenishment are only available during banking days. We allow offsetting of pending remittances and replenishments during non-banking days.</span>
+
+                                                    <span
+                                                        v-if="
+                                                            computedAve
+                                                                .depositReplenishText
+                                                                .dateText ===
+                                                            'FR'
+                                                        "
+                                                        class="text-xs my-2"
+                                                        style="color: #e64a19"
+                                                        >Please be advised that
+                                                        replenishment are only
+                                                        available during banking
+                                                        days. We allow
+                                                        offsetting of pending
+                                                        remittances and
+                                                        replenishments during
+                                                        non-banking days.</span
+                                                    >
                                                     <BankBox
-                                                       
                                                         :bank="bank || {}"
                                                         :banks="banks || []"
-                                                        :bankAccounts="
-                                                            bankAccounts || []
-                                                        "
-                                                        :arenaDetails="
-                                                            arenaDetails
-                                                        "
+                                                        :bankAccounts="bankAccounts || []"
+                                                        :arenaDetails="arenaDetails"
                                                         :bankId="{ id: bankId } || {}"
-                                                        :arenaId="{
-                                                            id: arenaId,
-                                                        }"
-                                                        :operatorName="
-                                                            operator_name
-                                                        "
+                                                        :arenaId="{id: arenaId}"
+                                                        :operatorName="operator_name"
                                                         :editmode="editmode"
                                                         :depositReplenishText="
                                                             computedAve.depositReplenishText
@@ -1020,7 +1108,9 @@
                                                         :userPrepared="
                                                             userPrepared
                                                         "
-                                                        :arenaDetails="arenaDetails"
+                                                        :arenaDetails="
+                                                            arenaDetails
+                                                        "
                                                         :editmode="editmode"
                                                     />
                                                 </v-card-text>
@@ -1100,7 +1190,6 @@
                                             </template>
                                             <span>Download as PDF</span>
                                         </v-tooltip>
-
                                     </v-card-actions>
                                 </v-card>
                             </v-col>
@@ -1110,56 +1199,59 @@
 
                 <!-- </v-col> -->
             </v-row>
-             <!-- PLEASE STAND BY -->
+            <!-- PLEASE STAND BY -->
 
-                    <v-dialog
-                        v-model="dialog2"
-                        persistent
-                        width="400"
-                    >
-                        <v-card :color="progressvalue === 100 ? '#6BB3EF' : '#002050'" dark>
-                            <v-card-text>
-                                {{downloadingReport ? 'Downloading...' :'Please stand by' }}
-                                <v-progress-linear
-                                    v-model="progressvalue"                                                 
-                                    :color="progressvalue === 100 ? '#6BB3EF' : '#6BB3EF'"            
-                                    class="black--text"
-                                    height="14"
-                                    stream
-                                    :buffer-value="progressvalue"               
+            <v-dialog v-model="dialog2" persistent width="400">
+                <v-card
+                    :color="progressvalue === 100 ? '#6BB3EF' : '#002050'"
+                    dark
+                >
+                    <v-card-text>
+                        {{
+                            downloadingReport
+                                ? "Downloading..."
+                                : "Please stand by"
+                        }}
+                        <v-progress-linear
+                            v-model="progressvalue"
+                            :color="
+                                progressvalue === 100 ? '#6BB3EF' : '#6BB3EF'
+                            "
+                            class="black--text"
+                            :height="downloadingReport ? '14' : '9'"
+                            :stream="downloadingReport"
+                            :buffer-value="progressvalue"
+                            :indeterminate="!downloadingReport"
+                        >
+                            <template
+                                v-if="downloadingReport"
+                                v-slot:default="{ value }"
+                            >
+                                <strong
+                                    :class="[
+                                        progressvalue > 50
+                                            ? 'black--text'
+                                            : 'white--text',
+                                    ]"
+                                    class="text-xs"
+                                    >{{
+                                        value === 100
+                                            ? "Complete"
+                                            : `${Math.ceil(value)}%`
+                                    }}</strong
                                 >
-                                    <template v-slot:default="{ value }">
-                                        <strong :class="[progressvalue > 50 ? 'black--text' :'white--text']" class="text-xs">{{ value === 100 ? 'Complete' : `${Math.ceil(value)}%` }}</strong>
-                                    </template>
-                                </v-progress-linear>
-                            </v-card-text>
-                        </v-card>
-                    </v-dialog>
+                            </template>
+                        </v-progress-linear>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
 
-
-                                        <!-- PLEASE STAND BY -->
+            <!-- PLEASE STAND BY -->
         </v-container>
     </v-app>
 </template>
 <script>
-import {
-    camelCase,
-    groupBy,
-    map,
-    spread,
-    values,
-    assign,
-    concat,
-    sortBy,
-} from "lodash";
-import XLSX from "xlsx";
-import {
-    numberFormat,
-    numberUnformat,
-    mergeObject,
-    valueSplit,
-    moneyFormat
-} from "../utility";
+import { numberFormat, numberUnformat, moneyFormat } from "../utility";
 
 import VueHtml2pdf from "vue-html2pdf";
 import html2canvas from "html2canvas";
@@ -1173,9 +1265,17 @@ import ComputeBox from "./DialogPreview/ComputeBox.vue";
 import BankBox from "./DialogPreview/BankBox.vue";
 import PreparedChecked from "./DialogPreview/PreparedChecked.vue";
 
-import BounceLoader from "vue-spinner/src/BounceLoader.vue";
-
-import { downloadZipping } from '../methods/downloads'
+import {
+    imageDownload,
+    readSoa,
+    truncate,
+    beforeDownload,
+    defineEmail,
+    defineContact,
+    withStatus,
+    reportGenerate,
+    computationOpenSoa,
+} from "../methods";
 
 export default {
     components: {
@@ -1185,25 +1285,20 @@ export default {
         ComputeBox,
         BankBox,
         PreparedChecked,
-
-        BounceLoader,
     },
     data() {
         return {
             headers: [
                 { text: "#", value: "id" },
                 { text: "CODE", value: "areaCode" },
-                {text: "ref", value: "refNo"},
+                { text: "ref", value: "refNo" },
                 { text: "Arena Name", value: "arena_name" },
 
-                { text: "", value: "actions", sortable: false  },
+                { text: "", value: "actions", sortable: false },
             ],
-            
-             sortBy: 'refNo',
-                keys: [
-                'CATEGORY',
 
-            ],
+            sortBy: "refNo",
+            keys: ["CATEGORY"],
             userPrepared: {
                 computed: {},
                 checked: {},
@@ -1215,10 +1310,10 @@ export default {
             },
             computedPerTeam: {},
             group: {
-                header:{
-                     isOpen:false
-                }
-            }, 
+                header: {
+                    isOpen: false,
+                },
+            },
             zIndex: 0,
             perPageOptions: [10, 15, 20, 30],
             singleSelect: false,
@@ -1263,6 +1358,8 @@ export default {
             numberFormat,
             numberUnformat,
             moneyFormat,
+            defineEmail,
+            defineContact,
             computation: {
                 totalMWBets: 0,
                 drawCancelled: 0,
@@ -1288,7 +1385,7 @@ export default {
                 drawTotalPercent: 0,
                 safetyFundMob: 0,
                 otherCommIntMob: 0,
-                consolCommMob: 0, 
+                consolCommMob: 0,
                 payOutsBalMob: 0,
                 mobile: {
                     totalMWBets: 0,
@@ -1317,27 +1414,21 @@ export default {
             progressvalue: 0,
             arenaSample: [],
             switchPrepared: false,
-            isExcel: false
+            isExcel: false,
         };
     },
     methods: {
-        backmeup(){
-            axios.get('api/backup').then(({data})=> {
+        backmeup() {
+            axios.get("api/backup").then(({ data }) => {
                 console.log(data);
             });
         },
         loadEmployee() {
-            axios
-                .get("api/employees")
-                .then(
-                    ({ data }) =>
-                        {
-                      
-                        this.userPrepared.computed = data.computed
-                        this.userPrepared.checked = data.checked
-                        this.userPrepared.prepared = data.prepared
-                        }
-                );
+            axios.get("api/employees").then(({ data }) => {
+                this.userPrepared.computed = data.computed;
+                this.userPrepared.checked = data.checked;
+                this.userPrepared.prepared = data.prepared;
+            });
         },
         arenaSelectedBank(bankId) {
             const bId = bankId;
@@ -1346,573 +1437,22 @@ export default {
                 this.bank = data;
             });
         },
-        handleSwitchPrepared(){
-            // this.switchPrepared = !this.switchPrepared ? true : false ;
-            localStorage.setItem('prepared',this.switchPrepared);
-            
+        handleSwitchPrepared() {
+            localStorage.setItem("prepared", this.switchPrepared);
         },
-        truncate() {
-            swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                input: "password",
-                inputPlaceholder: "Enter Your Password",
-                inputAttributes: {
-                    autocapitalize: "off",
-                    autocorrect: "off",
-                },
-                customClass: {
-                    input: "form-control",
-                },
-                inputAttributes: {
-                    autocapitalize: "off",
-                },
-                showClass: {
-                    popup: "animate__animated animate__fadeInDown",
-                },
-                hideClass: {
-                    popup: "animate__animated animate__fadeOutUp",
-                },
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Yes, Clear All!",
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                showLoaderOnConfirm: true,
+        truncate,
 
-                preConfirm: (login) => {
-                    if (login == "") {
-                        swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: "Please Enter Valid Password",
-                        });
-                    }
-                },
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios
-                        .get("api/validate/" + result.value)
-                        .then((response) => {
-                            if (response.data == "success") {
-                                Toast.fire({
-                                    icon: "success",
-                                    title: "Successfully Deleted",
-                                });
-                                Fire.$emit("AfterCreate");
-                                // location.reload(); //to be removed
-                            } else {
-                                swal.fire({
-                                    icon: "error",
-                                    title: "Oops...",
-                                    text: "Password doesnt match in our database",
-                                });
-                            }
-                        })
-                        .catch((error) => {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: "Something went wrong!",
-                                footer: error,
-                            });
-                            console.log(error);
-                        });
-                }
-            });
-        },
-      
         onFileChange(event) {
-       
-            // this.fileUpload = event.target.files ? event.target.files[0] : null;
-            // const file = event.target.files ? event.target.files[0] : null;
-            const file = event ? event : null;
-            // const file = this.fileUpload ? this.fileUpload[0] : null;
-            // this.fileUpload = file;
-            const checkfile =
-                ( event.name.includes("xlsx")) || ( event.name.includes("csv"));
-              
-
-            if (event && checkfile) {
-                this.isExcel = true
-                const reader = new FileReader();
-                let arrayData = [];
-                let reportCombined = [];
-                let eventsCombined = [];
-                let summaryReport = [];
-                let objMobileKiosk = [];
-
-
-                reader.onload = (e) => {
-                    // eslint-disable-next-line no-unused-vars
-
-                    const bstr = e.target.result;
-                    const wb = XLSX.read(bstr, { type: "binary" });
-
-                    const ws = wb.SheetNames;
-
-                    const filteredWS = ws.filter(function (value, index, arr) {
-                        console.log('SHEET VALUE',camelCase(value))
-                        const accReportComb = "Accounts Report Combined"
-                        const summaryRep = "Summary Report"
-                        return (
-                            camelCase(value) === camelCase(accReportComb) || camelCase(value) === camelCase(summaryRep)
-                        );
-                    });
-
-                    filteredWS.forEach((w) => {
-                        const singleSheet = wb.Sheets[w];
-
-                        arrayData.push(
-                            XLSX.utils.sheet_to_json(singleSheet, {
-                                header: "A",
-                                defval: 0,
-                            })
-                        );
-                    });
-
-                    let eventDetailsA = [];
-
-                    arrayData[0].map((r) => {
-                        if (Object.keys(r).length >= 17) reportCombined.push(r);
-
-                        if (typeof r.A == "string") eventDetailsA.push(r);
-                        if (
-                            typeof r.A == "string" &&
-                            r.A.indexOf("Date") > -1
-                        ) {
-                            eventsCombined.push(valueSplit(r.A));
-                        }
-                    });
-
-                    arrayData[1].map((sr) => {
-                        if (Object.keys(sr).length >= 20)
-                            summaryReport.push(sr);
-                    });
-
-                    // Merge Object
-                    const mergeObj = mergeObject(eventsCombined);
-
-                    // date format MM/DD/YYYY || DD/MM/YYYY
-                    const dateFormatting = (date) =>
-                        moment(date, "MM/DD/YYYY").isValid()
-                            ? moment(date, "MM/DD/YYYY").format(
-                                  "YYYY-MM-DD LTS"
-                              )
-                            : moment(date, "DD/MM/YYYY").isValid()
-                            ? moment(date, "DD/MM/YYYY").format(
-                                  "YYYY-MM-DD LTS"
-                              )
-                            : moment(date).format("YYYY-MM-DD LTS");
-
-                    // if date is serial
-                    const ExcelDateToJSDate = (serial) => {
-                        const utc_days = Math.floor(serial - 25569);
-                        const utc_value = utc_days * 86400;
-                        const date_info = new Date(utc_value * 1000);
-                        const fractional_day =
-                            serial - Math.floor(serial) + 0.0000001;
-                        let total_seconds = Math.floor(86400 * fractional_day);
-                        const seconds = total_seconds % 60;
-                        total_seconds -= seconds;
-                        const hours = Math.floor(total_seconds / (60 * 60));
-                        const minutes = Math.floor(total_seconds / 60) % 60;
-                        return new Date(
-                            date_info.getFullYear(),
-                            date_info.getMonth(),
-                            date_info.getDate(),
-                            hours,
-                            minutes,
-                            seconds
-                        );
-                    };
-
-                    const eventCreatedUTC = ExcelDateToJSDate(
-                        arrayData[0][2].A
-                    );
-                    const eventClosedUTC = ExcelDateToJSDate(arrayData[0][4].A);
-                    const isValidEventArenaDate = (stringDate) =>
-                        moment(stringDate, "MM/DD/YYYY hh:mm:ss a").isValid() ||
-                        moment(stringDate, "DD/MM/YYYY hh:mm:ss a").isValid()
-                            ? stringDate
-                            : null;
-
-                    const eventDateCreated = dateFormatting(
-                        mergeObj.dateCreated ||
-                            isValidEventArenaDate(eventDetailsA[2]?.A) ||
-                            eventCreatedUTC
-                    );
-                    const eventDateClosed = dateFormatting(
-                        mergeObj.dateClosed ||
-                            isValidEventArenaDate(eventDetailsA[4]?.A) ||
-                            eventClosedUTC
-                    );
-
-
-
-                    const objectKeyed = (array) => {
-                        let objectKeyReplacedArray = [];
-                        const keysss = array.find((k) => k.B === "ARENA NAME");
-
-                        const [, ...headKey] = Object.values(keysss);
-                        const headK = ["key", ...headKey];
-
-                        array.map((data) => {
-                            data = Object.assign(
-                                {},
-                                ...Object.entries(data).map(
-                                    ([, prop], index) => ({
-                                        [camelCase(headK[index])]: prop,
-                                    })
-                                )
-                            );
-
-                            objectKeyReplacedArray.push({
-                                eventCreated: eventDateCreated,
-                                eventClosed: eventDateClosed,
-                                type: data.type
-                                    ? data.type
-                                    : data.classification
-                                    ? data.classification
-                                    : null,
-                               
-                                drawMobile: 0,
-                                totalMWMobile: 0,
-                                safetyFundMob: 0,
-                                otherCommIntMob: 0,
-                                consolCommMob: 0,
-                                payOutsBalMob: 0,
-                                ...data,
-                            });
-                        });
-
-                        return objectKeyReplacedArray;
-                    };
-
-                    const objKeySummary = objectKeyed(summaryReport, 6);
-
-                    objKeySummary.forEach(function (item) {
-                    
-                        const existing = objMobileKiosk.filter((v, i) => {
-                            
-                            if (
-                                v.type === "KIOSK" &&
-                                v.areaCode == item.areaCode
-                            ){
-                              
-                                 return v.areaCode == item.areaCode;
-                            }
-                               
-                        });
-
-                        if (existing.length) {
-                            const m = item.type.toLowerCase();
-                            const existingIndex = objMobileKiosk.indexOf(
-                                existing[0]
-                            );
-
-                      
-
-                            objMobileKiosk[existingIndex].totalMWMobile =
-                                item.total;
-                            objMobileKiosk[existingIndex].drawMobile =
-                                item.draw;
-
-                            objMobileKiosk[existingIndex].safetyFundMob = item.safetyFund;
-                            objMobileKiosk[existingIndex].otherCommIntMob = item.otherCommissionIntel05;
-                            objMobileKiosk[existingIndex].consolCommMob = item.consolidatorsCommission;
-                            objMobileKiosk[existingIndex].payOutsBalMob = item.paymentForOutstandingBalance;
-                        } else {
-                            if (typeof item.value == "string") { 
-                                item.value = [item.value];
-                                
-                            }
-
-                            objMobileKiosk.push(item)
-                       
-                        }
-                    });
-
-
-                    let helper = {};
-                    const result = objMobileKiosk.reduce(function (r, o) {
-                        let key = o.areaCode;
-                        // console.log(o.areaCode,'>>>>',o.otherCommissionIntel05)
-                        if (!helper[key]) {
-                            helper[key] = Object.assign({}, o); // create a copy of o
-
-                            r.push(helper[key]);
-                        } else {
-
-                            helper[key].totalMWMobile = o.total;
-                            helper[key].drawMobile = o.draw;
-                            helper[key].safetyFundMob = o.safetyFund;
-                            helper[key].otherCommIntMob = o.otherCommissionIntel05;
-                            helper[key].consolCommMob = o.consolidatorsCommission;
-                            helper[key].payOutsBalMob = o.paymentForOutstandingBalance;
-                        }
-
-                        return r;
-                    }, []);
-
-
-                   
-
-                    const accountsReportSummaryCombined = [...result];
-
-                    const arsc = values(
-                        map(
-                            groupBy(accountsReportSummaryCombined, "arenaName"),
-                            spread(assign)
-                        )
-                    );
-
-                    const filterObjectHeader = arsc.filter((obk) => {
-                        if (
-                            obk.arenaName !== "OCBS NAME" &&
-                            obk.arenaName !== "ARENA NAME" &&
-                            obk.arenaName !== "Over All Total:" &&
-                            obk.arenaName !== "Grand Total:" &&
-                            obk.arenaName !== 0
-                        )
-                            return obk;
-                    });
-
-
-
-                    const removeKeyReportObject = filterObjectHeader.map(
-                        ({ key, ...rest }) => {
-                            const type = rest.type || rest.classification;
-
-                           console.log(rest)
-
-                            const exempted = rest.exempted;
-                            const totalMWBets = rest.meron + rest.wala;
-                            const totalCancelledBets = rest.drawCancelled;
-                            const totalDrawBets = rest.draw;
-                            const totalPayoutPaid = rest.payoutPaid;
-                            const totalCDPaid = rest.cDPaid;
-                            const totalDrawPaid = rest.drawPaid;
-                            const totalMWMobile = rest.totalMWMobile;
-                            const totalDrawMobile = rest.drawMobile;
-                            const safetyFundMob = rest.safetyFundMob;
-                            const otherCommIntMob = rest.otherCommIntMob;
-                            const consolCommMob = rest.consolCommMob;
-                            const payOutsBalMob = rest.payOutsBalMob;
-                            const netWinLoss = rest.netWinLoss
-                            // const netWinLoss =
-                            //     totalMWBets +
-                            //     totalCancelledBets +
-                            //     totalDrawBets -
-                            //     totalPayoutPaid -
-                            //     totalCDPaid -
-                            //     totalDrawPaid;
-                            const mwTwo = totalMWBets * 0.02;
-                            const drawTwo = totalDrawBets * 0.02;
-                            const mwTwoMobile = totalMWMobile * 0.02;
-                            const drawTwoMobile = totalDrawMobile * 0.02;
-                            const totalUnclaimed = rest.unclaimed;
-                            const totalCUnpaid = rest.cUnpaid;
-                            const salesDeduction = rest.salesDeductionTablet;
-                            const netOperatorsCommission = rest.netOperatorsCommission
-                            // const netOperatorsCommission =
-                            //     parseFloat(mwTwo) +
-                            //     parseFloat(drawTwo) +
-                            //     parseFloat(mwTwoMobile) +
-                            //     parseFloat(drawTwoMobile) +
-                            //     parseFloat(totalUnclaimed) +
-                            //     parseFloat(totalCUnpaid) -
-                            //     parseFloat(salesDeduction);
-                            const otherCommissionIntel =
-                                rest.otherCommissionIntel05;
-                            const consolidatorsCommission =
-                                rest.consolidatorsCommission;
-
-                            const safetyFund = rest.safetyFund;
-                           
-
-                            const paymentForOutstandingBalance =
-                                rest.paymentForOutstandingBalance;
-
-                            // const totalSafetyFund = parseFloat(safetyFund) + parseFloat(safetyFundMob)
-                            // const totalPaymentForOutstandingBalance = parseFloat(paymentForOutstandingBalance) + parseFloat(payOutsBalMob)
-                            // const totalConsolComm = parseFloat(consolidatorsCommission) + parseFloat(consolCommMob)
-                            // const totalOtherCommIntel = parseFloat(otherCommissionIntel) + parseFloat(otherCommIntMob)
-
-                            // const totalCommission =
-                            //     parseFloat(netOperatorsCommission) +
-                            //     parseFloat(totalOtherCommIntel) -
-                            //     parseFloat(totalConsolComm) -
-                            //     parseFloat(totalSafetyFund) -
-                            //     parseFloat(totalPaymentForOutstandingBalance);
-                            const totalCommission = rest.totalCommission;
-                            const cashLoad = rest.cashLoad;
-                            const cashWithdrawal = rest.cashWithdrawal;
-                            const totalOthers = rest.totalOthers;
-                            const systemErrorCOArmsi = rest.systemErrorCOArmsi;
-
-                            // const totalComputationOthers =
-                            //     exempted.toUpperCase() === "NOT EXEMPTED" ||  exempted.toUpperCase() === "NOT"
-                            //         ? totalOthers
-                            //         : totalCommission;
-                            // const depositReplenish =
-                            //     parseFloat(netWinLoss) -
-                            //     parseFloat(totalComputationOthers) -
-                            //     parseFloat(systemErrorCOArmsi) +
-                            //     (parseFloat(cashLoad) - parseFloat(cashWithdrawal));
-
-
-
-                            // const totalComm = netOperatorsCommission + totalOtherCommIntel - totalConsolComm - totalSafetyFund - totalPaymentForOutstandingBalance 
-                            // const totalOthersComputation = totalUnclaimed + totalCUnpaid
-                            // const totalCommComputation = exempted.toUpperCase() === "NOT EXEMPTED" ||  this.computation.exempted.toUpperCase() === "NOT" ? totalOthersComputation : totalComm;
-                            // const totalDepRep = netWinLoss - totalCommComputation - systemErrorCOArmsi + cashLoad - cashWithdrawal
-                            
-
-                            const depositReplenish = rest.forDepositReplenish
-
-                            const soaFr =
-                                parseFloat(depositReplenish) < 0 ? "fr" : "soa";
-                            const group =
-                                soaFr === "fr" ? "Replenish" : "Deposit";
-                            const arenaName =
-                                rest.arenaName.indexOf("/") > -1
-                                    ? rest.arenaName.replace(/\//g, "~")
-                                    : rest.arenaName;
-                            const areaCode =
-                                rest.areaCode.indexOf("/") > -1
-                                    ? rest.areaCode.replace(/\//g, "~")
-                                    : rest.areaCode;
-                            const codeEvent = `${areaCode.toLowerCase()}${moment(
-                                rest.eventCreated
-                            ).format("X")}`;
-
-                            rest = {
-                                areaCode,
-                                codeEvent,
-                                date_of_soa: rest.eventCreated,
-                                date_closed: rest.eventClosed,
-                                meron: rest.meron.toString(),
-                                wala: rest.wala.toString(),
-                                rake: rest.rake.toString(),
-                                draw_unpaid: rest.dUnpaid.toString(),
-                                draw_unclaimed: rest.drawUnclaimed.toString(),
-                                arena_name: arenaName.toUpperCase(),
-                                type,
-                                exempted,
-                                total_meron_wala: totalMWBets.toString(),
-                                draw_cancelled: totalCancelledBets.toString(),
-                                draw: totalDrawBets.toString(),
-                                total_payout_paid: totalPayoutPaid.toString(),
-                                draw_cancelled_paid: totalCDPaid.toString(),
-                                draw_paid: totalDrawPaid.toString(),
-                                netWinLoss: netWinLoss.toString(),
-                                mwTwo: mwTwo.toString(),
-                                drawTwo: drawTwo.toString(),
-                                mwTwoMobile: mwTwoMobile.toString(),
-                                drawTwoMobile: drawTwoMobile.toString(),
-                                unclaimed: totalUnclaimed.toString(),
-                                cancelled_unpaid: totalCUnpaid.toString(),
-                                salesDeductionTablet: salesDeduction.toString(),
-                                netOperatorsCommission: netOperatorsCommission.toString(),
-                                otherCommissionIntel05: otherCommissionIntel.toString(),
-                                consolidatorsCommission: consolidatorsCommission.toString(),
-                                safetyFund: safetyFund.toString(),
-                                paymentForOutstandingBalance: paymentForOutstandingBalance.toString(),
-                                totalCommission: totalCommission.toString(),
-                                total_win_mobile: totalMWMobile.toString(),
-                                draw_mobile: totalDrawMobile.toString(),
-                                cashLoad: cashLoad.toString(),
-                                cashWithdrawal: cashWithdrawal.toString(),
-                                for_total: depositReplenish.toString(),
-                                totalOthers: totalOthers.toString(),
-                                systemErrorCOArmsi: systemErrorCOArmsi.toString(),
-                                safetyFundMob: safetyFundMob.toString(),
-                                otherCommIntMob: otherCommIntMob.toString(),
-                                consolCommMob: consolCommMob.toString(), 
-                                payOutsBalMob: payOutsBalMob.toString(),
-                                soaFr,
-                                group,
-                            };
-
-                            return { ...rest };
-                        }
-                    );
-
-                    const removeLucky = removeKeyReportObject.filter(removeLuck => (removeLuck.areaCode !== 'LUCKY' || removeLuck.arena_name.split(' ')[0] !== 'LUCKY'))
-
-                    // group fr and soa
-                    const groupSOAFR = removeLucky.reduce(function (
-                        r,
-                        a
-                    ) {
-                        r[a.soaFr] = r[a.soaFr] || [];
-                        r[a.soaFr].push(a);
-                        return r;
-                    },
-                    Object.create(null));
-
-                    const moLetter = String.fromCharCode(
-                        96 + (moment(eventDateCreated).month() + 1)
-                    ).toUpperCase();
-
-                    const sortSoa = sortBy(groupSOAFR.soa, [
-                        function (o) {
-                            return o.areaCode;
-                        },
-                    ])
-
-                    const sortFr = sortBy(groupSOAFR.fr, [
-                        function (o) {
-                            return o.areaCode;
-                        },
-                    ])
-
-                    const newsoa = sortSoa.map(({ soaFr, ...s }, i) => ({
-                        refNo:
-                            "SO" +
-                            moment(eventDateCreated).format("YYDD") +
-                            moLetter +
-                            `0000${i + 1}`.slice(-4),
-                        ...s,
-                    }));
-                    const newfr = sortFr.map(({ soaFr, ...f }, i) => ({
-                        refNo:
-                            "FR" +
-                            moment(eventDateCreated).format("YYDD") +
-                            moLetter +
-                            `0000${i + 1}`.slice(-4),
-                        ...f,
-                    }));
-
-                    const newSetReport = concat(newsoa, newfr);
-                    const sortReport = sortBy(newSetReport, [
-                        function (o) {
-                            return o.areaCode;
-                        },
-                    ]);
-
-                    this.ocbsArrayFiltered = sortReport;
-
-                };
-                reader.readAsBinaryString(file);
-            } 
-            else {
-               
-                this.isExcel = false
-                Fire.$emit("AfterCreate"),
-                    Toast.fire({
-                        icon: "warning",
-                        title: "Make sure you insert correct excel data!",
-                        
-                    });
-               
-            }
+            const { arenaReportFiltered, isExcel } = readSoa(
+                event,
+                this.isExcel
+            );
+            this.ocbsArrayFiltered = arenaReportFiltered;
+            this.isExcel = isExcel;
         },
-   
+
         proceedAction() {
             this.$Progress.start();
-
             if (
                 $("#importData").val() === "" ||
                 !this.fileUpload.name.includes("xlsx")
@@ -1921,23 +1461,23 @@ export default {
                 Toast.fire({
                     icon: "warning",
                     title: "Make sure you insert correct excel data!",
-                    
                 });
             } else {
                 this.dialog2 = true;
-
-
                 axios
                     .post("api/import", this.ocbsArrayFiltered)
                     .then(({ data }) => {
                         (this.dialog2 = false), $("#importData").val("");
                         Fire.$emit("AfterCreate");
-                        Toast.fire("Successfully!", "Excel Imported", "success");
+                        Toast.fire(
+                            "Successfully!",
+                            "Excel Imported",
+                            "success"
+                        );
                         this.$Progress.finish();
-                        // location.reload(); // to be removed
-                        // this.showData()
-                        this.fileUpload = null
-                         this.isExcel = false
+
+                        this.fileUpload = null;
+                        this.isExcel = false;
                     })
                     .catch((error) => {
                         (this.dialog2 = false),
@@ -1948,35 +1488,14 @@ export default {
                                 footer: error,
                             });
                     });
-
-
             }
         },
         async importwithstatus() {
-            const data = await axios.get("api/importwithstatus");
-
-            const newArray = [];
-            data.data.forEach((dObj) => {
-                const arenaName =
-                    dObj.arena_name.indexOf("~") > -1
-                        ? dObj.arena_name.replace(/\~/g, "/")
-                        : dObj.arena_name;
-
-                const obj = {
-                    ...dObj,
-                    arena_name: arenaName,
-                };
-                newArray.push(obj);
-            });
-
-            const obj = {
-                data: newArray,
-            };
-            this.arenaDatastatus = obj;
+            const withStatusData = await withStatus();
+            this.arenaDatastatus = withStatusData;
         },
         async showData() {
             const data = await axios.get("api/import");
-
 
             const newArray = [];
             data.data.forEach((dObj) => {
@@ -2000,7 +1519,6 @@ export default {
         },
 
         openModel(data) {
-         
             if (data.arena_details === null) {
                 swal.fire({
                     icon: "warning",
@@ -2010,7 +1528,6 @@ export default {
                 });
             } else {
                 this.dialog = true;
-
                 this.form.reset();
                 this.form.fill(data.arena_details);
                 this.operator_name = data.arena_details.operator;
@@ -2025,175 +1542,31 @@ export default {
                 this.arena_name = data.arena_details.arena;
                 this.areaCode = data.areaCode;
                 this.codeEvent = data.codeEvent;
-                const totalMWBets = data.total_meron_wala;
-                const drawCancelled = data.draw_cancelled;
-                const draw = data.draw;
-                const totalPayoutPaid = data.total_payout_paid;
-                const cdPaid = data.draw_cancelled_paid;
-                const drawPaid = data.draw_paid;
-                const unclaimed = data.unclaimed;
-                const cUnpaid = data.cancelled_unpaid;
-                const salesDeduction = data.salesDeductionTablet;
-                const otherCommissionIntel05 = data.otherCommissionIntel05;
-                const systemErrorCOArmsi = data.systemErrorCOArmsi;
-                const consolidatorsCommission = data.consolidatorsCommission;
-                const safetyFund = data.safetyFund;
-                const paymentForOutstandingBalance =
-                    data.paymentForOutstandingBalance;
-                const cashLoad = data.cashLoad;
-                const cashWithdrawal = data.cashWithdrawal;
-                const totalMWMobile = data.total_win_mobile;
-                const drawMobile = data.draw_mobile;
-                const exempted = data.exempted;
-                const netWinLoss = data.netWinLoss;
-                const mwTwo = data.mwTwo;
-                const drawTwo = data.drawTwo;
-                const mwTwoMobile = data.mwTwoMobile;
-                const drawTwoMobile = data.drawTwoMobile;
-                const safetyFundMob = data.safetyFundMob;
-                const otherCommIntMob = data.otherCommIntMob;
-                const consolCommMob = data.consolCommMob;
-                const payOutsBalMob = data.payOutsBalMob;
-                const depositReplenish = data.for_total
-                const totalCommission = data.totalCommission
-                const netOpCommission = data.netOperatorsCommission
-            
-                const totalSafetyFund = parseFloat(safetyFund)+parseFloat(safetyFundMob)
-                const totalOtherCommIntel = parseFloat(otherCommissionIntel05)+parseFloat(otherCommIntMob)
-                const totalConsolComm = parseFloat(consolidatorsCommission)+parseFloat(consolCommMob)
-                const totalPayOutBal = parseFloat(paymentForOutstandingBalance)+parseFloat(payOutsBalMob)
 
-                
-                this.computation = {
-                    totalMWBets: numberFormat(totalMWBets),
-                    drawCancelled: numberFormat(drawCancelled),
-                    draw: numberFormat(draw),
-                    totalPayoutPaid: numberFormat(totalPayoutPaid),
-                    cdPaid: numberFormat(cdPaid),
-                    drawPaid: numberFormat(drawPaid),
-                    unclaimed: numberFormat(unclaimed),
-                    cUnpaid: numberFormat(cUnpaid),
-                    salesDeduction: numberFormat(salesDeduction),
-                 
-                    systemErrorCOArmsi: numberFormat(systemErrorCOArmsi),
-                    consolidatorsCommission: numberFormat(
-                        consolidatorsCommission
-                    ),
-                    safetyFund: numberFormat(totalSafetyFund),
-                    paymentForOutstandingBalance: numberFormat(
-                        totalPayOutBal
-                    ),
-                    otherCommissionIntel05: numberFormat(totalOtherCommIntel),
-                    consolidatorsCommission: numberFormat(totalConsolComm),
-                    totalMWMobile: numberFormat(totalMWMobile),
-                    drawMobile: numberFormat(drawMobile),
-                    exempted,
-                    netWinLoss: numberFormat(netWinLoss),
-                    mwTwo: numberFormat(mwTwo),
-                    drawTwo: numberFormat(drawTwo),
-                    mwTwoMobile: numberFormat(mwTwoMobile),
-                    drawTwoMobile: numberFormat(drawTwoMobile),
-                    safetyFundMob: numberFormat(safetyFundMob),
-                    otherCommIntMob: numberFormat(otherCommIntMob),
-                    consolCommMob: numberFormat(consolCommMob),
-                    payOutsBalMob: numberFormat(payOutsBalMob),
-                    depositReplenish: numberFormat(moneyFormat(numberUnformat(numberFormat(parseFloat(depositReplenish),3)))),
-                    totalCommission: numberFormat(moneyFormat(numberUnformat(numberFormat(parseFloat(totalCommission),3)))),
-                    netOpCommission: numberFormat(netOpCommission),
-                    // totalSafetyFund: numberFormat(totalSafetyFund),
-                    // totalOtherCommIntel: numberFormat(totalOtherCommIntel),
-                    // totalConsolComm: numberFormat(totalConsolComm),
-                    // totalPayOutBal: numberFormat(totalPayOutBal),
+                const { computation } = computationOpenSoa(data);
 
-
-
-                    mobile: {
-                        totalMWBets: numberFormat(totalMWMobile),
-                        totalDrawBets: numberFormat(drawMobile),
-                        cashLoad: numberFormat(cashLoad),
-                        cashWithdrawal: numberFormat(cashWithdrawal),
-
-                    },
-
-                };
+                this.computation = { ...computation };
             }
 
-            // this.arenaSelectedBank(
-            //     data && data.arena_details.bank_id
-            // );
+            this.emailFormat =
+                data.arena_details &&
+                data.arena_details.email_details &&
+                this.defineEmail(data && data.arena_details.email_details);
 
-
-            this.emailFormat =  (data.arena_details && data.arena_details.email_details) && this.defineEmail(
-                data && data.arena_details.email_details
-            );
-
-            this.contactFormat = (data.arena_details && data.arena_details.contact_details) && this.defineContact(data && data.arena_details.contact_details)
-
-        
-
+            this.contactFormat =
+                data.arena_details &&
+                data.arena_details.contact_details &&
+                this.defineContact(data && data.arena_details.contact_details);
         },
 
         closeDialog() {
             this.dialog = false;
         },
-        updateModal() {
-            $(".computation").removeAttr("disabled");
-            $(".computation").addClass("input-show");
 
-            this.computation = {
-                totalMWBets: numberUnformat(this.computation.totalMWBets),
-                drawCancelled: numberUnformat(this.computation.drawCancelled),
-                draw: numberUnformat(this.computation.draw),
-                totalPayoutPaid: numberUnformat(
-                    this.computation.totalPayoutPaid
-                ),
-                cdPaid: numberUnformat(this.computation.cdPaid),
-                drawPaid: numberUnformat(this.computation.drawPaid),
-                unclaimed: numberUnformat(this.computation.unclaimed),
-                cUnpaid: numberUnformat(this.computation.cUnpaid),
-                salesDeduction: numberUnformat(this.computation.salesDeduction),
-                otherCommissionIntel05: numberUnformat(
-                    this.computation.otherCommissionIntel05
-                ),
-                systemErrorCOArmsi: numberUnformat(
-                    this.computation.systemErrorCOArmsi
-                ),
-                consolidatorsCommission: numberUnformat(
-                    this.computation.consolidatorsCommission
-                ),
-                safetyFund: numberUnformat(this.computation.safetyFund),
-                paymentForOutstandingBalance: numberUnformat(
-                    this.computation.paymentForOutstandingBalance
-                ),
-                mwTotalPercent: numberUnformat(this.computation.mwTotalPercent),
-                totalMWMobile: numberUnformat(this.computation.totalMWMobile),
-                drawMobile: numberUnformat(this.computation.drawMobile),
-                exempted: this.computation.exempted,
-                netWinLoss: numberUnformat(this.computation.netWinLoss),
-                mwTwo: numberUnformat(this.computation.mwTwo),
-                drawTwo: numberUnformat(this.computation.drawTwo),
-                mwTwoMobile: numberUnformat(this.computation.mwTwoMobile),
-                drawTwoMobile: numberUnformat(this.computation.drawTwoMobile),
-                mobile: {
-                    totalMWBets: numberUnformat(this.computation.totalMWMobile),
-                    totalDrawBets: numberUnformat(this.computation.drawMobile),
-                    cashLoad: numberUnformat(this.computation.mobile.cashLoad),
-                    cashWithdrawal: numberUnformat(
-                        this.computation.mobile.cashWithdrawal
-                    ),
-                },
-
-                netOperatorsCommission: numberUnformat(
-                    this.computation.netOperatorsCommission
-                ),
-            };
-
-            this.editmode = !this.editmode;
-        },
         clearFile(file) {
-            console.log(file)
+            console.log(file);
             this.isExcel = false;
-            this.fileUpload = null
+            this.fileUpload = null;
         },
         closeDialog() {
             this.editmode = false;
@@ -2204,150 +1577,31 @@ export default {
             $(".computation").attr("disabled", true);
         },
 
-        saveModal() {
-            // $(".computation").attr("disabled", true);
-            // this.editmode = !this.editmode;
-
-            // this.computation = {
-            //     totalMWBets: numberFormat(this.computation.totalMWBets),
-            //     drawCancelled: numberFormat(this.computation.drawCancelled),
-            //     draw: numberFormat(this.computation.draw),
-            //     totalPayoutPaid: numberFormat(this.computation.totalPayoutPaid),
-            //     cdPaid: numberFormat(this.computation.cdPaid),
-            //     drawPaid: numberFormat(this.computation.drawPaid),
-            //     unclaimed: numberFormat(this.computation.unclaimed),
-            //     cUnpaid: numberFormat(this.computation.cUnpaid),
-            //     salesDeduction: numberFormat(this.computation.salesDeduction),
-            //     otherCommissionIntel05: numberFormat(
-            //         this.computation.otherCommissionIntel05
-            //     ),
-            //     systemErrorCOArmsi: numberFormat(
-            //         this.computation.systemErrorCOArmsi
-            //     ),
-            //     consolidatorsCommission: numberFormat(
-            //         this.computation.consolidatorsCommission
-            //     ),
-            //     safetyFund: numberFormat(this.computation.safetyFund),
-            //     paymentForOutstandingBalance: numberFormat(
-            //         this.computation.paymentForOutstandingBalance
-            //     ),
-            //     exempted: this.computation.exempted,
-            //     totalMWMobile: numberFormat(this.computation.totalMWMobile),
-            //     drawMobile: numberFormat(this.computation.drawMobile),
-
-            //     netWinLoss: numberFormat(this.computation.netWinLoss),
-            //     mwTwo: numberFormat(this.computation.mwTwo),
-            //     drawTwo: numberFormat(this.computation.drawTwo),
-            //     mwTwoMobile: numberFormat(this.computation.mwTwoMobile),
-            //     drawTwoMobile: numberFormat(this.computation.drawTwoMobile),
-            //     mobile: {
-            //         totalMWBets: numberFormat(
-            //             this.computation.totalMWMobile || 0
-            //         ),
-            //         totalDrawBets: numberFormat(
-            //             this.computation.drawMobile || 0
-            //         ),
-            //         cashLoad: numberFormat(
-            //             this.computation.mobile.cashLoad || 0
-            //         ),
-            //         cashWithdrawal: numberFormat(
-            //             this.computation.mobile.cashWithdrawal || 0
-            //         ),
-            //     },
-
-            //     netOperatorsCommission: numberFormat(
-            //         this.computation.netOperatorsCommission
-            //     ),
-            // };
-
-            // Fire.$emit("AfterCreate");
-        },
-
         generateReport(codeEvent) {
-            console.log("generating pdf..",this.$refs.html2Pdf);
-
-            this.$refs.html2Pdf.downloadPdf();
-
-            axios
-                .put("api/arenaStatus", [{ codeEvent, status: "done" }])
-                .then(
-                    (data) => (
-                        Fire.$emit("AfterCreate"),
-                        (this.dialog = false),
-                        swal.fire("convert to pdf!", "successfully", "success")
-                    )
-                );
+            const { dialog } = reportGenerate(codeEvent, this.$refs.html2Pdf);
+            this.dialog = dialog;
         },
-        async beforeDownload ({ html2pdf, options, pdfContent }) {
-           const opts = {
-               ...options,
-               html2canvas: {
-                   scale: 1.5,
-                   useCORS: true
-               }
-           }
+        beforeDownload,
 
-            pdfContent.style.transform = "scale(0.75)"
-            pdfContent.style.height = "1000px"
-
-
-            await html2pdf().set(opts).from(pdfContent).toPdf().get('pdf').then((pdf) => {
-                console.log(pdf)
-                const totalPages = pdf.internal.getNumberOfPages()
-                for (let i = 1; i <= totalPages; i++) {
-                    pdf.setPage(i)
-                    pdf.setFontSize(9)
-                    pdf.setTextColor(150)
-                    pdf.text('Page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() * 0.88), (pdf.internal.pageSize.getHeight() - 0.3))
-                } 
-            }).save().then(() => {
-                pdfContent.style.transform = "scale(1)"
-                 pdfContent.style.height = "auto"
-            
-            })
-        },
-        async downloadImg(details, codeEvent) {
+        downloadImg(details, codeEvent) {
             const el = this.$refs.soaReport;
-
-            const options = {
-                type: "dataURL",
-                backgroundColor: "#fafafa",
-                scale: 0.9
-            };
-            const printCanvas = await html2canvas(el, options);
-
-            const link = document.createElement("a");
-
-
-            link.download = `${details.arena}.png`;
-            link.href = printCanvas.toDataURL("image/png");
-            document.body.appendChild(link);
-            link.click();
-
-            setTimeout(() => {
-                document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
-            }, 100);
-
-            axios
-                .put("api/arenaStatus", [{ codeEvent, status: "done" }])
-                .then(
-                    (data) => (
-                        Fire.$emit("AfterCreate"),
-                        (this.dialog = false),
-                        swal.fire("convert to png!", "successfully", "success")
-                    )
-                );
+            const { dialog } = imageDownload(details, codeEvent, el);
+            this.dialog = dialog;
         },
         async multiDownloads() {
             let statusArenas = [];
             this.downloadingReport = true;
-            this.dialog2 = true
+            this.dialog2 = true;
             const divsss = document.querySelectorAll(".reportsoaoutput");
             const start = new Date();
 
             for (let i = 0; i < this.selected.length; i++) {
-                this.progressvalue = Math.ceil((parseInt(i+1)/parseInt(this.selected.length))*100)
-                console.log(`Currently at ${i}, ${(new Date() - start) / 1000} s`)
+                this.progressvalue = Math.ceil(
+                    (parseInt(i + 1) / parseInt(this.selected.length)) * 100
+                );
+                console.log(
+                    `Currently at ${i}, ${(new Date() - start) / 1000} s`
+                );
                 statusArenas.push({
                     codeEvent: this.selected[i].codeEvent,
                     status: "done",
@@ -2363,7 +1617,7 @@ export default {
                     },
                     type: "dataURL",
                     backgroundColor: "#ffffff",
-                    scale: 0.9
+                    scale: 0.9,
                 });
 
                 const link = document.createElement("a");
@@ -2389,33 +1643,24 @@ export default {
 
                     setTimeout(async () => {
                         this.downloadingReport = false;
-                        this.dialog2 = false
+                        this.dialog2 = false;
                         console.log("done");
                         this.selected = [];
                     }, 1000);
-                     this.importwithstatus()
+                    this.importwithstatus();
                 }
             }
 
             const end = new Date();
-            console.log("Without promise.all ", ((end - start) / 1000), " secs")
-
-            
-
+            console.log("Without promise.all ", (end - start) / 1000, " secs");
         },
         async downloadZip() {
             let statusArenas = [];
             this.downloadingReport = true;
-            this.dialog2 = true
+            this.dialog2 = true;
 
             // // -----------ZIP--------------- // // //
             const divsss = document.querySelectorAll(".reportsoaoutput");
-            // const { downloadingReport, dialog2, progressvalue} = await downloadZipping(this.selected, divsss, this.downloadingReport, this.dialog2, this.progressvalue, this.arenaData, this.importwithstatus)
-            // this.downloadingReport = downloadingReport
-            // this.dialog2 = dialog2
-            // this.progressvalue = progressvalue
-
-            // console.log(progressvalue)
 
             const zip = new JSZip();
 
@@ -2441,27 +1686,25 @@ export default {
                     )}.zip`
                 );
                 console.log("zip generated");
-                 await axios.put("api/arenaStatus", statusArenas);
-                    const c = this.arenaData.data.filter(
-                        (arena) =>
-                            !this.selected.find(
-                                (select) => select.areaCode === arena.areaCode
-                            )
-                    );
+                await axios.put("api/arenaStatus", statusArenas);
+                const c = this.arenaData.data.filter(
+                    (arena) =>
+                        !this.selected.find(
+                            (select) => select.areaCode === arena.areaCode
+                        )
+                );
 
-                    this.arenaData.data = c;
-                        if(this.progressvalue === 100) {
-                            setTimeout(async () => {
-                            this.downloadingReport = false;
-                            this.dialog2 = false
+                this.arenaData.data = c;
+                if (this.progressvalue === 100) {
+                    setTimeout(async () => {
+                        this.downloadingReport = false;
+                        this.dialog2 = false;
 
-                            console.log("done");
-                            this.selected = [];
-                        }, 1000);
-
-                    }
-                     this.importwithstatus()
-
+                        console.log("done");
+                        this.selected = [];
+                    }, 1000);
+                }
+                this.importwithstatus();
             };
             // start benchmark
             const t = new Date();
@@ -2473,10 +1716,13 @@ export default {
                     status: "done",
                 });
 
-                console.log(`Currently at ${i}, ${(new Date() - t) / 1000} secs`)
+                console.log(
+                    `Currently at ${i}, ${(new Date() - t) / 1000} secs`
+                );
 
-                this.progressvalue = Math.ceil((parseInt(i+1)/parseInt(this.selected.length))*100)
-
+                this.progressvalue = Math.ceil(
+                    (parseInt(i + 1) / parseInt(this.selected.length)) * 100
+                );
 
                 const canvas = await html2canvas(divsss[i], {
                     onclone: function (clonedDoc) {
@@ -2488,7 +1734,7 @@ export default {
                     },
                     type: "dataURL",
                     backgroundColor: "#ffffff",
-                    scale: 0.9
+                    scale: 0.9,
                 });
 
                 const link = document.createElement("a");
@@ -2514,50 +1760,25 @@ export default {
             //Generate zip file
             await generateZipFile(zip);
         },
-        defineEmail(arrayEmail) {
-         
-            if (arrayEmail != null) {
-                const emailMap = arrayEmail.map((ed) => ed["email"]);
-
-                const ee = emailMap.reduce((prev, current) => {
-                    return current + " " + prev;
-                }, "");
-                // return ee.trim().replace(/\s/g, " / ");
-                return ee.trim();
-                // return arrayEmail[0].email;
-            }
-        },
-         defineContact(arrayContact) {
-        
-            if (arrayContact != null) {
-                const emailMap = arrayContact.map((ed) => ed["contact_number"]);
-
-                const ee = emailMap.reduce((prev, current) => {
-                    return current + " " + prev;
-                }, "");
-                // return ee.trim().replace(/\s/g, " / ");
-                return ee.trim();
-            }
-        },
 
         loadBankDetails() {
             axios.get("api/Companybanks").then(({ data }) => {
-                (this.bankAccounts = data);
+                this.bankAccounts = data;
             });
         },
         selectAllToggle(props) {
             let dis = 0;
-            this.selectedItems = props.items
-            props.items.map(x => {
-                if(!x.arena_details) dis+=1;
-            })
-            if(this.selected.length != (props.items.length - dis)) {
+            this.selectedItems = props.items;
+            props.items.map((x) => {
+                if (!x.arena_details) dis += 1;
+            });
+            if (this.selected.length != props.items.length - dis) {
                 this.selected = [];
                 const self = this;
-                props.items.forEach(item => {
-                if(item.arena_details) {
-                    self.selected.push(item);
-                }
+                props.items.forEach((item) => {
+                    if (item.arena_details) {
+                        self.selected.push(item);
+                    }
                 });
             } else this.selected = [];
         },
@@ -2601,25 +1822,25 @@ export default {
                 numberUnformat(this.computation.cUnpaid) -
                 numberUnformat(this.computation.salesDeduction);
 
-            const totalCommIntel = numberUnformat(this.computation.otherCommissionIntel05) + numberUnformat(this.computation.otherCommIntMob)
-            const totalConsolComm = numberUnformat(this.computation.consolidatorsCommission) + numberUnformat(this.computation.consolCommMob)
-            const totalPayOutsBal = numberUnformat(this.computation.paymentForOutstandingBalance) + numberUnformat(this.computation.payOutsBalMob)
-            const totalSafetyFund = numberUnformat(this.computation.safetyFund) + numberUnformat(this.computation.safetyFundMob)
-
+            const totalCommIntel =
+                numberUnformat(this.computation.otherCommissionIntel05) +
+                numberUnformat(this.computation.otherCommIntMob);
+            const totalConsolComm =
+                numberUnformat(this.computation.consolidatorsCommission) +
+                numberUnformat(this.computation.consolCommMob);
+            const totalPayOutsBal =
+                numberUnformat(this.computation.paymentForOutstandingBalance) +
+                numberUnformat(this.computation.payOutsBalMob);
+            const totalSafetyFund =
+                numberUnformat(this.computation.safetyFund) +
+                numberUnformat(this.computation.safetyFundMob);
 
             const totalComm =
                 numberUnformat(netOpCommTotal) +
-                numberUnformat(
-                    totalCommIntel || "0.00"
-                ) -
-                numberUnformat(
-                    totalConsolComm || "0.00"
-                ) -
+                numberUnformat(totalCommIntel || "0.00") -
+                numberUnformat(totalConsolComm || "0.00") -
                 numberUnformat(totalSafetyFund || "0.00") -
-                numberUnformat(
-                    totalPayOutsBal || "0.00"
-                );
-
+                numberUnformat(totalPayOutsBal || "0.00");
 
             const netOpCommission = numberFormat(netOpCommTotal || 0);
             const totalCommission = numberFormat(totalComm || 0);
@@ -2636,12 +1857,17 @@ export default {
                 numberUnformat(this.computation.cUnpaid);
 
             const totalComputationOthers =
-                this.computation.exempted.toUpperCase() === "NOT EXEMPTED" ||  this.computation.exempted.toUpperCase() === "NOT"
+                this.computation.exempted.toUpperCase() === "NOT EXEMPTED" ||
+                this.computation.exempted.toUpperCase() === "NOT"
                     ? numberFormat(totalOthers)
                     : numberFormat(this.computation.totalCommission); // to fixed
 
             const depositReplenish = numberFormat(
-                (numberUnformat(netWinLoss) - numberUnformat(totalComputationOthers)  - numberUnformat(this.computation.systemErrorCOArmsi)) + (numberUnformat(this.computation.mobile.cashLoad) - numberUnformat(this.computation.mobile.cashWithdrawal))
+                numberUnformat(netWinLoss) -
+                    numberUnformat(totalComputationOthers) -
+                    numberUnformat(this.computation.systemErrorCOArmsi) +
+                    (numberUnformat(this.computation.mobile.cashLoad) -
+                        numberUnformat(this.computation.mobile.cashWithdrawal))
             );
 
             const depositReplenishText =
@@ -2678,19 +1904,11 @@ export default {
 
             const unclaimed = numberFormat(this.computation.unclaimed || 0);
             const cUnpaid = numberFormat(this.computation.cUnpaid || 0);
-            
-         
 
-            const otherCommissionIntel05 = numberFormat(
-                totalCommIntel
-            );
-            const consolidatorsCommission = numberFormat(
-                totalConsolComm
-            );
-            const paymentForOutstandingBalance = numberFormat(
-                totalPayOutsBal
-            );
-            
+            const otherCommissionIntel05 = numberFormat(totalCommIntel);
+            const consolidatorsCommission = numberFormat(totalConsolComm);
+            const paymentForOutstandingBalance = numberFormat(totalPayOutsBal);
+
             const safetyFund = numberFormat(totalSafetyFund);
             const salesDeduction = numberFormat(
                 this.computation.salesDeductionTablet
@@ -2734,20 +1952,21 @@ export default {
                 paymentForOutstandingBalance,
                 totalMWMobile,
                 totalDrawMobile,
-              
             };
         },
     },
-    
+
     mounted() {
-            if (localStorage.getItem('prepared')) {
+        if (localStorage.getItem("prepared")) {
             try {
-                this.switchPrepared = JSON.parse(localStorage.getItem('prepared'));
-            } catch(e) {
-                localStorage.removeItem('prepared');
+                this.switchPrepared = JSON.parse(
+                    localStorage.getItem("prepared")
+                );
+            } catch (e) {
+                localStorage.removeItem("prepared");
             }
-            }
-  },
+        }
+    },
     async created() {
         await this.showData();
         this.importwithstatus();
@@ -2758,8 +1977,6 @@ export default {
             this.importwithstatus();
         });
     },
-   
-   
 };
 </script>
 <style scoped>

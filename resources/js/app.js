@@ -151,9 +151,6 @@ let routes = [
     {
         path: '/activitylogs', component: require('./components/ActivityLogs.vue').default
     },
-   
-   
-
     {
 
         path: '*', component: require('./components/NotFound.vue').default

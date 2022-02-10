@@ -113,6 +113,46 @@ const downloadZipping = async (selected, div, downloadingReport, dialog2, progre
     }
 }
 
+
+const imageDownload = async(details, codeEvent, el) => {
+    // const el = this.$refs.soaReport;
+
+    const options = {
+        type: "dataURL",
+        backgroundColor: "#ffffff",
+        scale: 0.88
+    };
+    const printCanvas = await html2canvas(el, options);
+
+    const link = document.createElement("a");
+
+
+    link.download = `${details.arena}.png`;
+    link.href = printCanvas.toDataURL("image/png");
+    document.body.appendChild(link);
+    link.click();
+
+    setTimeout(() => {
+        document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
+    }, 100);
+
+    axios
+        .put("api/arenaStatus", [{ codeEvent, status: "done" }])
+        .then(
+            (data) => (
+                Fire.$emit("AfterCreate"),
+                
+                swal.fire("convert to png!", "successfully", "success")
+            )
+        );
+
+    return {
+        dialog: false
+    }
+
+}
+
 export {
-    downloadZipping
+    downloadZipping,
+    imageDownload
 }

@@ -73314,7 +73314,7 @@ readers do not read off random characters that represent icons */
 }
 
 .custom-span {
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.4);
   width: 150px;
   min-height: 23px;
   margin-bottom: 3px;
@@ -73347,6 +73347,10 @@ readers do not read off random characters that represent icons */
   width: 100%;
 }
 
+.computation {
+  font-weight: 500;
+}
+
 .computation-span {
   width: 140px;
   display: flex;
@@ -73365,9 +73369,10 @@ readers do not read off random characters that represent icons */
 }
 
 .custom-label {
-  font-size: 11px;
+  font-size: 12px;
   white-space: nowrap;
   margin-right: 1rem;
+  font-weight: 500;
 }
 
 .fieldDateNumber {
@@ -73399,6 +73404,7 @@ readers do not read off random characters that represent icons */
   text-transform: uppercase;
   letter-spacing: 6px;
   margin: 0 auto;
+  font-weight: 700;
 }
 
 .computation-wrapper_field {

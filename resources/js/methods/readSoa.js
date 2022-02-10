@@ -1,5 +1,25 @@
+import moment from "moment";
+import XLSX from "xlsx";
+import {
+    camelCase,
+    groupBy,
+    map,
+    spread,
+    values,
+    assign,
+    concat,
+    sortBy,
+} from "lodash";
+
+import {
+    mergeObject,
+    valueSplit,
+} from "../utility";
+
+
+
 const readSoa = (event, isExcel) => {
-    let ocbsArrayFiltered
+    let arenaReportFiltered = []
     const file = event ? event : null;
            
     const checkfile =
@@ -256,7 +276,7 @@ const readSoa = (event, isExcel) => {
                 ({ key, ...rest }) => {
                     const type = rest.type || rest.classification;
 
-                   console.log(rest)
+    
 
                     const exempted = rest.exempted;
                     const totalMWBets = rest.meron + rest.wala;
@@ -424,7 +444,9 @@ const readSoa = (event, isExcel) => {
 
            
 
-            ocbsArrayFiltered = sortReport;
+            arenaReportFiltered.push(...sortReport) ;
+
+           
 
         };
         reader.readAsBinaryString(file);
@@ -440,9 +462,9 @@ const readSoa = (event, isExcel) => {
             });
        
     }
-
     return {
-        ocbsArrayFiltered
+        arenaReportFiltered,
+        isExcel
     }
 
 

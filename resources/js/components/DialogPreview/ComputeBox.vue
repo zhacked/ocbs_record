@@ -28,7 +28,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Total M/W Bets:</span
                         >
                         <div
@@ -41,14 +41,15 @@
                             "
                             :class="{ 'editmode-span': editmode }"
                         >
-                            <input
+                            <!-- <input
                                 type="text"
                                 disabled="disabled"
                                 class="input-field_report computation comp"
                                 v-model="computation.totalMWBets"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
-                            />
+                            /> -->
+                            <span class="input-field_report computation comp">{{computation.totalMWBets}}</span>
                         </div>
                     </div>
                     <div
@@ -59,7 +60,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Total Cancelled Bets:</span
                         >
                         <div
@@ -99,7 +100,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Total Draw Bets:</span
                         >
                         <div
@@ -139,7 +140,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Total Payout Paid:</span
                         >
                         <div
@@ -179,7 +180,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Total C/D Paid:</span
                         >
 
@@ -220,7 +221,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Total Draw Paid:</span
                         >
                         <div
@@ -263,8 +264,7 @@
                     >
                         <span
                             class="
-                                text-caption
-                                font-weight-bold
+                                                                font-weight-bold
                                 custom-label
                                 ctotal-label
                             "
@@ -308,8 +308,7 @@
                     >
                         <span
                             class="
-                                text-caption
-                                font-weight-bold
+                                                                font-weight-bold
                                 custom-label
                                 ctotal-label
                             "
@@ -321,6 +320,7 @@
                                 align-center
                                 computation-container_field
                                 borderbottom
+                                computation
                             "
                         >
                             <span class="operation">=</span>
@@ -332,6 +332,7 @@
                                     d-flex
                                     align-center
                                     computation-total
+                                    
                                 "
                             >
                                 <span class="ctotal-text">{{
@@ -348,7 +349,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label "
                             >M/W*{{ commissionPercent * 100 }}% (kiosk):</span
                         >
                         <div
@@ -366,9 +367,10 @@
                                     computation-span
                                     d-flex
                                     align-center
+                                    computation
                                 "
                             >
-                                <span>{{ computedAve.mwTotalPercent }}</span>
+                                <span class="computation">{{ computedAve.mwTotalPercent }}</span>
                             </div>
                         </div>
                     </div>
@@ -380,7 +382,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Draw*{{ commissionPercent * 100 }}% (kiosk):</span
                         >
                         <div
@@ -398,9 +400,10 @@
                                     computation-span
                                     d-flex
                                     align-center
+                                    
                                 "
                             >
-                                <span>{{ computedAve.drawTotalPercent }}</span>
+                                <span class="computation">{{ computedAve.drawTotalPercent }}</span>
                             </div>
                         </div>
                     </div>
@@ -412,7 +415,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >M/W*{{ commissionPercent * 100 }}% (mobile):</span
                         >
                         <div
@@ -432,7 +435,7 @@
                                     align-center
                                 "
                             >
-                                <span>{{
+                                <span class="computation">{{
                                     computedAve.mwMobileTotalPercent
                                 }}</span>
                             </div>
@@ -446,7 +449,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Draw*{{ commissionPercent * 100 }}% (mobile):</span
                         >
                         <div
@@ -466,7 +469,7 @@
                                     align-center
                                 "
                             >
-                                <span>{{
+                                <span class="computation">{{
                                     computedAve.drawMobileTotalPercent
                                 }}</span>
                             </div>
@@ -480,7 +483,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Total Unclaimed:</span
                         >
                         <div
@@ -520,7 +523,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Total C Unpaid:</span
                         >
                         <div
@@ -560,7 +563,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Sales Deduction:</span
                         >
                         <div
@@ -602,8 +605,7 @@
                     >
                         <span
                             class="
-                                text-caption
-                                font-weight-bold
+                                                                font-weight-bold
                                 custom-label
                                 ctotal-label
                             "
@@ -638,7 +640,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Other Commission - M:</span
                         >
                         <div
@@ -678,7 +680,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Consolidator's Commission:</span
                         >
                         <div
@@ -718,7 +720,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Safety Fund:</span
                         >
                         <div
@@ -758,7 +760,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="text-caption custom-label"
+                        <span class="custom-label"
                             >Payment for outstanding balance:</span
                         >
                         <div
@@ -800,8 +802,7 @@
                     >
                         <span
                             class="
-                                text-caption
-                                font-weight-bold
+                                                                font-weight-bold
                                 custom-label
                                 ctotal-label
                             "
@@ -857,7 +858,7 @@
                     "
                     style="margin-right: 2rem"
                 >
-                    <span class="text-caption custom-label"
+                    <span class="custom-label"
                         >Total M/W Bets:</span
                     >
                     <div
@@ -893,7 +894,7 @@
                     "
                     style="margin-right: 2rem"
                 >
-                    <span class="text-caption custom-label"
+                    <span class="custom-label"
                         >Total Draw Bets:</span
                     >
                     <div
@@ -930,7 +931,7 @@
                         computation-wrapper_field
                     "
                 >
-                    <span class="text-caption custom-label"
+                    <span class="custom-label"
                         >Cash Load from Mobile:</span
                     >
                     <div
@@ -966,7 +967,7 @@
                         computation-wrapper_field
                     "
                 >
-                    <span class="text-caption custom-label"
+                    <span class="custom-label"
                         >Cash Withdrawal from Mobile:</span
                     >
                     <div
@@ -1004,10 +1005,10 @@
                 >
                     <span
                         class="
-                            text-caption
-                            font-weight-bold
+                                                        font-weight-bold
                             custom-label
                             ctotal-label
+
                         "
                         >For
                         {{ depositReplenishTxt.totalText }}:</span

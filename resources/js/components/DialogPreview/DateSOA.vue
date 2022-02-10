@@ -9,7 +9,7 @@
             >
                 <span
                     class="
-                        text-caption
+                        computation
                         custom-label
                     "
                     >{{
@@ -25,7 +25,7 @@
                         align-center
                     "
                 >
-                    <span
+                    <span class="computation"
                         >{{refNo}}</span
                     >
                 </div>
@@ -39,7 +39,7 @@
             >
                 <span
                     class="
-                        text-caption
+                        computation
                         custom-label
                     "
                     >Date&nbsp;of&nbsp;{{
@@ -55,7 +55,7 @@
                         align-center
                     "
                 >
-                    <span
+                    <span class="computation"
                         >{{dateSoa}}</span
                     >
                 </div>
@@ -69,7 +69,7 @@
             >
                 <span
                     class="
-                        text-caption
+                        computation
                         custom-label
                     "
                     >Date&nbsp;of&nbsp;Event:</span
@@ -83,7 +83,7 @@
                     "
                 >
                     <span
-                        >{{dateEvent}}</span
+                        class="computation">{{dateEvent}}</span
                     >
                 </div>
             </div>

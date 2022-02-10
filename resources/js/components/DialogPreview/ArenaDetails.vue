@@ -9,7 +9,7 @@
                 >
                     <span
                         class="
-                            text-caption
+                          
                             custom-label
                             arenaLabel
                             
@@ -42,7 +42,7 @@
                 >
                     <span
                         class="
-                            text-caption
+                           
                             custom-label
                             arenaLabel
                         "
@@ -72,7 +72,7 @@
                 >
                     <span
                         class="
-                            text-caption
+                           
                             custom-label
                             arenaLabel
                         "
@@ -100,7 +100,7 @@
                 >
                     <span
                         class="
-                            text-caption
+                           
                             custom-label
                             arenaLabel
                         "
@@ -130,7 +130,7 @@
                 >
                     <span
                         class="
-                            text-caption
+                           
                             custom-label
                             arenaLabel
                         "
