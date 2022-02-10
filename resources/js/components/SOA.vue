@@ -1559,10 +1559,6 @@ export default {
                 this.defineContact(data && data.arena_details.contact_details);
         },
 
-        closeDialog() {
-            this.dialog = false;
-        },
-
         clearFile(file) {
             console.log(file);
             this.isExcel = false;
@@ -1571,8 +1567,11 @@ export default {
         closeDialog() {
             this.editmode = false;
             this.dialog = false;
+            this.banks = [];
+     
+            this.arenaDetails = {};
             this.operator_name = "";
-
+            
             this.form.reset();
             $(".computation").attr("disabled", true);
         },
@@ -1583,10 +1582,23 @@ export default {
         },
         beforeDownload,
 
-        downloadImg(details, codeEvent) {
+        async downloadImg(details, codeEvent) {
             const el = this.$refs.soaReport;
-            const { dialog } = imageDownload(details, codeEvent, el);
-            this.dialog = dialog;
+            const imgdl = await imageDownload(details, codeEvent, el);
+            console.log(imgdl)
+
+            if(imgdl.status === 200) {
+                this.dialog = false;
+                this.banks = [];
+                this.arenaDetails = {};
+          
+                Fire.$emit("AfterCreate");
+                swal.fire("convert to png!", "successfully", "success");
+            }
+          
+            
+               
+            
         },
         async multiDownloads() {
             let statusArenas = [];

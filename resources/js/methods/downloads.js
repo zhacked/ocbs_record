@@ -116,7 +116,7 @@ const downloadZipping = async (selected, div, downloadingReport, dialog2, progre
 
 const imageDownload = async(details, codeEvent, el) => {
     // const el = this.$refs.soaReport;
-
+    let dialog
     const options = {
         type: "dataURL",
         backgroundColor: "#ffffff",
@@ -136,19 +136,10 @@ const imageDownload = async(details, codeEvent, el) => {
         document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
     }, 100);
 
-    axios
+    const arenaStatus = await axios
         .put("api/arenaStatus", [{ codeEvent, status: "done" }])
-        .then(
-            (data) => (
-                Fire.$emit("AfterCreate"),
-                
-                swal.fire("convert to png!", "successfully", "success")
-            )
-        );
-
-    return {
-        dialog: false
-    }
+       
+        return arenaStatus
 
 }
 
