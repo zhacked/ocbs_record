@@ -2,11 +2,7 @@
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
-            <!-- <v-btn 
-            @click="backmeup"
-            color="warning">
-                back up
-            </v-btn> -->
+         
             <v-row class="mt-3">
                 <v-col class="col-md-12">
                     <v-row>
@@ -14,6 +10,7 @@
                         <v-spacer></v-spacer>
                         <v-col v-show="$gate.isAdmin()">
                             <v-file-input
+                                outlined
                                 dense
                                 v-model="fileUpload"
                                 color="deep-purple accent-4"
@@ -21,6 +18,7 @@
                                 placeholder="Select your file"
                                 :clearable="false"
                                 counter
+                                
                                 append-icon="mdi-file-import"
                                 :show-size="1000"
                                 @change="onFileChange($event)"
@@ -990,6 +988,7 @@
                                             :preview-modal="false"
                                             :filename="arenaDetails.arena"
                                             :pdf-quality="2"
+                                            :image="{ type: 'jpeg', quality: 1 }"
                                             :manual-pagination="true"
                                             pdf-format="letter"
                                             pdf-orientation="portrait"
@@ -1014,7 +1013,7 @@
                                                     }}</span>
                                                 </v-card-title>
                                                 <v-card-text
-                                                    class="text-sm-body-2"
+                                                    
                                                 >
                                                     <v-row>
                                                         <v-spacer></v-spacer>
@@ -1078,8 +1077,7 @@
                                                                 .dateText ===
                                                             'FR'
                                                         "
-                                                        class="text-xs my-2"
-                                                        style="color: #e64a19"
+                                                        style="color: #e64a19; font-size: 9px; font-weight: 500; margin"
                                                         >Please be advised that
                                                         replenishment are only
                                                         available during banking

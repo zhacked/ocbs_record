@@ -81,7 +81,7 @@ const downloadZipping = async (selected, div, downloadingReport, dialog2, progre
                 }
             },
             type: "dataURL",
-            backgroundColor: "#ffffff",
+            backgroundColor: "transparent",
             scale: 0.9
         });
 
@@ -116,11 +116,11 @@ const downloadZipping = async (selected, div, downloadingReport, dialog2, progre
 
 const imageDownload = async(details, codeEvent, el) => {
     // const el = this.$refs.soaReport;
-    let dialog
+    
     const options = {
         type: "dataURL",
-        backgroundColor: "#ffffff",
-        scale: 0.88
+        backgroundColor: "transparent",
+        
     };
     const printCanvas = await html2canvas(el, options);
 

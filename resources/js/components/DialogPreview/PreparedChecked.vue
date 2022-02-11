@@ -11,7 +11,7 @@
                             class="select-field_container d-flex justify-center align-center"
                             :class="{ 'editmode-span': editmode }"
                         >
-                            <span class="computation">{{
+                            <span class="computation signed-text">{{
                                 arenaDetails.user_team &&
                                 arenaDetails.user_team.user_details
                                     ? arenaDetails.user_team.user_details.name
@@ -19,7 +19,7 @@
                             }}</span>
                         </span>
 
-                        <span class="signed-title computation">
+                        <span class="signed-title computation signed-text">
                             {{
                                 arenaDetails.user_team &&
                                 arenaDetails.user_team.user_details &&
@@ -43,7 +43,7 @@
                             class="select-field_container d-flex justify-center align-center"
                             :class="{ 'editmode-span': editmode }"
                         >
-                            <span class="computation" v-if="!editmode">{{
+                            <span class="computation signed-text" v-if="!editmode">{{
                                 this.selectedPreparedName || "Clarise A. Valles"
                             }}</span>
                             <!-- <select v-else class="sign-name select-field_report computation" name="prepared" disabled @change="handlePreparedBy($event)">
@@ -51,7 +51,7 @@
                                                                             </select> -->
                         </span>
 
-                        <span class="signed-title computation">
+                        <span class="signed-title computation signed-text">
                             <!-- {{preparedPosition ? preparedPosition : userPrepared.prepared.length > 0 ? userPrepared.prepared[0].position : "Finance Assistant - Kiosk" }} -->
                             {{
                                 this.selectedPreparedPosition ||
@@ -73,7 +73,7 @@
                             class="select-field_container d-flex justify-center align-center"
                             :class="{ 'editmode-span': editmode }"
                         >
-                            <span class="computation" v-if="!editmode">{{
+                            <span class="computation signed-text" v-if="!editmode">{{
                                 this.selectedCheckedNameOne ||
                                 "Ma. Lourdes Anoba/Leo Tampilic Jr."
                             }}</span>
@@ -83,7 +83,7 @@
                                                                             </select> -->
                         </span>
 
-                        <span class="signed-title computation">
+                        <span class="signed-title computation signed-text">
                             <!-- {{checkedOnePosition ? checkedOnePosition : userPrepared.checked.length > 0 ? userPrepared.checked[0].position : "QA - Team Leader"}} -->
                             {{
                                 this.selectedCheckedNameOnePosition ||
@@ -103,7 +103,7 @@
                             class="select-field_container d-flex justify-center align-center"
                             :class="{ 'editmode-span': editmode }"
                         >
-                            <span class="computation" v-if="!editmode">{{
+                            <span class="computation signed-text" v-if="!editmode">{{
                                 this.selectedCheckedNameTwo ||
                                 "Mariel Pilotos/Jonalyn Bonares"
                             }}</span>
@@ -112,7 +112,7 @@
                                                                             </select> -->
                         </span>
 
-                        <span class="signed-title computation">
+                        <span class="signed-title computation signed-text">
                             <!-- {{checkedTwoPosition ? checkedTwoPosition : userPrepared.checked.length ? userPrepared.checked[1].position : "Supervisor - Arena/OCBS"}} -->
                             {{
                                 this.selectedCheckedNameTwoPosition ||

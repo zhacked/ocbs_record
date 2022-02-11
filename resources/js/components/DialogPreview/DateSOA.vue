@@ -1,5 +1,5 @@
 <template>
-           <v-col>
+           <v-col style="margin: 0!important; padding: 1px 10px!important">
             <div
                 class="
                     d-flex
@@ -15,12 +15,12 @@
                     >{{
                         depositReplenishText
                             .dateText
-                    }}&nbsp;#</span
+                    }}&nbsp;#:</span
                 >
                 <div
                     class="
                         custom-span
-                        caption
+                        
                         d-flex
                         align-center
                     "
@@ -50,7 +50,7 @@
                 <div
                     class="
                         custom-span
-                        caption
+                        
                         d-flex
                         align-center
                     "
@@ -77,7 +77,7 @@
                 <div
                     class="
                         custom-span
-                        caption
+                        
                         d-flex
                         align-center
                     "

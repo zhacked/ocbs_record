@@ -2,12 +2,12 @@ const beforeDownload = async ({ html2pdf, options, pdfContent }) => {
     const opts = {
         ...options,
         html2canvas: {
-            scale: 1.5,
+            scale: 1,
             useCORS: true
         }
     }
 
-     pdfContent.style.transform = "scale(0.75)"
+     pdfContent.style.transform = "scale(1)"
      pdfContent.style.height = "1000px"
 
 

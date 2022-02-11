@@ -73314,15 +73314,14 @@ readers do not read off random characters that represent icons */
 }
 
 .custom-span {
-  border: 1px solid rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.7);
   width: 150px;
-  min-height: 23px;
+  height: 20px;
   margin-bottom: 3px;
-  font-size: 9px;
   border-radius: 3px;
-  padding: 0.3px 3px;
+  padding: 0px 2px;
   overflow: hidden;
-  max-height: 60px;
+  font-size: 11px;
 }
 
 .custom-textarea {
@@ -73348,7 +73347,8 @@ readers do not read off random characters that represent icons */
 }
 
 .computation {
-  font-weight: 500;
+  font-weight: 700;
+  padding: 0;
 }
 
 .computation-span {
@@ -73356,6 +73356,9 @@ readers do not read off random characters that represent icons */
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
+  padding: 0 2px;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .pdf-title {
@@ -73365,20 +73368,22 @@ readers do not read off random characters that represent icons */
 }
 
 .pdf-title span {
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 32px;
 }
 
 .custom-label {
   font-size: 12px;
   white-space: nowrap;
   margin-right: 1rem;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .fieldDateNumber {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  font-weight: 700;
 }
 
 .arenaInfo {
@@ -73389,6 +73394,7 @@ readers do not read off random characters that represent icons */
 
 .arenaLabel {
   width: 180px;
+  font-weight: 700;
 }
 
 .comp {
@@ -73396,15 +73402,16 @@ readers do not read off random characters that represent icons */
 }
 
 .computation-banner {
-  border: 1px solid rgba(61, 61, 61, 0.473);
+  border: 1px solid rgba(61, 61, 61, 0.7);
   border-radius: 3px;
   width: 95%;
-  padding: 1px;
+  padding: 0.5px;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 6px;
+  letter-spacing: 5px;
   margin: 0 auto;
   font-weight: 700;
+  font-size: 11px;
 }
 
 .computation-wrapper_field {
@@ -73432,7 +73439,8 @@ readers do not read off random characters that represent icons */
 }
 
 .computation-total {
-  background-color: #ccc;
+  background-color: #f5f5f5;
+  font-weight: 900;
 }
 
 .ctotal-text {
@@ -73440,12 +73448,12 @@ readers do not read off random characters that represent icons */
 }
 
 .ctotal-text, .ctotal-label {
-  font-weight: 700;
+  font-weight: 900;
   overflow: hidden;
 }
 
 .overtotal {
-  background-color: rgba(255, 228, 94, 0.8);
+  background-color: #F9F0DC;
 }
 
 .kiosk-mobile_text {
@@ -73457,15 +73465,16 @@ readers do not read off random characters that represent icons */
 }
 
 .bank-wrapper {
-  border: 1px solid rgba(61, 61, 61, 0.473);
+  border: 1px solid rgba(61, 61, 61, 0.8);
   border-radius: 3px;
   width: 80%;
   padding: 2px;
   display: flex;
   align-items: center;
   white-space: nowrap;
-  background-color: #ccc;
+  background-color: #f5f5f5;
   margin-bottom: 50px;
+  font-weight: bold;
 }
 
 .bank-headline {
@@ -73484,8 +73493,8 @@ readers do not read off random characters that represent icons */
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .bank_account-name {
@@ -73509,7 +73518,7 @@ readers do not read off random characters that represent icons */
 }
 
 .sign-wrapper {
-  height: 100px;
+  height: 70px;
   width: 100%;
   display: flex;
 }
@@ -73571,6 +73580,11 @@ select:disabled {
   width: 100%;
   text-align: center;
   border-top: 1px solid #000;
+}
+
+.signed-text {
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .custom-loader {

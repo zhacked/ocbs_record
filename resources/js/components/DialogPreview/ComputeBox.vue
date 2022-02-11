@@ -34,7 +34,7 @@
                         <div
                             class="
                                 custom-span
-                                caption
+                                
                                 computation-span
                                 d-flex
                                 align-center
@@ -49,7 +49,7 @@
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
                             /> -->
-                            <span class="input-field_report computation comp">{{computation.totalMWBets}}</span>
+                            <span>{{computation.totalMWBets}}</span>
                         </div>
                     </div>
                     <div
@@ -74,21 +74,22 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                                 :class="{ 'editmode-span': editmode }"
                             >
-                                <input
+                                <!-- <input
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
                                     v-model="computation.drawCancelled"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
-                                />
+                                /> -->
+                                <span>{{computation.drawCancelled}}</span>
                             </div>
                         </div>
                     </div>
@@ -114,21 +115,22 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                                 :class="{ 'editmode-span': editmode }"
                             >
-                                <input
+                                <!-- <input
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
                                     v-model="computation.draw"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
-                                />
+                                /> -->
+                                <span>{{computation.draw}}</span>
                             </div>
                         </div>
                     </div>
@@ -154,21 +156,22 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                                 :class="{ 'editmode-span': editmode }"
                             >
-                                <input
+                                <!-- <input
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
                                     v-model="computation.totalPayoutPaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
-                                />
+                                /> -->
+                                <span>{{computation.totalPayoutPaid}}</span>
                             </div>
                         </div>
                     </div>
@@ -194,22 +197,14 @@
                             <span class="operation">-</span>
                             <div
                                 class="
-                                    custom-span
-                                    caption
+                                    custom-span                                   
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                                 :class="{ 'editmode-span': editmode }"
                             >
-                                <input
-                                    type="text"
-                                    disabled
-                                    class="input-field_report computation comp"
-                                    v-model="computation.cdPaid"
-                                    @focus="handleCleanZeroOnFocus($event)"
-                                    @blur="handleCleanZeroOnBlur($event)"
-                                />
+                                <span>{{computation.cdPaid}}</span>
                             </div>
                         </div>
                     </div>
@@ -235,21 +230,23 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                 "
-                                :class="{ 'editmode-span': editmode }"
+                               
                             >
-                                <input
+                                <!-- <input
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
                                     v-model="computation.drawPaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
-                                />
+                                /> -->
+
+                                <span>{{computation.drawPaid}}</span>
                             </div>
                         </div>
                     </div>
@@ -282,7 +279,6 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
                                     computation-span
                                     d-flex
                                     align-center
@@ -308,7 +304,7 @@
                     >
                         <span
                             class="
-                                                                font-weight-bold
+                                font-weight-bold
                                 custom-label
                                 ctotal-label
                             "
@@ -327,7 +323,7 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
@@ -349,7 +345,7 @@
                             computation-wrapper_field
                         "
                     >
-                        <span class="custom-label "
+                        <span class="custom-label"
                             >M/W*{{ commissionPercent * 100 }}% (kiosk):</span
                         >
                         <div
@@ -363,14 +359,14 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                     computation
                                 "
                             >
-                                <span class="computation">{{ computedAve.mwTotalPercent }}</span>
+                                <span>{{ computedAve.mwTotalPercent }}</span>
                             </div>
                         </div>
                     </div>
@@ -396,14 +392,14 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                     
                                 "
                             >
-                                <span class="computation">{{ computedAve.drawTotalPercent }}</span>
+                                <span>{{ computedAve.drawTotalPercent }}</span>
                             </div>
                         </div>
                     </div>
@@ -429,13 +425,13 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                             >
-                                <span class="computation">{{
+                                <span>{{
                                     computedAve.mwMobileTotalPercent
                                 }}</span>
                             </div>
@@ -463,13 +459,13 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                             >
-                                <span class="computation">{{
+                                <span>{{
                                     computedAve.drawMobileTotalPercent
                                 }}</span>
                             </div>
@@ -497,21 +493,21 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                                 :class="{ 'editmode-span': editmode }"
                             >
-                                <input
+                                <!-- <input
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
                                     v-model="computation.unclaimed"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
-                                />
+                                /> -->
+                                <span>{{computation.unclaimed}}</span>
                             </div>
                         </div>
                     </div>
@@ -537,21 +533,22 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                                 :class="{ 'editmode-span': editmode }"
                             >
-                                <input
+                                <!-- <input
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
                                     v-model="computation.cUnpaid"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
-                                />
+                                /> -->
+                                <span>{{computation.cUnpaid}}</span>
                             </div>
                         </div>
                     </div>
@@ -577,21 +574,22 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                                 :class="{ 'editmode-span': editmode }"
                             >
-                                <input
+                                <!-- <input
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
                                     v-model="computation.salesDeduction"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
-                                />
+                                /> -->
+                                <span>{{computation.salesDeduction}}</span>
                             </div>
                         </div>
                     </div>
@@ -622,7 +620,7 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
@@ -654,21 +652,22 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                                 :class="{ 'editmode-span': editmode }"
                             >
-                                <input
+                                <!-- <input
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
                                     v-model="computation.otherCommissionIntel05"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
-                                />
+                                /> -->
+                                <span>{{computation.otherCommissionIntel05}}</span>
                             </div>
                         </div>
                     </div>
@@ -694,21 +693,22 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                                 :class="{ 'editmode-span': editmode }"
                             >
-                                <input
+                                <!-- <input
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
                                     v-model="computation.consolidatorsCommission"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
-                                />
+                                /> -->
+                                <span>{{computation.consolidatorsCommission}}</span>
                             </div>
                         </div>
                     </div>
@@ -734,21 +734,22 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                                 :class="{ 'editmode-span': editmode }"
                             >
-                                <input
+                                <!-- <input
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
                                     v-model="computation.safetyFund"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
-                                />
+                                /> -->
+                                <span>{{computation.safetyFund}}</span>
                             </div>
                         </div>
                     </div>
@@ -774,21 +775,22 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
                                 "
                                 :class="{ 'editmode-span': editmode }"
                             >
-                                <input
+                                <!-- <input
                                     type="text"
                                     disabled
                                     class="input-field_report computation comp"
                                     v-model="computation.paymentForOutstandingBalance"
                                     @focus="handleCleanZeroOnFocus($event)"
                                     @blur="handleCleanZeroOnBlur($event)"
-                                />
+                                /> -->
+                                <span>{{computation.paymentForOutstandingBalance}}</span>
                             </div>
                         </div>
                     </div>
@@ -820,7 +822,7 @@
                             <div
                                 class="
                                     custom-span
-                                    caption
+                                    
                                     computation-span
                                     d-flex
                                     align-center
@@ -834,11 +836,13 @@
                 </div>
             </div>
         </v-row>
-        <v-row class="ma-0 pa-0" style="margin: 0; padding: 0">
+        <v-row class="ma-0 pa-0" style="margin: 0 !important; padding: 0 !important">
           <div
-                class="d-flex my-2 py-1"
+                class="d-flex"
                 style="
                     margin-right: 0px;
+                    margin-bottom: 0px;
+                    margin-top: 8px;
                     width: 100%;
                     justify-content: space-between;
                 "
@@ -867,21 +871,22 @@
                         <div
                             class="
                                 custom-span
-                                caption
+                                
                                 computation-span
                                 d-flex
                                 align-center
                             "
                             :class="{ 'editmode-span': editmode }"
                         >
-                            <input
+                            <!-- <input
                                 type="text"
                                 disabled
                                 class="input-field_report computation comp"
                                 v-model="computation.mobile.totalMWBets"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
-                            />
+                            /> -->
+                            <span>{{computation.mobile.totalMWBets}}</span>
                         </div>
                     </div>
                 </div>
@@ -903,21 +908,22 @@
                         <div
                             class="
                                 custom-span
-                                caption
+                                
                                 computation-span
                                 d-flex
                                 align-center
                             "
                             :class="{ 'editmode-span': editmode }"
                         >
-                            <input
+                            <!-- <input
                                 type="text"
                                 disabled
                                 class="input-field_report computation comp"
                                 v-model="computation.mobile.totalDrawBets"
                                  @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
-                            />
+                            /> -->
+                            <span>{{computation.mobile.totalDrawBets}}</span>
                         </div>
                     </div>
                 </div>
@@ -941,21 +947,22 @@
                         <div
                             class="
                                 custom-span
-                                caption
+                                
                                 computation-span
                                 d-flex
                                 align-center
                             "
                             :class="{ 'editmode-span': editmode }"
                         >
-                            <input
+                            <!-- <input
                                 type="text"
                                 disabled
                                 class="input-field_report computation comp"
                                 v-model="computation.mobile.cashLoad"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
-                            />
+                            /> -->
+                            <span>{{computation.mobile.cashLoad}}</span>
                         </div>
                     </div>
                 </div>
@@ -977,21 +984,22 @@
                         <div
                             class="
                                 custom-span
-                                caption
+                                
                                 computation-span
                                 d-flex
                                 align-center
                             "
                             :class="{ 'editmode-span': editmode }"
                         >
-                            <input
+                            <!-- <input
                                 type="text"
                                 disabled
                                 class="input-field_report computation comp"
                                 v-model="computation.mobile.cashWithdrawal"
                                 @focus="handleCleanZeroOnFocus($event)"
                                 @blur="handleCleanZeroOnBlur($event)"
-                            />
+                            /> -->
+                            <span>{{computation.mobile.cashWithdrawal}}</span>
                         </div>
                     </div>
                 </div>
@@ -1025,7 +1033,7 @@
                         <div
                             class="
                                 custom-span
-                                caption
+                                
                                 computation-span
                                 d-flex
                                 align-center

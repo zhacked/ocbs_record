@@ -1,17 +1,17 @@
 <template>
-    <v-row>
+    <v-row style="padding: 1px!important; height: auto; margin: 0!important">
         
-        <div class="bank-wrapper mt-3 mb-2"  style="padding-left:30px; padding-right:30px; !important; min-height: 50px;">
-            <div class="bank-headline mr-6"     >
+        <div class="bank-wrapper"  style="padding: 1px 30px; margin: 0 !important">
+            <div class="bank-headline mr-6 detailed" style="font-weight: 500">
                 <span>{{depositReplenishText.bankTitle}}: </span>
             </div>
 
             <div   class="bank-container" v-if="depositReplenishText.totalText === 'Deposit'">
                 <div class="bank bank1">
                         
-                      <span class="bank_account-name">{{bankAccounts.length > 0 ? bankAccounts[0].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
-                    <span>{{bankAccounts.length > 0 ? bankAccounts[0].bank_name: 'PBB'}}</span>
-                    <span>{{bankAccounts.length > 0 ? bankAccounts[0].bank_number: '0050-1001-5156'}}</span>
+                      <span class="bank_account-name detailed">{{bankAccounts.length > 0 ? bankAccounts[0].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
+                    <span class="detailed">{{bankAccounts.length > 0 ? bankAccounts[0].bank_name: 'PBB'}}</span>
+                    <span class="detailed">{{bankAccounts.length > 0 ? bankAccounts[0].bank_number: '0050-1001-5156'}}</span>
                 </div>
                
                 <div v-show="bankAccounts.length >= 2" class="or">
@@ -22,9 +22,9 @@
                 </div>
                 <div class="bank bank2">
                   
-                     <span class="bank_account-name">{{bankAccounts.length === 0 ? 'LUCKY 8 STAR QUEST INC.' : bankAccounts.length > 1 ? bankAccounts[1].account_name : ''}}</span>
-                    <span>{{bankAccounts.length === 0 ? 'PBCOM' : bankAccounts.length > 1 ? bankAccounts[1].bank_name : ''}}</span>
-                    <span>{{bankAccounts.length === 0 ? '0248-20-100964-4' : bankAccounts.length > 1 ? bankAccounts[1].bank_number : ''}}</span>
+                     <span class="bank_account-name detailed">{{bankAccounts.length === 0 ? 'LUCKY 8 STAR QUEST INC.' : bankAccounts.length > 1 ? bankAccounts[1].account_name : ''}}</span>
+                    <span class="detailed">{{bankAccounts.length === 0 ? 'PBCOM' : bankAccounts.length > 1 ? bankAccounts[1].bank_name : ''}}</span>
+                    <span class="detailed">{{bankAccounts.length === 0 ? '0248-20-100964-4' : bankAccounts.length > 1 ? bankAccounts[1].bank_number : ''}}</span>
                 </div>
             </div>
          
