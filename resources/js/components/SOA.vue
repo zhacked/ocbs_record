@@ -1050,6 +1050,7 @@
                                                             Computation
                                                         </div>
                                                     </v-row>
+                                                    <v-row>
                                                     <ComputeBox
                                                         :depositReplenishTxt="
                                                             computedAve.depositReplenishText
@@ -1067,6 +1068,9 @@
                                                             computation
                                                         "
                                                     />
+                                                    </v-row>
+
+                                                    <v-row>
 
                                                     <span
                                                         v-if="
@@ -1099,6 +1103,7 @@
                                                             computedAve.depositReplenishText
                                                         "
                                                     />
+                                                    </v-row>
 
                                                     <PreparedChecked
                                                         v-if="switchPrepared"

@@ -1,12 +1,12 @@
 <template>
-    <v-row style="padding: 1px!important; height: auto; margin: 0!important">
+    <v-row class="bank-container" style="padding: 1px!important; height: auto; margin: 0!important">
         
         <div class="bank-wrapper"  style="padding: 1px 30px; margin: 0 !important">
             <div class="bank-headline mr-6 detailed" style="font-weight: 500">
                 <span>{{depositReplenishText.bankTitle}}: </span>
             </div>
 
-            <div   class="bank-container" v-if="depositReplenishText.totalText === 'Deposit'">
+            <div   class="bank-content" v-if="depositReplenishText.totalText === 'Deposit'">
                 <div class="bank bank1">
                         
                       <span class="bank_account-name detailed">{{bankAccounts.length > 0 ? bankAccounts[0].account_name: 'LUCKY 8 STAR QUEST INC.'}}</span>
@@ -28,7 +28,7 @@
                 </div>
             </div>
          
-            <div class="bank-container d-flex justify-center align-center" v-else >
+            <div class="bank-content d-flex justify-center align-center" v-else >
                 <div class="bank bank1" >  
                     <!-- Object.values(bankTarget).length ? bankTarget.account_name : banks.length > 0 ? banks[0].account_name : -->
                     <span class="text-sm font-weight-medium bank_account-name detailed" >{{arenaDetails && arenaDetails.bank_details && arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].account_name : ''}}</span>

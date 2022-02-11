@@ -68121,7 +68121,7 @@ readers do not read off random characters that represent icons */
 	margin-right: 1px;
   }
   
-  .bank-container{
+  .bank-content{
 	display: flex;
   justify-content: center;
 	align-items: center;
@@ -68318,6 +68318,7 @@ select:disabled{
     font-weight: 500;
     height: 30px;
     width: 250px;
+    padding-left: 10px;
   }
   .computation,.arenaLabel {
     font-weight: 500;
@@ -68330,7 +68331,7 @@ select:disabled{
   }
   .mobile-computebox{
     margin: 0 2px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     width: 100%;
     padding: 0 9px;
     justify-content: space-between;
@@ -68345,14 +68346,22 @@ select:disabled{
     width: 100%;
     justify-content: space-between;
   }
+  .custom-label{
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .ctotal-label{
+    font-weight: 900
+  }
   
   .arenaLabel {
     font-weight: 700;
   }
+
   .bank-wrapper{
     padding: 12px;
-    margin-top: 20px;
-    margin-bottom: 50px;
+    // margin-top: 50px;
+    // margin-bottom: 50px;
     font-weight: 700;
     height: 100px;
     }
@@ -68408,5 +68417,8 @@ select:disabled{
         font-size: 16px;
         font-weight: 700;
         margin-bottom: 10px;
+        height: 30px;
+        padding: 1px;
+        border: 1px solid rgba(61, 61, 61, 0.8);
       }
 }

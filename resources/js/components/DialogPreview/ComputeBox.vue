@@ -1,5 +1,5 @@
 <template>
-    <fragment>
+    <v-col>
         <v-row class="row-compute">
             <div
                 class="compute-container-box"
@@ -1001,7 +1001,7 @@
                 >
                     <span
                         class="
-                                                        font-weight-bold
+                            font-weight-bold
                             custom-label
                             ctotal-label
 
@@ -1037,7 +1037,7 @@
             </div>
             </div>
         </v-row>
-    </fragment>
+    </v-col>
 </template>
 
 <script>
