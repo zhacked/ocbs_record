@@ -962,7 +962,7 @@
                                                     <v-chip
                                                         small
                                                         class="ma-2"
-                                                
+                                                        close
                                                         color="red"
                                                         text-color="white"
                                                         v-bind="attrs"
@@ -1829,9 +1829,9 @@ export default {
             document.body.innerHTML = printContents;
             window.print();
             document.body.innerHTML = originalContents;
-            setTimeout(function(){ console.log("okkkkk"); location.reload()}, 100);
-          
-            return false
+            // setTimeout(function(){ console.log("okkkkk"); location.reload()}, 100);
+            window.location.reload()
+            // return false
         }
     },
 
