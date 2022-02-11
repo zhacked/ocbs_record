@@ -1,13 +1,9 @@
 <template>
     <fragment>
-        <v-row>
+        <v-row class="row-compute">
             <div
-                class="d-flex mt-1 mb-0 px-1 py-1"
-                style="
-                    margin-right: 7px;
-                    width: 100%;
-                    justify-content: space-between;
-                "
+                class="compute-container-box"
+              
             >
                 <div>
                     <div
@@ -261,7 +257,7 @@
                     >
                         <span
                             class="
-                                                                font-weight-bold
+                                font-weight-bold
                                 custom-label
                                 ctotal-label
                             "
@@ -624,6 +620,7 @@
                                     computation-span
                                     d-flex
                                     align-center
+                                    computation-total
                                 "
                             >
                                 <span>{{ computation.netOpCommission }}</span>
@@ -836,17 +833,8 @@
                 </div>
             </div>
         </v-row>
-        <v-row class="ma-0 pa-0" style="margin: 0 !important; padding: 0 !important">
-          <div
-                class="d-flex"
-                style="
-                    margin-right: 0px;
-                    margin-bottom: 0px;
-                    margin-top: 8px;
-                    width: 100%;
-                    justify-content: space-between;
-                "
-            >
+        <v-row class="row-compute">
+          <div class="d-flex mobile-computebox">
             <div>
                 <div
                     class="d-flex justify-center align-center kiosk-mobile_text"

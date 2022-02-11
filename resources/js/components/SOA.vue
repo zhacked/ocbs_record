@@ -622,11 +622,7 @@
                         <div
                             v-for="item in selected"
                             :key="item.codeEvent"
-                            style="
-                                padding: 5px 30px;
-                                width: 800px;
-                                display: none;
-                            "
+                        
                             ref="soaReport"
                             id="reportsoaoutput"
                             class="reportsoaoutput"
@@ -966,7 +962,7 @@
                                                     <v-chip
                                                         small
                                                         class="ma-2"
-                                                        close
+                                                
                                                         color="red"
                                                         text-color="white"
                                                         v-bind="attrs"
@@ -1002,8 +998,10 @@
                                             <section
                                                 slot="pdf-content"
                                                 class="pdf-content"
+                                               id="printingSOA"
                                             >
-                                                <v-card-title
+                                               
+                                                       <v-card-title
                                                     class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
                                                 >
                                                     <span>{{
@@ -1077,7 +1075,8 @@
                                                                 .dateText ===
                                                             'FR'
                                                         "
-                                                        style="color: #e64a19; font-size: 9px; font-weight: 500; margin"
+                                                    
+                                                        class="fr-notif"
                                                         >Please be advised that
                                                         replenishment are only
                                                         available during banking
@@ -1112,6 +1111,8 @@
                                                         :editmode="editmode"
                                                     />
                                                 </v-card-text>
+                                            
+                                               
                                             </section>
                                         </vue-html2pdf>
                                     </div>
@@ -1148,6 +1149,7 @@
                                                 <v-btn
                                                     v-show="!editmode"
                                                     icon
+                                                     large
                                                     color="green"
                                                     v-bind="attrs"
                                                     v-on="on"
@@ -1170,6 +1172,7 @@
                                                 <v-btn
                                                     v-show="!editmode"
                                                     icon
+                                                     large
                                                     color="red darken-2"
                                                     v-bind="attrs"
                                                     v-on="on"
@@ -1187,6 +1190,32 @@
                                                 </v-btn>
                                             </template>
                                             <span>Download as PDF</span>
+                                        </v-tooltip>
+                                                <v-tooltip bottom>
+                                            <template
+                                                v-slot:activator="{ on, attrs }"
+                                            >
+                                                <v-btn
+                                                    v-show="!editmode"
+                                                    icon
+                                                    large
+                                                    color="primary"
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    :loading="loading"
+                                                    :disabled="loading"
+                                                    @click="
+                                                        printDiv(
+                                                            'printingSOA'
+                                                        )
+                                                    "
+                                                >
+                                                    <v-icon
+                                                        >mdi-printer</v-icon
+                                                    >
+                                                </v-btn>
+                                            </template>
+                                            <span>PRINT</span>
                                         </v-tooltip>
                                     </v-card-actions>
                                 </v-card>
@@ -1792,6 +1821,18 @@ export default {
                 });
             } else this.selected = [];
         },
+        printDiv(divName) {
+            this.dialog = false;
+            const divContent = document.getElementById(divName)
+            const printContents = divContent.innerHTML;
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            setTimeout(function(){ console.log("okkkkk"); location.reload()}, 100);
+          
+            return false
+        }
     },
 
     computed: {

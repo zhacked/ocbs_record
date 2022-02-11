@@ -73316,12 +73316,12 @@ readers do not read off random characters that represent icons */
 .custom-span {
   border: 1px solid rgba(0, 0, 0, 0.7);
   width: 150px;
-  height: 20px;
+  min-height: 20px;
   margin-bottom: 3px;
   border-radius: 3px;
   padding: 0px 2px;
   overflow: hidden;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .custom-textarea {
@@ -73347,7 +73347,7 @@ readers do not read off random characters that represent icons */
 }
 
 .computation {
-  font-weight: 700;
+  font-weight: 500;
   padding: 0;
 }
 
@@ -73357,8 +73357,8 @@ readers do not read off random characters that represent icons */
   align-items: flex-end;
   justify-content: flex-end;
   padding: 0 2px;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .pdf-title {
@@ -73368,15 +73368,14 @@ readers do not read off random characters that represent icons */
 }
 
 .pdf-title span {
-  font-weight: 700;
-  font-size: 32px;
+  font-weight: 500;
 }
 
 .custom-label {
   font-size: 12px;
   white-space: nowrap;
   margin-right: 1rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .fieldDateNumber {
@@ -73439,7 +73438,7 @@ readers do not read off random characters that represent icons */
 }
 
 .computation-total {
-  background-color: #f5f5f5;
+  background-color: #ddd;
   font-weight: 900;
 }
 
@@ -73453,7 +73452,7 @@ readers do not read off random characters that represent icons */
 }
 
 .overtotal {
-  background-color: #F9F0DC;
+  background-color: rgba(255, 228, 94, 0.5);
 }
 
 .kiosk-mobile_text {
@@ -73472,7 +73471,7 @@ readers do not read off random characters that represent icons */
   display: flex;
   align-items: center;
   white-space: nowrap;
-  background-color: #f5f5f5;
+  background-color: #eee;
   margin-bottom: 50px;
   font-weight: bold;
 }
@@ -73493,8 +73492,8 @@ readers do not read off random characters that represent icons */
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-size: 12px;
-  font-weight: 900;
+  font-size: 11px;
+  font-weight: 500;
 }
 
 .bank_account-name {
@@ -73518,9 +73517,15 @@ readers do not read off random characters that represent icons */
 }
 
 .sign-wrapper {
-  height: 70px;
+  height: 80px;
   width: 100%;
   display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.sign-wrapper-bottom {
+  margin-top: 20px;
 }
 
 .sign-container {
@@ -73587,6 +73592,40 @@ select:disabled {
   font-weight: 700;
 }
 
+.mobile-computebox {
+  margin: 0 2px;
+  margin-bottom: 20px;
+  width: 100%;
+  padding: 0 9px;
+  justify-content: space-between;
+}
+
+.compute-container-box {
+  display: flex;
+  margin-top: 4px;
+  margin-bottom: 0;
+  padding: 4px;
+  margin-right: 7px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.detailed {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.row-compute {
+  margin: 0;
+  padding: 0;
+}
+
+.fr-notif {
+  color: #e64a19;
+  font-size: 12px;
+  font-weight: 500;
+}
+
 .custom-loader {
   -webkit-animation: loader 1s infinite;
           animation: loader 1s infinite;
@@ -73606,5 +73645,126 @@ select:disabled {
   }
   to {
     transform: rotate(360deg);
+  }
+}
+@media print {
+  body {
+    width: 90%;
+    margin: 0 auto;
+    background-color: #fff;
+  }
+
+  .pdf-title {
+    margin-top: 20px;
+  }
+
+  .pdf-title span {
+    font-weight: 700;
+    font-size: 32px;
+  }
+
+  .custom-span {
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    font-size: 16px;
+    font-weight: 500;
+    height: 30px;
+    width: 250px;
+  }
+
+  .computation, .arenaLabel {
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .computation-span {
+    font-weight: 500;
+  }
+
+  .mobile-computebox {
+    margin: 0 2px;
+    margin-bottom: 30px;
+    width: 100%;
+    padding: 0 9px;
+    justify-content: space-between;
+  }
+
+  .compute-container-box {
+    display: flex;
+    margin-top: 4px;
+    margin-bottom: 0;
+    padding: 4px;
+    margin-right: 7px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .arenaLabel {
+    font-weight: 700;
+  }
+
+  .bank-wrapper {
+    padding: 12px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    font-weight: 700;
+    height: 100px;
+  }
+
+  .row-compute {
+    margin: 0;
+    padding: 0;
+  }
+
+  .detailed {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .fullspan {
+    width: 100%;
+  }
+
+  .custom-textarea {
+    max-height: 60px;
+  }
+
+  .fr-notif {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .signed-text {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .signedBy {
+    font-size: 14px;
+    font-weight: 400;
+    margin-right: 5px;
+  }
+
+  .sign-wrapper {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .sign-wrapper-bottom {
+    margin-top: 30px;
+  }
+
+  .signatory-container {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .computation-banner {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
   }
 }

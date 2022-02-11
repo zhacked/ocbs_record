@@ -1,5 +1,5 @@
 <template>
-    <v-col style="margin: 0 !important; padding: 1px 10px !important">
+    <v-col>
         <div class="d-flex align-center arenaInfo">
             <span class="custom-label arenaLabel" 
                 >Arena / OCBS Name:</span
@@ -11,7 +11,7 @@
                 <!-- <input type="text" style="text-transform: uppercase;" disabled class="input-field_report computation font-weight-bold" v-model="arenaDetails.arena"/> -->
                 <span
                     style="text-transform: uppercase; font-weight: 900"
-                    class="input-field_report computation"
+                    class="computation"
                     >{{ arenaDetails.arena }}</span
                 >
             </div>

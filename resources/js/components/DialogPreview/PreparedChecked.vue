@@ -1,8 +1,8 @@
 <template>
-    <v-row>
+    <v-row class="signatory-container">
         <v-col>
             <v-row>
-                <div class="sign-wrapper d-flex align-center mt-2"  style="display: flex; align-items: center; margin-top: 8px">
+                <div class="sign-wrapper d-flex align-center mt-2"  >
                     <span class="signedBy">Computed by:</span>
                     <div
                         class="sign-container d-flex justify-center align-center flex-column"
@@ -34,7 +34,7 @@
                 </div>
             </v-row>
             <v-row>
-                <div class="sign-wrapper scbottom d-flex align-center mt-5" style="display: flex; align-items: center; margin-top: 20px">
+                <div class="sign-wrapper scbottom d-flex align-center mt-5 sign-wrapper-bottom">
                     <span class="signedBy">Prepared by:</span>
                     <div
                         class="sign-container d-flex justify-center align-center flex-column"

@@ -97,9 +97,3 @@
       
     }
 </script>
-<style scoped>
-    .detailed{
-        text-transform: uppercase; 
-        font-weight: bold
-    }
-</style>

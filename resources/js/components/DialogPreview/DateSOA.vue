@@ -1,5 +1,5 @@
 <template>
-           <v-col style="margin: 0!important; padding: 1px 10px!important">
+           <v-col>
             <div
                 class="
                     d-flex
