@@ -107,6 +107,7 @@
                                     outlined
                                     dense
                                     v-model="form.username"
+                                    :rules="[() => !!form.username || 'This field is required']"
                                   
                             ></v-text-field>
 
@@ -126,7 +127,7 @@
                             <v-text-field
                                      prepend-inner-icon="mdi-account-details"
                                     label="Bio"
-                                    placeholder="administrator"
+                                    placeholder="(optional)"
                                     outlined
                                     dense
                                     v-model="form.bio"
@@ -216,7 +217,10 @@
                                     outlined
                                     dense
                                     v-model="form.password"
-                                    :rules="rules.password"
+                                    :rules="[
+                                            () => !!form.password || 'This field is required',
+                                            () => (form.password && form.password.length >= 6) || 'minimum 6 characters',
+                                            ]"
                                     @blur="validate"
                                     @keydown.enter="validate"
                                     @focus="clearRules"
@@ -300,9 +304,7 @@
                     
                 });
             },
-            setPasswordRule(){
-                this.rules.password = [(v) => !!v || 'This field is required']
-            },
+         
             validate(){
                 this.setPasswordRule();
             },
