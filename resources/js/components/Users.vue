@@ -165,7 +165,7 @@
                                     item-value="id"
                                     v-model="form.team_id"
                                     class="pb-4"
-                                     :rules="[
+                                    :rules="[
                                             () => !!form.team_id || 'This field is required',
                                             ]"
                                 ></v-autocomplete> 
@@ -219,7 +219,7 @@
                                     v-model="form.password"
                                     :rules="[
                                             () => !!form.password || 'This field is required',
-                                            () => (form.password && form.password.length >= 6) || 'minimum 6 characters',
+                                            () => (form.password && form.password.length >= 6) || 'password must be at least 6 charcters',
                                             ]"
                                     @blur="validate"
                                     @keydown.enter="validate"
