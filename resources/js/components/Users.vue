@@ -95,7 +95,7 @@
                                     outlined
                                     dense
                                     v-model="form.name"
-                                    :error-messages='usernameError'
+                               
                                     :rules="[() => !!form.name || 'This field is required']"
                                     required
                                      prepend-inner-icon="mdi-account"
@@ -108,6 +108,7 @@
                                     placeholder="johndoe123"
                                     outlined
                                     dense
+                                         :error-messages='usernameError'
                                     v-model="form.username"
                                     :rules="[() => !!form.username || 'This field is required']"
                                   
