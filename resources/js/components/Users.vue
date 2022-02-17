@@ -87,6 +87,7 @@
 					</div>
                     
 					<form @submit.prevent="editmode ? updateUser() : createUser()">
+                        
 						<div class="modal-body">
                              <v-text-field
                                     label="Full name"
@@ -94,6 +95,7 @@
                                     outlined
                                     dense
                                     v-model="form.name"
+                                    :error-messages='usernameError'
                                     :rules="[() => !!form.name || 'This field is required']"
                                     required
                                      prepend-inner-icon="mdi-account"
@@ -216,15 +218,13 @@
                                     placeholder="*****"
                                     outlined
                                     dense
+                                
                                     v-model="form.password"
                                     :rules="[
                                             () => !!form.password || 'This field is required',
                                             () => (form.password && form.password.length >= 6) || 'password must be at least 6 charcters',
                                             ]"
-                                    @blur="validate"
-                                    @keydown.enter="validate"
-                                    @focus="clearRules"
-                                    @input="clearRules"
+                                  
                             ></v-text-field>
 
 						</div>
@@ -255,6 +255,7 @@
                     { text: '', value: 'actions', sortable: false },
                 ],
                 editmode: false,
+                usernameError:'',
                 users : {},
                 length: '',
                 search: '',
@@ -304,13 +305,7 @@
                     
                 });
             },
-         
-            validate(){
-                this.setPasswordRule();
-            },
-            clearRules(){
-                this.rules = {}
-            },
+        
             updateUser(){
              
                 this.$Progress.start();
@@ -377,7 +372,8 @@
             createUser(){
                 this.$Progress.start();
                 this.form.post('api/user')
-                .then(()=>{
+                .then((data)=>{
+                    console.log(data);
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
                     fire.toast({
@@ -386,7 +382,9 @@
                         })
                     this.$Progress.finish();
                 })
-                .catch(()=>{
+                .catch((error)=>{
+                    this.usernameError = error.response.data.errors.username;
+                   
                 })
             }
         },
