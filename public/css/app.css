@@ -73626,6 +73626,13 @@ select:disabled {
   font-weight: 500;
 }
 
+.signatory-line {
+  border-top: 1px solid #000;
+  min-width: 100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .custom-loader {
   -webkit-animation: loader 1s infinite;
           animation: loader 1s infinite;

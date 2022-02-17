@@ -30,16 +30,8 @@
          
             <div class="bank-content d-flex justify-center align-center" v-else >
                 <div class="bank bank1" >  
-                    <!-- Object.values(bankTarget).length ? bankTarget.account_name : banks.length > 0 ? banks[0].account_name : -->
                     <span class="text-sm font-weight-medium bank_account-name detailed" >{{arenaDetails && arenaDetails.bank_details && arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].account_name : ''}}</span>
-                   
                     <span v-if="!editmode" class="text-sm font-weight-medium detailed" > {{ arenaDetails && arenaDetails.bank_details && arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_name : '' }}</span>
-                    <!-- <span  class="select-field_container" :class="{'editmode-span': editmode}">
-                        <select v-if="editmode"  class="text-sm font-weight-medium medium sign-name select-field_report"  @change="filterbank($event)" >
-                            <option selected disabled>Select Bank</option>
-                            <option v-for="b in arenaDetails.bank_details" :key="b.id"  :value="b.id" >{{b.bank_name}}</option>
-                        </select>
-                    </span> -->
                     <span class="text-sm font-weight-medium detailed" >{{  arenaDetails && arenaDetails.bank_details && arenaDetails.bank_details.length > 0 ? arenaDetails.bank_details[0].bank_number  : '' }}</span>
     
                 </div> 

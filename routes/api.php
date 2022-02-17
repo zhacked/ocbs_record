@@ -62,10 +62,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
    
 
     Route::get('getStaffs', [App\Http\Controllers\API\UserController::class, 'getStaffs']);
+    Route::get('getAvailableSignatory/{signatory}', [App\Http\Controllers\API\UserController::class, 'getAvailableSignatory']);
+    Route::get('getUsersSignatory/{signatory}', [App\Http\Controllers\API\UserController::class, 'getUsersSignatory']);
     Route::get('getUserTeam/{teamid}', [App\Http\Controllers\API\UserController::class, 'getUserTeam']);
     Route::get('assigneduserteam/{teamid}', [App\Http\Controllers\API\UserController::class, 'getAssigned']);
 
     Route::put('updateAssignedTeam/{id}', [App\Http\Controllers\API\UserController::class, 'updateAssignedTeam']);
+    Route::put('updateSignatory', [App\Http\Controllers\API\UserController::class, 'updateSignatory']);
 
     Route::get('getArenaNoTeam', [App\Http\Controllers\API\ArenaController::class, 'getArenaNoTeam']);
     Route::get('getArenaTeam/{team}', [App\Http\Controllers\API\ArenaController::class, 'getArenaTeam']);

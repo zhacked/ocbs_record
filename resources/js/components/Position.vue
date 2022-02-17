@@ -1,17 +1,18 @@
 <template>
-<v-app>
+    <v-container>
         <v-data-table
             :headers="positionHeaders"
             :items="position"
             :search="search"
             sort-by="calories"
             class="elevation-1 ma-4"
+           
         >
             <template v-slot:top>
                 <v-toolbar
                     flat
                 >
-                    <v-toolbar-title>Position Details</v-toolbar-title>
+                    <v-toolbar-title class="font-weight-bold">POSITIONS</v-toolbar-title>
                         <v-divider
                         class="mx-4"
                         inset
@@ -102,11 +103,12 @@
                 </div>
             </div>
         </div>
-    </v-app>
+    </v-container>
 </template>
 
 <script>
     export default {
+        name: 'position',
         data() {
             return {
     

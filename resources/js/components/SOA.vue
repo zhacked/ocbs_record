@@ -911,11 +911,11 @@
                                     "
                                 />
 
-                                <PreparedChecked
+                                <SignatoryBox
                                     v-show="switchPrepared"
-                                    :userPrepared="userPrepared"
+                                   
                                     :arenaDetails="item.arena_details"
-                                    :editmode="editmode"
+                               
                                 />
                             </v-card-text>
                         </div>
@@ -1105,15 +1105,13 @@
                                                     />
                                                     </v-row>
 
-                                                    <PreparedChecked
+                                                    <SignatoryBox
                                                         v-if="switchPrepared"
-                                                        :userPrepared="
-                                                            userPrepared
-                                                        "
+                                                        
                                                         :arenaDetails="
                                                             arenaDetails
                                                         "
-                                                        :editmode="editmode"
+                                                       
                                                     />
                                                 </v-card-text>
                                             
@@ -1295,7 +1293,7 @@ import DateSOA from "./DialogPreview/DateSOA.vue";
 import ArenaDetails from "./DialogPreview/ArenaDetails.vue";
 import ComputeBox from "./DialogPreview/ComputeBox.vue";
 import BankBox from "./DialogPreview/BankBox.vue";
-import PreparedChecked from "./DialogPreview/PreparedChecked.vue";
+import SignatoryBox from "./DialogPreview/SignatoryBox.vue";
 
 import {
     imageDownload,
@@ -1316,7 +1314,7 @@ export default {
         ArenaDetails,
         ComputeBox,
         BankBox,
-        PreparedChecked,
+        SignatoryBox,
     },
     data() {
         return {
@@ -1331,15 +1329,7 @@ export default {
 
             sortBy: "refNo",
             keys: ["CATEGORY"],
-            userPrepared: {
-                computed: {},
-                checked: {},
-                prepared: {},
-                selectComputed: null,
-                selectChecked1: null,
-                selectChecked2: null,
-                selectPrepared: null,
-            },
+           
             computedPerTeam: {},
             group: {
                 header: {
@@ -1455,13 +1445,7 @@ export default {
                 console.log(data);
             });
         },
-        loadEmployee() {
-            axios.get("api/employees").then(({ data }) => {
-                this.userPrepared.computed = data.computed;
-                this.userPrepared.checked = data.checked;
-                this.userPrepared.prepared = data.prepared;
-            });
-        },
+       
         arenaSelectedBank(bankId) {
             const bId = bankId;
 
@@ -2026,7 +2010,7 @@ export default {
     async created() {
         await this.showData();
         this.importwithstatus();
-        this.loadEmployee();
+       
         this.loadBankDetails();
         Fire.$on("AfterCreate", () => {
             this.showData();

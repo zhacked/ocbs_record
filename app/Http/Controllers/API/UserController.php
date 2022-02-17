@@ -56,6 +56,20 @@ class UserController extends Controller
         return $getComputedUserTeam;
     }
 
+    public function getAvailableSignatory(Request $request, $signatory) {
+     
+        $getUsers = User::with(['positionDetails'])->where('type','!=','admin')->where('isAdmin', false)->where('assign',null)->orWhere('assign', $signatory)->get();
+
+        return $getUsers;
+    }
+
+    public function getUsersSignatory(Request $request, $signatory) {
+     
+        $getUsersSignatory = User::with(['positionDetails'])->where('assign', $signatory)->get();
+
+        return $getUsersSignatory;
+    }
+
     
 
     /**
@@ -71,6 +85,7 @@ class UserController extends Controller
         $this->validate($request,[
             'name' => 'required|string|max:191',
             // 'email' => 'required|string|email|max:191|unique:users',
+            'username' => 'required|unique:users',
             'password' => 'required|string|min:6'
         ]);
 
@@ -205,6 +220,10 @@ class UserController extends Controller
             'team_id' => $request['team_id'],
         ]);
 
+        $usersTeam = User::where('team_id', $request['team_id']);
+        $usersTeam->update(['isAssign' => false]);
+
+
         $this->Profileactivity('updated',$user->username,'team',$user->id);
         return $user;
     }
@@ -218,6 +237,37 @@ class UserController extends Controller
         $user->update(['isAssign' => true]);
 
         return $user;
+    }
+
+    public function updateSignatory(Request $request){
+   
+        $userAssigned = User::where('assign', $request['assigned']);
+        $getUsers = $userAssigned->get();
+        if(count($request['users']) > 2) throw new \Exception('Assigned User Exceeded');
+
+        if(!$getUsers->isEmpty()) {
+            $userAssigned->update([
+                'assign' => null
+            ]);
+        }
+        // foreach($request['users'] as $users){
+        //     $user = User::findOrFail($users['id']);
+        //     $signatoryUpdate = $user->update([
+        //         'assign' => $request['assigned']
+        //     ]);
+        // }
+    //   }else {
+        foreach($request['users'] as $users){
+            $user = User::findOrFail($users['id']);
+            $signatoryUpdate = $user->update([
+                'assign' => $request['assigned']
+            ]);
+        }
+
+    //   }
+
+        
+        return true;
     }
 
     /**

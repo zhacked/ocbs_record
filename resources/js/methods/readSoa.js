@@ -203,8 +203,6 @@ const readSoa = (event, isExcel) => {
                         existing[0]
                     );
 
-              
-
                     objMobileKiosk[existingIndex].totalMWMobile =
                         item.total;
                     objMobileKiosk[existingIndex].drawMobile =
@@ -224,6 +222,8 @@ const readSoa = (event, isExcel) => {
                
                 }
             });
+
+
 
 
             let helper = {};

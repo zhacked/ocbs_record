@@ -31,7 +31,7 @@ class TeamController extends Controller
     public function index()
     {
 
-        return Team::with(['arenaDetails', 'userDetails'])->latest()->get();
+        return Team::with(['arenaDetails', 'userDetails', 'userDetails.positionDetails'])->latest()->get();
     }
 
     

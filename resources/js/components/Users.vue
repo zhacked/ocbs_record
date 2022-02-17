@@ -124,7 +124,7 @@
                             ></v-text-field> -->
 
                              
-                            <v-text-field
+                            <!-- <v-text-field
                                      prepend-inner-icon="mdi-account-details"
                                     label="Bio"
                                     placeholder="(optional)"
@@ -132,7 +132,7 @@
                                     dense
                                     v-model="form.bio"
                                    
-                            ></v-text-field>
+                            ></v-text-field> -->
 
                             <v-autocomplete
                                     :items="roles"
@@ -148,11 +148,15 @@
                                     class="pb-4"
 
                                 ></v-autocomplete> 
+                                 <!-- <v-checkbox
+                                    v-model="form.isAdmin"
+                                    label="Admin"
+                                ></v-checkbox> -->
                                 
                            
 							
-                            <div v-show="this.form.type == 'employee'">
-                                <v-autocomplete
+                            <!-- <div v-show="this.form.type == 'employee'"> -->
+                                <!-- <v-autocomplete
                                     :items="teams.data"
                                     label="Teams"
                                     prepend-inner-icon="mdi-account-group"
@@ -168,10 +172,10 @@
                                     :rules="[
                                             () => !!form.team_id || 'This field is required',
                                             ]"
-                                ></v-autocomplete> 
+                                ></v-autocomplete>  -->
                                 
 
-                                <v-autocomplete
+                                <!-- <v-autocomplete
                                     :items="assigns"
                                     label="Assign"
                                     prepend-inner-icon="mdi-clipboard-account"
@@ -186,7 +190,7 @@
                                     :rules="[
                                             () => !!form.assign || 'This field is required',
                                             ]"
-                                ></v-autocomplete>
+                                ></v-autocomplete> -->
                             
 
                             <v-autocomplete
@@ -206,7 +210,7 @@
                                             () => !!form.position_id || 'This field is required',
                                             ]"
                                 ></v-autocomplete>
-                            </div>
+                            <!-- </div> -->
                              
 
                             <v-text-field
@@ -221,10 +225,7 @@
                                             () => !!form.password || 'This field is required',
                                             () => (form.password && form.password.length >= 6) || 'password must be at least 6 charcters',
                                             ]"
-                                    @blur="validate"
-                                    @keydown.enter="validate"
-                                    @focus="clearRules"
-                                    @input="clearRules"
+                                   
                             ></v-text-field>
 
 						</div>
@@ -282,6 +283,7 @@
                     team_id:'',
                     position_id:'',
                     assign:'',
+                    isAdmin: false
                   
                 }),
                 rules: {
@@ -305,12 +307,7 @@
                 });
             },
          
-            validate(){
-                this.setPasswordRule();
-            },
-            clearRules(){
-                this.rules = {}
-            },
+         
             updateUser(){
              
                 this.$Progress.start();

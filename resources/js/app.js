@@ -149,6 +149,9 @@ let routes = [
         path: '/chooserecord', component: require('./components/ChooseRecord.vue').default
     },
     {
+        path: '/detailsconfig', component: require('./components/ConfigureDetails.vue').default
+    },
+    {
         path: '/activitylogs', component: require('./components/ActivityLogs.vue').default
     },
     {

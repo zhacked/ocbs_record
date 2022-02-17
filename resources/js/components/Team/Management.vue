@@ -1,55 +1,43 @@
 <template lang="">
     <v-container>
-    <!-- <v-dialog
-                persistent
-                v-model="viewTeam"
-                fullscreen
-                hide-overlay
-                transition="dialog-bottom-transition"
-                style="z-index: 20"
-               
-            > -->
-                <v-card>
-                    <v-toolbar elevation="0" dark color="primary">
-                            <v-icon class="mr-4">mdi-group</v-icon>
-
-                        <v-toolbar-title>{{selectedTeam && selectedTeam.name.toUpperCase()}}</v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-toolbar-items>
-                            <v-btn dark text @click.stop="closeViewTeam">
-                                <v-icon>mdi-close</v-icon>
-                            </v-btn>
-                        </v-toolbar-items>
-                    </v-toolbar>
-                    <v-card-text>
-                    <v-tabs
-                        color="deep-purple accent-4"
-                        right
-                        flat
-                      
-                        >
-                        <v-tab>Arenas</v-tab>
-                        <v-tab>Members</v-tab>
-
-                        <v-tab-item>
-                            <v-data-table :items="arenaTeams" :headers="headers">
-                                    <template v-slot:top>
-                                            <v-toolbar flat>                                        
-                                                    <v-tooltip color="blue lighten-1" bottom>
-                                                            <template v-slot:activator="{ on, attrs }">
-                                                                <v-btn
-                                                                    color="primary"
-                                                                    dark
-                                                                    v-bind="attrs"
-                                                                    v-on="on"
-                                                                    class="mx-2"
-                                                                    @click="openArenaSelection"                                                                  
-                                                                    >
-                                                                        <v-icon>mdi-stadium-variant</v-icon>
-                                                                        Add Arena
-                                                                    </v-btn>
-                                                            </template>
-                                                        <span>Add Arena to {{selectedTeam && selectedTeam.name.toUpperCase()}}</span>
+        <v-card>
+          <v-toolbar elevation="0" dark color="primary">
+            <v-icon class="mr-4">mdi-group</v-icon>
+            <v-toolbar-title>{{selectedTeam && selectedTeam.name.toUpperCase()}}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+              <v-btn dark text @click.stop="closeViewTeam">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-toolbar-items>
+          </v-toolbar>
+          <v-card-text>
+            <v-tabs
+              color="deep-purple accent-4"
+              right
+              flat                      
+            >
+              <v-tab>Arenas</v-tab>
+              <v-tab>Members</v-tab>
+              <v-tab-item>
+                <v-data-table :items="arenaTeams" :headers="headers">
+                  <template v-slot:top>
+                    <v-toolbar flat>                                        
+                      <v-tooltip color="blue lighten-1" bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            color="primary"
+                            dark
+                            v-bind="attrs"
+                            v-on="on"
+                            class="mx-2"
+                            @click="openArenaSelection"                                                                  
+                          >
+                            <v-icon>mdi-stadium-variant</v-icon>
+                            Add Arena
+                          </v-btn>
+              </template>
+                  <span>Add Arena to {{selectedTeam && selectedTeam.name.toUpperCase()}}</span>
                                                     </v-tooltip>
                                             </v-toolbar>
 
@@ -137,18 +125,18 @@
                                         <v-spacer></v-spacer> 
                                                 <v-tooltip color="blue lighten-1" bottom>
                                                         <template v-slot:activator="{ on, attrs }">
-                                                            <v-btn
-                                                                color="primary"
-                                                                dark
-                                                                v-bind="attrs"
-                                                                v-on="on"
-                                                                class="mx-2"
-                                                                @click="openUserSelection"
-                                                            >
-                                                                <v-icon>mdi-account-plus</v-icon>
-                                                                Add User
-                                                            </v-btn>
-                                                            </template>
+                                            <v-btn
+                                              color="primary"
+                                              dark
+                                              v-bind="attrs"
+                                              v-on="on"
+                                              class="mx-2"
+                                              @click="openUserSelection"
+                                            >
+                                              <v-icon>mdi-account-plus</v-icon>
+                                              Add User
+                                            </v-btn>
+                                          </template>
                                                             <span>Add User to {{selectedTeam && selectedTeam.name}}</span>
                                                         </v-tooltip>
                                                 </v-toolbar>
@@ -201,16 +189,14 @@
                                             <div class="mt-4 text-h6">
                                                 Change Team
                                             </div>
-                                             <!-- v-model="item.team" -->
+                                           
                                             <v-select
-                                    
                                                 :items="teams"
                                                 menu-props="auto"
                                                 label="Team"
                                                 single-line
                                                 counter
                                                 autofocus
-                                                
                                                 item-text='name'
                                                 item-value='id'
                                                 :value="item"
@@ -224,7 +210,7 @@
                                 </template>
                               
                                   <template v-slot:[`item.actions`]="{ item }">
-                                        <v-tooltip color="error" bottom>
+                                          <v-tooltip color="error" bottom>
                                             <template v-slot:activator="{ on, attrs }">
                                                 <v-btn
                                                     color="error"
@@ -240,7 +226,7 @@
                                                 </v-btn>
                                             </template>
                                             <span>Remove {{ item.name }}</span>
-                                        </v-tooltip>
+                                          </v-tooltip>
                                     </template>
                             </v-data-table>
                         </v-tab-item>
@@ -271,26 +257,16 @@
                                             }">
 
                           </v-data-table>
-                          <!-- <v-autocomplete
-                            v-model="addSelectedArenaTeamItem"
-                            :items="arenaNoTeam"
-                            color="white"
-                            item-text="arena"
-                            label="Arena"
-                           
-                            return-object
-                        ></v-autocomplete> -->
+                        
                     </v-card-text>                           
                     <v-card-actions>
                         <v-spacer></v-spacer>                         
                             <v-btn color="red darken-1" text @click="() => {addNewArenaItem = false; this.selectedArenasToTeam = []}">Cancel</v-btn>
-                            <!-- <v-btn color="blue darken-1" text @click="addArenaToTeam">ADD</v-btn> -->
                             <v-btn :disabled="selectedArenasToTeam < 1 ? true : false" color="blue darken-1" text @click="addArenaSelectedToTeam">ADD</v-btn>
                             
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-
 
                 <!-- ADD MEMBER TO TEAM LIST -->
                <v-dialog internal-activator v-model="addNewUserItem" max-width="500px">
@@ -353,24 +329,23 @@ export default {
       snack: false,
       snackColor: "",
       snackText: "",
-      arenaSearch: '',
+      arenaSearch: "",
       tab: null,
       headers: [
-          { text: "Code", value: "area_code" },
-          { text: "Arena", value: "arena" },
-          { text: "Team", value: "team" },
-          { text: "", value: "actions", sortable: false },
+        { text: "Code", value: "area_code" },
+        { text: "Arena", value: "arena" },
+        { text: "Team", value: "team" },
+        { text: "", value: "actions", sortable: false },
       ],
       headersUser: [
-   
-          { text: "Name", value: "name" },
-          { text: "Position", value: "position_details.position" },
-          { text: "Team", value: "team" },
-          { text: "", value: "actions", sortable: false },
+        { text: "Name", value: "name" },
+        { text: "Position", value: "position_details.position" },
+        { text: "Team", value: "team" },
+        { text: "", value: "actions", sortable: false },
       ],
-        headersArena: [
-          { text: "Code", value: "area_code" },
-          { text: "Arena", value: "arena" },
+      headersArena: [
+        { text: "Code", value: "area_code" },
+        { text: "Arena", value: "arena" },
       ],
 
       selected: [],
@@ -388,7 +363,6 @@ export default {
       addSelectedArenaTeamItem: null,
       addSelectedUserTeamItem: null,
       assignedCompt: this.assignedComputed,
-      
     };
   },
   methods: {
@@ -414,7 +388,7 @@ export default {
         await axios.put("api/updateArenaTeam/" + item.area_code, {
           team: item.team,
         });
-         await Fire.$emit("AfterCreateUserTeam")
+        await Fire.$emit("AfterCreateUserTeam");
       }
     },
     async saveTeamUser(item) {
@@ -423,13 +397,12 @@ export default {
       this.snackText = "Data saved";
       const teamId = this.newSelectedUserTeam.id;
 
-    if(teamId === this.selectedTeam.id) {
-        console.log('Not happening')
-
-    }else if (item.isAssign) {
-        console.log('Not happening IS ASSIGN')
-    }else {
-          this.$emit(
+      if (teamId === this.selectedTeam.id) {
+        console.log("Not happening");
+      } else if (item.isAssign) {
+        console.log("Not happening IS ASSIGN");
+      } else {
+        this.$emit(
           "update:userTeams",
           this.userTeams.filter(function (v, i) {
             return v.id !== item.id;
@@ -438,15 +411,13 @@ export default {
         await axios.put("api/updateUserTeam/" + item.id, {
           team_id: teamId,
         });
-        await Fire.$emit("AfterCreateUserTeam")
-    }
-   
+        await Fire.$emit("AfterCreateUserTeam");
+      }
     },
     cancel() {
       this.snack = true;
       this.snackColor = "error";
       this.snackText = "Canceled";
-      
     },
     open() {
       this.snack = true;
@@ -457,19 +428,13 @@ export default {
       console.log("OPEN TEAM ");
     },
     close() {
-     
       console.log("Dialog closed");
-
     },
-    closeUser(item) {
-     
-    },
+    closeUser(item) {},
     handleChanged(item) {
       this.newSelectedTeam = item;
-  
     },
     handleChangedUserTeam(item) {
-   
       this.newSelectedUserTeam = item;
     },
     openArenaSelection() {
@@ -481,31 +446,29 @@ export default {
       this.getUsersWithoutTeam();
     },
     removeItem(item) {
- 
       this.selectedArena = item;
       this.dialogRemoveItem = true;
     },
-    removeUserItem(item) {
 
-      this.selectedUser = item;
-      this.dialogRemoveUserItem = true;
-    },
     async removeItemConfirm() {
       const code = this.selectedArena.area_code;
 
       await axios.put("api/updateArenaTeam/" + code);
 
-        this.$emit(
-          "update:arenaTeams",
-          this.arenaTeams.filter(function (v, i) {
-            return v.area_code !== code;
-          })
-        );
+      this.$emit(
+        "update:arenaTeams",
+        this.arenaTeams.filter(function (v, i) {
+          return v.area_code !== code;
+        })
+      );
       await Fire.$emit("AfterCreateArenaTeam");
 
-      this.selectedArena = {}
+      this.selectedArena = {};
       this.dialogRemoveItem = false;
-      
+    },
+    removeUserItem(item) {
+      this.selectedUser = item;
+      this.dialogRemoveUserItem = true;
     },
     async removeUserItemConfirmation() {
       const user = this.selectedUser;
@@ -513,19 +476,16 @@ export default {
         team: null,
       });
 
-         this.$emit(
-          "update:userTeams",
-          this.userTeams.filter(function (v, i) {
-            return v.id !== user.id;
-          })
-        );
-    any
-
+      this.$emit(
+        "update:userTeams",
+        this.userTeams.filter(function (v, i) {
+          return v.id !== user.id;
+        })
+      );
 
       await Fire.$emit("AfterCreateUserTeam");
-      this.selectedUser = {}
+      this.selectedUser = {};
       this.dialogRemoveUserItem = false;
-      
     },
 
     async getArenasWithoutTeam() {
@@ -555,39 +515,42 @@ export default {
     },
 
     async addUserToTeam() {
-        this.addSelectedUserTeamItem.team = this.selectedTeam.name;
-        const user = this.addSelectedUserTeamItem;
-        const team_id = this.selectedTeam.id;
-        await axios.put("api/updateUserTeam/" + user.id, { team_id });
-        this.addNewUserItem = false;
-        Fire.$emit("AfterCreateUserTeam");
-
+      this.addSelectedUserTeamItem.team = this.selectedTeam.name;
+      const user = this.addSelectedUserTeamItem;
+      const team_id = this.selectedTeam.id;
+      await axios.put("api/updateUserTeam/" + user.id, { team_id });
+      this.addNewUserItem = false;
+      Fire.$emit("AfterCreateUserTeam");
     },
-    async handleChangedSelectedUser(){
-        const assignedd = await axios.put('api/updateAssignedTeam/'+this.selected[0].id, { team_id: this.selectedTeam.id})
-       
-        this.assignedCompt = assignedd.data.id
-        Fire.$emit("AfterAssigned");
-        Fire.$emit("AfterCreateUserTeam");
-        this.$emit("update:assignedComputed",  this.assignedCompt);
-        
+    async handleChangedSelectedUser() {
+      const assignedd = await axios.put(
+        "api/updateAssignedTeam/" + this.selected[0].id,
+        { team_id: this.selectedTeam.id }
+      );
 
+      this.assignedCompt = assignedd.data.id;
+      Fire.$emit("AfterAssigned");
+      Fire.$emit("AfterCreateUserTeam");
+      this.$emit("update:assignedComputed", this.assignedCompt);
     },
-    async addArenaSelectedToTeam(){
-        let arenasTeam = [];
+    async addArenaSelectedToTeam() {
+      let arenasTeam = [];
 
-        this.selectedArenasToTeam.forEach(a => {
-          const { bank_details, contact_details, ...arenas} = a;
-          arenasTeam.push({ ...arenas,team: this.selectedTeam.name })
-        });
+      this.selectedArenasToTeam.forEach((a) => {
+        const { bank_details, contact_details, ...arenas } = a;
+        arenasTeam.push({ ...arenas, team: this.selectedTeam.name });
+      });
 
-        const team = this.selectedTeam.name
-        await axios.put(`api/updateSelectedArenaToTeam/${team}`, this.selectedArenasToTeam);
-        Fire.$emit("AfterCreateArenaTeam");
-        Fire.$emit("AfterAddSelected");
-        
-        this.addNewArenaItem = false;
-         this.selectedArenasToTeam = []
+      const team = this.selectedTeam.name;
+      await axios.put(
+        `api/updateSelectedArenaToTeam/${team}`,
+        this.selectedArenasToTeam
+      );
+      Fire.$emit("AfterCreateArenaTeam");
+      Fire.$emit("AfterAddSelected");
+
+      this.addNewArenaItem = false;
+      this.selectedArenasToTeam = [];
     },
 
     // getAssignUserTeam(){
@@ -608,27 +571,25 @@ export default {
     },
   },
   created() {
-   
     Fire.$on("AfterCreateUserTeam", () => {
       this.getAllUserPerTeam();
-       this.loadTeam()
+      this.loadTeam();
     });
     Fire.$on("AfterCreateArenaTeam", () => {
       this.getAllArenaPerTeam();
-       this.loadTeam()
+      this.loadTeam();
     });
 
-    Fire.$on('AfterAssigned', () => {
-        this.getAssignUserTeam();
-         this.loadTeam()
-    })
+    Fire.$on("AfterAssigned", () => {
+      this.getAssignUserTeam();
+      this.loadTeam();
+    });
 
-    Fire.$on('AfterAddSelected', () => {
-      this.getArenasWithoutTeam()
-      this.loadTeam()
-    })
+    Fire.$on("AfterAddSelected", () => {
+      this.getArenasWithoutTeam();
+      this.loadTeam();
+    });
   },
-
 };
 </script>
 <style lang=""></style>

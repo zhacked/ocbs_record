@@ -18,6 +18,7 @@
 						
 						</v-card-title>
                         <div class="ma-5">
+                         
                             <v-row>
                                  
                                 <v-col>

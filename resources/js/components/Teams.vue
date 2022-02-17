@@ -1,7 +1,8 @@
 <template>
     <v-app>
         <v-container>
-            <v-row class="mt-5 is-blurred" v-if="$gate.isAdminTech()">
+            <v-row class="mt-5 is-blurred flex-column flex-md-row" v-if="$gate.isAdminTech()">
+               
                 <v-col class="col-md-6">
                     <v-card>
                         <v-card-title class="card-header">
@@ -46,7 +47,7 @@
                                  <span class="font-weight-medium">{{item.name != null ? item.name.toUpperCase() : item.name }}</span>
                             </template>
                             <template v-slot:[`item.user_details`]="{ item }">
-                                <div class="d-flex flex-column text-center">
+                                <div class="d-flex flex-column">
                                     <span class="font-weight-medium">{{ item.user_details && item.user_details.name }}</span>
                                     <span class="caption">{{ (item.user_details && item.user_details.position_details) ? item.user_details.position_details.position : ''}}</span>
                                 </div>                          
@@ -117,7 +118,6 @@
                 </v-col>
             </v-row>
 
-            <!-- Modal -->
             <v-dialog
                 transition="dialog-bottom-transition"
                 max-width="400"
@@ -162,12 +162,13 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-        </v-container>
+                </v-container>
     </v-app>
 </template>
 
 <script>
 import TeamManagement from './Team/Management.vue'
+
 export default {
     components: {TeamManagement},
     data() {
@@ -199,6 +200,7 @@ export default {
     methods: {
         loadTeam() {
             axios.get("api/teams").then(({data}) => {
+          
                 this.teams = data
             });
         },

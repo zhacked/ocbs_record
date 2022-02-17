@@ -82,23 +82,12 @@
 						</li>
 					
 						<li class="nav-item">
-							<router-link to="/bankaccount" class="nav-link ">
+							<router-link to="/detailsconfig" class="nav-link ">
 								<i class="fa fa-money-check-alt"></i>
-								<p>Bank Details</p>
+								<p>Configuration Details</p>
 							</router-link>
 						</li>
-						<li class="nav-item">
-							<router-link to="/position" class="nav-link ">
-								<i class="fas fa-user-secret"></i>
-								<p>Position</p>
-							</router-link>
-						</li>
-						<li class="nav-item">
-							<router-link to="/chooserecord" class="nav-link ">
-								<i class="fas fa-mouse-pointer"></i>
-								<p>Choose Record</p>
-							</router-link>
-						</li>
+					
 						
 						
                     </ul>
