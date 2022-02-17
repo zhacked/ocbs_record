@@ -81,11 +81,10 @@ class UserController extends Controller
     public function store(Request $request)
     {
       
-        
+
         $this->validate($request,[
             'name' => 'required|string|max:191',
-            // 'email' => 'required|string|email|max:191|unique:users',
-            'username' => 'required|unique:users',
+            'username' => 'required|string|max:191|unique:users',
             'password' => 'required|string|min:6'
         ]);
 
@@ -110,6 +109,8 @@ class UserController extends Controller
     {
        
     $user = auth('api')->user();
+
+   
         $this->validate($request,[
             'name' => 'required|string|max:191',
             // 'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,

@@ -87,6 +87,7 @@
 					</div>
                     
 					<form @submit.prevent="editmode ? updateUser() : createUser()">
+                        
 						<div class="modal-body">
                              <v-text-field
                                     label="Full name"
@@ -94,6 +95,7 @@
                                     outlined
                                     dense
                                     v-model="form.name"
+                               
                                     :rules="[() => !!form.name || 'This field is required']"
                                     required
                                      prepend-inner-icon="mdi-account"
@@ -106,6 +108,7 @@
                                     placeholder="johndoe123"
                                     outlined
                                     dense
+                                         :error-messages='usernameError'
                                     v-model="form.username"
                                     :rules="[() => !!form.username || 'This field is required']"
                                   
@@ -220,12 +223,13 @@
                                     placeholder="*****"
                                     outlined
                                     dense
+                                
                                     v-model="form.password"
                                     :rules="[
                                             () => !!form.password || 'This field is required',
                                             () => (form.password && form.password.length >= 6) || 'password must be at least 6 charcters',
                                             ]"
-                                   
+                                  
                             ></v-text-field>
 
 						</div>
@@ -256,6 +260,7 @@
                     { text: '', value: 'actions', sortable: false },
                 ],
                 editmode: false,
+                usernameError:'',
                 users : {},
                 length: '',
                 search: '',
@@ -306,8 +311,7 @@
                     
                 });
             },
-         
-         
+        
             updateUser(){
              
                 this.$Progress.start();
@@ -374,7 +378,8 @@
             createUser(){
                 this.$Progress.start();
                 this.form.post('api/user')
-                .then(()=>{
+                .then((data)=>{
+                    console.log(data);
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
                     fire.toast({
@@ -383,7 +388,9 @@
                         })
                     this.$Progress.finish();
                 })
-                .catch(()=>{
+                .catch((error)=>{
+                    this.usernameError = error.response.data.errors.username;
+                   
                 })
             }
         },
