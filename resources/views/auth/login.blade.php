@@ -4,8 +4,10 @@
 @section('content')
     <div class="custom-layout__login container-fluid">
         <div class="container">
+
+
             <div class="d-flex justify-content-center align-items-center flex-column  ">
-             
+
                 <div class=" login-box  d-flex justify-content-center align-items-center p-4 card"
                     style="max-width: 90%; width: 600px">
 
@@ -16,31 +18,19 @@
                         <h1 class="text-center text-white  login-title">KIOSK SOA</h1>
                         <form method="POST" action="{{ route('login') }}" class="login-form">
                             @csrf
-                            <!-- <div class="mb-3">
-                                <label for="email"
-                                    class="form-label  custom-input__label">{{ __('E-Mail Address') }}</label>
-                                <div class="d-flex flex-column">
-                                    <input id="email" type="email"
-                                        class="form-control custom-input @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div> -->
+
                             <div class="mb-3">
+
                                 <label for="login"  class="form-label  custom-input__label">
                                     {{ __('Username or Email') }}
                                 </label>
-                            
+
                                 <div class="d-flex flex-column">
                                     <input id="login" type="text"
                                         class="custom-input form-control{{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}"
                                         name="login" value="{{ old('username') ?: old('email') }}" required autofocus>
-                            
+
                                     @if ($errors->has('username') || $errors->has('email'))
                                         <span class="invalid-feedback">
                                             <strong>{{ $errors->first('username') ?: $errors->first('email') }}</strong>
@@ -52,10 +42,10 @@
                                 <label for="password"  class="form-label  custom-input__label">{{ __('Password') }}</label>
 
                                 <input id="password" type="password"
-                                    class="form-control custom-input @error('password') is-invalid @enderror"
+                                    class="form-control custom-input @error('email') is-invalid @enderror"
                                     name="password" required autocomplete="current-password">
 
-                                @error('password')
+                                @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -68,7 +58,7 @@
                                     type="submit">
                                     {{ __('Sign in') }}</button>
                             </div>
-                            
+
                         </form>
                     </div>
                 </div>
