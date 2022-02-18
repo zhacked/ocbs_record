@@ -44,7 +44,7 @@ class UserController extends Controller
     }
 
     public function getStaffs() {
-        $getStaffs = User::with(['positionDetails','teamDetails'])->where('assign','computed')->where('type','!=','admin')->whereNull('team_id')->get();
+        $getStaffs = User::with(['positionDetails','teamDetails'])->where('type','!=','admin')->where('type', '!=', 'tech')->whereNull('assign')->orWhere('assign', 'computed')->whereNull('team_id')->get();
 
         return $getStaffs;
     }
@@ -58,7 +58,7 @@ class UserController extends Controller
 
     public function getAvailableSignatory(Request $request, $signatory) {
      
-        $getUsers = User::with(['positionDetails'])->where('type','!=','admin')->where('isAdmin', false)->where('assign',null)->orWhere('assign', $signatory)->get();
+        $getUsers = User::with(['positionDetails'])->where('type','!=','admin')->where('type', '!=', 'tech')->whereNull('assign')->orWhere('assign', $signatory)->get();
 
         return $getUsers;
     }
@@ -215,18 +215,37 @@ class UserController extends Controller
 
     public function updateUserTeam(Request $request, $id){
         $user = User::findOrFail($id);
-        // $userTeam = User::with(['positionDetails','teamDetails'])->where('team_id', $teamId)->get();
-       
+      
         $user->update([
             'team_id' => $request['team_id'],
+            'assign' => $request['assign'],
         ]);
 
-        $usersTeam = User::where('team_id', $request['team_id']);
-        $usersTeam->update(['isAssign' => false]);
+        // $usersTeam = User::where('team_id', $request['team_id']);
+        // $usersTeam->update(['isAssign' => false]);
 
 
         $this->Profileactivity('updated',$user->username,'team',$user->id);
         return $user;
+    }
+
+    
+    public function updateSelectedUserToTeam(Request $request, $team){
+   
+        foreach($request['users'] as $user){
+            $user = User::findOrFail($user['id']);
+
+            $user->update([
+                'assign' => $request['assign'],
+                'team_id' => $team
+            ]);
+        };
+
+
+
+        $this->Profileactivity('updated',$user->username,'team',$user->id);
+
+        return true;
     }
 
     public function updateAssignedTeam(Request $request, $id){

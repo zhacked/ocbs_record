@@ -76,6 +76,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
     Route::put('updateArenaTeam/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'updateArenaTeam']);
     Route::put('updateSelectedArenaToTeam/{team}', [App\Http\Controllers\API\ArenaController::class, 'updateSelectedArenaToTeam']);
+    Route::put('updateSelectedUserToTeam/{team}', [App\Http\Controllers\API\UserController::class, 'updateSelectedUserToTeam']);
     Route::post('updateTeam/{id}',[App\Http\Controllers\API\TeamController::class,'update']);
     Route::get('deleteTeam/{id}',[App\Http\Controllers\API\TeamController::class,'destroy']);
     Route::put('updateUserTeam/{id}', [App\Http\Controllers\API\UserController::class, 'updateUserTeam']);

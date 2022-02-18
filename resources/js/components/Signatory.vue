@@ -1,19 +1,16 @@
 <template lang="">
-
-          
-            
-       
                 <v-card class="pa-8">
                     <v-banner class="h4">SIGNATORY</v-banner>
                     <v-row>
                         <v-col>
-                        
+                            {{prepared}}
                             <v-row>
                                 <sign-box
                                     titleKey="Prepared by"
                                     :check.sync="prepared"
                                     assignedSign="prepared"
-                                    :noOfSign="1"
+                                    :noOfSign="2"
+                                     @prepared="handleChangedOpenSignatory"
                                 ></sign-box>
                             </v-row>
                             <v-divider></v-divider>
@@ -23,6 +20,7 @@
                                     :check.sync="checkSetOne"
                                     assignedSign="checkSetOne"
                                     :noOfSign="2"
+                                     @checkSetOne="handleChangedOpenSignatory"
                                 ></sign-box>
                             </v-row>
                             <v-divider></v-divider>
@@ -32,6 +30,8 @@
                                     :check.sync="checkSetTwo"
                                     assignedSign="checkSetTwo"
                                     :noOfSign="2"
+                                     @checkSetTwo="handleChangedOpenSignatory"
+                                   
                                 ></sign-box>
                             </v-row>
                         </v-col>
@@ -52,6 +52,20 @@ export default {
             checkSetTwo: false,
             prepared: false,
         };
+
     },
+    methods: {
+        handleChangedOpenSignatory(item){
+            
+            this.prepared = (item.checkSetOne || item.checkSetTwo) ? false : (!item.checkSetOne && !item.checkSetTwo && !item.prepared) ? false: true;
+            this.checkSetOne = (item.prepared || item.checkSetTwo) ? false : (!item.checkSetOne && !item.checkSetTwo && !item.prepared) ? false: true;
+            this.checkSetTwo = (item.prepared || item.checkSetOne) ? false : (!item.checkSetOne && !item.checkSetTwo && !item.prepared) ? false: true;
+
+           console.log(this.prepared);
+        }
+    },
+    computed: {
+       
+    }
 };
 </script>

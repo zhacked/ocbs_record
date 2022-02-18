@@ -1,5 +1,6 @@
 <template lang="">
     <v-col>
+        {{ check }}
         <div class="d-flex flex-column flex-md-row">
             <div class="d-flex mr-2">
                 <p class="font-weight-medium text-md-caption text-lg-body-1">{{ titleKey }}:</p>
@@ -10,7 +11,7 @@
             <div
                 class="d-flex flex-column justify-center align-center flex-grow-1 px-4"
             >
-                <span v-if="!checking" class="px-2 font-weight-bold text-md-caption text-lg-body-1">{{
+                <span v-if="!check" class="px-2 font-weight-bold text-md-caption text-lg-body-1">{{
                     formatArrayToNameStr() || "No user assign"
                 }}</span>
                 <div v-else class="mt-2 mx-auto" style="width: 90%">
@@ -45,13 +46,13 @@
                 small
                 icon
                 @click="
-                    !checking
+                    !check
                         ? editSignatory(assignedSign, noOfSign)
                         : saveSignatory(assignedSign)
                 "
             >
-                <v-icon small v-if="!checking" color="primary">mdi-pencil</v-icon>
-                <v-icon small v-else color="primary">mdi-content-save</v-icon>
+                <v-icon small v-if="!check" color="primary">mdi-pencil</v-icon>
+                <v-icon small v-else color="success">mdi-content-save</v-icon>
             </v-btn>
             </div>
         </div>
@@ -91,20 +92,30 @@ export default {
             this.model = signedUsers.data;
         },
 
-        editSignatory(signatory, number) {
+        async editSignatory(signatory, number) {
             this.checking = true;
             this.noOfSign = number;
-            this.availableSignatory(signatory);
+           
+            this.$emit(this.assignedSign, {
+                [`${this.assignedSign}`]:this.checking
+            });
+            await this.availableSignatory(signatory);
         },
         async saveSignatory(assigned) {
+           
             this.checking = false;
             const signatoryChecked = await axios.put("api/updateSignatory", {
                 assigned,
                 users: this.model,
                 noOfSign: this.noOfSign,
             });
-            this.usersSignatory(assigned);
-            this.availableSignatory(assigned);
+
+             this.$emit(this.assignedSign, {
+                [`${this.assignedSign}`]:false
+            });
+          
+            await this.usersSignatory(assigned);
+            await this.availableSignatory(assigned);
         },
 
         formatArrayToNameStr() {

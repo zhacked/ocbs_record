@@ -272,9 +272,17 @@
                <v-dialog internal-activator v-model="addNewUserItem" max-width="500px">
                 <v-card>
                     <v-card-title class="text-h6">Add user into {{selectedTeam && selectedTeam.name}} team</v-card-title>
-                    
+                       <v-card-title>
+                        <v-text-field
+                          v-model="staffSearch"
+                          append-icon="mdi-magnify"
+                          label="Search"
+                          single-line
+                          hide-details
+                        ></v-text-field>
+                      </v-card-title>
                     <v-card-text>
-                        <span class="subtitle-2">Select user that not yet selected to other team.</span>
+                        <!-- <span class="subtitle-2">Select user that not yet selected to other team.</span>
                           <v-autocomplete
                             v-model="addSelectedUserTeamItem"
                             :items="userNoTeam"
@@ -283,12 +291,21 @@
                             label="Staffs"
                            
                             return-object
-                        ></v-autocomplete>
+                        ></v-autocomplete> -->
+                         <v-data-table v-model="selectedUserToTeam"  :items="userNoTeam" :headers="headerStaffs" :search="staffSearch" :itemsPerPage="5" show-select  :footer-props="{
+                                                'items-per-page-options': [
+                                                    5,
+                                                    10,
+                                                ],
+                                            }">
+
+                          </v-data-table>
+                        
                     </v-card-text>                           
                     <v-card-actions>
                         <v-spacer></v-spacer>                         
                             <v-btn color="red darken-1" text @click="() => {addNewUserItem = false}">Cancel</v-btn>
-                            <v-btn color="blue darken-1" text @click="addUserToTeam">ADD</v-btn>
+                            <v-btn color="blue darken-1" text @click="addUserSelectedToTeam">ADD</v-btn>
                             
                     </v-card-actions>
                 </v-card>
@@ -330,6 +347,7 @@ export default {
       snackColor: "",
       snackText: "",
       arenaSearch: "",
+      staffSearch: "",
       tab: null,
       headers: [
         { text: "Code", value: "area_code" },
@@ -343,6 +361,10 @@ export default {
         { text: "Team", value: "team" },
         { text: "", value: "actions", sortable: false },
       ],
+      headerStaffs: [
+         { text: "Name", value: "name" },
+        { text: "Position", value: "position_details.position" },
+      ],
       headersArena: [
         { text: "Code", value: "area_code" },
         { text: "Arena", value: "arena" },
@@ -350,6 +372,7 @@ export default {
 
       selected: [],
       selectedArenasToTeam: [],
+      selectedUserToTeam: [],
       newSelectedTeam: "",
       newSelectedUserTeam: "",
       dialogRemoveItem: false,
@@ -410,6 +433,7 @@ export default {
         );
         await axios.put("api/updateUserTeam/" + item.id, {
           team_id: teamId,
+           assign: 'computed'
         });
         await Fire.$emit("AfterCreateUserTeam");
       }
@@ -445,12 +469,13 @@ export default {
       this.addNewUserItem = true;
       this.getUsersWithoutTeam();
     },
-    removeItem(item) {
+    
+    removeItem(item) {  // Open dialog asking to confirm if arena will be remove
       this.selectedArena = item;
       this.dialogRemoveItem = true;
     },
-
-    async removeItemConfirm() {
+   
+    async removeItemConfirm() {  // Remove Arena to specific a team
       const code = this.selectedArena.area_code;
 
       await axios.put("api/updateArenaTeam/" + code);
@@ -466,14 +491,17 @@ export default {
       this.selectedArena = {};
       this.dialogRemoveItem = false;
     },
-    removeUserItem(item) {
+    
+    removeUserItem(item) { // Open dialog asking to confirm if user will be remove
       this.selectedUser = item;
       this.dialogRemoveUserItem = true;
     },
-    async removeUserItemConfirmation() {
-      const user = this.selectedUser;
+  
+    async removeUserItemConfirmation() {   // Remove user to specific a team
+      const user = this.selectedUser; 
       await axios.put("api/updateUserTeam/" + user.id, {
-        team: null,
+        team_id: null,
+        assign: null
       });
 
       this.$emit(
@@ -487,41 +515,67 @@ export default {
       this.selectedUser = {};
       this.dialogRemoveUserItem = false;
     },
-
-    async getArenasWithoutTeam() {
+    
+    async getArenasWithoutTeam() { // Get all arenas without team
       const arena = await axios.get("api/arena");
       const arenaNoTeam = arena.data.filter((a) => a.team == null);
 
       this.arenaNoTeam = arenaNoTeam;
     },
+    // get all users that are not admin and no team and not yet assigned into a signatory
     async getUsersWithoutTeam() {
       const users = await axios.get("api/getStaffs");
 
       this.userNoTeam = users.data;
     },
 
-    async addArenaToTeam() {
-      this.addSelectedArenaTeamItem.team = this.selectedTeam.name;
-      await axios.put(
-        "api/updateArenaTeam/" + this.addSelectedArenaTeamItem.area_code,
-        { team: this.selectedTeam.name }
-      );
-      this.addNewArenaItem = false;
+    // async addArenaToTeam() {
+    //   this.addSelectedArenaTeamItem.team = this.selectedTeam.name;
+    //   await axios.put(
+    //     "api/updateArenaTeam/" + this.addSelectedArenaTeamItem.area_code,
+    //     { team: this.selectedTeam.name }
+    //   );
+    //   this.addNewArenaItem = false;
 
-      //   let arrayArena = this.arenaTeams;
-      //   arrayArena.push(this.addSelectedArenaTeamItem);
-      Fire.$emit("AfterCreateArenaTeam");
-      // this.$emit("update:arenaTeams", arrayArena);
-    },
+    //   //   let arrayArena = this.arenaTeams;
+    //   //   arrayArena.push(this.addSelectedArenaTeamItem);
+    //   Fire.$emit("AfterCreateArenaTeam");
+    //   // this.$emit("update:arenaTeams", arrayArena);
+    // },
 
-    async addUserToTeam() {
-      this.addSelectedUserTeamItem.team = this.selectedTeam.name;
-      const user = this.addSelectedUserTeamItem;
-      const team_id = this.selectedTeam.id;
-      await axios.put("api/updateUserTeam/" + user.id, { team_id });
-      this.addNewUserItem = false;
-      Fire.$emit("AfterCreateUserTeam");
+    // async addUserToTeam() {
+    //   this.addSelectedUserTeamItem.team = this.selectedTeam.name;
+    //   const user = this.addSelectedUserTeamItem;
+    //   const team_id = this.selectedTeam.id;
+    //   await axios.put("api/updateUserTeam/" + user.id, { team_id });
+    //   this.addNewUserItem = false;
+    //   Fire.$emit("AfterCreateUserTeam");
+    // },
+    
+      // // ADD multiple users to team and assigned as computed
+      async addUserSelectedToTeam() {
+          // let usersTeam = [];
+
+          // this.selectedUserToTeam.forEach((a) => {
+          //   const { bank_details, contact_details, ...arenas } = a;
+          //   usersTeam.push({ ...arenas, team: this.selectedTeam.name });
+          // });
+
+          const teamId = this.selectedTeam.id;
+          await axios.put(
+            `api/updateSelectedUserToTeam/${teamId}`,
+            { 
+              assign: 'computed',
+              users: this.selectedUserToTeam
+            }
+          );
+          Fire.$emit("AfterCreateUserTeam");
+          Fire.$emit("AfterAddSelected");
+
+          this.addNewUserItem = false;
+          this.selectedUserToTeam = [];
     },
+    // Assign specific user as computed
     async handleChangedSelectedUser() {
       const assignedd = await axios.put(
         "api/updateAssignedTeam/" + this.selected[0].id,
@@ -533,6 +587,8 @@ export default {
       Fire.$emit("AfterCreateUserTeam");
       this.$emit("update:assignedComputed", this.assignedCompt);
     },
+
+    // Assign multiple arena to specific team
     async addArenaSelectedToTeam() {
       let arenasTeam = [];
 
