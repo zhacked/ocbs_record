@@ -1051,6 +1051,7 @@ export default {
                     this.$Progress.finish();
                 })
                 .catch((e) => {
+                    console.log(e.response)
                     this.errors.areaCode = e.response.data.message.includes('Integrity constraint') && 'Area Code/Arena already exist.'
                 });
         },

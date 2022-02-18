@@ -2,7 +2,7 @@
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
-         
+            <!-- <v-btn @click="filterNoArenaDetails">Filter No Arena</v-btn> -->
             <v-row class="mt-3">
                 <v-col class="col-md-12">
                     <v-row>
@@ -129,7 +129,7 @@
                                     <v-data-table
                                         item-key="codeEvent"
                                         :headers="headers"
-                                        :items="arenaData.data"
+                                        :items="arenaData"
                                         :items-per-page="10"
                                         v-model="selected"
                                         :loading="downloadingReport"
@@ -384,8 +384,8 @@
                                         >
                                             <v-btn
                                                 v-show="
-                                                    arenaData.data &&
-                                                    arenaData.data.length > 0 &&
+                                                    arenaData &&
+                                                    arenaData.length > 0 &&
                                                     $gate.isAdmin()
                                                 "
                                                 :loading="downloadingReport"
@@ -626,6 +626,7 @@
                             ref="soaReport"
                             id="reportsoaoutput"
                             class="reportsoaoutput"
+                            style="display: none;"
                         >
                             <v-card-title
                                 class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
@@ -1356,7 +1357,7 @@ export default {
             bankAccounts: [],
             operator_name: "",
             sofrNumSeq: 0,
-            arenaData: {},
+            arenaData: [],
             arenaDatastatus: [],
             arenaDetails: {},
             areaCode: "",
@@ -1531,7 +1532,7 @@ export default {
                 data: newArray,
             };
 
-            this.arenaData = obj;
+            this.arenaData = obj.data;
         },
 
         openModel(data) {
@@ -1660,14 +1661,14 @@ export default {
 
                 if (this.selected.length - 1 === i) {
                     await axios.put("api/arenaStatus", statusArenas);
-                    const c = this.arenaData.data.filter(
+                    const c = this.arenaData.filter(
                         (arena) =>
                             !this.selected.find(
                                 (select) => select.areaCode === arena.areaCode
                             )
                     );
 
-                    this.arenaData.data = c;
+                    this.arenaData = c;
 
                     setTimeout(async () => {
                         this.downloadingReport = false;
@@ -1715,14 +1716,14 @@ export default {
                 );
                 console.log("zip generated");
                 await axios.put("api/arenaStatus", statusArenas);
-                const c = this.arenaData.data.filter(
+                const c = this.arenaData.filter(
                     (arena) =>
                         !this.selected.find(
                             (select) => select.areaCode === arena.areaCode
                         )
                 );
 
-                this.arenaData.data = c;
+                this.arenaData = c;
                 if (this.progressvalue === 100) {
                     setTimeout(async () => {
                         this.downloadingReport = false;
@@ -1810,6 +1811,14 @@ export default {
                 });
             } else this.selected = [];
         },
+        filterNoArenaDetails(){
+            this.arenaData.forEach(arena => {
+                if(!arena.arena_details) {
+                    console.log(arena)
+                    this.arenaData.push(arena)
+                }
+            })
+        },
         printDiv(divName) {
             this.dialog = false;
             const divContent = document.getElementById(divName)
@@ -1818,9 +1827,7 @@ export default {
             document.body.innerHTML = printContents;
             window.print();
             document.body.innerHTML = originalContents;
-            // setTimeout(function(){ console.log("okkkkk"); location.reload()}, 100);
             window.location.reload()
-            // return false
         }
     },
 
