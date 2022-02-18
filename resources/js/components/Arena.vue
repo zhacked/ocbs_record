@@ -1052,7 +1052,7 @@ export default {
                 })
                 .catch((e) => {
                     console.log(e.response)
-                    this.errors.areaCode = (e.response.data.message.includes('Integrity constraint') || e.response.data.status === 500) && 'Area Code/Arena already exist.'
+                    this.errors.areaCode = (e.response.data.message.includes('Integrity constraint') || e.response.data.status === 500) ? 'Area Code/Arena already exist.' : ''
                 });
         },
     },
