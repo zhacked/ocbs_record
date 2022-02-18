@@ -3,7 +3,7 @@
                     <v-banner class="h4">SIGNATORY</v-banner>
                     <v-row>
                         <v-col>
-                            {{prepared}}
+                      
                             <v-row>
                                 <sign-box
                                     titleKey="Prepared by"
@@ -59,8 +59,6 @@ export default {
             this.prepared = (item.checkSetOne || item.checkSetTwo) ? false : (!item.checkSetOne && !item.checkSetTwo && !item.prepared) ? false: true;
             this.checkSetOne = (item.prepared || item.checkSetTwo) ? false : (!item.checkSetOne && !item.checkSetTwo && !item.prepared) ? false: true;
             this.checkSetTwo = (item.prepared || item.checkSetOne) ? false : (!item.checkSetOne && !item.checkSetTwo && !item.prepared) ? false: true;
-
-           console.log(this.prepared);
         }
     },
     computed: {

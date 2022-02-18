@@ -32,6 +32,7 @@
                         return-object
                         dense
                         value="name"
+                        @blur="saveSignatory(assignedSign)"
                     >
                     </v-combobox>
                 </div>
