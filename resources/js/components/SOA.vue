@@ -2,7 +2,7 @@
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
-            <!-- <v-btn @click="filterNoArenaDetails">Filter No Arena</v-btn> -->
+            <v-btn @click="filterNoArenaDetails">Filter No Arena</v-btn>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
                     <v-row>
@@ -109,7 +109,17 @@
                                             @change="handleSwitchPrepared"
                                         ></v-switch>
                                     </v-col>
-                                    <v-spacer></v-spacer>
+                                     <v-col>
+                                          <v-select
+                                            :items="arenaItemsSelection"
+                                            label="Filter arena"
+                                            dense
+                                            outlined
+                                            item-text="text"
+                                            item-value="key"
+                                            @change="handleSelectionFilterArena"
+                                            ></v-select>
+                                    </v-col>
                                     <v-col>
                                         <v-text-field
                                             v-model="search"
@@ -1327,7 +1337,16 @@ export default {
 
                 { text: "", value: "actions", sortable: false },
             ],
-
+            arenaItemsSelection: [
+                { 
+                    key: 'all',
+                    text: 'Show All'
+                },
+                 { 
+                    key: 'noArenaDetails',
+                    text: 'No Arena Details'
+                },
+            ],
             sortBy: "refNo",
             keys: ["CATEGORY"],
            
@@ -1812,12 +1831,20 @@ export default {
             } else this.selected = [];
         },
         filterNoArenaDetails(){
+            let arenaNoDetais = []
             this.arenaData.forEach(arena => {
                 if(!arena.arena_details) {
                     console.log(arena)
-                    this.arenaData.push(arena)
+                    arenaNoDetais.push(arena)
                 }
             })
+            this.arenaData.length = 0
+            this.arenaData.splice(0, this.arenaData.length, ...arenaNoDetais)
+        },
+
+        handleSelectionFilterArena(item){
+            console.log(item)
+            item === 'noArenaDetails' ? this.filterNoArenaDetails() : this.showData()
         },
         printDiv(divName) {
             this.dialog = false;
