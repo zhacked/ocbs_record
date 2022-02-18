@@ -83,8 +83,8 @@
 					
 						<li class="nav-item">
 							<router-link to="/detailsconfig" class="nav-link ">
-								<i class="fa fa-money-check-alt"></i>
-								<p>Configuration Details</p>
+								<i class="fa fa-cogs"></i>
+								<p>Configuration</p>
 							</router-link>
 						</li>
 					

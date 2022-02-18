@@ -1,19 +1,18 @@
 <template lang="">
     <v-app>
-        <v-container class="ma-4 mx-auto">
-            <h1 class="h2 font-weight-bold pa-8">CONFIGURE DETAILS</h1>
+      
+        <h1 class="h2 font-weight-bold pa-8">CONFIGURE DETAILS</h1>
         <v-row dense >
-            <v-col class="col-lg-4">
+            <v-col class="lg-4 sm-12">
                 <position></position>
             </v-col>
-            <v-col class="col-lg-4">
-                <bank-account></bank-account>
-            </v-col>
-            <v-col class="col-lg-4">
+            <v-col class="lg-4 sm-12">
                 <signatory></signatory>
             </v-col>
+             <v-col class="col-lg-4 sm-12">
+                <bank-account></bank-account>
+            </v-col>
         </v-row>
-        </v-container>
     </v-app>
 </template>
 <script>

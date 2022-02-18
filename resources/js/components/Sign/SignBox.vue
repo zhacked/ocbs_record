@@ -41,18 +41,26 @@
                     formatArrayToPositionStr()
                 }}</span>
             </div>
-            <v-btn
-                small
-                icon
-                @click="
-                    !checking
-                        ? editSignatory(assignedSign, noOfSign)
-                        : saveSignatory(assignedSign)
-                "
-            >
-                <v-icon small v-if="!checking" color="primary">mdi-pencil</v-icon>
-                <v-icon small v-else color="primary">mdi-content-save</v-icon>
-            </v-btn>
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        small
+                        icon
+                        dark
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="
+                            !checking
+                                ? editSignatory(assignedSign, noOfSign)
+                                : saveSignatory(assignedSign)
+                        "
+                    >
+                        <v-icon small :color="!checking ? 'primary' : 'success'">{{!checking ? 'mdi-pencil' : 'mdi-content-save' }}</v-icon>
+        
+                    </v-btn>
+                </template>
+                <span>{{!checking ? 'Update signatory' : 'Save signatory' }}</span>
+            </v-tooltip>
             </div>
         </div>
     </v-col>
