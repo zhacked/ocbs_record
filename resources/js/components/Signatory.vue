@@ -36,9 +36,8 @@
                             </v-row>
                         </v-col>
                     </v-row>
-                </v-card>
-        
-  
+        </v-card>  
+    </v-container>
 </template>
 <script>
 import SignBox from "./Sign/SignBox.vue";

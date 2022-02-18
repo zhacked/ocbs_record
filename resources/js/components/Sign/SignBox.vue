@@ -1,6 +1,5 @@
 <template lang="">
     <v-col>
-        {{ check }}
         <div class="d-flex flex-column flex-md-row">
             <div class="d-flex mr-2">
                 <p class="font-weight-medium text-md-caption text-lg-body-1">{{ titleKey }}:</p>
@@ -42,18 +41,26 @@
                     formatArrayToPositionStr()
                 }}</span>
             </div>
-            <v-btn
-                small
-                icon
-                @click="
-                    !check
-                        ? editSignatory(assignedSign, noOfSign)
-                        : saveSignatory(assignedSign)
-                "
-            >
-                <v-icon small v-if="!check" color="primary">mdi-pencil</v-icon>
-                <v-icon small v-else color="success">mdi-content-save</v-icon>
-            </v-btn>
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        small
+                        icon
+                        dark
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="
+                            !check
+                                ? editSignatory(assignedSign, noOfSign)
+                                : saveSignatory(assignedSign)
+                        "
+                    >
+                        <v-icon small :color="!check ? 'primary' : 'success'">{{!check ? 'mdi-pencil' : 'mdi-content-save' }}</v-icon>
+        
+                    </v-btn>
+                </template>
+                <span>{{!check ? 'Update signatory' : 'Save signatory' }}</span>
+            </v-tooltip>
             </div>
         </div>
     </v-col>
