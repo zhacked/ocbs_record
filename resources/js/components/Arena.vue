@@ -426,6 +426,7 @@
                                             !!form.arena ||
                                             'This field is required',
                                     ]"
+                                    :error-messages="errors.areaCode"
                                 ></v-text-field>
 
                                 <v-text-field
@@ -469,56 +470,6 @@
                                    
                                  
                                 >
-
-                                    <!-- small-chips -->
-
-                                  <!-- :key="
-                                                JSON.stringify(
-                                                    item.contact_number
-                                                )
-                                            " -->
-
-                                              <!-- typeof item === "object"
-                                                        ? item.contact_number
-                                                        : item -->
-                                    <!-- <template
-                                        v-slot:selection="{
-                                            item,
-                                            attrs,
-                                            selected,
-                                            disabled,
-                                            parent,
-                                        }"
-                                    >
-
-                                     
-                                        <v-chip
-                                            :key="item.id"
-                                            v-bind="attrs"
-                                            :input-value="selected"
-                                            :disabled="disabled"
-                                            
-                                        >
-                                      
-                                            <span class="pr-2">
-                                                {{
-                                                    item
-                                                }}
-                                            </span>
-                                            <v-icon
-                                                small
-                                                @click="
-                                                    item.id
-                                                        ? removeContact(item.id)
-                                                        : parent.selectItem(
-                                                              item
-                                                          )
-                                                "
-                                            >
-                                             mdi-close
-                                            </v-icon>
-                                        </v-chip>
-                                    </template> -->
                                 </v-combobox>
 
                                 <v-combobox
@@ -533,51 +484,11 @@
                                     item-text="email"
                                     
                                 >
-                                    <!-- <template
-                                        v-slot:selection="{
-                                            item,
-                                            attrs,
-                                            selected,
-                                            disabled,
-                                            parent,
-                                        }"
-                                    >
-                                        <v-chip
-                                            :key="JSON.stringify(item.email)"
-                                            v-bind="attrs"
-                                            :input-value="selected"
-                                            :disabled="disabled"
-                                        >
-                                            <span class="pr-2">
-                                                {{
-                                                    typeof item === "object"
-                                                        ? item.email
-                                                        : item
-                                                }}
-                                            </span>
-                                            <v-icon
-                                                small
-                                                @click="
-                                                    item.id
-                                                        ? removeEmail(item.id)
-                                                        : parent.selectItem(
-                                                              item
-                                                          )
-                                                "
-                                            >   
-                                            </v-icon>
-                                        </v-chip>
-                                    </template> -->
+                                
                                 </v-combobox>
                             </div>
                             <div class="modal-footer">
-                                <!-- <v-btn
-                                    type="button"
-                                    color="error"
-                                    elevation="2"
-                                    data-dismiss="modal"
-                                    >Close</v-btn
-                                > -->
+                               
                                 <v-btn
                                     v-show="editmode"
                                     type="submit"
@@ -689,21 +600,16 @@ export default {
             arenaList: [],
             bankList: [],
             fileUpload: null,
-            isExcel: false
+            isExcel: false,
+            errors: {
+                areaCode: ''
+            }
         };
     },
     methods: {
-        // loadLogs(){
-        //      axios.get("api/Logsindex/").then((data) => {
-        //         console.log('Logs>>>',data)
-        //         this.arenalogs = data.data
-        //     });
-        // },
+
         onFileChange(event) {
-            // let arrayNumbers = [];
-            // const file = event.target.files ? event.target.files[0] : null;
-            // this.fileUpload = file;
-            // const file = this.fileUpload ? this.fileUpload[0] : null;
+       
             const file = event ? event : null;
 
             const checkfile =
@@ -764,10 +670,8 @@ export default {
                     };
 
                     const objk = objectKeyed(arrayData[0]);
-                    // console.log(objectKeyed(arrayData[0]));
 
                     const toArrayContactEmail = (contactString) => {
-                        // console.log(typeof contactString)
                         let number = [];
                         const checkBreak = contactString
                             .toString()
@@ -789,16 +693,7 @@ export default {
                                 );
 
                                 filteredContact.map((cs) => {
-                                    // const replaceContact = cs
-                                    //     .replace(/\-/g, "")
-                                    //     .split(/\(.*?\)/g);
-
-                                    // const xxx = replaceContact.filter((ccc) =>
-                                    //     ccc.includes("09")
-                                    // );
-                                    // replaceContact.map((x) =>
-                                    //     number.push(x.trim())
-                                    // );
+                                  
 
                                      number.push(cs.trim())
                                 });
@@ -811,16 +706,7 @@ export default {
                                 );
 
                                 filteredContact.map((cs) => {
-                                    // const replaceContact = cs
-                                    //     .replace(/\-/g, "")
-                                    //     .split(/\(.*?\)/g);
-
-                                    // const xxx = replaceContact.filter((ccc) =>
-                                    //     ccc.includes("09")
-                                    // );
-                                    // replaceContact.map((x) =>
-                                    //     number.push(x.trim())
-                                    // );
+                                  
                                     number.push(cs.trim())
                                 });
                             } else {
@@ -865,23 +751,7 @@ export default {
                         if(toArrayContactEmail(foh.contactNumber) !== "") contactNo.push({area_code: foh.code, contact_number: toArrayContactEmail(foh.contactNumber)})
                         if(toArrayContactEmail(foh.emailSol) !== "") emailList.push({area_code: foh.code, email: toArrayContactEmail(foh.emailSol)})
 
-                        // toArrayContactEmail(foh.contactNumber).forEach((cn) => {
-                        //     if (cn !== "") {
-                        //         contactNo.push({
-                        //             area_code: foh.code,
-                        //             contact_number: cn,
-                        //         });
-                        //     }
-                        // });
-
-                        // toArrayContactEmail(foh.emailSol).forEach((em) => {
-                        //     // console.log('>>>',foh.code,'>>',em);
-                        //     if (em !== "")
-                        //         emailList.push({
-                        //             area_code: foh.code,
-                        //             email: em,
-                        //         });
-                        // });
+                     
                     });
 
                     this.emailList = emailList;
@@ -1158,8 +1028,8 @@ export default {
                 });
         },
         createArena() {
-            console.log(this.form);
-            console.log("dsadsa");
+          
+       
             this.$Progress.start();
             const areaCode = this.form.arena.split(" ")[0];
             this.form.area_code = areaCode;
@@ -1181,7 +1051,7 @@ export default {
                     this.$Progress.finish();
                 })
                 .catch((e) => {
-                    console.log(e);
+                    this.errors.areaCode = e.response.data.message.includes('Integrity constraint') && 'Area Code/Arena already exist.'
                 });
         },
     },

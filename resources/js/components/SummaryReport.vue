@@ -232,6 +232,7 @@ import moment from "moment";
 import XLSX from "xlsx";
 import {
     numberFormat,
+    moneyFormat
 } from "../utility";
 export default {
     
@@ -278,16 +279,17 @@ export default {
             axios.get("api/convertToExcel/"+deprep+"/"+ value).then(({ data }) => (
                
                 data.forEach((val) => {
+                    console.log(typeof val.for_total)
                     const objVal = {
                         'ID': val.id,
                         'Ref Number': val.refNo,
                         'OCBS Name': val.arena_name,
-                        'Total Commission': val.totalCommission,
-                        'Other Commission -M': parseFloat(val.otherCommissionIntel05)+parseFloat(val.otherCommIntMob),
-                        'Consolidators commission': parseFloat(val.consolidatorsCommission)+parseFloat(val.consolCommMob),
-                        'Safety Fund' : parseFloat(val.safetyFund)+parseFloat(val.safetyFundMob), 
-                        'Payment For O/Standing Balance' : parseFloat(val.paymentForOutstandingBalance)+parseFloat(val.payOutsBalMob),
-                        'Amount': val.for_total
+                        'Total Commission': moneyFormat(parseFloat(val.totalCommission)),
+                        'Other Commission -M': moneyFormat(parseFloat(val.otherCommissionIntel05)+parseFloat(val.otherCommIntMob)),
+                        'Consolidators commission': moneyFormat(parseFloat(val.consolidatorsCommission)+parseFloat(val.consolCommMob)),
+                        'Safety Fund' : moneyFormat(parseFloat(val.safetyFund)+parseFloat(val.safetyFundMob)), 
+                        'Payment For O/Standing Balance' : moneyFormat(parseFloat(val.paymentForOutstandingBalance)+parseFloat(val.payOutsBalMob)),
+                        'Amount': moneyFormat(parseFloat(val.for_total))
                     }
                     aray.push(objVal);
 

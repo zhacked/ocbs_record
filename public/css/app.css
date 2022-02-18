@@ -73517,7 +73517,7 @@ readers do not read off random characters that represent icons */
 }
 
 .sign-wrapper {
-  height: 80px;
+  height: 160px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -73578,7 +73578,9 @@ select:disabled {
 }
 
 .sign-wrapper .signedBy {
-  margin-right: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-right: 5px;
 }
 
 .signed-title {
@@ -73590,6 +73592,11 @@ select:disabled {
 .signed-text {
   font-size: 11px;
   font-weight: 700;
+}
+
+.signed-text_name {
+  line-height: 2;
+  text-align: center;
 }
 
 .mobile-computebox {
@@ -73754,22 +73761,25 @@ select:disabled {
     font-weight: 500;
   }
 
-  .signedBy {
-    font-size: 14px;
-    font-weight: 400;
-    margin-right: 5px;
+  .sign-wrapper .signedBy {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .signed-text_name {
+    line-height: 2.5;
+    text-align: center;
   }
 
   .sign-wrapper {
-    height: 80px;
+    height: 125px;
     width: 100%;
     display: flex;
     align-items: center;
-    margin-top: 20px;
   }
 
   .sign-wrapper-bottom {
-    margin-top: 30px;
+    margin-top: 10px;
   }
 
   .signatory-container {
