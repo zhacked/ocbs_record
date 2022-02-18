@@ -81,7 +81,7 @@
                                             :headers="headers"
                                             :items="deposit"
                                             :search="search"
-                                            :items-per-page="10"
+                                            :items-per-page="-1"
                                             sort-by="date_of_soa"
                                             group-by="date_of_soa"
                                             class="elevation-1 text-center"
