@@ -9,7 +9,7 @@
                                     titleKey="Prepared by"
                                     :check.sync="prepared"
                                     assignedSign="prepared"
-                                    :noOfSign="2"
+                                    :noOfSign="3"
                                      @prepared="handleChangedOpenSignatory"
                                 ></sign-box>
                             </v-row>
