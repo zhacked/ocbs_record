@@ -2,7 +2,7 @@
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
-            <v-btn @click="filterNoArenaDetails">Filter No Arena</v-btn>
+       
             <v-row class="mt-3">
                 <v-col class="col-md-12">
                     <v-row>
