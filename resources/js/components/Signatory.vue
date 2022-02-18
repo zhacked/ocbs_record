@@ -9,7 +9,7 @@
                                     titleKey="Prepared by"
                                     :check.sync="prepared"
                                     assignedSign="prepared"
-                                    :noOfSign="1"
+                                    :noOfSign="2"
                                      @prepared="handleChangedOpenSignatory"
                                 ></sign-box>
                             </v-row>
@@ -19,7 +19,7 @@
                                     titleKey="Checked by"
                                     :check.sync="checkSetOne"
                                     assignedSign="checkSetOne"
-                                    :noOfSign="2"
+                                    :noOfSign="3"
                                      @checkSetOne="handleChangedOpenSignatory"
                                 ></sign-box>
                             </v-row>
@@ -29,7 +29,7 @@
                                     titleKey="Checked by"
                                     :check.sync="checkSetTwo"
                                     assignedSign="checkSetTwo"
-                                    :noOfSign="2"
+                                    :noOfSign="3"
                                      @checkSetTwo="handleChangedOpenSignatory"
                                    
                                 ></sign-box>
