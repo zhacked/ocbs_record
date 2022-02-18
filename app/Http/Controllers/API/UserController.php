@@ -263,7 +263,7 @@ class UserController extends Controller
    
         $userAssigned = User::where('assign', $request['assigned']);
         $getUsers = $userAssigned->get();
-        if(count($request['users']) > 2) throw new \Exception('Assigned User Exceeded');
+        if(count($request['users']) > $request['noOfSign']) throw new \Exception('Assigned User Exceeded');
 
         if(!$getUsers->isEmpty()) {
             $userAssigned->update([
