@@ -76,6 +76,8 @@ class ArenaController extends Controller
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
             'operator' => 'required|string',
+            'email' => 'required',
+            'contact_number' => 'required'
         ]);
 
         $arena =  arena::create([
