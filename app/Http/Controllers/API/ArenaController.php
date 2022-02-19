@@ -71,11 +71,11 @@ class ArenaController extends Controller
     public function store(Request $request)
     {
 
-     
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
             'operator' => 'required|string',
+
         ]);
 
         $arena =  arena::create([
@@ -189,7 +189,8 @@ class ArenaController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        
+    
         $arenas = arena::with('BankDetails')->findOrFail($id);
 
         
@@ -197,7 +198,8 @@ class ArenaController extends Controller
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
             'operator' => 'required|string',
-
+            'contact_number'=> 'required',
+            'email' => 'required|email',
         ]);
 
         $arena = arena::with('BankDetails')->where('id',$id)->update([

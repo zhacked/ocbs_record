@@ -1556,12 +1556,12 @@ export default {
 
         openModel(data) {
             if (data.arena_details === null) {
-                swal.fire({
-                    icon: "warning",
-                    title: "Missing",
-                    text: "Add Arena Details",
-                    footer: '<a href="/arena">Click here to Add Arena</a>',
-                });
+                // swal.fire({
+                //     icon: "warning",
+                //     title: "Missing",
+                //     text: "Add Arena Details",
+                //     footer: '<a href="/arena">Click here to Add Arena</a>',
+                // });
             } else {
                 this.dialog = true;
                 this.form.reset();
