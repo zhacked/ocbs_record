@@ -219,6 +219,14 @@ class UserController extends Controller
             'password' => Hash::make($request['password'])
         ]);
 
+        foreach($request->permission as $permission){
+            $permision =  Permission::updateOrCreate([
+                 'user_id' => $user->id,
+                 'role_id'  => $permission,
+             ]);
+         }   
+
+         
         $this->Profileactivity('updated',$user->username,'profile',$user->id);
 
         return ['message' => 'Updated the user info'];
