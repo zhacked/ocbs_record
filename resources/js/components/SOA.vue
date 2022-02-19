@@ -642,7 +642,7 @@
                             ref="soaReport"
                             id="reportsoaoutput"
                             class="reportsoaoutput"
-                            style="display: none;"
+                           
                         >
                             <v-card-title
                                 class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"

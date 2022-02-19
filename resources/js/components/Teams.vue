@@ -2,8 +2,8 @@
     <v-app>
         <v-container>
             <v-row class="mt-5 is-blurred flex-column flex-md-row" v-if="$gate.isAdminTech()">
-               
-                <v-col class="col-md-6">
+               <v-col class="col-md-4"><signatory></signatory></v-col>
+                <v-col class="col-md-4">
                     <v-card>
                         <v-card-title class="card-header">
                             Team Management
@@ -108,7 +108,7 @@
                         </v-data-table>
                     </v-card>
                 </v-col>
-                <v-col  class="col-md-6">
+                <v-col  class="col-md-4">
                     <v-banner
                     v-if="!viewTeam"
                     single-line
@@ -168,9 +168,10 @@
 
 <script>
 import TeamManagement from './Team/Management.vue'
+import Signatory from './Signatory.vue'
 
 export default {
-    components: {TeamManagement},
+    components: {TeamManagement, Signatory},
     data() {
         return {
             headers: [
