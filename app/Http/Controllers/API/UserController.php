@@ -34,7 +34,7 @@ class UserController extends Controller
     public function index()
     {
 
-        return User::latest()->get();
+        return User::with('permission.roles')->latest()->get();
     }
 
 
@@ -332,6 +332,10 @@ class UserController extends Controller
        return Role::latest()->get();
     
     }
+
+    public function getpermission($id){
+        return permission::with('roles')->where('user_id', $id)->get();
+    }   
 
     public function Profileactivity($action,$description,$model,$id){
         $activity_controller = new ActivitylogsController;

@@ -87,6 +87,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     
 
     Route::get('roles', [App\Http\Controllers\API\UserController::class, 'roles']);
+    Route::get('getPermission/{id}', [App\Http\Controllers\API\UserController::class, 'getpermission']);
     
-
    

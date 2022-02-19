@@ -362,6 +362,15 @@
                 this.form.reset();
                 $('#addNew').modal('show');
                 this.form.fill(user);
+                this.getPermission(user.id)
+               
+
+            },
+            getPermission(id){
+                   axios.get("api/getPermission/" + id).then(({data}) => {
+                   console.log(data);
+                    this.form.permission = data
+            });
             },
             newModal(){
                 this.editmode = false;
@@ -396,6 +405,7 @@
             loadUsers(){
                     axios.get("api/user").then((data) => {
                         this.users = data
+                        console.log('user',data.data);
                         });
                 
             },
