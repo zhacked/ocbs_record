@@ -73411,6 +73411,7 @@ readers do not read off random characters that represent icons */
   margin: 0 auto;
   font-weight: 700;
   font-size: 11px;
+  margin-bottom: 12px;
 }
 
 .computation-wrapper_field {
@@ -73600,21 +73601,21 @@ select:disabled {
 }
 
 .mobile-computebox {
-  margin: 0 2px;
+  margin: 0;
   margin-bottom: 20px;
   width: 100%;
-  padding: 0 9px;
-  justify-content: space-between;
+  padding: 0 3px;
+  justify-content: space-around;
 }
 
 .compute-container-box {
   display: flex;
-  margin-top: 4px;
   margin-bottom: 0;
   padding: 4px;
+  padding-top: 8px;
   margin-right: 7px;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .detailed {
@@ -73644,6 +73645,10 @@ select:disabled {
   -webkit-animation: loader 1s infinite;
           animation: loader 1s infinite;
   display: flex;
+}
+
+.reportsoaoutput {
+  width: 750px;
 }
 @-webkit-keyframes loader {
   from {

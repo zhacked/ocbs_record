@@ -7,7 +7,7 @@ const beforeDownload = async ({ html2pdf, options, pdfContent }) => {
         }
     }
 
-     pdfContent.style.transform = "scale(1)"
+     pdfContent.style.transform = "scale(0.7)"
      pdfContent.style.height = "1000px"
 
 
