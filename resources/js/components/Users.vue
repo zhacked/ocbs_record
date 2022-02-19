@@ -108,7 +108,7 @@
                                     placeholder="johndoe123"
                                     outlined
                                     dense
-                                         :error-messages='usernameError'
+                                    :error-messages='usernameError'
                                     v-model="form.username"
                                     :rules="[() => !!form.username || 'This field is required']"
                                   
@@ -215,6 +215,21 @@
                                 ></v-autocomplete>
                             <!-- </div> -->
                              
+                            <v-select
+                                v-model="form.permission"
+                                :items="role_permission"
+                                chips
+                                item-text="name"
+                                item-value="id"
+                                label="Permissions"
+                                prepend-inner-icon="mdi-account-lock"
+                                dense
+                                multiple
+                                outlined
+                                :rules="[
+                                    () => !!form.permission || 'Select atleast one permission',
+                                    ]"
+                            ></v-select>
 
                             <v-text-field
                                     prepend-inner-icon="mdi-lock"
@@ -231,7 +246,6 @@
                                             ]"
                                   
                             ></v-text-field>
-
 						</div>
 						<div class="modal-footer">
 							<v-btn type="button" color="error" elevation="2" data-dismiss="modal">Close</v-btn>
@@ -266,6 +280,7 @@
                 search: '',
                 teams:[],
                 position:[],
+                role_permission:[],
                 roles:[
                     'admin',
                     'employee'
@@ -288,17 +303,26 @@
                     team_id:'',
                     position_id:'',
                     assign:'',
-                    isAdmin: false
+                    isAdmin: false,
+                    permission:[],
                   
                 }),
                 rules: {
                     password: []
-                }
+                },
+              
+               
                     
                 
             }
         },
         methods: {
+            loadroles(){
+                axios.get("api/roles").then(({data}) => {
+                     this.role_permission = data
+                     console.log('roles' ,data)
+                     });
+            },
             loadTeams(){
                  axios.get("api/teams").then((data) => {
                      this.teams = data
@@ -398,6 +422,7 @@
            this.loadUsers();
            this.loadTeams();
            this.loadPosition();
+           this.loadroles();
            Fire.$on('AfterCreate',() => {
                this.loadUsers();
            });

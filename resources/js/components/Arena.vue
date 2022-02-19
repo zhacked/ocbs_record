@@ -466,7 +466,7 @@
                                     deletable-chips
                                     chips
                                     item-text="contact_number"
-                                 
+                                    :error-messages="errors.contacts"
                                    
                                  
                                 >
@@ -482,7 +482,7 @@
                                     outlined
                                     deletable-chips
                                     item-text="email"
-                                   
+                                    :error-messages="errors.emails"
                                 >
                                 
                                 </v-combobox>
@@ -602,7 +602,9 @@ export default {
             fileUpload: null,
             isExcel: false,
             errors: {
-                areaCode: ''
+                areaCode: '',
+                contacts:'',
+                emails:''
             }
         };
     },
@@ -667,6 +669,7 @@ export default {
                         });
 
                         return objectKeyReplacedArray;
+                       
                     };
 
                     const objk = objectKeyed(arrayData[0]);
@@ -721,13 +724,14 @@ export default {
                     let emailList = [];
 
                     const removeFirstObjectTitle = objk.filter((oj) => {
+                         
                         if (oj.arenaName !== "ARENA NAME") {
                             return oj;
                         }
                     });
-
+   
                     removeFirstObjectTitle.forEach((foh) => {
-                        console.log(foh)
+                      
                         if (foh.bankName !== "" || foh.bankNumber !== "")
                             this.bankList.push({
                                 account_name: foh.accountName,
@@ -735,7 +739,7 @@ export default {
                                 bank_number: foh.bankNumber,
                                 area_code: foh.code,
                             });
-
+                       
                         this.arenaList.push({
                             arena:
                                 foh.arenaName.indexOf("~") > -1
@@ -756,6 +760,7 @@ export default {
 
                     this.emailList = emailList;
                     this.contactNumbers = contactNo;
+                    console.log('arenaliost',this.arenaList)
                 };
                 reader.readAsBinaryString(file);
             } else {
@@ -769,7 +774,7 @@ export default {
             }
         },
         clearFile(){
-               this.isExcel = false
+            this.isExcel = false
             this.fileUpload = null
         },
         async proceedAction() {
@@ -926,7 +931,7 @@ export default {
             this.form.arenas_id = accounts.arenas_id;
         },
         updateArena() {
-         
+            
             this.$Progress.start();
             const areaCode = this.form.arena.split(" ")[0];
             this.form.area_code = areaCode;
@@ -935,7 +940,8 @@ export default {
             console.log(this.form)
             this.form
                 .put("api/arena/" + this.form.id)
-                .then(() => {
+                .then((data) => {
+                    console.log(data);
                     $("#addNew").modal("hide");
                     Toast.fire({
                         icon: "success",
@@ -944,7 +950,10 @@ export default {
                     this.$Progress.finish();
                     Fire.$emit("AfterCreate");
                 })
-                .catch(() => {
+                .catch((e) => {
+                    // console.log('error',e.response.data.errors)
+                    this.errors.contacts = e.response.data.errors.contact_number
+                    this.errors.emails = e.response.data.errors.email
                     this.$Progress.fail();
                 });
         },
@@ -1028,16 +1037,13 @@ export default {
                 });
         },
         createArena() {
-          
-       
             this.$Progress.start();
             const areaCode = this.form.arena.split(" ")[0];
             this.form.area_code = areaCode;
             this.form.contact_number = !this.contactNos ? null : this.contactNos.length > 1 ? this.contactNos.join(" / "): this.contactNos.toString();
             this.form.email = !this.emailsArr ? null : this.emailsArr.length > 1 ? this.emailsArr.join(" / ") : this.emailsArr.toString();  
             
-            
-            
+        
             this.form
                 .post("api/arena")
                 .then(() => {
@@ -1051,7 +1057,6 @@ export default {
                     this.$Progress.finish();
                 })
                 .catch((e) => {
-                    console.log(e.response)
                     this.errors.areaCode = (e.response.data.message.includes('Integrity constraint') || e.response.status === 500) ? 'Area Code/Arena already exist.' : ''
                 });
         },

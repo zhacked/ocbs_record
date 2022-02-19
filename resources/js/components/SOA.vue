@@ -8,6 +8,12 @@
                     <v-row>
                         <v-spacer></v-spacer>
                         <v-spacer></v-spacer>
+                        <v-col>
+                            <arena-modal
+                                :arenaNames="arenaNames"
+                            >
+                            </arena-modal>
+                        </v-col>
                         <v-col v-show="$gate.isAdmin()">
                             <v-file-input
                                 outlined
@@ -1318,6 +1324,7 @@ import {
     computationOpenSoa,
 } from "../methods";
 
+import ArenaModal from "./modal/ArenaModal.vue"
 export default {
     components: {
         VueHtml2pdf,
@@ -1326,6 +1333,7 @@ export default {
         ComputeBox,
         BankBox,
         SignatoryBox,
+        ArenaModal
     },
     data() {
         return {
@@ -1356,6 +1364,7 @@ export default {
                     isOpen: false,
                 },
             },
+            arenaNames:'',
             zIndex: 0,
             perPageOptions: [10, 15, 20, 30],
             singleSelect: false,
@@ -1556,12 +1565,15 @@ export default {
 
         openModel(data) {
             if (data.arena_details === null) {
-                swal.fire({
-                    icon: "warning",
-                    title: "Missing",
-                    text: "Add Arena Details",
-                    footer: '<a href="/arena">Click here to Add Arena</a>',
-                });
+                $("#addNew").modal("show");
+                this.arenaNames = data.arena_name
+                // console.log('tesssst',data.arena_name);
+                // swal.fire({
+                //     icon: "warning",
+                //     title: "Missing",
+                //     text: "Add Arena Details",
+                //     footer: '<a href="/arena">Click here to Add Arena</a>',
+                // });
             } else {
                 this.dialog = true;
                 this.form.reset();

@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use view;
+use App\Models\Role;
 use App\Models\User;
-use Illuminate\Support\Facades\Route;
 use App\Models\import;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Route;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Artisan;
 
@@ -81,11 +83,12 @@ class UserController extends Controller
     public function store(Request $request)
     {
       
-
+        
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'username' => 'required|string|max:191|unique:users',
-            'password' => 'required|string|min:6'
+            'password' => 'required|string|min:6',
+            'permission' => 'required'
         ]);
 
         $user =  User::create([
@@ -100,8 +103,16 @@ class UserController extends Controller
             'password' => Hash::make($request['password']),
         ]);
 
-        $this->Profileactivity('created',$user->username,'profile',$user->id);
-        return $user;
+        
+        foreach($request->permission as $permission){
+           $permision =  Permission::create([
+                'user_id' => $user->id,
+                'role_id'  => $permission,
+            ]);
+        }   
+
+        // $this->Profileactivity('created',$user->username,'profile',$user->id);
+        // return $user;
     }
 
 
@@ -208,6 +219,14 @@ class UserController extends Controller
             'password' => Hash::make($request['password'])
         ]);
 
+        foreach($request->permission as $permission){
+            $permision =  Permission::updateOrCreate([
+                 'user_id' => $user->id,
+                 'role_id'  => $permission,
+             ]);
+         }   
+
+         
         $this->Profileactivity('updated',$user->username,'profile',$user->id);
 
         return ['message' => 'Updated the user info'];
@@ -300,17 +319,19 @@ class UserController extends Controller
     {
         $this->authorize('isAdmin');
 
+        
         $user = User::findOrFail($id);
+        $permission = permission::where('user_id', $id)->delete();
         // delete the user
-
         $user->delete();
 
         return ['message' => 'User Deleted'];
+        
     }
-    // public function artisancall(){
-    //    return  Artisan::call('backup:run');
+    public function roles(){
+       return Role::latest()->get();
     
-    // }
+    }
 
     public function Profileactivity($action,$description,$model,$id){
         $activity_controller = new ActivitylogsController;

@@ -28,6 +28,12 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Team','id', 'team_id');
     }
 
+    public function roles(){
+        return $this->hasOne('App\Models\Permission','id', 'user_id');
+    }
+
+
+
     /**
      * The attributes that should be hidden for arrays.
      *

@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\API\ActivitylogsController;
-
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Input;
 class LoginController extends Controller
 {
     /*
@@ -54,11 +55,11 @@ class LoginController extends Controller
     public function findUsername()
     {
         $login = request()->input('login');
- 
+
         $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
- 
+
         request()->merge([$fieldType => $login]);
- 
+
         return $fieldType;
     }
 
@@ -73,56 +74,57 @@ class LoginController extends Controller
     }
     public function login(Request $request)
     {
-     
+
         $login = request()->input('login');
         $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
- 
+
         $this->validate($request, [
             $fieldType => 'required',
             'password' => 'required',
         ]);
 
         $user = DB::table('users')->where($fieldType, $request->input($fieldType))->first();
-        
+
         if (auth()->guard('web')->attempt([$fieldType => $request->input($fieldType), 'password' => $request->input('password')])) {
 
             $new_sessid   = Session::getId(); //get new session_id after user sign in
 
             if($user->session_id != '') {
-                $last_session = Session::getHandler()->read($user->session_id); 
+                $last_session = Session::getHandler()->read($user->session_id);
 
                 if ($last_session) {
                     if (Session::getHandler()->destroy($user->session_id)) {
-                        
+
                     }
                 }
             }
-            
+
             DB::table('users')->where('id', $user->id)->update(['session_id' => $new_sessid]);
 
             $activity_controller = new ActivitylogsController;
             $activity_controller->arenaLogs('login',$user->name,'system',$user->id);
-         
+
             $user = auth()->guard('web')->user();
 
-          
+
             return redirect($this->redirectTo);
-        }   
-        Session::put('login_error', 'Your email and password wrong!!');
-        return back();
+        }
+
+        $errors = new MessageBag(['email' => ['Email and/or password invalid.']]);
+        return Redirect::route('login')->withErrors($errors);
 
     }
 
     public function logout(){
-    
+
         $user = Auth::user();
 
         $activity_controller = new ActivitylogsController;
         $activity_controller->arenaLogs('logout',$user->name,'system',$user->id);
-        
+
         Session::flush();
         Redirect::back();
-     
+
         return redirect('/');
     }
 
