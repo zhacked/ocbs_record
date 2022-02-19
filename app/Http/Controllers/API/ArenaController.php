@@ -71,11 +71,12 @@ class ArenaController extends Controller
     public function store(Request $request)
     {
 
+        
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
             'operator' => 'required|string',
-
+            
         ]);
 
         $arena =  arena::create([
@@ -115,6 +116,7 @@ class ArenaController extends Controller
 
     public function importArena(Request $request){
   
+
     $contactImport = arena::upsert($request['arenaList'], ['area_code']);
     $activity_controller = new ActivitylogsController;
     $activity_controller->arenaLogs('imported',$request['Uploadname'],'arena',1);

@@ -19,15 +19,9 @@
                                 v-show="!editmode"
                                 id="addNewLabel"
                             >
-                                New Arena
+                               Add New Arena
                             </h5>
-                            <h5
-                                class="modal-title"
-                                v-show="editmode"
-                                id="addNewLabel"
-                            >
-                                Update Arena
-                            </h5>
+
                             <button
                                 type="button"
                                 class="close"
@@ -42,14 +36,15 @@
                                 editmode ? updateArena() : createArena()
                             "
                         >
+                    
                             <div class="modal-body">
                                 <v-text-field
                                     label="Arena Name"
                                     outlined
-                                    v-model="form.arena"
+                                    v-model="arenaNames"
                                     :rules="[
                                         () =>
-                                            !!form.arena ||
+                                            !!arenaNames ||
                                             'This field is required',
                                     ]"
                                     :error-messages="errors.areaCode"
@@ -58,26 +53,22 @@
                                 <v-text-field
                                     label="Arena Address"
                                     outlined
-                                    v-model="form.address"
+                                    v-model="address"
                                     :rules="[
                                         () =>
-                                            !!form.address ||
+                                            !!address ||
                                             'This field is required',
                                     ]"
-                                    :class="{
-                                        'is-invalid':
-                                            form.errors.has('address'),
-                                    }"
                                 ></v-text-field>
 
                                 <v-text-field
                                     label="Operator Name"
                                     placeholder="john Doe"
                                     outlined
-                                    v-model="form.operator"
+                                    v-model="operator"
                                     :rules="[
                                         () =>
-                                            !!form.operator ||
+                                            !!operator ||
                                             'This field is required',
                                     ]"
                                 ></v-text-field>
@@ -137,57 +128,94 @@
 
 <script>
     export default {
+         props: {
+            arenaNames: String,
+            },
         data() {
-        return {
-            select: [],
-            emailRules: [],
-            errorMessages: "",
-            formHasErrors: false,
-            editmode: false,
-            arena: [],
-            emails: [],
-            contacts: [],
-            arenalogs:[],
-            search: "",
-            searchlogs:'',
-            searchbank: "",
-            input: "",
-            loading: false,
-            arenaLoading: false,
-            show: false,
-            bankDetails: [],
-            form: new Form({
-                area_code: "",
+            return {
+                select: [],
+                emailRules: [],
+                errorMessages: "",
+                formHasErrors: false,
+                editmode: false,
+                arena: [],
+                emails: [],
+                contacts: [],
+                arenalogs:[],
+                search: "",
+                searchlogs:'',
+                searchbank: "",
+                input: "",
+                loading: false,
+                arenaLoading: false,
+                show: false,
+                bankDetails: [],
+                // form: new Form({
+                //     area_code: "",
+                //     id: "",
+                //     arena:"",
+                //     address: "",
+                //     operator: "",
+                //     contact_number: [],
+                //     email: []
+                // }),
+                Bankform: new Form({
+                    id: "",
+                    account_name: "",
+                    arenas_id: "",
+                    bank_name: "",
+                    bank_number: "",
+                }),
+                 area_code: "",
                 id: "",
-                arena: "",
+                arena:"",
                 address: "",
                 operator: "",
-                contact_number: [],
-                email: []
-            }),
-            Bankform: new Form({
-                id: "",
-                account_name: "",
-                arenas_id: "",
-                bank_name: "",
-                bank_number: "",
-            }),
-
-            contactNumbers: [],
-            contactNos: [], // to removed
-            emailsArr: [],
-            emailList: [],
-            arenaList: [],
-            bankList: [],
-            fileUpload: null,
-            isExcel: false,
-            errors: {
-                areaCode: ''
-                }
-            };
+                contactNumbers: [],
+                contactNos: [], // to removed
+                emailsArr: [],
+                emailList: [],
+                arenaList: [],
+                bankList: [],
+                fileUpload: null,
+                isExcel: false,
+                errors: {
+                    areaCode: ''
+                    }
+                };
         },
-        mounted() {
-            
+        methods: {
+           
+            createArena() {
+           
+            this.$Progress.start();
+
+                axios.post("api/arena" ,{ 
+                    arena : this.arenaNames,
+                    area_code:  this.arenaNames.split(" ")[0],
+                    address: this.address,
+                    operator: this.operator,
+                    contact_number:!this.contactNos ? null : this.contactNos.length > 1 ? this.contactNos.join(" / "): this.contactNos.toString(),
+                    email: !this.emailsArr ? null : this.emailsArr.length > 1 ? this.emailsArr.join(" / ") : this.emailsArr.toString()
+                    })
+                .then(() => {
+                   
+                    $("#addNew").modal("hide");
+                    Toast.fire({
+                        icon: "success",
+                        title: "Successfully Created",
+                    });
+
+                    this.$Progress.finish();
+                    window.location.reload();
+                })
+                .catch((e) => {
+                    this.errors.areaCode = (e.response.data.message.includes('Integrity constraint') || e.response.status === 500) ? 'Area Code/Arena already exist.' : ''
+              });
+            },
+        },
+        created() {
+       
         }
     }
 </script>
