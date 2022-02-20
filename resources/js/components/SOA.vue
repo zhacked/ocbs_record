@@ -499,7 +499,7 @@
                                                     </v-col>
                                                     <v-col>
                                                         <div
-                                                            class="float-right"
+                                                            class="float-right "
                                                         >
                                                             <v-menu
                                                                 offset-x
@@ -538,9 +538,9 @@
                                                                     >
                                                                         <v-icon
                                                                             light
-                                                                            >mdi-image</v-icon
+                                                                            >mdi-collapse-all</v-icon
                                                                         >
-                                                                        Redownload
+                                                                        Menu
                                                                         <template
                                                                             v-slot:loader
                                                                         >
@@ -561,7 +561,7 @@
                                                                                 downloadingReport
                                                                             "
                                                                             color="green lighten-1"
-                                                                            class="ma-2 white--text allbtn"
+                                                                            class=" ml-4 white--text allbtn"
                                                                             @click="
                                                                                 multiDownloads
                                                                             "
@@ -582,7 +582,7 @@
                                                                                 downloadingReport
                                                                             "
                                                                             color="yellow darken-3"
-                                                                            class="ma-2 white--text allbtn"
+                                                                            class=" ml-4 white--text allbtn"
                                                                             @click="
                                                                                 downloadZip
                                                                             "
@@ -591,10 +591,34 @@
                                                                                 light
                                                                                 >mdi-zip-box</v-icon
                                                                             >
-                                                                            Zip
+                                                                            &nbsp;Zip
+                                                                        </v-btn>
+                                                                    </v-list-item>
+                                                                    <hr class="ma-3" style="background-color: #EAF9F8; border-top: 2px dashed #8c8b8b;">
+                                                                    <v-list-item>
+                                                                          <v-btn
+                                                                            :loading="
+                                                                                downloadingReport
+                                                                            "
+                                                                            :disabled="
+                                                                                downloadingReport
+                                                                            "
+                                                                            color="red darken-3"
+                                                                            class="ma-2 white--text allbtn"
+                                                                            @click="
+                                                                                clearDatabyDate(group)
+                                                                            "
+                                                                        >
+                                                                            <v-icon
+                                                                                light
+                                                                                >mdi-close-octagon</v-icon
+                                                                            >
+                                                                            Clear
                                                                         </v-btn>
                                                                     </v-list-item>
                                                                 </v-list>
+                                                              
+                                                         
                                                             </v-menu>
                                                         </div>
                                                     </v-col>
@@ -642,7 +666,7 @@
                             ref="soaReport"
                             id="reportsoaoutput"
                             class="reportsoaoutput"
-                           
+                            style="display: none;"
                         >
                             <v-card-title
                                 class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
@@ -1539,6 +1563,38 @@ export default {
             const withStatusData = await withStatus();
             this.arenaDatastatus = withStatusData;
         },
+        clearDatabyDate(val){
+           
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                  axios.post('api/clearfilterbydate',{
+                        val : val
+                    }).then((data)=>{
+                         Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                        )
+                    }).catch((error) => {
+
+                    })
+               
+            }
+            })
+
+
+
+
+          
+        },
         async showData() {
             const data = await axios.get("api/import");
 
@@ -1567,13 +1623,7 @@ export default {
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
                 this.arenaNames = data.arena_name
-                // console.log('tesssst',data.arena_name);
-                // swal.fire({
-                //     icon: "warning",
-                //     title: "Missing",
-                //     text: "Add Arena Details",
-                //     footer: '<a href="/arena">Click here to Add Arena</a>',
-                // });
+                
             } else {
                 this.dialog = true;
                 this.form.reset();

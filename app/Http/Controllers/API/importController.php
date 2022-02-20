@@ -163,8 +163,13 @@ class importController extends Controller
 
        return import::where('group',$group)
                         ->where('date_of_soa',$data)
-                        ->get();
-       
+                        ->get(); 
+    }
+
+    public function Clearfilterbydate(request $request){
+        $delete = import::where('date_of_soa',$request->val)
+                        ->where('status','done')
+                        ->delete();
     }
 
    

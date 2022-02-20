@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+    //resource
     Route::apiResources(['user' => App\Http\Controllers\API\UserController::class]);
     Route::apiResources(['arena' => App\Http\Controllers\API\ArenaController::class]);
     Route::apiResources(['import' => App\Http\Controllers\API\ImportController::class]);
@@ -28,65 +28,97 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::apiResources(['emails' => App\Http\Controllers\API\EmailController::class]);
     Route::apiResources(['teams' => App\Http\Controllers\API\TeamController::class]);
 
-
+    //custom user api
+    //get
     Route::get('profile', [App\Http\Controllers\API\UserController::class, 'profile'])->name('profile');
-    Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');
-    Route::get('arenaId', [App\Http\Controllers\API\BankDetailsController::class, 'show_arena'])->name('arenaId');
-    Route::get('filterBank/{id}', [App\Http\Controllers\API\BankDetailsController::class, 'FilterBank']);
-    Route::get('Companybanks', [App\Http\Controllers\API\BankDetailsController::class, 'Companybank']);
-    Route::get('importwithstatus', [App\Http\Controllers\API\ImportController::class, 'withstatus']);
-    Route::get('depositeandreflenish', [App\Http\Controllers\API\ImportController::class, 'depositedata']);
-    Route::get('count', [App\Http\Controllers\API\ImportController::class, 'countdata']);
-    Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);
-    Route::get('selectedbank/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
-    // Route::put('arenaStatus/{id}', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
-    Route::put('arenaStatus', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
-    Route::put('updateBankSelection/{id}', [App\Http\Controllers\API\ArenaController::class, 'updateBankSelection']);
-    Route::get('getEmails/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'getEmails']);
-    Route::get('Logsindex', [App\Http\Controllers\API\ActivitylogsController::class, 'logsIndex']);
-    Route::get('getContacts/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'getContacts']);
-    Route::get('emailDelete/{id}', [App\Http\Controllers\API\ArenaController::class, 'deleteEmail']);
-    Route::delete('deleteContact/{id}', [App\Http\Controllers\API\ArenaController::class, 'deleteContact']);
-    
-    Route::get('arenaSelectedBank/{id}', [App\Http\Controllers\API\BankDetailsController::class, 'arenaSelectedBank']);
-    Route::get('convertToExcel/{group}/{data}', [App\Http\Controllers\API\ImportController::class, 'ConvertToExcel']);
     Route::get('validate/{password}', [App\Http\Controllers\API\UserController::class, 'validate_user']);
-    Route::put('selected/{id}', [App\Http\Controllers\API\EmployeeController::class, 'selectedbyUser']);
-    Route::post('saveposition', [App\Http\Controllers\API\EmployeeController::class, 'savepostionNow']);
-    Route::get('getposition', [App\Http\Controllers\API\EmployeeController::class, 'getpostionNow']);
-    Route::get('deletePosition/{id}', [App\Http\Controllers\API\EmployeeController::class, 'deletepostionNow']);
-    Route::put('updateposition/{id}', [App\Http\Controllers\API\EmployeeController::class, 'updatepostionNowwith']);
-
-    Route::post('importArena', [App\Http\Controllers\API\ArenaController::class, 'importArena']);
-    Route::post('bankStore', [App\Http\Controllers\API\BankDetailsController::class, 'bankStore']);
-   
-
     Route::get('getStaffs', [App\Http\Controllers\API\UserController::class, 'getStaffs']);
     Route::get('getAvailableSignatory/{signatory}', [App\Http\Controllers\API\UserController::class, 'getAvailableSignatory']);
     Route::get('getUsersSignatory/{signatory}', [App\Http\Controllers\API\UserController::class, 'getUsersSignatory']);
     Route::get('getUserTeam/{teamid}', [App\Http\Controllers\API\UserController::class, 'getUserTeam']);
     Route::get('assigneduserteam/{teamid}', [App\Http\Controllers\API\UserController::class, 'getAssigned']);
-
-    Route::put('updateAssignedTeam/{id}', [App\Http\Controllers\API\UserController::class, 'updateAssignedTeam']);
-    Route::put('updateSignatory', [App\Http\Controllers\API\UserController::class, 'updateSignatory']);
-
-    Route::get('getArenaNoTeam', [App\Http\Controllers\API\ArenaController::class, 'getArenaNoTeam']);
-    Route::get('getArenaTeam/{team}', [App\Http\Controllers\API\ArenaController::class, 'getArenaTeam']);
-
-
-    Route::put('updateArenaTeam/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'updateArenaTeam']);
-    Route::put('updateSelectedArenaToTeam/{team}', [App\Http\Controllers\API\ArenaController::class, 'updateSelectedArenaToTeam']);
-    Route::put('updateSelectedUserToTeam/{team}', [App\Http\Controllers\API\UserController::class, 'updateSelectedUserToTeam']);
-    Route::post('updateTeam/{id}',[App\Http\Controllers\API\TeamController::class,'update']);
-    Route::get('deleteTeam/{id}',[App\Http\Controllers\API\TeamController::class,'destroy']);
-    Route::put('updateUserTeam/{id}', [App\Http\Controllers\API\UserController::class, 'updateUserTeam']);
     Route::get('backup', [App\Http\Controllers\API\UserController::class, 'artisancall']);
-    Route::post('activitybank', [App\Http\Controllers\API\ActivitylogsController::class, 'BankAccount']);
-    Route::get('indexActivity', [App\Http\Controllers\API\ActivitylogsController::class, 'AcitivityIndex']);
-    
-    
-
     Route::get('roles', [App\Http\Controllers\API\UserController::class, 'roles']);
     Route::get('getPermission/{id}', [App\Http\Controllers\API\UserController::class, 'getpermission']);
+    //put
+    Route::put('updateUserTeam/{id}', [App\Http\Controllers\API\UserController::class, 'updateUserTeam']);
+    Route::put('updateAssignedTeam/{id}', [App\Http\Controllers\API\UserController::class, 'updateAssignedTeam']);
+    Route::put('updateSignatory', [App\Http\Controllers\API\UserController::class, 'updateSignatory']);
+    Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');
+    Route::put('updateSelectedUserToTeam/{team}', [App\Http\Controllers\API\UserController::class, 'updateSelectedUserToTeam']);
+   
+
+    //custom BankDetails api
+    //get
+    Route::get('arenaId', [App\Http\Controllers\API\BankDetailsController::class, 'show_arena'])->name('arenaId');
+    Route::get('filterBank/{id}', [App\Http\Controllers\API\BankDetailsController::class, 'FilterBank']);
+    Route::get('Companybanks', [App\Http\Controllers\API\BankDetailsController::class, 'Companybank']);
+    Route::get('arenaSelectedBank/{id}', [App\Http\Controllers\API\BankDetailsController::class, 'arenaSelectedBank']);
+    //post
+    Route::post('bankStore', [App\Http\Controllers\API\BankDetailsController::class, 'bankStore']);
+
+
+
+    //custome Import api 
+    //get
+    Route::get('importwithstatus', [App\Http\Controllers\API\ImportController::class, 'withstatus']);
+    Route::get('depositeandreflenish', [App\Http\Controllers\API\ImportController::class, 'depositedata']);
+    Route::get('count', [App\Http\Controllers\API\ImportController::class, 'countdata']);
+    Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);
+    Route::get('selectedbank/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
+    Route::get('convertToExcel/{group}/{data}', [App\Http\Controllers\API\ImportController::class, 'ConvertToExcel']);
+    //post
+    Route::post('clearfilterbydate', [App\Http\Controllers\API\ImportController::class, 'Clearfilterbydate']);
+    //put
+    Route::put('arenaStatus', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
+
+
+
+    //custom Arena api
+    //post 
+    Route::post('importArena', [App\Http\Controllers\API\ArenaController::class, 'importArena']);
+    //get
+    Route::get('getEmails/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'getEmails']);
+    Route::get('getContacts/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'getContacts']);
+    Route::get('emailDelete/{id}', [App\Http\Controllers\API\ArenaController::class, 'deleteEmail']);
+    Route::get('getArenaNoTeam', [App\Http\Controllers\API\ArenaController::class, 'getArenaNoTeam']);
+    Route::get('getArenaTeam/{team}', [App\Http\Controllers\API\ArenaController::class, 'getArenaTeam']);
+    //put
+    Route::put('updateArenaTeam/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'updateArenaTeam']);
+    Route::put('updateSelectedArenaToTeam/{team}', [App\Http\Controllers\API\ArenaController::class, 'updateSelectedArenaToTeam']);
+    Route::put('updateBankSelection/{id}', [App\Http\Controllers\API\ArenaController::class, 'updateBankSelection']);
+    //delete
+    Route::delete('deleteContact/{id}', [App\Http\Controllers\API\ArenaController::class, 'deleteContact']);
+
+
+
+    //custom Employee api
+    //get
+    Route::get('deletePosition/{id}', [App\Http\Controllers\API\EmployeeController::class, 'deletepostionNow']);
+    Route::get('getposition', [App\Http\Controllers\API\EmployeeController::class, 'getpostionNow']);
+    //put
+    Route::put('updateposition/{id}', [App\Http\Controllers\API\EmployeeController::class, 'updatepostionNowwith']);
+    Route::put('selected/{id}', [App\Http\Controllers\API\EmployeeController::class, 'selectedbyUser']);
+    //post
+    Route::post('saveposition', [App\Http\Controllers\API\EmployeeController::class, 'savepostionNow']);
+   
+
+
+    //custom Team api
+    //get
+    Route::get('deleteTeam/{id}',[App\Http\Controllers\API\TeamController::class,'destroy']);
+    //post
+    Route::post('updateTeam/{id}',[App\Http\Controllers\API\TeamController::class,'update']);
+
+
+
+    //custom actvity
+    //get
+    Route::get('indexActivity', [App\Http\Controllers\API\ActivitylogsController::class, 'AcitivityIndex']);
+    Route::get('Logsindex', [App\Http\Controllers\API\ActivitylogsController::class, 'logsIndex']);
+    //post
+    Route::post('activitybank', [App\Http\Controllers\API\ActivitylogsController::class, 'BankAccount']);
+    
+    
     
    
