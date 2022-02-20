@@ -194,16 +194,17 @@ class UserController extends Controller
      
         $user = User::findOrFail($id);
         
-     
+
+
         if($request->type == 'admin'){
             $request['team_id'] = null;
-           $request['position_id'] = null;
-             $request['assign'] =  null;
+            $request['position_id'] = null;
+            $request['assign'] =  null;
         }
 
         $this->validate($request,[
             'name' => 'required|string|max:191',
-            // 'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,
+            // 'username' => 'required|string|email|max:191|unique:users,'.$user->id,
             'password' => 'sometimes|min:6'
         ]);
 
@@ -216,20 +217,27 @@ class UserController extends Controller
             'team_id' => $request['team_id'],
             'position_id' => $request['position_id'],
             'assign' => $request['assign'],
-            'password' => Hash::make($request['password'])
+            'password' => $request['password'] == null ? $user->password :  Hash::make($request['password'])
         ]);
 
-        $userPermissions = Permission::where('user_id', $user->id)->delete();
-
+      
+        
         foreach($request->permission as $permission){
-            $permision =  Permission::updateOrCreate([
-                 'user_id' => $user->id,
-                 'role_id'  => $permission,
-             ]);
-         }   
+     
+
+             $permisions =  Permission::updateOrCreate([
+                    'user_id' => $user->id,
+                    'role_id'  => gettype($permission) == 'array' ? $permission['id'] : $permission,
+            ]);
+           
+            }   
+
+        
+    
+        
 
          
-        $this->Profileactivity('updated',$user->username,'profile',$user->id);
+        // $this->Profileactivity('updated',$user->username,'profile',$user->id);
 
         return ['message' => 'Updated the user info'];
     }
@@ -291,23 +299,13 @@ class UserController extends Controller
                 'assign' => null
             ]);
         }
-        // foreach($request['users'] as $users){
-        //     $user = User::findOrFail($users['id']);
-        //     $signatoryUpdate = $user->update([
-        //         'assign' => $request['assigned']
-        //     ]);
-        // }
-    //   }else {
+      
         foreach($request['users'] as $users){
             $user = User::findOrFail($users['id']);
             $signatoryUpdate = $user->update([
                 'assign' => $request['assigned']
             ]);
-        }
-
-    //   }
-
-        
+        }   
         return true;
     }
 
@@ -339,9 +337,18 @@ class UserController extends Controller
         return permission::with('roles')->where('user_id', $id)->get();
     }   
 
+    public function DeletePermissions(request $request){
+        $permission = permission::where('user_id', $request->userid)
+                        ->where('role_id',$request->roleid)
+                        ->delete();
+                        
+        return permission::with('roles')->where('user_id', $request->userid)->get();
+    }
+
     public function Profileactivity($action,$description,$model,$id){
         $activity_controller = new ActivitylogsController;
         $activity_controller->arenaLogs($action,$description,$model,$id); 
     }
 
+   
 }

@@ -40,6 +40,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('backup', [App\Http\Controllers\API\UserController::class, 'artisancall']);
     Route::get('roles', [App\Http\Controllers\API\UserController::class, 'roles']);
     Route::get('getPermission/{id}', [App\Http\Controllers\API\UserController::class, 'getpermission']);
+    Route::post('deletePermission', [App\Http\Controllers\API\UserController::class, 'DeletePermissions']);
     //put
     Route::put('updateUserTeam/{id}', [App\Http\Controllers\API\UserController::class, 'updateUserTeam']);
     Route::put('updateAssignedTeam/{id}', [App\Http\Controllers\API\UserController::class, 'updateAssignedTeam']);
@@ -66,7 +67,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('count', [App\Http\Controllers\API\ImportController::class, 'countdata']);
     Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);
     Route::get('selectedbank/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
-    Route::get('convertToExcel/{group}/{data}', [App\Http\Controllers\API\ImportController::class, 'ConvertToExcel']);
+    Route::get('convertToExcel/{group}/{data}', [App\Http\Controllers\API\ImportController::class, 'ConvertToExcel']); 
     //post
     Route::post('clearfilterbydate', [App\Http\Controllers\API\ImportController::class, 'Clearfilterbydate']);
     //put
