@@ -229,6 +229,8 @@
                                 :rules="[
                                     () => !!form.permission || 'Select atleast one permission',
                                     ]"
+                                deletable-chips
+                                small-chips
                             ></v-select>
 
                             <v-text-field
@@ -280,7 +282,8 @@
                 search: '',
                 teams:[],
                 position:[],
-                role_permission:[],
+                role_permission:[
+                ],
                 roles:[
                     'admin',
                     'employee'
@@ -337,7 +340,7 @@
             },
         
             updateUser(){
-             
+                console.log(this.form)
                 this.$Progress.start();
                 this.form.put('api/user/'+this.form.id)
                 .then(() => {
@@ -357,20 +360,21 @@
             ViewModal(user){
                 console.log('user',user);
             },
-            editModal(user){
+            async editModal(user){
                 this.editmode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
                 this.form.fill(user);
-                this.getPermission(user.id)
-               
+                await this.getPermission(user.id)
+                await this.loadroles();
 
             },
-            getPermission(id){
-                   axios.get("api/getPermission/" + id).then(({data}) => {
-                   console.log(data);
-                    this.form.permission = data
-            });
+            async getPermission(id){
+                    const rolesPermission = await axios.get("api/getPermission/" + id);
+                    const rolePerm = rolesPermission.data.map(r => r.roles)
+                    this.form.permission = rolePerm
+
+                    console.log('THIS.FORM.PERMISSION', this.form.permission)
             },
             newModal(){
                 this.editmode = false;
@@ -432,7 +436,7 @@
            this.loadUsers();
            this.loadTeams();
            this.loadPosition();
-           this.loadroles();
+         
            Fire.$on('AfterCreate',() => {
                this.loadUsers();
            });

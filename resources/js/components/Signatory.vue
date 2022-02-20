@@ -1,9 +1,9 @@
 <template lang="">
-                <v-card class="pa-8">
+    <v-app>
+                <v-card class="pa-8 mx-auto w-50 mt-16">
                     <v-banner class="h4">SIGNATORY</v-banner>
                     <v-row>
                         <v-col>
-                      
                             <v-row>
                                 <sign-box
                                     titleKey="Prepared by"
@@ -36,8 +36,8 @@
                             </v-row>
                         </v-col>
                     </v-row>
-        </v-card>  
-    </v-container>
+        </v-card>
+        </v-app>    
 </template>
 <script>
 import SignBox from "./Sign/SignBox.vue";

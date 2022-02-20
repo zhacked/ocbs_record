@@ -2,8 +2,8 @@
     <v-app>
         <v-container>
             <v-row class="mt-5 is-blurred flex-column flex-md-row" v-if="$gate.isAdminTech()">
-               <v-col class="col-md-4"><signatory></signatory></v-col>
-                <v-col class="col-md-4">
+             
+                <v-col class="col-md-6">
                     <v-card>
                         <v-card-title class="card-header">
                             Team Management
@@ -108,7 +108,7 @@
                         </v-data-table>
                     </v-card>
                 </v-col>
-                <v-col  class="col-md-4">
+                <v-col  class="col-md-6">
                     <v-banner
                     v-if="!viewTeam"
                     single-line
