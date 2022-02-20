@@ -219,6 +219,8 @@ class UserController extends Controller
             'password' => Hash::make($request['password'])
         ]);
 
+        $userPermissions = Permission::where('user_id', $user->id)->delete();
+
         foreach($request->permission as $permission){
             $permision =  Permission::updateOrCreate([
                  'user_id' => $user->id,

@@ -189,7 +189,7 @@
             createArena() {
            
             this.$Progress.start();
-
+               
                 axios.post("api/arena" ,{ 
                     arena : this.arenaNames,
                     area_code:  this.arenaNames.split(" ")[0],

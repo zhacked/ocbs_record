@@ -152,6 +152,9 @@ let routes = [
         path: '/detailsconfig', component: require('./components/ConfigureDetails.vue').default
     },
     {
+        path: '/signatory', component: require('./components/Signatory.vue').default
+    },
+    {
         path: '/activitylogs', component: require('./components/ActivityLogs.vue').default
     },
     {
