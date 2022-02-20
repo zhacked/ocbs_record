@@ -474,7 +474,7 @@
                             ref="soaReport"
                             id="reportsoaoutput"
                             class="reportsoaoutput"
-                           
+                            style="display: none;"
                         >
                             <v-card-title
                                 class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
@@ -1372,6 +1372,38 @@ export default {
         async importwithstatus() {
             const withStatusData = await withStatus();
             this.arenaDatastatus = withStatusData;
+        },
+        clearDatabyDate(val){
+           
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                  axios.post('api/clearfilterbydate',{
+                        val : val
+                    }).then((data)=>{
+                         Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                        )
+                    }).catch((error) => {
+
+                    })
+               
+            }
+            })
+
+
+
+
+          
         },
         async showData() {
             const data = await axios.get("api/import");

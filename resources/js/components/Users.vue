@@ -216,6 +216,7 @@
                             <!-- </div> -->
                              
                             <v-select
+
                                 v-model="form.permission"
                                 :items="role_permission"
                                 chips
@@ -231,7 +232,24 @@
                                     ]"
                                 deletable-chips
                                 small-chips
-                            ></v-select>
+                                @change="clickme(form.permission,userid)"
+                            >
+                            <template slot="selection" slot-scope="data">
+                                <v-chip
+                                        class="ma-1"
+                                        close
+                                        color="blue"
+                                        text-color="white"
+                                        @click:close="deletePermissions(data.item.id,userid)"
+                                      
+                                > {{ data.item.name }}
+                                </v-chip>
+                           
+                          
+                        </template>
+
+                            
+                            </v-select>
 
                             <v-text-field
                                     prepend-inner-icon="mdi-lock"
@@ -242,11 +260,6 @@
                                     dense
                                 
                                     v-model="form.password"
-                                    :rules="[
-                                            () => !!form.password || 'This field is required',
-                                            () => (form.password && form.password.length >= 6) || 'password must be at least 6 charcters',
-                                            ]"
-                                  
                             ></v-text-field>
 						</div>
 						<div class="modal-footer">
@@ -294,6 +307,7 @@
                     'prepared'
                 ],
                 role: {},
+                userid:'',
                 form: new Form({
                     id:'',
                     name : '',
@@ -320,6 +334,9 @@
             }
         },
         methods: {
+            clickme(item,item2){
+                console.log(item);
+            },
             loadroles(){
                 axios.get("api/roles").then(({data}) => {
                      this.role_permission = data
@@ -340,7 +357,7 @@
             },
         
             updateUser(){
-                console.log(this.form)
+                // console.log('form',this.form)
                 this.$Progress.start();
                 this.form.put('api/user/'+this.form.id)
                 .then(() => {
@@ -365,7 +382,9 @@
                 this.form.reset();
                 $('#addNew').modal('show');
                 this.form.fill(user);
+                this.userid = user.id;
                 await this.getPermission(user.id)
+             
                 await this.loadroles();
 
             },
@@ -374,7 +393,17 @@
                     const rolePerm = rolesPermission.data.map(r => r.roles)
                     this.form.permission = rolePerm
 
-                    console.log('THIS.FORM.PERMISSION', this.form.permission)
+                    // console.log('THIS.FORM.PERMISSION', this.form.permission)
+            },
+            deletePermissions(roleid,userid){
+                axios.post('api/deletePermission',{
+                    roleid : roleid,
+                    userid : userid
+                }).then(({data})=>{
+                    console.log(data)
+                    const rolePerm = data.map(r => r.roles)
+                    this.form.permission = rolePerm
+                })
             },
             newModal(){
                 this.editmode = false;

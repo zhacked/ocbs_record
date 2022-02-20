@@ -482,7 +482,7 @@
                                     outlined
                                     deletable-chips
                                     item-text="email"
-                                    :error-messages="errors.emails"
+                                
                                 >
                                 
                                 </v-combobox>

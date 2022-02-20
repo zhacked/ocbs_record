@@ -201,7 +201,7 @@ class ArenaController extends Controller
             'address' => 'required|string|max:191',
             'operator' => 'required|string',
             'contact_number'=> 'required',
-            'email' => 'required|email',
+   
         ]);
 
         $arena = arena::with('BankDetails')->where('id',$id)->update([
