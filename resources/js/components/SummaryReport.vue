@@ -95,6 +95,7 @@
                                                     -1
                                                 ],
                                             }"
+                                            ref="tableDeposit"
                                         >
                                       <template v-slot:[`group.header`]="{ group, headers, toggle, isOpen }">
                   
@@ -106,7 +107,7 @@
                                                                 <v-icon v-if="isOpen">mdi-plus</v-icon>
                                                                 <v-icon v-else>mdi-minus</v-icon>
                                                             </v-btn>
-                                                            <span class="mx-5 font-weight-bold">{{ group | myDateSummary }} </span>
+                                                            <span class="mx-5 font-weight-bold">{{ group  }} </span>
                                                         </div>  
                                                      
                                                     </v-col>
@@ -166,7 +167,7 @@
                                             :items="reflenish"
                                             :items-per-page="10"
                                             :search="search"
-                                            :show-group-by="false"
+                                         
                                             sort-by="date_of_soa"
                                             group-by="date_of_soa"
                                             class="elevation-1 text-center"
@@ -191,7 +192,7 @@
                                                                     <v-icon v-if="isOpen">mdi-plus</v-icon>
                                                                     <v-icon v-else>mdi-minus</v-icon>
                                                                 </v-btn>
-                                                                <span class="mx-5 font-weight-bold">{{ group | myDateSummary }}</span>
+                                                                <span class="mx-5 font-weight-bold">{{ group }}</span>
                                                             </div>  
                                                         
                                                         </v-col>
@@ -234,6 +235,7 @@ import {
     numberFormat,
     moneyFormat
 } from "../utility";
+import { camelCase } from 'lodash'
 export default {
     
     data() {
@@ -242,6 +244,7 @@ export default {
                 { text: "#", value: "id" },
             
                 { text: "ref", value: "refNo" },
+                { text: "DATE", value: "date_of_soa" },
                 { text: "OCBS Name", value: "arena_name" },
                 { text: "Total Commission", value: "totalCommission" },
                 { text: "Othe Commission -M", value: "otherCommissionIntel05" },
@@ -264,8 +267,12 @@ export default {
             axios
                 .get("api/depositeandreflenish")
                 .then(({ data }) => {
-                    this.deposit = data.dp;
+                    // console.log(data)
+                    const deposit = data.dp.map(d => ({...d,date_of_soa: moment(d.date_of_soa, 'YYYY-MM-DD HH:mm:ss a').format('MMMM DD YYYY') }))
+                    this.deposit = deposit;
                     this.reflenish = data.rf;
+
+                    console.log(this.deposit)
                 });
         },
         convertToExcel(data,deprep){
@@ -315,6 +322,7 @@ export default {
     created() {
 
         this.loadSummary();
-    }
+    },
+     
 };
 </script>
