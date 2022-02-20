@@ -16,12 +16,18 @@
                             <i class="fa fa-key" aria-hidden="true"></i>
                         </div>
                         <h1 class="text-center text-white  login-title">KIOSK SOA</h1>
+                            @foreach($errors->all() as $error)
+                                <span class="text-danger h4">     <i class="nav-icon fas fa-exclamation-triangle"> </i> {{$error}}</span>
+                            @endforeach
+                           
                         <form method="POST" action="{{ route('login') }}" class="login-form">
                             @csrf
-
+                          
 
                             <div class="mb-3">
+                                @error('firstname')
 
+                                @enderror
                                 <label for="login"  class="form-label  custom-input__label">
                                     {{ __('Username or Email') }}
                                 </label>
@@ -31,25 +37,25 @@
                                         class="custom-input form-control{{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}"
                                         name="login" value="{{ old('username') ?: old('email') }}" required autofocus>
 
-                                    @if ($errors->has('username') || $errors->has('email'))
+                                    {{-- @if ($errors->has('username') || $errors->has('email'))
                                         <span class="invalid-feedback">
                                             <strong>{{ $errors->first('username') ?: $errors->first('email') }}</strong>
                                         </span>
-                                    @endif
+                                    @endif --}}
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="password"  class="form-label  custom-input__label">{{ __('Password') }}</label>
 
                                 <input id="password" type="password"
-                                    class="form-control custom-input @error('email') is-invalid @enderror"
+                                    class="form-control custom-inputform-control{{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}"
                                     name="password" required autocomplete="current-password">
 
-                                @error('email')
+                                {{-- @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
+                                @enderror --}}
 
                             </div>
 

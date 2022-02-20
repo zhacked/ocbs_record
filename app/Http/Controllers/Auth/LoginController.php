@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\MessageBag;
+use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\API\ActivitylogsController;
-use Illuminate\Support\MessageBag;
-use Illuminate\Support\Facades\Input;
+
 class LoginController extends Controller
 {
     /*
@@ -72,17 +74,13 @@ class LoginController extends Controller
     {
         return $this->username;
     }
-    public function login(Request $request)
+    public function login(request $request)
     {
 
         $login = request()->input('login');
         $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        $this->validate($request, [
-            $fieldType => 'required',
-            'password' => 'required',
-        ]);
-
+   
         $user = DB::table('users')->where($fieldType, $request->input($fieldType))->first();
 
         if (auth()->guard('web')->attempt([$fieldType => $request->input($fieldType), 'password' => $request->input('password')])) {
@@ -110,8 +108,8 @@ class LoginController extends Controller
             return redirect($this->redirectTo);
         }
 
-        $errors = new MessageBag(['email' => ['Email and/or password invalid.']]);
-        return Redirect::route('login')->withErrors($errors);
+        $errors = 'Invalid Credential';
+        return Redirect::back()->withErrors($errors);
 
     }
 
