@@ -3,7 +3,7 @@
 		<v-container>
 			<v-row class="mt-5 is-blurred" v-if="$gate.isAdminTech()">
 				<v-col class="col-md-12">
-					<v-card >
+					<v-card  class="mt-4">
                         <v-card-title class="card-header">
                              User Management
                              <v-spacer></v-spacer>
@@ -232,9 +232,34 @@
                                     ]"
                                 deletable-chips
                                 small-chips
-                                @change="clickme(form.permission,userid)"
                             >
-                            <template slot="selection" slot-scope="data">
+                             <template v-slot:selection="{ item }">
+                                <v-chip text-color="white" color="blue" small
+                                >{{ item.name }}</v-chip>
+                                </template>
+                                <template v-slot:item="{  item, attrs, on }">
+                                <v-list-item v-on="on" v-bind="attrs" #default="{ active }">
+                                    <v-list-item-action>
+                                        <v-checkbox 
+                                        :input-value="active"
+
+                                        ></v-checkbox>
+                                    </v-list-item-action>
+                                    <v-list-item-content @click="deletePermissions(active,item,userid)">
+                                    <v-list-item-title>
+                                        
+                                        <v-row no-gutters align="center">
+                                        <span>{{ item.name }} </span>
+                                        <v-spacer></v-spacer>
+                                         <v-chip text-color="white" color="#0000ff" small
+                                        >{{ item.link}}</v-chip>
+                                        </v-row>
+                                    </v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                </template>
+                            <!-- <template slot="selection" slot-scope="data">
+                                
                                 <v-chip
                                         class="ma-1"
                                         close
@@ -246,7 +271,7 @@
                                 </v-chip>
                            
                           
-                        </template>
+                        </template> -->
 
                             
                             </v-select>
@@ -327,6 +352,7 @@
                 rules: {
                     password: []
                 },
+                checkboxRole:'',
               
                
                     
@@ -334,9 +360,7 @@
             }
         },
         methods: {
-            clickme(item,item2){
-                console.log(item);
-            },
+           
             loadroles(){
                 axios.get("api/roles").then(({data}) => {
                      this.role_permission = data
@@ -395,15 +419,23 @@
 
                     // console.log('THIS.FORM.PERMISSION', this.form.permission)
             },
-            deletePermissions(roleid,userid){
-                axios.post('api/deletePermission',{
-                    roleid : roleid,
-                    userid : userid
-                }).then(({data})=>{
-                    console.log(data)
-                    const rolePerm = data.map(r => r.roles)
-                    this.form.permission = rolePerm
-                })
+           
+            deletePermissions(status,roleid,userid){
+                if(status == true){
+                      axios.post('api/deletePermission',{
+                            roleid : roleid,
+                            userid : userid
+                        }).then(({data})=>{
+                            console.log(data)
+                            const rolePerm = data.map(r => r.roles)
+                            this.form.permission = rolePerm
+                        })
+                    
+                }else{
+                      console.log('no');
+                }
+               
+              
             },
             newModal(){
                 this.editmode = false;
