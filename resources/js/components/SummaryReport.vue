@@ -166,7 +166,7 @@
                                         <v-data-table
                                             :headers="headers"
                                             :items="reflenish"
-                                            :items-per-page="10"
+                                            :items-per-page="-1"
                                             :search="search"
                                          
                                             sort-by="date_of_soa"

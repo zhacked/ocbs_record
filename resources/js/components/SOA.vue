@@ -10,7 +10,7 @@
                 <v-col class="col-md-12">
                     <v-row>
                      
-                        <v-col class="col-md-2">
+                        <v-col class="col-md-3">
                               <!-- DATE RANGE -->
                         
                                 <v-menu
@@ -63,7 +63,7 @@
                         </v-col>
                        
                         <!-- Search Input -->
-                           <v-col class="col-md-2">
+                           <v-col class="col-md-3">
                                 <v-text-field
                                     v-model="search"
                                     outlined
