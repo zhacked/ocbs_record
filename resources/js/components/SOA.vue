@@ -2,18 +2,74 @@
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
-       
+            <arena-modal
+                :arenaNames="arenaNames"
+            >
+            </arena-modal>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
                     <v-row>
-                        <v-spacer></v-spacer>
-                        <v-spacer></v-spacer>
+                     
                         <v-col>
-                            <arena-modal
-                                :arenaNames="arenaNames"
-                            >
-                            </arena-modal>
+                              <!-- DATE RANGE -->
+                        
+                                <v-menu
+                                    ref="menu"
+                                    v-model="menu"
+                                    :close-on-content-click="false"
+                                    :return-value.sync="dates"
+                                    transition="scale-transition"
+                                    offset-y
+                                    min-width="auto"
+                                >
+                                    <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                        v-model="dateRangeText"
+                                        label="Picker in menu"
+                                        prepend-icon="mdi-calendar"
+                                        readonly
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                        v-model="dates"
+                                        no-title
+                                        scrollable
+                                        range
+                                    >
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        @click="menu = false"
+                                    >
+                                        Cancel
+                                    </v-btn>
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        @click="handleFilterDate(dates)"
+                                    >
+                                        OK
+                                    </v-btn>
+                                    </v-date-picker>
+                                </v-menu>            
+
                         </v-col>
+                        <!-- Filter WIth/Without ARENA Details -->
+                        <v-col>
+                            <v-select
+                                :items="arenaItemsSelection"
+                                label="Filter arena"
+                                dense
+                                outlined
+                                item-text="text"
+                                item-value="key"
+                                @change="handleSelectionFilterArena"
+                            ></v-select>
+                        </v-col>
+                        <!-- FILE INPUT -->
                         <v-col v-show="$gate.isAdmin()">
                             <v-file-input
                                 outlined
@@ -115,17 +171,7 @@
                                             @change="handleSwitchPrepared"
                                         ></v-switch>
                                     </v-col>
-                                     <v-col>
-                                          <v-select
-                                            :items="arenaItemsSelection"
-                                            label="Filter arena"
-                                            dense
-                                            outlined
-                                            item-text="text"
-                                            item-value="key"
-                                            @change="handleSelectionFilterArena"
-                                            ></v-select>
-                                    </v-col>
+                                   
                                     <v-col>
                                         <v-text-field
                                             v-model="search"
@@ -133,6 +179,72 @@
                                             label="Search"
                                             color="primary darken-2"
                                         ></v-text-field>
+                                    </v-col>
+                                    <v-col >
+                              
+                                        <v-menu
+                                            class="float-right"
+                                            bottom
+                                            origin="center center"
+                                            transition="scale-transition"
+                                            v-if="selected.length !=0"
+                                            rounded="rounded"
+                                            :loading="downloadingReport"
+                                            :disabled="downloadingReport"
+                                        >
+                                            <template
+                                                v-slot:activator="{attrs,on,}"
+                                            >
+                                                <v-btn
+                                                    color="primary lighten-1"
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    :loading="downloadingReport"
+                                                    :disabled="downloadingReport"
+                                                >
+                                                    <v-icon
+                                                        light
+                                                    >mdi-image</v-icon>
+                                                    Download
+                                                    <template
+                                                        v-slot:loader
+                                                    >
+                                                        <span>Downloading...</span>
+                                                    </template>
+                                                </v-btn>
+                                            </template>
+                                                <v-list>
+                                                    <v-list-item>
+                                                        <v-btn
+                                                            :loading="downloadingReport"
+                                                            :disabled="downloadingReport"
+                                                            color="green lighten-1"
+                                                            class="ma-2 white--text allbtn"
+                                                            @click="multiDownloads"
+                                                        >
+                                                            <v-icon
+                                                                light
+                                                            >mdi-download</v-icon>
+                                                                PNG
+                                                        </v-btn>
+                                                    </v-list-item>
+                                                    <v-list-item>
+                                                        <v-btn
+                                                            :loading="downloadingReport"
+                                                            :disabled="downloadingReport"
+                                                            color="yellow darken-3"
+                                                            class="ma-2 white--text allbtn"
+                                                            @click="downloadZip"
+                                                        >
+                                                            <v-icon
+                                                                light
+                                                            >mdi-zip-box</v-icon>
+                                                            Zip
+                                                        </v-btn>
+                                                    </v-list-item>
+                                                </v-list>
+                                        </v-menu>
+                                                 
                                     </v-col>
                                 </v-row>
 
@@ -151,8 +263,7 @@
                                         :loading="downloadingReport"
                                         ref="table"
                                         :search="search"
-                                        sort-by="date_of_soa"
-                                        group-by="date_of_soa"
+
                                         :show-select="
                                             downloadingReport ? false : true
                                         "
@@ -171,147 +282,7 @@
                                         }"
                                         @toggle-select-all="selectAllToggle"
                                     >
-                                        <template
-                                            v-slot:[`group.header`]="{
-                                                group,
-                                                headers,
-                                                toggle,
-                                                isOpen,
-                                            }"
-                                        >
-                                            <td :colspan="headers.length">
-                                                <v-row>
-                                                    <v-col class="mt-2">
-                                                        <div class="float-left">
-                                                            <v-btn
-                                                                @click="toggle"
-                                                                x-small
-                                                                icon
-                                                                :ref="group"
-                                                            >
-                                                                <v-icon>
-                                                                    {{
-                                                                        isOpen
-                                                                            ? "$minus"
-                                                                            : "$plus"
-                                                                    }}
-                                                                </v-icon>
-                                                            </v-btn>
-                                                            <span
-                                                                class="mx-5 font-weight-bold"
-                                                                >{{
-                                                                    group
-                                                                        | myDateSummary
-                                                                }}
-                                                            </span>
-                                                        </div>
-                                                    </v-col>
-                                                    <v-col>
-                                                        <div
-                                                            class="float-right"
-                                                        >
-                                                            <v-menu
-                                                                bottom
-                                                                origin="center center"
-                                                                transition="scale-transition"
-                                                                v-if="
-                                                                    selected.length !=
-                                                                    0
-                                                                "
-                                                                rounded="rounded"
-                                                                :loading="
-                                                                    downloadingReport
-                                                                "
-                                                                :disabled="
-                                                                    downloadingReport
-                                                                "
-                                                            >
-                                                                <template
-                                                                    v-slot:activator="{
-                                                                        attrs,
-                                                                        on,
-                                                                    }"
-                                                                >
-                                                                    <v-btn
-                                                                        color="primary lighten-1"
-                                                                        v-bind="
-                                                                            attrs
-                                                                        "
-                                                                        v-on="
-                                                                            on
-                                                                        "
-                                                                        :loading="
-                                                                            downloadingReport
-                                                                        "
-                                                                        :disabled="
-                                                                            downloadingReport
-                                                                        "
-                                                                    >
-                                                                        <v-icon
-                                                                            light
-                                                                            >mdi-image</v-icon
-                                                                        >
-                                                                        Download
-                                                                        <template
-                                                                            v-slot:loader
-                                                                        >
-                                                                            <span
-                                                                                >Downloading...</span
-                                                                            >
-                                                                        </template>
-                                                                    </v-btn>
-                                                                </template>
-
-                                                                <v-list>
-                                                                    <v-list-item>
-                                                                        <v-btn
-                                                                            :loading="
-                                                                                downloadingReport
-                                                                            "
-                                                                            :disabled="
-                                                                                downloadingReport
-                                                                            "
-                                                                            color="green lighten-1"
-                                                                            class="ma-2 white--text allbtn"
-                                                                            @click="
-                                                                                multiDownloads
-                                                                            "
-                                                                        >
-                                                                            <v-icon
-                                                                                light
-                                                                                >mdi-download</v-icon
-                                                                            >
-                                                                            PNG
-                                                                        </v-btn>
-                                                                    </v-list-item>
-                                                                    <v-list-item>
-                                                                        <v-btn
-                                                                            :loading="
-                                                                                downloadingReport
-                                                                            "
-                                                                            :disabled="
-                                                                                downloadingReport
-                                                                            "
-                                                                            color="yellow darken-3"
-                                                                            class="ma-2 white--text allbtn"
-                                                                            @click="
-                                                                                downloadZip
-                                                                            "
-                                                                        >
-                                                                            <v-icon
-                                                                                light
-                                                                                >mdi-zip-box</v-icon
-                                                                            >
-                                                                            Zip
-                                                                        </v-btn>
-                                                                    </v-list-item>
-                                                                </v-list>
-                                                            </v-menu>
-                                                        </div>
-                                                    </v-col>
-                                                </v-row>
-                                            </td>
-                                        </template>
+                                       
 
                                         <template
                                             v-slot:[`item.data-table-select`]="{
@@ -440,8 +411,7 @@
                                         :items="arenaDatastatus.data"
                                         :items-per-page="10"
                                         v-model="selected"
-                                        sort-by="date_of_soa"
-                                        group-by="date_of_soa"
+                                       
                                         :loading="downloadingReport"
                                         :search="search"
                                         :show-select="
@@ -462,169 +432,7 @@
                                         }"
                                         @toggle-select-all="selectAllToggle"
                                     >
-                                        <template
-                                            v-slot:[`group.header`]="{
-                                                group,
-                                                headers,
-                                                toggle,
-                                                isOpen,
-                                            }"
-                                        >
-                                            <td :colspan="headers.length">
-                                                <v-row>
-                                                    <v-col class="mt-2">
-                                                        <div class="float-left">
-                                                            <v-btn
-                                                                @click="toggle"
-                                                                x-small
-                                                                icon
-                                                                :ref="group"
-                                                            >
-                                                                <v-icon>
-                                                                    {{
-                                                                        isOpen
-                                                                            ? "$minus"
-                                                                            : "$plus"
-                                                                    }}
-                                                                </v-icon>
-                                                            </v-btn>
-                                                            <span
-                                                                class="mx-5 font-weight-bold"
-                                                                >{{
-                                                                    group
-                                                                        | myDateSummary
-                                                                }}
-                                                            </span>
-                                                        </div>
-                                                    </v-col>
-                                                    <v-col>
-                                                        <div
-                                                            class="float-right "
-                                                        >
-                                                            <v-menu
-                                                                offset-x
-                                                                v-if="
-                                                                    selected.length !=
-                                                                    0
-                                                                "
-                                                                rounded="rounded"
-                                                                :loading="
-                                                                    downloadingReport
-                                                                "
-                                                                :disabled="
-                                                                    downloadingReport
-                                                                "
-                                                            >
-                                                                <template
-                                                                    v-slot:activator="{
-                                                                        attrs,
-                                                                        on,
-                                                                    }"
-                                                                >
-                                                                    <v-btn
-                                                                        color="primary lighten-1"
-                                                                        v-bind="
-                                                                            attrs
-                                                                        "
-                                                                        v-on="
-                                                                            on
-                                                                        "
-                                                                        :loading="
-                                                                            downloadingReport
-                                                                        "
-                                                                        :disabled="
-                                                                            downloadingReport
-                                                                        "
-                                                                    >
-                                                                        <v-icon
-                                                                            light
-                                                                            >mdi-collapse-all</v-icon
-                                                                        >
-                                                                        Menu
-                                                                        <template
-                                                                            v-slot:loader
-                                                                        >
-                                                                            <span
-                                                                                >Downloading...</span
-                                                                            >
-                                                                        </template>
-                                                                    </v-btn>
-                                                                </template>
-
-                                                                <v-list>
-                                                                    <v-list-item>
-                                                                        <v-btn
-                                                                            :loading="
-                                                                                downloadingReport
-                                                                            "
-                                                                            :disabled="
-                                                                                downloadingReport
-                                                                            "
-                                                                            color="green lighten-1"
-                                                                            class=" ml-4 white--text allbtn"
-                                                                            @click="
-                                                                                multiDownloads
-                                                                            "
-                                                                        >
-                                                                            <v-icon
-                                                                                light
-                                                                                >mdi-download</v-icon
-                                                                            >
-                                                                            PNG
-                                                                        </v-btn>
-                                                                    </v-list-item>
-                                                                    <v-list-item>
-                                                                        <v-btn
-                                                                            :loading="
-                                                                                downloadingReport
-                                                                            "
-                                                                            :disabled="
-                                                                                downloadingReport
-                                                                            "
-                                                                            color="yellow darken-3"
-                                                                            class=" ml-4 white--text allbtn"
-                                                                            @click="
-                                                                                downloadZip
-                                                                            "
-                                                                        >
-                                                                            <v-icon
-                                                                                light
-                                                                                >mdi-zip-box</v-icon
-                                                                            >
-                                                                            &nbsp;Zip
-                                                                        </v-btn>
-                                                                    </v-list-item>
-                                                                    <hr class="ma-3" style="background-color: #EAF9F8; border-top: 2px dashed #8c8b8b;">
-                                                                    <v-list-item>
-                                                                          <v-btn
-                                                                            :loading="
-                                                                                downloadingReport
-                                                                            "
-                                                                            :disabled="
-                                                                                downloadingReport
-                                                                            "
-                                                                            color="red darken-3"
-                                                                            class="ma-2 white--text allbtn"
-                                                                            @click="
-                                                                                clearDatabyDate(group)
-                                                                            "
-                                                                        >
-                                                                            <v-icon
-                                                                                light
-                                                                                >mdi-close-octagon</v-icon
-                                                                            >
-                                                                            Clear
-                                                                        </v-btn>
-                                                                    </v-list-item>
-                                                                </v-list>
-                                                              
-                                                         
-                                                            </v-menu>
-                                                        </div>
-                                                    </v-col>
-                                                </v-row>
-                                            </td>
-                                        </template>
+                                      
                                         <template
                                             v-slot:[`item.actions`]="{ item }"
                                         >
@@ -1490,6 +1298,8 @@ export default {
             arenaSample: [],
             switchPrepared: false,
             isExcel: false,
+            menu: false,
+            dates: [],
         };
     },
     methods: {
@@ -1619,11 +1429,24 @@ export default {
             this.arenaData = obj.data;
         },
 
+         async loadDateRange() { // DATE RANGE
+            console.log(this.dates)
+            console.log(this.dates[0])
+            const endDate = moment(this.dates[1], 'YYYY-MM-DD').add(1, 'days').format('YYYY-MM-DD')
+            const depositReplenish = await axios.get(`api/importDateRange/${this.dates[0]}/${endDate}`)
+            
+            // const deposit = depositReplenish.data.soa.map(d => ({...d,date_of_soa: moment(d.date_of_soa, 'YYYY-MM-DD HH:mm:ss a').format('MMM DD YYYY LTS') }))
+            // const reflenish = depositReplenish.data.fr.map(d => ({...d,date_of_soa: moment(d.date_of_soa, 'YYYY-MM-DD HH:mm:ss a').format('MMM DD YYYY LTS') }))
+            this.arenaData = depositReplenish.data;
+         
+
+        },
+
         openModel(data) {
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
                 this.arenaNames = data.arena_name
-                
+               
             } else {
                 this.dialog = true;
                 this.form.reset();
@@ -1903,6 +1726,11 @@ export default {
             this.arenaData.length = 0
             this.arenaData.splice(0, this.arenaData.length, ...arenaNoDetais)
         },
+        
+        handleFilterDate(dates){
+            this.$refs.menu.save(dates);
+            this.loadDateRange()
+        },
 
         handleSelectionFilterArena(item){
             console.log(item)
@@ -1920,7 +1748,11 @@ export default {
         }
     },
 
-    computed: {
+    computed: {  
+        dateRangeText () {
+        const dateRange = this.dates.sort()
+        return dateRange.join(' ~ ')
+      },
         computedAve: function () {
             const netWinLoss = numberFormat(
                 numberUnformat(this.computation.totalMWBets) +

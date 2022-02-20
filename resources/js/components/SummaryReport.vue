@@ -8,6 +8,7 @@
 <template>
     <v-app>
         <v-container >
+            
             <v-row class="mt-5">
                 <v-col class="col-md-12">
                     <v-card>
@@ -107,7 +108,7 @@
                                                                 <v-icon v-if="isOpen">mdi-plus</v-icon>
                                                                 <v-icon v-else>mdi-minus</v-icon>
                                                             </v-btn>
-                                                            <span class="mx-5 font-weight-bold">{{ group  }} </span>
+                                                            <span class="mx-5 font-weight-bold">{{ group | myDateSummary  }} </span>
                                                         </div>  
                                                      
                                                     </v-col>
@@ -192,7 +193,7 @@
                                                                     <v-icon v-if="isOpen">mdi-plus</v-icon>
                                                                     <v-icon v-else>mdi-minus</v-icon>
                                                                 </v-btn>
-                                                                <span class="mx-5 font-weight-bold">{{ group }}</span>
+                                                                <span class="mx-5 font-weight-bold">{{ group | myDateSummary}}</span>
                                                             </div>  
                                                         
                                                         </v-col>
@@ -267,9 +268,7 @@ export default {
             axios
                 .get("api/depositeandreflenish")
                 .then(({ data }) => {
-                    // console.log(data)
-                    const deposit = data.dp.map(d => ({...d,date_of_soa: moment(d.date_of_soa, 'YYYY-MM-DD HH:mm:ss a').format('MMMM DD YYYY') }))
-                    this.deposit = deposit;
+                    this.deposit = data.dp;
                     this.reflenish = data.rf;
 
                     console.log(this.deposit)

@@ -40,6 +40,15 @@ class importController extends Controller
       
     }
 
+    public function importDateRange($from, $to){
+        return import::with(['BankDetails',
+        'arenaDetails.BankDetails',
+        'arenaDetails.EmailDetails',
+        'arenaDetails.ContactDetails', 
+        'arenaDetails.UserTeam.userDetails.positionDetails'
+        ])->whereBetween('date_of_soa',[$from, $to])->whereNull('status')->get();
+    }
+
     public function withstatus()
     {
         return import::with(['BankDetails','arenaDetails.BankDetails','arenaDetails.EmailDetails','arenaDetails.ContactDetails', 'arenaDetails.UserTeam.userDetails.positionDetails'])->whereNotNull('status')->get();
@@ -157,6 +166,15 @@ class importController extends Controller
             'dp' => $deposit
         ]);
     }
+    public function depositReplenishDateRange($from, $to){
+             
+                $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereBetween('date_of_soa', [$from, $to])->where('group','Deposit')->get();
+                $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereBetween('date_of_soa', [$from, $to])->where('group','Replenish')->get();
+                return Response()->json([
+                    'fr' => $reflenish,
+                    'soa' => $deposit
+                ]);
+            }
     public function ConvertToExcel($group,$data){
         // ->whereNotNull('status')
         // dd($group);
