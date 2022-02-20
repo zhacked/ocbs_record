@@ -281,7 +281,7 @@
                                         class="elevation-1 text-center"
                                         :footer-props="{
                                             'items-per-page-options': [
-                                                -1, 10, 20, 30, 40, 50, 100,
+                                               10, 20, 30, 40, 50, 100,
                                             ],
                                         }"
                                         @toggle-select-all="selectAllToggle"
@@ -431,7 +431,7 @@
                                         class="elevation-1 text-center"
                                         :footer-props="{
                                             'items-per-page-options': [
-                                                -1, 10, 20, 30, 40, 50, 100,
+                                                10, 20, 30, 40, 50, 100,
                                             ],
                                         }"
                                         @toggle-select-all="selectAllToggle"
