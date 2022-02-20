@@ -279,7 +279,7 @@ export default {
 
             const value = moment(data).format("YYYY-MM-DD LTS");
             const date = moment(data).format("MMMM-DD-YYYY");
-        
+            console.log(value);
             let workbooks =  XLSX.utils.book_new();
             let worksheet = '';
             let aray = [];
