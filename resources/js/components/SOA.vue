@@ -10,7 +10,7 @@
                 <v-col class="col-md-12">
                     <v-row>
                      
-                        <v-col class="col-md-4">
+                        <v-col class="col-md-2">
                               <!-- DATE RANGE -->
                         
                                 <v-menu
@@ -25,7 +25,8 @@
                                     <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
                                         v-model="dateRangeText"
-                                      
+                                        outlined
+                                        dense
                                         label="Select Date Range"
                                         prepend-icon="mdi-calendar"
                                         readonly
@@ -60,8 +61,20 @@
                                 </v-menu>            
 
                         </v-col>
-                        <!-- Filter WIth/Without ARENA Details -->
-                        <v-col>
+                       
+                        <!-- Search Input -->
+                           <v-col class="col-md-2">
+                                <v-text-field
+                                    v-model="search"
+                                    outlined
+                                    dense
+                                    append-icon="mdi-magnify"
+                                    label="Search"
+                                    color="primary darken-2"
+                                ></v-text-field>
+                            </v-col>
+                             <!-- Filter WIth/Without ARENA Details -->
+                        <v-col class="col-md-1">
                             <v-select
                                 :items="arenaItemsSelection"
                                 label="Filter arena"
@@ -72,8 +85,9 @@
                                 @change="handleSelectionFilterArena"
                             ></v-select>
                         </v-col>
+                        <v-spacer></v-spacer>
                         <!-- FILE INPUT -->
-                        <v-col v-show="$gate.isAdmin()">
+                        <v-col class="col-md-3" v-show="$gate.isAdmin()">
                             <v-file-input
                                 outlined
                                 dense
@@ -165,7 +179,7 @@
                                 id="custom-tabs-three-tabContent active show"
                             >
                                 <v-row>
-                                    <v-col class="col-md-4">
+                                    <v-col class="col-md-6">
                                         <v-switch
                                             v-model="switchPrepared"
                                             :label="`Signatory ${
@@ -175,15 +189,8 @@
                                         ></v-switch>
                                     </v-col>
                                    
-                                    <v-col class="col-md-4">
-                                        <v-text-field
-                                            v-model="search"
-                                            append-icon="mdi-magnify"
-                                            label="Search"
-                                            color="primary darken-2"
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col class="col-md-4 d-flex justify-end align-center">
+                                 
+                                    <v-col class="col-md-6 d-flex justify-end align-center">
                               
                                         <v-menu
                                             class="flex-end"
@@ -1184,11 +1191,11 @@ export default {
             arenaItemsSelection: [
                 { 
                     key: 'all',
-                    text: 'Show All'
+                    text: 'All'
                 },
                  { 
                     key: 'noArenaDetails',
-                    text: 'No Arena Details'
+                    text: 'No Arena'
                 },
             ],
             sortBy: "refNo",
