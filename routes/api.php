@@ -36,6 +36,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('Companybanks', [App\Http\Controllers\API\BankDetailsController::class, 'Companybank']);
     Route::get('importwithstatus', [App\Http\Controllers\API\ImportController::class, 'withstatus']);
     Route::get('depositeandreflenish', [App\Http\Controllers\API\ImportController::class, 'depositedata']);
+    Route::get('importDateRange/{from}/{to}', [App\Http\Controllers\API\ImportController::class, 'importDateRange']);
+    Route::get('depositReplenishDateRange/{from}/{to}', [App\Http\Controllers\API\ImportController::class, 'depositReplenishDateRange']);
+
     Route::get('count', [App\Http\Controllers\API\ImportController::class, 'countdata']);
     Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);
     Route::get('selectedbank/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
@@ -58,6 +61,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::put('updateposition/{id}', [App\Http\Controllers\API\EmployeeController::class, 'updatepostionNowwith']);
 
     Route::post('importArena', [App\Http\Controllers\API\ArenaController::class, 'importArena']);
+ 
     Route::post('bankStore', [App\Http\Controllers\API\BankDetailsController::class, 'bankStore']);
    
 
