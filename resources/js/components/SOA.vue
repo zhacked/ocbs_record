@@ -10,7 +10,7 @@
                 <v-col class="col-md-12">
                     <v-row>
                      
-                        <v-col>
+                        <v-col class="col-md-4">
                               <!-- DATE RANGE -->
                         
                                 <v-menu
@@ -25,11 +25,14 @@
                                     <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
                                         v-model="dateRangeText"
-                                        label="Picker in menu"
+                                      
+                                        label="Select Date Range"
                                         prepend-icon="mdi-calendar"
                                         readonly
+                                        
                                         v-bind="attrs"
                                         v-on="on"
+                                   
                                     ></v-text-field>
                                     </template>
                                     <v-date-picker
@@ -42,9 +45,9 @@
                                     <v-btn
                                         text
                                         color="primary"
-                                        @click="menu = false"
+                                        @click="handleClear"
                                     >
-                                        Cancel
+                                        Clear
                                     </v-btn>
                                     <v-btn
                                         text
@@ -162,7 +165,7 @@
                                 id="custom-tabs-three-tabContent active show"
                             >
                                 <v-row>
-                                    <v-col>
+                                    <v-col class="col-md-4">
                                         <v-switch
                                             v-model="switchPrepared"
                                             :label="`Signatory ${
@@ -172,7 +175,7 @@
                                         ></v-switch>
                                     </v-col>
                                    
-                                    <v-col>
+                                    <v-col class="col-md-4">
                                         <v-text-field
                                             v-model="search"
                                             append-icon="mdi-magnify"
@@ -180,10 +183,10 @@
                                             color="primary darken-2"
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col >
+                                    <v-col class="col-md-4 d-flex justify-end align-center">
                               
                                         <v-menu
-                                            class="float-right"
+                                            class="flex-end"
                                             bottom
                                             origin="center center"
                                             transition="scale-transition"
@@ -191,6 +194,7 @@
                                             rounded="rounded"
                                             :loading="downloadingReport"
                                             :disabled="downloadingReport"
+                                            
                                         >
                                             <template
                                                 v-slot:activator="{attrs,on,}"
@@ -204,7 +208,7 @@
                                                 >
                                                     <v-icon
                                                         light
-                                                    >mdi-image</v-icon>
+                                                    >mdi-download</v-icon>
                                                     Download
                                                     <template
                                                         v-slot:loader
@@ -1736,6 +1740,11 @@ export default {
             console.log(item)
             item === 'noArenaDetails' ? this.filterNoArenaDetails() : this.showData()
         },
+        handleClear(){
+            this.menu = false;
+            this.$refs.menu.save([]);
+            this.showData();
+        },
         printDiv(divName) {
             this.dialog = false;
             const divContent = document.getElementById(divName)
@@ -1750,8 +1759,8 @@ export default {
 
     computed: {  
         dateRangeText () {
-        const dateRange = this.dates.sort()
-        return dateRange.join(' ~ ')
+        const dateRange = this.dates.length > 1 ? this.dates.sort() : null
+        return dateRange ? dateRange.join(' ~ ') : null
       },
         computedAve: function () {
             const netWinLoss = numberFormat(
