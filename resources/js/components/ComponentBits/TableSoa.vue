@@ -73,6 +73,7 @@ export default {
         downloadingReport: Boolean,
         openModel: Function,
         search: String,
+        handleSwitchTab: Function
     },
     data: () => ({
         headers: [
@@ -106,6 +107,9 @@ export default {
                 this.$emit('selectedSoa', this.selected)
             } else this.$emit('selectedSoa', []);
         },
+        emptySelect(){
+            this.selected = []
+        }
     },
 };
 </script>

@@ -1,13 +1,14 @@
 <template>
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
+          
             <h1 class="h3">Statement of Accounts</h1>
             <arena-modal :arenaNames="arenaNames"> </arena-modal>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
                     <v-row>
                         <!-- DATE RANGE -->
-                        <date-range @depositReplenish="handleFilterDate" :showData="showData" ></date-range>
+                        <date-range @depositReplenish="handleFilterDate" :showData="showData" @dates="getDates"></date-range>
                         <!-- Search Input -->
                         <v-col class="col-md-3">
                             <v-text-field
@@ -25,51 +26,9 @@
                         <soa-input @dialogPrompt="fileUploaded"></soa-input>
                      
                     </v-row>
-
-                    <div
-                        class="card card-tabs"
-                        style="overflow: auto; !important"
-                    >
-                        <div class="card-header p-0 pt-1 border-bottom-0">
-                            <ul
-                                class="nav nav-tabs"
-                                id="custom-tabs-three-tab"
-                                role="tablist"
-                            >
-                                <li class="nav-item">
-                                    <a
-                                        class="nav-link active"
-                                        id="custom-tabs-three-home-tab"
-                                        data-toggle="pill"
-                                        href="#custom-tabs-three-home"
-                                        role="tab"
-                                        aria-controls="custom-tabs-three-home"
-                                        aria-selected="true"
-                                        @click="() => (this.selected = [])"
-                                        >On Going</a
-                                    >
-                                </li>
-                                <li class="nav-item">
-                                    <a
-                                        class="nav-link"
-                                        id="custom-tabs-three-profile-tab"
-                                        data-toggle="pill"
-                                        href="#custom-tabs-three-profile"
-                                        role="tab"
-                                        aria-controls="custom-tabs-three-profile"
-                                        aria-selected="false"
-                                        @click="() => (this.selected = [])"
-                                        >Converted</a
-                                    >
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card-body">
-                            <div
-                                class="tab-content"
-                                id="custom-tabs-three-tabContent active show"
-                            >
-                                <v-row>
+                    <v-card>
+                        <v-card-title>
+                                             <v-row>
                                     <v-col class="col-md-6">
                                         <v-switch
                                             v-model="switchPrepared"
@@ -157,63 +116,40 @@
                                         </v-menu>
                                     </v-col>
                                 </v-row>
-
-                                <div
-                                    class="tab-pane fade active show"
-                                    id="custom-tabs-three-home"
-                                    role="tabpanel"
-                                    aria-labelledby="custom-tabs-three-home-tab"
+                        </v-card-title>
+                             <v-tabs
+                                v-model="tab"
+                                align-with-title
+                                   
                                 >
-                                <table-soa :arenaData="arenaData" :downloadingReport="downloadingReport" @selectedSoa="handleSelected" :search="search" :openModel="openModel"></table-soa>
-                         
+                                <v-tabs-slider color="primary"></v-tabs-slider>
 
-                                    <v-tooltip bottom color="error">
-                                        <template
-                                            v-slot:activator="{ on, attrs }"
-                                        >
-                                            <v-btn
-                                                v-show="
-                                                    arenaData &&
-                                                    arenaData.length > 0 &&
-                                                    $gate.isAdmin()
-                                                "
-                                                :loading="downloadingReport"
-                                                :disabled="downloadingReport"
-                                                @click="truncate"
-                                                color="red lighten-1"
-                                                class="ma-2 white--text"
-                                                v-bind="attrs"
-                                                v-on="on"
-                                            >
-                                                Clear Data
-                                                <v-icon right dark>
-                                                    mdi-backspace
-                                                </v-icon>
-                                            </v-btn>
-                                        </template>
-                                        <span
-                                            ><v-icon class="white--text"
-                                                >mdi-alert-outline</v-icon
-                                            >
-                                            Please call admin/technical before
-                                            to clear all data</span
-                                        >
-                                    </v-tooltip>
-                                </div>
+                                    <v-tab
+                                        v-for="item in items"
+                                        :key="item.tabItem"
+                                        :href="`#${item.tabItem}`"
+                                         @click="handleSwitchTab"
+                                    >
+                                        {{ item.text }}
+                                    </v-tab>
+                                </v-tabs>
+                        <v-card-text>
+                        
+                             
+                                <v-tabs-items v-model="tab" >
+                                    <v-tab-item id="ongoing" >
+                                        <table-soa :arenaData="arenaData" :downloadingReport="downloadingReport" @selectedSoa="handleSelected" :search="search" :openModel="openModel" ref="tableArenaOnGoing"></table-soa>
+                                    </v-tab-item>
+                                     <v-tab-item  id="converted" >
+                                        <table-soa :arenaData="arenaDatastatus" :downloadingReport.sync="downloadingReport" @selectedSoa="handleSelected" :search.sync="search" :openModel="openModel" ref="tableArenaConverted"></table-soa>
+                                    </v-tab-item>
+                                </v-tabs-items>
+                        </v-card-text>
+                    </v-card>
+    
+                </v-col>
 
-                                <div
-                                    class="tab-pane fade"
-                                    id="custom-tabs-three-profile"
-                                    role="tabpanel"
-                                    aria-labelledby="custom-tabs-three-profile-tab"
-                                >
-                                <table-soa :arenaData="arenaDatastatus" :downloadingReport.sync="downloadingReport" @selectedSoa="handleSelected" :search.sync="search" :openModel="openModel"></table-soa>
-                               
-                                </div>
-                            </div>
-                        </div>
-                        <!-- MULTIPLE DOWNLOAD  -->
-                        <div
+                                       <div
                             v-for="item in selected"
                             :key="item.codeEvent"
                             ref="soaReport"
@@ -509,9 +445,6 @@
                                 />
                             </v-card-text>
                         </div>
-                    </div>
-                    <!-- </v-card> -->
-                </v-col>
 
                 <v-dialog
                     v-model="dialog"
@@ -915,7 +848,17 @@ export default {
     },
     data() {
         return {
-        
+            tab: null,
+            items: [
+                {
+                    text: 'On going',
+                    tabItem: 'ongoing'
+                },
+                  {
+                    text: 'converted',
+                    tabItem: 'converted'
+                },
+            ],
          
             sortBy: "refNo",
             keys: ["CATEGORY"],
@@ -1029,7 +972,7 @@ export default {
             switchPrepared: false,
             // isExcel: false,
             // menu: false,
-            // dates: [],
+            dates: [],
         };
     },
     methods: {
@@ -1057,30 +1000,37 @@ export default {
             this.arenaDatastatus = withStatusData;
         },
         clearDatabyDate(val) {
-            swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios
-                        .post("api/clearfilterbydate", {
-                            val: val,
-                        })
-                        .then((data) => {
-                            Swal.fire(
-                                "Deleted!",
-                                "Your file has been deleted.",
-                                "success"
-                            );
-                        })
-                        .catch((error) => {});
-                }
-            });
+            const from = this.dates[0];
+            const to = moment(this.dates[1], "YYYY-MM-DD")
+                .add(1, "days")
+                .format("YYYY-MM-DD");
+
+            const tab = this.tab
+            console.log(`${tab} - ${from} - ${to}`)
+            // swal.fire({
+            //     title: "Are you sure?",
+            //     text: "You won't be able to revert this!",
+            //     icon: "warning",
+            //     showCancelButton: true,
+            //     confirmButtonColor: "#3085d6",
+            //     cancelButtonColor: "#d33",
+            //     confirmButtonText: "Yes, delete it!",
+            // }).then((result) => {
+            //     if (result.isConfirmed) {
+            //         axios
+            //             .post("api/clearfilterbydate", {
+            //                 val: val,
+            //             })
+            //             .then((data) => {
+            //                 Swal.fire(
+            //                     "Deleted!",
+            //                     "Your file has been deleted.",
+            //                     "success"
+            //                 );
+            //             })
+            //             .catch((error) => {});
+            //     }
+            // });
         },
         async showData() {
             const data = await axios.get("api/import");
@@ -1375,7 +1325,19 @@ export default {
         handleSelected(value){
     
             this.selected = value
-        }
+        },
+        getDates(value){
+            this.dates = value
+        },
+        handleSwitchTab(item){
+          
+           this.$refs.tableArenaOnGoing && this.$refs.tableArenaOnGoing.emptySelect();
+            this.$refs.tableArenaConverted && this.$refs.tableArenaConverted.emptySelect();
+      
+         
+        },
+     
+      
       
     },
 

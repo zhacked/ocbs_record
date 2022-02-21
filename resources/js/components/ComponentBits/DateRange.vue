@@ -58,9 +58,10 @@ export default {
         dates: []
     }),
     methods: {
-            handleFilterDate(dates) {
+        handleFilterDate(dates) {
             this.$refs.menu.save(dates);
             this.loadDateRange();
+            this.$emit('dates', dates)
         },
         handleClear() {
             this.menu = false;
