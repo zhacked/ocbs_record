@@ -25,7 +25,7 @@
                             </v-col>
                              <!-- Filter WIth/Without ARENA Details -->
                         <v-col class="col-md-1">
-                            <v-select
+                            <!-- <v-select
                                 :items="arenaItemsSelection"
                                 label="Filter arena"
                                 dense
@@ -33,7 +33,7 @@
                                 item-text="text"
                                 item-value="key"
                                 @change="handleSelectionFilterArena"
-                            ></v-select>
+                            ></v-select> -->
                         </v-col>
                         <v-spacer></v-spacer>
                         <!-- FILE INPUT -->
@@ -872,7 +872,8 @@ import ArenaDetails from "./DialogPreview/ArenaDetails.vue";
 import ComputeBox from "./DialogPreview/ComputeBox.vue";
 import BankBox from "./DialogPreview/BankBox.vue";
 import SignatoryBox from "./DialogPreview/SignatoryBox.vue";
-
+import DateRange from "./ComponentBits/DateRange.vue";
+import TableSoa from "./ComponentBits/TableSoa.vue";
 import {
     imageDownload,
     readSoa,
@@ -894,7 +895,9 @@ export default {
         ComputeBox,
         BankBox,
         SignatoryBox,
-        ArenaModal
+        ArenaModal,
+        DateRange,
+        TableSoa
     },
     data() {
         return {
@@ -1020,8 +1023,8 @@ export default {
             progressvalue: 0,
             arenaSample: [],
             switchPrepared: false,
-            // isExcel: false,
-            // menu: false,
+            isExcel: false,
+            menu: false,
             dates: [],
         };
     },
