@@ -2,137 +2,28 @@
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
-            <arena-modal
-                :arenaNames="arenaNames"
-            >
-            </arena-modal>
+            <arena-modal :arenaNames="arenaNames"> </arena-modal>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
                     <v-row>
-                     
-                        <v-col class="col-md-3">
-                              <!-- DATE RANGE -->
-                        
-                                <v-menu
-                                    ref="menu"
-                                    v-model="menu"
-                                    :close-on-content-click="false"
-                                    :return-value.sync="dates"
-                                    transition="scale-transition"
-                                    offset-y
-                                    min-width="auto"
-                                >
-                                    <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field
-                                        v-model="dateRangeText"
-                                        outlined
-                                        dense
-                                        label="Select Date Range"
-                                        prepend-icon="mdi-calendar"
-                                        readonly
-                                        
-                                        v-bind="attrs"
-                                        v-on="on"
-                                   
-                                    ></v-text-field>
-                                    </template>
-                                    <v-date-picker
-                                        v-model="dates"
-                                        no-title
-                                        scrollable
-                                        range
-                                    >
-                                    <v-spacer></v-spacer>
-                                    <v-btn
-                                        text
-                                        color="primary"
-                                        @click="handleClear"
-                                    >
-                                        Clear
-                                    </v-btn>
-                                    <v-btn
-                                        text
-                                        color="primary"
-                                        @click="handleFilterDate(dates)"
-                                    >
-                                        OK
-                                    </v-btn>
-                                    </v-date-picker>
-                                </v-menu>            
-
-                        </v-col>
-                       
+                        <!-- DATE RANGE -->
+                        <date-range @depositReplenish="handleFilterDate" :showData="showData" ></date-range>
                         <!-- Search Input -->
-                           <v-col class="col-md-3">
-                                <v-text-field
-                                    v-model="search"
-                                    outlined
-                                    dense
-                                    append-icon="mdi-magnify"
-                                    label="Search"
-                                    color="primary darken-2"
-                                ></v-text-field>
-                            </v-col>
-                             <!-- Filter WIth/Without ARENA Details -->
-                        <v-col class="col-md-1">
-                            <v-select
-                                :items="arenaItemsSelection"
-                                label="Filter arena"
-                                dense
+                        <v-col class="col-md-3">
+                            <v-text-field
+                                v-model="search"
                                 outlined
-                                item-text="text"
-                                item-value="key"
-                                @change="handleSelectionFilterArena"
-                            ></v-select>
+                                dense
+                                append-icon="mdi-magnify"
+                                label="Search"
+                                color="primary darken-2"
+                            ></v-text-field>
                         </v-col>
-                        <v-spacer></v-spacer>
+                        <!-- Filter WIth/Without ARENA Details -->
+                        <filter-arena  :showData="showData" :arenaData="this.arenaData"></filter-arena>
                         <!-- FILE INPUT -->
-                        <v-col class="col-md-3" v-show="$gate.isAdmin()">
-                            <v-file-input
-                                outlined
-                                dense
-                                v-model="fileUpload"
-                                color="deep-purple accent-4"
-                                label="File input"
-                                placeholder="Select your file"
-                                :clearable="false"
-                                counter
-                                
-                                append-icon="mdi-file-import"
-                                :show-size="1000"
-                                @change="onFileChange($event)"
-                            >
-                                <template v-slot:append>
-                                    <v-tooltip bottom color="success">
-                                        <template v-slot:activator="{ on }">
-                                            <v-icon
-                                                large
-                                                :disabled="!isExcel"
-                                                v-on="on"
-                                                color="green darken-3"
-                                                style="cursor: pointer"
-                                                @click="proceedAction"
-                                            >
-                                                mdi-file-import
-                                            </v-icon>
-                                        </template>
-                                        <span>Import File</span>
-                                    </v-tooltip>
-                                </template>
-                                <template v-slot:selection="{ index, text }">
-                                    <v-chip
-                                        v-if="index < 2"
-                                        color="deep-purple accent-4"
-                                        dark
-                                        label
-                                        close
-                                        @click:close="clearFile"
-                                    >
-                                        {{ text }}
-                                    </v-chip>
-                                </template>
-                            </v-file-input>
-                        </v-col>
+                        <soa-input @dialogPrompt="fileUploaded"></soa-input>
+                     
                     </v-row>
 
                     <div
@@ -188,74 +79,82 @@
                                             @change="handleSwitchPrepared"
                                         ></v-switch>
                                     </v-col>
-                                   
-                                 
-                                    <v-col class="col-md-6 d-flex justify-end align-center">
-                              
+
+                                    <v-col
+                                        class="col-md-6 d-flex justify-end align-center"
+                                    >
                                         <v-menu
                                             class="flex-end"
                                             bottom
                                             origin="center center"
                                             transition="scale-transition"
-                                            v-if="selected.length !=0"
+                                            v-if="selected.length != 0"
                                             rounded="rounded"
                                             :loading="downloadingReport"
                                             :disabled="downloadingReport"
-                                            
                                         >
                                             <template
-                                                v-slot:activator="{attrs,on,}"
+                                                v-slot:activator="{ attrs, on }"
                                             >
                                                 <v-btn
                                                     color="primary lighten-1"
                                                     v-bind="attrs"
                                                     v-on="on"
                                                     :loading="downloadingReport"
-                                                    :disabled="downloadingReport"
+                                                    :disabled="
+                                                        downloadingReport
+                                                    "
                                                 >
-                                                    <v-icon
-                                                        light
-                                                    >mdi-download</v-icon>
-                                                    Download
-                                                    <template
-                                                        v-slot:loader
+                                                    <v-icon light
+                                                        >mdi-download</v-icon
                                                     >
-                                                        <span>Downloading...</span>
+                                                    Download
+                                                    <template v-slot:loader>
+                                                        <span
+                                                            >Downloading...</span
+                                                        >
                                                     </template>
                                                 </v-btn>
                                             </template>
-                                                <v-list>
-                                                    <v-list-item>
-                                                        <v-btn
-                                                            :loading="downloadingReport"
-                                                            :disabled="downloadingReport"
-                                                            color="green lighten-1"
-                                                            class="ma-2 white--text allbtn"
-                                                            @click="multiDownloads"
+                                            <v-list>
+                                                <v-list-item>
+                                                    <v-btn
+                                                        :loading="
+                                                            downloadingReport
+                                                        "
+                                                        :disabled="
+                                                            downloadingReport
+                                                        "
+                                                        color="green lighten-1"
+                                                        class="ma-2 white--text allbtn"
+                                                        @click="multiDownloads"
+                                                    >
+                                                        <v-icon light
+                                                            >mdi-download</v-icon
                                                         >
-                                                            <v-icon
-                                                                light
-                                                            >mdi-download</v-icon>
-                                                                PNG
-                                                        </v-btn>
-                                                    </v-list-item>
-                                                    <v-list-item>
-                                                        <v-btn
-                                                            :loading="downloadingReport"
-                                                            :disabled="downloadingReport"
-                                                            color="yellow darken-3"
-                                                            class="ma-2 white--text allbtn"
-                                                            @click="downloadZip"
+                                                        PNG
+                                                    </v-btn>
+                                                </v-list-item>
+                                                <v-list-item>
+                                                    <v-btn
+                                                        :loading="
+                                                            downloadingReport
+                                                        "
+                                                        :disabled="
+                                                            downloadingReport
+                                                        "
+                                                        color="yellow darken-3"
+                                                        class="ma-2 white--text allbtn"
+                                                        @click="downloadZip"
+                                                    >
+                                                        <v-icon light
+                                                            >mdi-zip-box</v-icon
                                                         >
-                                                            <v-icon
-                                                                light
-                                                            >mdi-zip-box</v-icon>
-                                                            Zip
-                                                        </v-btn>
-                                                    </v-list-item>
-                                                </v-list>
+                                                        Zip
+                                                    </v-btn>
+                                                </v-list-item>
+                                            </v-list>
                                         </v-menu>
-                                                 
                                     </v-col>
                                 </v-row>
 
@@ -265,116 +164,8 @@
                                     role="tabpanel"
                                     aria-labelledby="custom-tabs-three-home-tab"
                                 >
-                                    <v-data-table
-                                        item-key="codeEvent"
-                                        :headers="headers"
-                                        :items="arenaData"
-                                        :items-per-page="10"
-                                        v-model="selected"
-                                        :loading="downloadingReport"
-                                        ref="table"
-                                        :search="search"
-
-                                        :show-select="
-                                            downloadingReport ? false : true
-                                        "
-                                        :disable-filtering="
-                                            downloadingReport ? true : false
-                                        "
-                                        :disable-sort="
-                                            downloadingReport ? true : false
-                                        "
-                                        :single-select="singleSelect"
-                                        class="elevation-1 text-center"
-                                        :footer-props="{
-                                            'items-per-page-options': [
-                                               10, 20, 30, 40, 50, 100,
-                                            ],
-                                        }"
-                                        @toggle-select-all="selectAllToggle"
-                                    >
-                                       
-
-                                        <template
-                                            v-slot:[`item.data-table-select`]="{
-                                                item,
-                                                isSelected,
-                                                select,
-                                            }"
-                                        >
-                                            <v-simple-checkbox
-                                                :value="isSelected"
-                                                :readonly="item.disabled"
-                                                :disabled="
-                                                    item.arena_details
-                                                        ? false
-                                                        : true
-                                                "
-                                                @input="select($event)"
-                                            ></v-simple-checkbox>
-                                        </template>
-                                        <template
-                                            v-slot:[`item.areaCode`]="{ item }"
-                                        >
-                                            <span class="font-weight-medium">{{
-                                                item.arena_details
-                                                    ? item.arena_details
-                                                          .area_code
-                                                    : item.areaCode
-                                            }}</span>
-                                        </template>
-                                        <template
-                                            v-slot:[`item.refNo`]="{ item }"
-                                        >
-                                            <span class="font-weight-medium">{{
-                                                item.refNo
-                                            }}</span>
-                                        </template>
-                                        <template
-                                            v-slot:[`item.arena_name`]="{
-                                                item,
-                                            }"
-                                        >
-                                            <span class="font-weight-medium">{{
-                                                item.arena_details
-                                                    ? item.arena_details.arena
-                                                    : item.arena_name
-                                            }}</span>
-                                        </template>
-
-                                        <template
-                                            v-slot:[`item.actions`]="{ item }"
-                                        >
-                                            <v-tooltip top color="primary">
-                                                <template
-                                                    v-slot:activator="{
-                                                        on,
-                                                        attrs,
-                                                        hover,
-                                                    }"
-                                                >
-                                                    <v-btn
-                                                        icon
-                                                        color="primary"
-                                                        dark
-                                                        small
-                                                        v-bind="attrs"
-                                                        v-on="on"
-                                                        @click="openModel(item)"
-                                                        :class="{
-                                                            'on-hover': hover,
-                                                        }"
-                                                        :disabled="
-                                                            downloadingReport
-                                                        "
-                                                    >
-                                                        <v-icon>mdi-eye</v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>View Account</span>
-                                            </v-tooltip>
-                                        </template>
-                                    </v-data-table>
+                                <table-soa :arenaData="arenaData" :downloadingReport="downloadingReport" @selectedSoa="handleSelected" :search="search" :openModel="openModel"></table-soa>
+                         
 
                                     <v-tooltip bottom color="error">
                                         <template
@@ -416,64 +207,8 @@
                                     role="tabpanel"
                                     aria-labelledby="custom-tabs-three-profile-tab"
                                 >
-                                    <v-data-table
-                                        item-key="codeEvent"
-                                        :headers="headers"
-                                        :items="arenaDatastatus.data"
-                                        :items-per-page="10"
-                                        v-model="selected"
-                                       
-                                        :loading="downloadingReport"
-                                        :search="search"
-                                        :show-select="
-                                            downloadingReport ? false : true
-                                        "
-                                        :disable-filtering="
-                                            downloadingReport ? true : false
-                                        "
-                                        :disable-sort="
-                                            downloadingReport ? true : false
-                                        "
-                                        :single-select="singleSelect"
-                                        class="elevation-1 text-center"
-                                        :footer-props="{
-                                            'items-per-page-options': [
-                                                10, 20, 30, 40, 50, 100,
-                                            ],
-                                        }"
-                                        @toggle-select-all="selectAllToggle"
-                                    >
-                                      
-                                        <template
-                                            v-slot:[`item.actions`]="{ item }"
-                                        >
-                                            <v-tooltip top color="primary">
-                                                <template
-                                                    v-slot:activator="{
-                                                        on,
-                                                        attrs,
-                                                        hover,
-                                                    }"
-                                                >
-                                                    <v-btn
-                                                        icon
-                                                        color="primary"
-                                                        dark
-                                                        small
-                                                        v-bind="attrs"
-                                                        v-on="on"
-                                                        @click="openModel(item)"
-                                                        :class="{
-                                                            'on-hover': hover,
-                                                        }"
-                                                    >
-                                                        <v-icon>mdi-eye</v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>View Account</span>
-                                            </v-tooltip>
-                                        </template>
-                                    </v-data-table>
+                                <table-soa :arenaData="arenaDatastatus" :downloadingReport.sync="downloadingReport" @selectedSoa="handleSelected" :search.sync="search" :openModel="openModel"></table-soa>
+                               
                                 </div>
                             </div>
                         </div>
@@ -481,11 +216,10 @@
                         <div
                             v-for="item in selected"
                             :key="item.codeEvent"
-                        
                             ref="soaReport"
                             id="reportsoaoutput"
                             class="reportsoaoutput"
-                            style="display: none;"
+                            style="display: none"
                         >
                             <v-card-title
                                 class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
@@ -748,8 +482,6 @@
                                     :banks="banks || []"
                                     :bankAccounts="bankAccounts || []"
                                     :arenaDetails="item.arena_details"
-                                    :bankId="{ id: bankId }"
-                                    :arenaId="{ id: arenaId }"
                                     :operatorName="
                                         item.arena_details
                                             ? item.arena_details.operator
@@ -773,9 +505,7 @@
 
                                 <SignatoryBox
                                     v-show="switchPrepared"
-                                   
                                     :arenaDetails="item.arena_details"
-                               
                                 />
                             </v-card-text>
                         </div>
@@ -844,7 +574,10 @@
                                             :preview-modal="false"
                                             :filename="arenaDetails.arena"
                                             :pdf-quality="2"
-                                            :image="{ type: 'jpeg', quality: 1 }"
+                                            :image="{
+                                                type: 'jpeg',
+                                                quality: 1,
+                                            }"
                                             :manual-pagination="true"
                                             pdf-format="letter"
                                             pdf-orientation="portrait"
@@ -858,10 +591,9 @@
                                             <section
                                                 slot="pdf-content"
                                                 class="pdf-content"
-                                               id="printingSOA"
+                                                id="printingSOA"
                                             >
-                                               
-                                                       <v-card-title
+                                                <v-card-title
                                                     class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
                                                 >
                                                     <span>{{
@@ -870,9 +602,7 @@
                                                             .title
                                                     }}</span>
                                                 </v-card-title>
-                                                <v-card-text
-                                                    
-                                                >
+                                                <v-card-text>
                                                     <v-row>
                                                         <v-spacer></v-spacer>
                                                         <v-spacer></v-spacer>
@@ -911,71 +641,72 @@
                                                         </div>
                                                     </v-row>
                                                     <v-row>
-                                                    <ComputeBox
-                                                        :depositReplenishTxt="
-                                                            computedAve.depositReplenishText
-                                                        "
-                                                        :commissionPercent="
-                                                            parseFloat(
-                                                                commission_percent
-                                                            )
-                                                        "
-                                                        :editmode="editmode"
-                                                        :computedAve="
-                                                            computedAve
-                                                        "
-                                                        :computation="
-                                                            computation
-                                                        "
-                                                    />
+                                                        <ComputeBox
+                                                            :depositReplenishTxt="
+                                                                computedAve.depositReplenishText
+                                                            "
+                                                            :commissionPercent="
+                                                                parseFloat(
+                                                                    commission_percent
+                                                                )
+                                                            "
+                                                            :editmode="editmode"
+                                                            :computedAve="
+                                                                computedAve
+                                                            "
+                                                            :computation="
+                                                                computation
+                                                            "
+                                                        />
                                                     </v-row>
 
                                                     <v-row>
-
-                                                    <span
-                                                        v-if="
-                                                            computedAve
-                                                                .depositReplenishText
-                                                                .dateText ===
-                                                            'FR'
-                                                        "
-                                                    
-                                                        class="fr-notif"
-                                                        >Please be advised that
-                                                        replenishment are only
-                                                        available during banking
-                                                        days. We allow
-                                                        offsetting of pending
-                                                        remittances and
-                                                        replenishments during
-                                                        non-banking days.</span
-                                                    >
-                                                    <BankBox
-                                                        :bank="bank || {}"
-                                                        :banks="banks || []"
-                                                        :bankAccounts="bankAccounts || []"
-                                                        :arenaDetails="arenaDetails"
-                                                        :bankId="{ id: bankId } || {}"
-                                                        :arenaId="{id: arenaId}"
-                                                        :operatorName="operator_name"
-                                                        :editmode="editmode"
-                                                        :depositReplenishText="
-                                                            computedAve.depositReplenishText
-                                                        "
-                                                    />
+                                                        <span
+                                                            v-if="
+                                                                computedAve
+                                                                    .depositReplenishText
+                                                                    .dateText ===
+                                                                'FR'
+                                                            "
+                                                            class="fr-notif"
+                                                            >Please be advised
+                                                            that replenishment
+                                                            are only available
+                                                            during banking days.
+                                                            We allow offsetting
+                                                            of pending
+                                                            remittances and
+                                                            replenishments
+                                                            during non-banking
+                                                            days.</span
+                                                        >
+                                                        <BankBox
+                                                            :bank="bank || {}"
+                                                            :banks="banks || []"
+                                                            :bankAccounts="
+                                                                bankAccounts ||
+                                                                []
+                                                            "
+                                                            :arenaDetails="
+                                                                arenaDetails
+                                                            "
+                                                            :operatorName="
+                                                                operator_name
+                                                            "
+                                                            :editmode="editmode"
+                                                            :depositReplenishText="
+                                                                computedAve.depositReplenishText
+                                                            "
+                                                        />
                                                     </v-row>
 
                                                     <SignatoryBox
                                                         v-if="switchPrepared"
-                                                        
                                                         :arenaDetails="
                                                             arenaDetails
                                                         "
-                                                       
                                                     />
                                                 </v-card-text>
-                                            
-                                               
                                             </section>
                                         </vue-html2pdf>
                                     </div>
@@ -1012,7 +743,7 @@
                                                 <v-btn
                                                     v-show="!editmode"
                                                     icon
-                                                     large
+                                                    large
                                                     color="green"
                                                     v-bind="attrs"
                                                     v-on="on"
@@ -1035,7 +766,7 @@
                                                 <v-btn
                                                     v-show="!editmode"
                                                     icon
-                                                     large
+                                                    large
                                                     color="red darken-2"
                                                     v-bind="attrs"
                                                     v-on="on"
@@ -1054,7 +785,7 @@
                                             </template>
                                             <span>Download as PDF</span>
                                         </v-tooltip>
-                                                <v-tooltip bottom>
+                                        <v-tooltip bottom>
                                             <template
                                                 v-slot:activator="{ on, attrs }"
                                             >
@@ -1068,14 +799,10 @@
                                                     :loading="loading"
                                                     :disabled="loading"
                                                     @click="
-                                                        printDiv(
-                                                            'printingSOA'
-                                                        )
+                                                        printDiv('printingSOA')
                                                     "
                                                 >
-                                                    <v-icon
-                                                        >mdi-printer</v-icon
-                                                    >
+                                                    <v-icon>mdi-printer</v-icon>
                                                 </v-btn>
                                             </template>
                                             <span>PRINT</span>
@@ -1154,10 +881,13 @@ import ArenaDetails from "./DialogPreview/ArenaDetails.vue";
 import ComputeBox from "./DialogPreview/ComputeBox.vue";
 import BankBox from "./DialogPreview/BankBox.vue";
 import SignatoryBox from "./DialogPreview/SignatoryBox.vue";
+import DateRange from "./ComponentBits/DateRange.vue";
+import FilterArena from "./ComponentBits/FilterArena.vue";
+import SoaInput from "./ComponentBits/SoaInput.vue";
+import TableSoa from './ComponentBits/TableSoa.vue'
 
 import {
     imageDownload,
-    readSoa,
     truncate,
     beforeDownload,
     defineEmail,
@@ -1167,7 +897,7 @@ import {
     computationOpenSoa,
 } from "../methods";
 
-import ArenaModal from "./modal/ArenaModal.vue"
+import ArenaModal from "./modal/ArenaModal.vue";
 export default {
     components: {
         VueHtml2pdf,
@@ -1176,47 +906,36 @@ export default {
         ComputeBox,
         BankBox,
         SignatoryBox,
-        ArenaModal
+        ArenaModal,
+        DateRange,
+        FilterArena,
+        SoaInput,
+        TableSoa
+        
     },
     data() {
         return {
-            headers: [
-                { text: "#", value: "id" },
-                { text: "CODE", value: "areaCode" },
-                { text: "ref", value: "refNo" },
-                { text: "Arena Name", value: "arena_name" },
-
-                { text: "", value: "actions", sortable: false },
-            ],
-            arenaItemsSelection: [
-                { 
-                    key: 'all',
-                    text: 'All'
-                },
-                 { 
-                    key: 'noArenaDetails',
-                    text: 'No Arena'
-                },
-            ],
+        
+         
             sortBy: "refNo",
             keys: ["CATEGORY"],
-           
+
             computedPerTeam: {},
             group: {
                 header: {
                     isOpen: false,
                 },
             },
-            arenaNames:'',
+            arenaNames: "",
             zIndex: 0,
             perPageOptions: [10, 15, 20, 30],
-            singleSelect: false,
+         
             selected: [],
             dialog: false,
             dialog2: false,
             search: "",
             ocbsArray: [],
-            ocbsArrayFiltered: [],
+            // ocbsArrayFiltered: [],
             editmode: false,
             commission_percent: 0.02,
             status: "Reflenish",
@@ -1238,7 +957,7 @@ export default {
             loading: false,
             loader: null,
             downloadingReport: false,
-            fileUpload: null,
+            // fileUpload: null,
             form: new Form({
                 id: "",
                 arena: "",
@@ -1304,13 +1023,13 @@ export default {
             depositReplenishTxt: {},
             pictures: [],
             disabledCount: 0,
-            selectedItems: [],
+            // selectedItems: [],
             progressvalue: 0,
             arenaSample: [],
             switchPrepared: false,
-            isExcel: false,
-            menu: false,
-            dates: [],
+            // isExcel: false,
+            // menu: false,
+            // dates: [],
         };
     },
     methods: {
@@ -1319,7 +1038,7 @@ export default {
                 console.log(data);
             });
         },
-       
+
         arenaSelectedBank(bankId) {
             const bId = bankId;
 
@@ -1332,89 +1051,36 @@ export default {
         },
         truncate,
 
-        onFileChange(event) {
-            const { arenaReportFiltered, isExcel } = readSoa(
-                event,
-                this.isExcel
-            );
-            this.ocbsArrayFiltered = arenaReportFiltered;
-            this.isExcel = isExcel;
-        },
-
-        proceedAction() {
-            this.$Progress.start();
-            if (
-                $("#importData").val() === "" ||
-                !this.fileUpload.name.includes("xlsx")
-            ) {
-                Fire.$emit("AfterCreate");
-                Toast.fire({
-                    icon: "warning",
-                    title: "Make sure you insert correct excel data!",
-                });
-            } else {
-                this.dialog2 = true;
-                axios
-                    .post("api/import", this.ocbsArrayFiltered)
-                    .then(({ data }) => {
-                        (this.dialog2 = false), $("#importData").val("");
-                        Fire.$emit("AfterCreate");
-                        Toast.fire(
-                            "Successfully!",
-                            "Excel Imported",
-                            "success"
-                        );
-                        this.$Progress.finish();
-
-                        this.fileUpload = null;
-                        this.isExcel = false;
-                    })
-                    .catch((error) => {
-                        (this.dialog2 = false),
-                            swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: "Something went wrong!",
-                                footer: error,
-                            });
-                    });
-            }
-        },
+       
         async importwithstatus() {
             const withStatusData = await withStatus();
             this.arenaDatastatus = withStatusData;
         },
-        clearDatabyDate(val){
-           
+        clearDatabyDate(val) {
             swal.fire({
-                title: 'Are you sure?',
+                title: "Are you sure?",
                 text: "You won't be able to revert this!",
-                icon: 'warning',
+                icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
             }).then((result) => {
-            if (result.isConfirmed) {
-                  axios.post('api/clearfilterbydate',{
-                        val : val
-                    }).then((data)=>{
-                         Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                        )
-                    }).catch((error) => {
-
-                    })
-               
-            }
-            })
-
-
-
-
-          
+                if (result.isConfirmed) {
+                    axios
+                        .post("api/clearfilterbydate", {
+                            val: val,
+                        })
+                        .then((data) => {
+                            Swal.fire(
+                                "Deleted!",
+                                "Your file has been deleted.",
+                                "success"
+                            );
+                        })
+                        .catch((error) => {});
+                }
+            });
         },
         async showData() {
             const data = await axios.get("api/import");
@@ -1440,24 +1106,11 @@ export default {
             this.arenaData = obj.data;
         },
 
-         async loadDateRange() { // DATE RANGE
-            console.log(this.dates)
-            console.log(this.dates[0])
-            const endDate = moment(this.dates[1], 'YYYY-MM-DD').add(1, 'days').format('YYYY-MM-DD')
-            const depositReplenish = await axios.get(`api/importDateRange/${this.dates[0]}/${endDate}`)
-            
-            // const deposit = depositReplenish.data.soa.map(d => ({...d,date_of_soa: moment(d.date_of_soa, 'YYYY-MM-DD HH:mm:ss a').format('MMM DD YYYY LTS') }))
-            // const reflenish = depositReplenish.data.fr.map(d => ({...d,date_of_soa: moment(d.date_of_soa, 'YYYY-MM-DD HH:mm:ss a').format('MMM DD YYYY LTS') }))
-            this.arenaData = depositReplenish.data;
-         
-
-        },
-
+        
         openModel(data) {
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
-                this.arenaNames = data.arena_name
-               
+                this.arenaNames = data.arena_name;
             } else {
                 this.dialog = true;
                 this.form.reset();
@@ -1491,19 +1144,14 @@ export default {
                 this.defineContact(data && data.arena_details.contact_details);
         },
 
-        clearFile(file) {
-            console.log(file);
-            this.isExcel = false;
-            this.fileUpload = null;
-        },
         closeDialog() {
             this.editmode = false;
             this.dialog = false;
             this.banks = [];
-     
+
             this.arenaDetails = {};
             this.operator_name = "";
-            
+
             this.form.reset();
             $(".computation").attr("disabled", true);
         },
@@ -1517,20 +1165,16 @@ export default {
         async downloadImg(details, codeEvent) {
             const el = this.$refs.soaReport;
             const imgdl = await imageDownload(details, codeEvent, el);
-            console.log(imgdl)
+            console.log(imgdl);
 
-            if(imgdl.status === 200) {
+            if (imgdl.status === 200) {
                 this.dialog = false;
                 this.banks = [];
                 this.arenaDetails = {};
-          
+
                 Fire.$emit("AfterCreate");
                 swal.fire("convert to png!", "successfully", "success");
             }
-          
-            
-               
-            
         },
         async multiDownloads() {
             let statusArenas = [];
@@ -1710,65 +1354,33 @@ export default {
                 this.bankAccounts = data;
             });
         },
-        selectAllToggle(props) {
-            let dis = 0;
-            this.selectedItems = props.items;
-            props.items.map((x) => {
-                if (!x.arena_details) dis += 1;
-            });
-            if (this.selected.length != props.items.length - dis) {
-                this.selected = [];
-                const self = this;
-                props.items.forEach((item) => {
-                    if (item.arena_details) {
-                        self.selected.push(item);
-                    }
-                });
-            } else this.selected = [];
-        },
-        filterNoArenaDetails(){
-            let arenaNoDetais = []
-            this.arenaData.forEach(arena => {
-                if(!arena.arena_details) {
-                    console.log(arena)
-                    arenaNoDetais.push(arena)
-                }
-            })
-            this.arenaData.length = 0
-            this.arenaData.splice(0, this.arenaData.length, ...arenaNoDetais)
-        },
-        
-        handleFilterDate(dates){
-            this.$refs.menu.save(dates);
-            this.loadDateRange()
-        },
+       
 
-        handleSelectionFilterArena(item){
-            console.log(item)
-            item === 'noArenaDetails' ? this.filterNoArenaDetails() : this.showData()
-        },
-        handleClear(){
-            this.menu = false;
-            this.$refs.menu.save([]);
-            this.showData();
-        },
         printDiv(divName) {
             this.dialog = false;
-            const divContent = document.getElementById(divName)
+            const divContent = document.getElementById(divName);
             const printContents = divContent.innerHTML;
             const originalContents = document.body.innerHTML;
             document.body.innerHTML = printContents;
             window.print();
             document.body.innerHTML = originalContents;
-            window.location.reload()
+            window.location.reload();
+        },
+        fileUploaded(value){
+            this.dialog2 = value
+        },
+        handleFilterDate(value){
+            this.arenaData = value
+        },
+        handleSelected(value){
+    
+            this.selected = value
         }
+      
     },
 
-    computed: {  
-        dateRangeText () {
-        const dateRange = this.dates.length > 1 ? this.dates.sort() : null
-        return dateRange ? dateRange.join(' ~ ') : null
-      },
+    computed: {
+     
         computedAve: function () {
             const netWinLoss = numberFormat(
                 numberUnformat(this.computation.totalMWBets) +
@@ -1954,7 +1566,7 @@ export default {
     async created() {
         await this.showData();
         this.importwithstatus();
-       
+
         this.loadBankDetails();
         Fire.$on("AfterCreate", () => {
             this.showData();

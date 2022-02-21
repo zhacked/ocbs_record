@@ -140,19 +140,19 @@
                                         </template>
                                         
                                              <template v-slot:[`item.totalCommission`]="{ item }">
-                                               <span>{{formatNumber(item.totalCommission) }}</span>
+                                               <span>{{moneyFormat(parseFloat(item.totalCommission)) }}</span>
                                             </template>
                                            <template v-slot:[`item.otherCommissionIntel05`]="{ item }">
-                                               <span>{{formatNumber(parseFloat(item.otherCommissionIntel05)+parseFloat(item.otherCommIntMob)) }}</span>
+                                               <span>{{moneyFormat(parseFloat(item.otherCommissionIntel05)+parseFloat(item.otherCommIntMob)) }}</span>
                                             </template>
                                              <template v-slot:[`item.consolidatorsCommission`]="{ item }">
-                                               <span>{{formatNumber(parseFloat(item.consolidatorsCommission)+parseFloat(item.consolCommMob))}}</span>
+                                               <span>{{moneyFormat(parseFloat(item.consolidatorsCommission)+parseFloat(item.consolCommMob))}}</span>
                                             </template>
                                              <template v-slot:[`item.safetyFund`]="{ item }">
-                                               <span>{{formatNumber(parseFloat(item.safetyFund)+parseFloat(item.safetyFundMob))}}</span>
+                                               <span>{{moneyFormat(parseFloat(item.safetyFund)+parseFloat(item.safetyFundMob))}}</span>
                                             </template>
                                              <template v-slot:[`item.for_total`]="{ item }">
-                                               <span>{{formatNumber(item.for_total)}}</span>
+                                               <span>{{moneyFormat(parseFloat(item.for_total))}}</span>
                                             </template>
                                         </v-data-table>
                                     </div>
@@ -233,10 +233,8 @@
 import moment from "moment";
 import XLSX from "xlsx";
 import {
-    numberFormat,
     moneyFormat
 } from "../utility";
-import { camelCase } from 'lodash'
 export default {
     
     data() {
@@ -259,7 +257,7 @@ export default {
             search:'',
             myBlob:'',
             filteredData:{},
-            numberFormat
+            moneyFormat
         };  
     },
     methods: {
@@ -313,9 +311,7 @@ export default {
                 ));
             
         },
-        formatNumber(number){
-            return this.numberFormat(number)
-        }
+  
         
     },
     created() {

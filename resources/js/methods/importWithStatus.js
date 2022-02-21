@@ -15,11 +15,11 @@ const  withStatus = async ()=> {
         newArray.push(obj);
     });
 
-    const obj = {
-        data: newArray,
-    };
+    // const obj = {
+    //     data: newArray,
+    // };
 
-    return obj
+    return newArray
 }
 
 export {
