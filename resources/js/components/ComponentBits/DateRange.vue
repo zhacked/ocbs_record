@@ -27,7 +27,7 @@
                 no-title
                 scrollable
                 range
-                
+                :show-current="false"
             >
                 <v-spacer></v-spacer>
                 <v-btn
@@ -63,13 +63,16 @@ export default {
     methods: {
         handleFilterDate(dates) {
             this.$refs.menu.save(dates);
-         
-            if(dates.length !== 0  ){
+            if(dates.length === 1) dates.push(dates[0])
+            console.log(dates)
+            if(dates[1]){
                 this.$emit('showClearBtn', true)
                 this.loadDateRange();
                 this.$emit('dates', dates)
+            }else{
+                this.$emit('showClearBtn', false)
+
             }
-            
            
         },
         handleClear() {
@@ -77,6 +80,7 @@ export default {
             this.$refs.menu.save([]);
             this.$emit('dates', [])
             this.$emit('tabs', 'ongoing')
+             this.$emit('showClearBtn', false)
             this.soaLists();
         },
 
@@ -93,8 +97,8 @@ export default {
          
             const filteredDepositReplenish = tabItem === 'ongoing' || (!tabItem && this.tab ==='ongoing') ? depositReplenish.data.filter(dr => dr.status === null) : depositReplenish.data.filter(dr => dr.status !== null)
         
-            this.$emit('depositReplenish',  filteredDepositReplenish)
-            this.$emit('loadingDR',  false)
+            this.$emit('depositReplenish', filteredDepositReplenish)
+            this.$emit('loadingDR', false)
 
             return await filteredDepositReplenish
         },

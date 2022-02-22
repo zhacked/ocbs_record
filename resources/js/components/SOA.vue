@@ -11,7 +11,7 @@
                 <v-col class="col-md-12">
                     <v-row>
                         <!-- DATE RANGE -->
-                        <date-range @depositReplenish="handleFilterDate" @loadingDR="handleLoadingDR" :soaLists="soaLists" @dates="getDates" @tabs="revertTab" ref="dateRange" :tab.sync="tab"></date-range>
+                        <date-range @depositReplenish="handleFilterDate" @loadingDR="handleLoadingDR" :soaLists="soaLists" @dates="getDates" @tabs="revertTab" ref="dateRange" :tab.sync="tab" @showClearBtn="handleClearBtn"></date-range>
                         <!-- Search Input -->
                            <v-col class="col-md-2">
                                 <v-text-field
@@ -101,7 +101,7 @@
                                                 light
                                                 >mdi-backspace-outline 
                                                 </v-icon>
-                                                &nbsp;Clear
+                                                &nbsp;Clear {{tab}}
                                                 </v-btn>
                                           
                                                 <v-menu
@@ -1089,7 +1089,7 @@ export default {
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Yes, remove it!",
-            }).then((result) => {
+            }).then( (result) => {
                 if (result.isConfirmed) {
                     axios
                         .post("api/clearfilterbydate", {
@@ -1104,8 +1104,8 @@ export default {
                                 "Your file has been deleted.",
                                 "success"
                             );
-                            Fire.$emit("AfterCreate");
-                         
+                        
+                            this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
 
 
                         })
@@ -1198,6 +1198,7 @@ export default {
             
         },
         async multiDownloads() {
+            console.log(this.tab)
             let statusArenas = [];
             this.downloadingReport = true;
             this.dialog2 = true;
@@ -1256,7 +1257,7 @@ export default {
                         console.log("done");
                         this.selected = [];
                     }, 1000);
-                    this.importWithStatus();
+                    this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
                 }
             }
 
@@ -1264,6 +1265,7 @@ export default {
             console.log("Without promise.all ", (end - start) / 1000, " secs");
         },
         async downloadZip() {
+            console.log(this.tab)
             let statusArenas = [];
             this.downloadingReport = true;
             this.dialog2 = true;
@@ -1313,7 +1315,7 @@ export default {
                         this.selected = [];
                     }, 1000);
                 }
-                this.importWithStatus();
+                this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
             };
             // start benchmark
             const t = new Date();
@@ -1419,6 +1421,9 @@ export default {
             }
 
            
+        },
+        handleClearBtn(value){
+            this.showClear = value
         },
         handleSelected(value){
     
