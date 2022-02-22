@@ -1054,8 +1054,9 @@ export default {
                             "Excel Imported",
                             "success"
                         );
+                        console.log(data)
                         this.$Progress.finish();
-
+                        this.soaLists();
                         this.fileUpload = null;
                         this.isExcel = false;
                     })
