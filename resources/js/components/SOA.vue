@@ -899,12 +899,16 @@ export default {
         },
         truncate,
         async soaLists(){
+            this.dialog2 = true
             const soaLists = await soa();
             this.arenaData = soaLists;
+            this.dialog2 = false
         },
         async importWithStatus() {
+            this.dialog2 = true
             const withStatusData = await withStatus(this.arenaData);
             this.arenaData = withStatusData;
+            this.dialog2 = false
          
         },
        
@@ -1030,12 +1034,7 @@ export default {
         },
         async handleChangeTab(item){
             this.dialog2 = true
-            if(this.dates.length === 0) {
-                item === 'ongoing' ? this.arenaData = await soa() : this.arenaData = await withStatus();
-            } else {
-                this.loadDateRange(item)
-            }
-            
+            this.dates.length !== 0 ? this.loadDateRange(item) : item === 'ongoing' ? this.arenaData = await soa() : this.arenaData = await withStatus();
             this.loadBankDetails()
             this.dialog2 = false
         }

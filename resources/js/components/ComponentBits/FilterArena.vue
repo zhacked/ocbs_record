@@ -9,6 +9,7 @@
             item-value="key"
             @change="handleSelectionFilterArena"
         ></v-select>
+        <loading-progress :loading="loading" />
     </v-col>
 </template>
 <script>
@@ -33,9 +34,11 @@ export default {
                     text: "No Arena",
                 },
             ],
+            loading: false
     }),
     methods: {
         filterNoArenaDetails() {
+            this.loading = true
             let arenaNoDetais = [];
             this.arenaData.forEach((arena) => {
                 if (!arena.arena_details) {
@@ -46,13 +49,15 @@ export default {
             this.arenaData.splice(0, Infinity, ...arenaNoDetais);
 
             this.$emit('newSetArrayArena', this.arenaData)
+            this.loading = false
         },
 
         handleSelectionFilterArena(item) {
-            console.log(item);
+            this.loading = true
             item === "noArenaDetails"
                 ? this.filterNoArenaDetails()
                 : this.dates.length !== 0 ? this.loadDateRange(this.tab) : this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
+            this.loading = false
         },
     },
 };

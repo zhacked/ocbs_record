@@ -43,7 +43,7 @@
                 </v-chip>
             </template>
         </v-file-input>
-        <loading-progress :loading="loading"></loading-progress>
+       <loading-progress :loading="loading" />
     </v-col>
 </template>
 <script>
@@ -58,10 +58,15 @@ export default {
     loading: false
   }),
   methods: {
-    onFileChange(event) {
-      const { arenaReportFiltered, isExcel } = readSoa(event, this.isExcel);
-      this.ocbsArrayFiltered = arenaReportFiltered;
-      this.isExcel = isExcel;
+    async onFileChange(event) {
+        if(event) {
+            this.loading = true
+            setInterval(() => {this.loading = false}, 3000)
+        }
+        const { arenaReportFiltered, isExcel } = await readSoa(event, this.isExcel);
+        this.ocbsArrayFiltered = arenaReportFiltered;
+        this.isExcel = isExcel;
+        
     },
 
     proceedAction() {
