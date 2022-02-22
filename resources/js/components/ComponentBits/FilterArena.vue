@@ -51,7 +51,7 @@ export default {
             console.log(item);
             item === "noArenaDetails"
                 ? this.filterNoArenaDetails()
-                : this.dates.lenght !== 0 ? this.loadDateRange(this.tab) : this.soaLists();
+                : this.dates.length !== 0 ? this.loadDateRange(this.tab) : this.soaLists();
         },
     },
 };

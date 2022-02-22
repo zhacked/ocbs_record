@@ -23,7 +23,7 @@
                                 ></v-text-field>
                             </v-col>
                              <!-- Filter WIth/Without ARENA Details -->
-                        <filter-arena :arenaData="arenaData" :loadDateRange="loadDateRange" :dates="dates" :soaLists="soaLists"></filter-arena>
+                        <filter-arena :arenaData="arenaData" :loadDateRange="loadDateRange" :tab="tab" :dates="dates" :soaLists="soaLists"></filter-arena>
                         
                         <v-spacer></v-spacer>
                         <!-- FILE INPUT -->
