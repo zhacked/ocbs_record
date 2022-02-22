@@ -7,6 +7,7 @@
             :return-value.sync="dates"
             transition="scale-transition"
             offset-y
+          
             min-width="auto"
         >
             <template v-slot:activator="{ on, attrs }">
@@ -26,6 +27,7 @@
                 no-title
                 scrollable
                 range
+                
             >
                 <v-spacer></v-spacer>
                 <v-btn
@@ -61,8 +63,14 @@ export default {
     methods: {
         handleFilterDate(dates) {
             this.$refs.menu.save(dates);
-            this.loadDateRange();
-            this.$emit('dates', dates)
+         
+            if(dates.length !== 0  ){
+                this.$emit('showClearBtn', true)
+                this.loadDateRange();
+                this.$emit('dates', dates)
+            }
+            
+           
         },
         handleClear() {
             this.menu = false;

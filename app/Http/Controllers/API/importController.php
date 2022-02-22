@@ -185,9 +185,13 @@ class importController extends Controller
     }
 
     public function Clearfilterbydate(request $request){
-        $delete = import::where('date_of_soa',$request->val)
-                        ->where('status','done')
+      
+        $status = $request->tab == 'converted' ? 'done' : null;
+    
+        $delete = import::whereBetween('date_of_soa',[$request->from, $request->to])
+                        ->where('status',$status)
                         ->delete();
+        return $delete;
     }
   
    
