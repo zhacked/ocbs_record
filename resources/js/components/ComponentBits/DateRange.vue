@@ -7,6 +7,7 @@
             :return-value.sync="dates"
             transition="scale-transition"
             offset-y
+          
             min-width="auto"
         >
             <template v-slot:activator="{ on, attrs }">
@@ -26,6 +27,7 @@
                 no-title
                 scrollable
                 range
+                
             >
                 <v-spacer></v-spacer>
                 <v-btn
@@ -60,8 +62,14 @@ export default {
     methods: {
         handleFilterDate(dates) {
             this.$refs.menu.save(dates);
-            this.loadDateRange();
-            this.$emit('dates', dates)
+         
+            if(dates.length !== 0  ){
+                this.$emit('showClearBtn', true)
+                this.loadDateRange();
+                this.$emit('dates', dates)
+            }
+            
+           
         },
         handleClear() {
             this.menu = false;
@@ -78,7 +86,7 @@ export default {
             const depositReplenish = await axios.get(
                 `api/importDateRange/${this.dates[0]}/${endDate}`
             );
-
+            
             // const deposit = depositReplenish.data.soa.map(d => ({...d,date_of_soa: moment(d.date_of_soa, 'YYYY-MM-DD HH:mm:ss a').format('MMM DD YYYY LTS') }))
             // const reflenish = depositReplenish.data.fr.map(d => ({...d,date_of_soa: moment(d.date_of_soa, 'YYYY-MM-DD HH:mm:ss a').format('MMM DD YYYY LTS') }))
             // this.arenaData = depositReplenish.data;

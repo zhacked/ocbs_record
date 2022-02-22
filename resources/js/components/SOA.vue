@@ -11,7 +11,7 @@
                 <v-col class="col-md-12">
                     <v-row>
                         <!-- DATE RANGE -->
-                        <date-range @depositReplenish="handleFilterDate" :showData="showData" @dates="getDates"></date-range>
+                        <date-range @depositReplenish="handleFilterDates" :showData="showData" @dates="getDates"  @showClearBtn="clearDatesBtn" ></date-range>
                         <!-- Search Input -->
                            <v-col class="col-md-2">
                                 <v-text-field
@@ -77,7 +77,7 @@
                     </v-row>
                     <v-card>
                         <v-card-title>
-                                             <v-row>
+                                <v-row>
                                     <v-col class="col-md-6">
                                         <v-switch
                                             v-model="switchPrepared"
@@ -88,73 +88,85 @@
                                         ></v-switch>
                                     </v-col>
                                    
-                                 
+
                                     <v-col class="col-md-6 d-flex justify-end align-center">
-                              
-                                        <v-menu
-                                            class="flex-end"
-                                            bottom
-                                            origin="center center"
-                                            transition="scale-transition"
-                                            v-if="selected.length !=0"
-                                            rounded="rounded"
-                                            :loading="downloadingReport"
-                                            :disabled="downloadingReport"
                                             
-                                        >
-                                            <template
-                                                v-slot:activator="{attrs,on,}"
-                                            >
                                                 <v-btn
-                                                    color="primary lighten-1"
-                                                    v-bind="attrs"
-                                                    v-on="on"
+                                                    color="red lighten-1 text-white"
+                                                    class="mr-4"
+                                                    v-show="showClear"
+                                                    @click="clearDatabyDate"
+                                                >
+                                                <v-icon
+                                                light
+                                                >mdi-backspace-outline 
+                                                </v-icon>
+                                                &nbsp;Clear
+                                                </v-btn>
+                                          
+                                                <v-menu
+                                                    class="flex-end"
+                                                    bottom
+                                                    origin="center center"
+                                                    transition="scale-transition"
+                                                    v-if="selected.length !=0"
+                                                    rounded="rounded"
                                                     :loading="downloadingReport"
                                                     :disabled="downloadingReport"
+                                                    
                                                 >
-                                                    <v-icon
-                                                        light
-                                                    >mdi-download</v-icon>
-                                                    Download
                                                     <template
-                                                        v-slot:loader
+                                                        v-slot:activator="{attrs,on,}"
                                                     >
-                                                        <span>Downloading...</span>
-                                                    </template>
-                                                </v-btn>
-                                            </template>
-                                                <v-list>
-                                                    <v-list-item>
                                                         <v-btn
+                                                            color="primary lighten-1"
+                                                            v-bind="attrs"
+                                                            v-on="on"
                                                             :loading="downloadingReport"
                                                             :disabled="downloadingReport"
-                                                            color="green lighten-1"
-                                                            class="ma-2 white--text allbtn"
-                                                            @click="multiDownloads"
                                                         >
                                                             <v-icon
                                                                 light
                                                             >mdi-download</v-icon>
-                                                                PNG
+                                                            Download
+                                                            <template
+                                                                v-slot:loader
+                                                            >
+                                                                <span>Downloading...</span>
+                                                            </template>
                                                         </v-btn>
-                                                    </v-list-item>
-                                                    <v-list-item>
-                                                        <v-btn
-                                                            :loading="downloadingReport"
-                                                            :disabled="downloadingReport"
-                                                            color="yellow darken-3"
-                                                            class="ma-2 white--text allbtn"
-                                                            @click="downloadZip"
-                                                        >
-                                                            <v-icon
-                                                                light
-                                                            >mdi-zip-box</v-icon>
-                                                            Zip
-                                                        </v-btn>
-                                                    </v-list-item>
-                                                </v-list>
-                                        </v-menu>
-                                                 
+                                                    </template>
+                                                        <v-list>
+                                                            <v-list-item>
+                                                                <v-btn
+                                                                    :loading="downloadingReport"
+                                                                    :disabled="downloadingReport"
+                                                                    color="green lighten-1"
+                                                                    class="ma-2 white--text allbtn"
+                                                                    @click="multiDownloads"
+                                                                >
+                                                                    <v-icon
+                                                                        light
+                                                                    >mdi-download</v-icon>
+                                                                        PNG
+                                                                </v-btn>
+                                                            </v-list-item>
+                                                            <v-list-item>
+                                                                <v-btn
+                                                                    :loading="downloadingReport"
+                                                                    :disabled="downloadingReport"
+                                                                    color="yellow darken-3"
+                                                                    class="ma-2 white--text allbtn"
+                                                                    @click="downloadZip"
+                                                                >
+                                                                    <v-icon
+                                                                        light
+                                                                    >mdi-zip-box</v-icon>
+                                                                    Zip
+                                                                </v-btn>
+                                                            </v-list-item>
+                                                        </v-list>
+                                                </v-menu>
                                     </v-col>
                                 </v-row>
                         </v-card-title>
@@ -1019,6 +1031,7 @@ export default {
             isExcel: false,
             menu: false,
             dates: [],
+            showClear: false,
         };
     },
     methods: {
@@ -1027,7 +1040,10 @@ export default {
                 console.log(data);
             });
         },
-       
+        clearDatesBtn(item){
+            this.showClear = item;
+            console.log(item);
+        },
         arenaSelectedBank(bankId) {
             const bId = bankId;
 
@@ -1092,7 +1108,8 @@ export default {
             const withStatusData = await withStatus();
             this.arenaDatastatus = withStatusData;
         },
-        clearDatabyDate(val) {
+        clearDatabyDate() {
+
             const from = this.dates[0];
             const to = moment(this.dates[1], "YYYY-MM-DD")
                 .add(1, "days")
@@ -1100,30 +1117,39 @@ export default {
 
             const tab = this.tab
             console.log(`${tab} - ${from} - ${to}`)
-            // swal.fire({
-            //     title: "Are you sure?",
-            //     text: "You won't be able to revert this!",
-            //     icon: "warning",
-            //     showCancelButton: true,
-            //     confirmButtonColor: "#3085d6",
-            //     cancelButtonColor: "#d33",
-            //     confirmButtonText: "Yes, delete it!",
-            // }).then((result) => {
-            //     if (result.isConfirmed) {
-            //         axios
-            //             .post("api/clearfilterbydate", {
-            //                 val: val,
-            //             })
-            //             .then((data) => {
-            //                 Swal.fire(
-            //                     "Deleted!",
-            //                     "Your file has been deleted.",
-            //                     "success"
-            //                 );
-            //             })
-            //             .catch((error) => {});
-            //     }
-            // });
+            const fromSwal = moment(this.dates[0]).format('LL');
+            const toSwal = moment(this.dates[1]).format('LL');
+            swal.fire({
+                title: "Are you sure?",
+                text: `The SOA that range from ${fromSwal} to  ${toSwal} will be remove!`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, remove it!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios
+                        .post("api/clearfilterbydate", {
+                            from: from,
+                            to: to,
+                            tab: tab
+                        })
+                        .then((data) => {
+                            console.log('delete',data)
+                            swal.fire(
+                                "Deleted!",
+                                "Your file has been deleted.",
+                                "success"
+                            );
+                            Fire.$emit("AfterCreate");
+                         
+
+
+                        })
+                        .catch((error) => {});
+                }
+            });
         },
         async showData() {
             const data = await axios.get("api/import");
@@ -1474,8 +1500,12 @@ export default {
         fileUploaded(value){
             this.dialog2 = value
         },
-        handleFilterDate(value){
+        handleFilterDates(value){
             this.arenaData = value
+         
+            if(value.length === 0 ){
+                 this.showClear = false
+            }
         },
         handleSelected(value){
     
