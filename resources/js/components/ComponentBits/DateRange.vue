@@ -46,6 +46,7 @@
                 </v-btn>
             </v-date-picker>
         </v-menu>
+        <loading-progress :loading="loading"/>
     </v-col>
 </template>
 <script>
@@ -58,7 +59,8 @@ export default {
     },
     data: ()=>({
         menu: false,
-        dates: []
+        dates: [],
+        loading: false
     }),
     methods: {
         handleFilterDate(dates) {
@@ -86,7 +88,7 @@ export default {
 
         async loadDateRange(tabItem) {
             // DATE RANGE
-           this.$emit('loadingDR',  true)
+           this.loading = true
             const endDate = moment(this.dates[1], "YYYY-MM-DD")
                 .add(1, "days")
                 .format("YYYY-MM-DD");
@@ -98,7 +100,7 @@ export default {
             const filteredDepositReplenish = tabItem === 'ongoing' || (!tabItem && this.tab ==='ongoing') ? depositReplenish.data.filter(dr => dr.status === null) : depositReplenish.data.filter(dr => dr.status !== null)
         
             this.$emit('depositReplenish', filteredDepositReplenish)
-            this.$emit('loadingDR', false)
+            this.loading = false
 
             return await filteredDepositReplenish
         },

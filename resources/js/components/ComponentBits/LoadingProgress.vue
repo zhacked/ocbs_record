@@ -1,7 +1,7 @@
 <template lang="">
                <!-- PLEASE STAND BY -->
 
-            <v-dialog v-model="dialog2" persistent width="400">
+            <v-dialog v-model="loading" persistent width="400">
                 <v-card
                     :color="progressvalue === 100 ? '#6BB3EF' : '#002050'"
                     dark
@@ -52,7 +52,7 @@
 export default {
     name: 'loading-progress',
     props: {
-        dialog2: Boolean,
+        loading: Boolean,
         downloadingReport: Boolean,
         progressvalue: Number
     }

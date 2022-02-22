@@ -1,124 +1,110 @@
 <template lang="">
     <v-col class="col-md-4" v-show="$gate.isAdmin()">
-                            <v-file-input
-                                outlined
-                                dense
-                                v-model="fileUpload"
-                                color="deep-purple accent-4"
-                                label="File input"
-                                placeholder="Select your file"
-                                :clearable="false"
-                                counter
-                                append-icon="mdi-file-import"
-                                :show-size="1000"
-                                @change="onFileChange($event)"
-                            >
-                                <template v-slot:append>
-                                    <v-tooltip bottom color="success">
-                                        <template v-slot:activator="{ on }">
-                                            <v-icon
-                                                large
-                                                :disabled="!isExcel"
-                                                v-on="on"
-                                                color="green darken-3"
-                                                style="cursor: pointer"
-                                                @click="proceedAction"
-                                            >
-                                                mdi-file-import
-                                            </v-icon>
-                                        </template>
-                                        <span>Import File</span>
-                                    </v-tooltip>
-                                </template>
-                                <template v-slot:selection="{ index, text }">
-                                    <v-chip
-                                        v-if="index < 2"
-                                        color="deep-purple accent-4"
-                                        dark
-                                        label
-                                        close
-                                        @click:close="clearFile"
-                                    >
-                                        {{ text }}
-                                    </v-chip>
-                                </template>
-                            </v-file-input>
-                        </v-col>
+        <v-file-input
+            outlined
+            dense
+            v-model="fileUpload"
+            color="deep-purple accent-4"
+            label="File input"
+            placeholder="Select your file"
+            :clearable="false"
+            counter
+            append-icon="mdi-file-import"
+            :show-size="1000"
+            @change="onFileChange($event)"
+        >
+            <template v-slot:append>
+                <v-tooltip bottom color="success">
+                    <template v-slot:activator="{ on }">
+                        <v-icon
+                            large
+                            :disabled="!isExcel"
+                            v-on="on"
+                            color="green darken-3"
+                            style="cursor: pointer"
+                            @click="proceedAction"
+                        >
+                            mdi-file-import
+                        </v-icon>
+                    </template>
+                    <span>Import File</span>
+                </v-tooltip>
+            </template>
+            <template v-slot:selection="{ index, text }">
+                <v-chip
+                    v-if="index < 2"
+                    color="deep-purple accent-4"
+                    dark
+                    label
+                    close
+                    @click:close="clearFile"
+                >
+                    {{ text }}
+                </v-chip>
+            </template>
+        </v-file-input>
+        <loading-progress :loading="loading"></loading-progress>
+    </v-col>
 </template>
 <script>
-import {
-  
-    readSoa,
- 
-} from "../../methods";
+import { readSoa } from "../../methods";
 
 export default {
-    name: 'soa-input',
-    data: () => ({
-        isExcel: false,
-        ocbsArrayFiltered: [],
-        fileUpload: null,
-    }),
-    methods: {
-        onFileChange(event) {
-            const { arenaReportFiltered, isExcel } = readSoa(
-                event,
-                this.isExcel
-            );
-            this.ocbsArrayFiltered = arenaReportFiltered;
-            this.isExcel = isExcel;
-       
-        },
+  name: "soa-input",
+  data: () => ({
+    isExcel: false,
+    ocbsArrayFiltered: [],
+    fileUpload: null,
+    loading: false
+  }),
+  methods: {
+    onFileChange(event) {
+      const { arenaReportFiltered, isExcel } = readSoa(event, this.isExcel);
+      this.ocbsArrayFiltered = arenaReportFiltered;
+      this.isExcel = isExcel;
+    },
 
-                proceedAction() {
-            this.$Progress.start();
-            if (
-                $("#importData").val() === "" ||
-                !this.fileUpload.name.includes("xlsx")
-            ) {
-                Fire.$emit("AfterCreate");
-                Toast.fire({
-                    icon: "warning",
-                    title: "Make sure you insert correct excel data!",
-                });
-            } else {
-                this.$emit('dialogPrompt', true)
-                axios
-                    .post("api/import", this.ocbsArrayFiltered)
-                    .then(({ data }) => {
-                        this.$emit('dialogPrompt', false)
-                        $("#importData").val("");
-                        Fire.$emit("AfterCreate");
-                        Toast.fire(
-                            "Successfully!",
-                            "Excel Imported",
-                            "success"
-                        );
-                        this.$Progress.finish();
+    proceedAction() {
+      this.$Progress.start();
+      if (
+        $("#importData").val() === "" ||
+        !this.fileUpload.name.includes("xlsx")
+      ) {
+        Toast.fire({
+          icon: "warning",
+          title: "Make sure you insert correct excel data!",
+        });
+      } else {
+        this.loading = true
+        axios
+          .post("api/import", this.ocbsArrayFiltered)
+          .then(({ data }) => {
+            this.loading = false
+            $("#importData").val("");
 
-                        this.fileUpload = null;
-                        this.isExcel = false;
-                        
-                    })
-                    .catch((error) => {
-                        this.$emit('dialogPrompt', false)
-                            swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: "Something went wrong!",
-                                footer: error,
-                            });
-                    });
-            }
-        },
-         clearFile(file) {
-            console.log(file);
-            this.isExcel = false;
+            Toast.fire("Successfully!", "Excel Imported", "success");
+            this.$Progress.finish();
             this.fileUpload = null;
-        },
-    }
-}
+            this.isExcel = false;
+          })
+          .catch((error) => {
+            this.loading = false
+            swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong!",
+              footer: error,
+            });
+          });
+      }
+    },
+    clearFile(file) {
+      console.log(file);
+      this.isExcel = false;
+      this.fileUpload = null;
+    },
+  },
+};
 </script>
 <style lang="">
-    
 </style>

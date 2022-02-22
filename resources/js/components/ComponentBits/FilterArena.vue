@@ -16,7 +16,10 @@ export default {
     name: 'filter-arena',
     props: {
         arenaData: Array,
-        showData: Function,
+        soaLists: Function,
+        dates: Array,
+        tab: String,
+        loadDateRange: Function
     },
     data: () => ({
            arenaItemsSelection: [
@@ -48,7 +51,7 @@ export default {
             console.log(item);
             item === "noArenaDetails"
                 ? this.filterNoArenaDetails()
-                : this.showData();
+                : this.dates.lenght !== 0 ? this.loadDateRange(this.tab) : this.soaLists();
         },
     },
 };

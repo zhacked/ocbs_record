@@ -11,6 +11,7 @@ import moment from 'moment';
 import Vue from 'vue'
 import VueCompositionAPI from '@vue/composition-api';
 import vuetify from '../plugin/vuetify'
+import LoadingProgress from "./components/ComponentBits/LoadingProgress" 
 
 import Form from 'vform'
 import {
@@ -51,6 +52,8 @@ const Toast = swal.mixin({
       toast.addEventListener('mouseleave',swal.resumeTimer)
     }
   })
+
+Vue.component('loading-progress', LoadingProgress)
 
 Vue.filter('upText', function (text) {
     return text.charAt(0).toUpperCase() + text.slice(1)

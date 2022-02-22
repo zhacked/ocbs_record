@@ -1,7 +1,6 @@
 <template>
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
-          
             <h1 class="h3">Statement of Accounts</h1>
             <arena-modal
                 :arenaNames="arenaNames"
@@ -11,7 +10,7 @@
                 <v-col class="col-md-12">
                     <v-row>
                         <!-- DATE RANGE -->
-                        <date-range @depositReplenish="handleFilterDate" @loadingDR="handleLoadingDR" :soaLists="soaLists" @dates="getDates" @tabs="revertTab" ref="dateRange" :tab.sync="tab" @showClearBtn="handleClearBtn"></date-range>
+                        <date-range @depositReplenish="handleFilterDate" :soaLists="soaLists" @dates="getDates" @tabs="revertTab" ref="dateRange" :tab.sync="tab" @showClearBtn="handleClearBtn"></date-range>
                         <!-- Search Input -->
                            <v-col class="col-md-2">
                                 <v-text-field
@@ -24,57 +23,12 @@
                                 ></v-text-field>
                             </v-col>
                              <!-- Filter WIth/Without ARENA Details -->
-                        <filter-arena :arenaData="arenaData" :soaLists="soaLists"></filter-arena>
+                        <filter-arena :arenaData="arenaData" :loadDateRange="loadDateRange" :dates="dates" :soaLists="soaLists"></filter-arena>
                         
                         <v-spacer></v-spacer>
                         <!-- FILE INPUT -->
-                        <!-- <soa-input></soa-input> -->
-                        <v-col class="col-md-4" v-show="$gate.isAdmin()">
-                            <v-file-input
-                                outlined
-                                dense
-                                v-model="fileUpload"
-                                color="deep-purple accent-4"
-                                label="File input"
-                                placeholder="Select your file"
-                                :clearable="false"
-                                counter
-                                
-                                append-icon="mdi-file-import"
-                                :show-size="1000"
-                                @change="onFileChange($event)"
-                            >
-                                <template v-slot:append>
-                                    <v-tooltip bottom color="success">
-                                        <template v-slot:activator="{ on }">
-                                            <v-icon
-                                                large
-                                                :disabled="!isExcel"
-                                                v-on="on"
-                                                color="green darken-3"
-                                                style="cursor: pointer"
-                                                @click="proceedAction"
-                                            >
-                                                mdi-file-import
-                                            </v-icon>
-                                        </template>
-                                        <span>Import File</span>
-                                    </v-tooltip>
-                                </template>
-                                <template v-slot:selection="{ index, text }">
-                                    <v-chip
-                                        v-if="index < 2"
-                                        color="deep-purple accent-4"
-                                        dark
-                                        label
-                                        close
-                                        @click:close="clearFile"
-                                    >
-                                        {{ text }}
-                                    </v-chip>
-                                </template>
-                            </v-file-input>
-                        </v-col>
+                        <soa-input></soa-input>
+             
                     </v-row>
                     <v-card>
                         <v-card-title>
@@ -88,96 +42,28 @@
                                             @change="handleSwitchPrepared"
                                         ></v-switch>
                                     </v-col>
-                                   
+                                    <!-- Downloads and Clear Buttons -->
+                                   <actions-buttons 
+                                        :selected="selected" 
+                                        :showClear="showClear" 
+                                        :dates="dates" 
+                                        :tab="tab" 
+                                        :arenaData="arenaData"
+                                        @arenaDownload="handleArenaDownload" 
+                                        :soaLists="soaLists" 
+                                        :importWithStatus="importWithStatus"
+                                        :loadDateRange="loadDateRange"
+                                    />
 
-                                    <v-col class="col-md-6 d-flex justify-end align-center">
-                                            
-                                                <v-btn
-                                                    color="red lighten-1 text-white"
-                                                    class="mr-4"
-                                                    v-show="showClear"
-                                                    @click="clearDatabyDate"
-                                                >
-                                                <v-icon
-                                                light
-                                                >mdi-backspace-outline 
-                                                </v-icon>
-                                                &nbsp;Clear {{tab}}
-                                                </v-btn>
-                                          
-                                                <v-menu
-                                                    class="flex-end"
-                                                    bottom
-                                                    origin="center center"
-                                                    transition="scale-transition"
-                                                    v-if="selected.length !=0"
-                                                    rounded="rounded"
-                                                    :loading="downloadingReport"
-                                                    :disabled="downloadingReport"
-                                                    
-                                                >
-                                                    <template
-                                                        v-slot:activator="{attrs,on,}"
-                                                    >
-                                                        <v-btn
-                                                            color="primary lighten-1"
-                                                            v-bind="attrs"
-                                                            v-on="on"
-                                                            :loading="downloadingReport"
-                                                            :disabled="downloadingReport"
-                                                        >
-                                                            <v-icon
-                                                                light
-                                                            >mdi-download</v-icon>
-                                                            Download
-                                                            <template
-                                                                v-slot:loader
-                                                            >
-                                                                <span>Downloading...</span>
-                                                            </template>
-                                                        </v-btn>
-                                                    </template>
-                                                        <v-list>
-                                                            <v-list-item>
-                                                                <v-btn
-                                                                    :loading="downloadingReport"
-                                                                    :disabled="downloadingReport"
-                                                                    color="green lighten-1"
-                                                                    class="ma-2 white--text allbtn"
-                                                                    @click="multiDownloads"
-                                                                >
-                                                                    <v-icon
-                                                                        light
-                                                                    >mdi-download</v-icon>
-                                                                        PNG
-                                                                </v-btn>
-                                                            </v-list-item>
-                                                            <v-list-item>
-                                                                <v-btn
-                                                                    :loading="downloadingReport"
-                                                                    :disabled="downloadingReport"
-                                                                    color="yellow darken-3"
-                                                                    class="ma-2 white--text allbtn"
-                                                                    @click="downloadZip"
-                                                                >
-                                                                    <v-icon
-                                                                        light
-                                                                    >mdi-zip-box</v-icon>
-                                                                    Zip
-                                                                </v-btn>
-                                                            </v-list-item>
-                                                        </v-list>
-                                                </v-menu>
-                                    </v-col>
+                                  
                                 </v-row>
                         </v-card-title>
-                             <v-tabs
+                            <v-tabs
                                 v-model="tab"
                                 align-with-title
                                 @change="handleChangeTab"
                                 >
                                 <v-tabs-slider color="primary"></v-tabs-slider>
-
                                     <v-tab
                                         v-for="item in items"
                                         :key="item.tabItem"
@@ -186,24 +72,22 @@
                                     >
                                         {{ item.text }}
                                     </v-tab>
-                                </v-tabs>
-                        <v-card-text>
-                        
-                             
+                            </v-tabs>
+                            <v-card-text>
                                 <v-tabs-items v-model="tab" >
                                     <v-tab-item id="ongoing" >
+                                        <!-- Table for ongoing soa -->
                                         <table-soa :arenaData="arenaData" :downloadingReport="downloadingReport" @selectedSoa="handleSelected" :search="search" :openModel="openModel" ref="tableArenaOnGoing"></table-soa>
                                     </v-tab-item>
                                      <v-tab-item  id="converted" >
+                                          <!-- Table for converted soa -->
                                         <table-soa :arenaData="arenaData" :downloadingReport.sync="downloadingReport" @selectedSoa="handleSelected" :search.sync="search" :openModel="openModel" ref="tableArenaConverted"></table-soa>
                                     </v-tab-item>
                                 </v-tabs-items>
-                        </v-card-text>
+                            </v-card-text>
                     </v-card>
-    
                 </v-col>
-
-                                       <div
+                <div
                             v-for="item in selected"
                             :key="item.codeEvent"
                         
@@ -790,7 +674,7 @@
                                                     :loading="loading"
                                                     :disabled="loading"
                                                     @click="
-                                                        printDiv(
+                                                        printSoa(
                                                             'printingSOA'
                                                         )
                                                     "
@@ -811,18 +695,13 @@
 
                 <!-- </v-col> -->
             </v-row>
-            <loading-progress :dialog2="dialog2" :progressvalue="progressvalue" :downloadingReport="downloadingReport"></loading-progress>
+            <loading-progress :loading="dialog2"></loading-progress>
         </v-container>
     </v-app>
 </template>
 <script>
 import { numberFormat, numberUnformat, moneyFormat } from "../utility";
-
 import VueHtml2pdf from "vue-html2pdf";
-import html2canvas from "html2canvas";
-import JSZip from "jszip";
-import JSZipUtils from "jszip-utils";
-import { saveAs } from "file-saver";
 import moment from "moment";
 import DateSOA from "./DialogPreview/DateSOA.vue";
 import ArenaDetails from "./DialogPreview/ArenaDetails.vue";
@@ -832,10 +711,10 @@ import SignatoryBox from "./DialogPreview/SignatoryBox.vue";
 import DateRange from "./ComponentBits/DateRange.vue";
 import TableSoa from "./ComponentBits/TableSoa.vue";
 import SoaInput from "./ComponentBits/SoaInput.vue";
+import ActionsButtons from "./ComponentBits/ActionsButtons.vue";
 
 import {
     imageDownload,
-    readSoa,
     truncate,
     beforeDownload,
     defineEmail,
@@ -844,11 +723,12 @@ import {
     soa,
     reportGenerate,
     computationOpenSoa,
+    printSoa
 } from "../methods";
 
 import ArenaModal from "./modal/ArenaModal.vue"
 import FilterArena from './ComponentBits/FilterArena.vue';
-import LoadingProgress from './ComponentBits/LoadingProgress.vue';
+
 export default {
     components: {
         VueHtml2pdf,
@@ -862,7 +742,8 @@ export default {
         TableSoa,
         FilterArena,
         SoaInput,
-        LoadingProgress,
+        ActionsButtons
+       
     },
     data() {
         return {
@@ -887,6 +768,7 @@ export default {
                     isOpen: false,
                 },
             },
+         
             arenaNames:'',
             zIndex: 0,
             perPageOptions: [10, 15, 20, 30],
@@ -985,11 +867,11 @@ export default {
             depositReplenishTxt: {},
             pictures: [],
             disabledCount: 0,
-            selectedItems: [],
-            progressvalue: 0,
+            printSoa,
+    
             arenaSample: [],
             switchPrepared: false,
-            isExcel: false,
+        
             menu: false,
             dates: [],
             showClear: false,
@@ -1016,61 +898,6 @@ export default {
             localStorage.setItem("prepared", this.switchPrepared);
         },
         truncate,
-
-        onFileChange(event) {
-            const { arenaReportFiltered, isExcel } = readSoa(
-                event,
-                this.isExcel
-            );
-            this.ocbsArrayFiltered = arenaReportFiltered;
-            this.isExcel = isExcel;
-        },
-         clearFile(file) {
-            console.log(file);
-            this.isExcel = false;
-            this.fileUpload = null;
-        },
-
-        proceedAction() {
-            this.$Progress.start();
-            if (
-                $("#importData").val() === "" ||
-                !this.fileUpload.name.includes("xlsx")
-            ) {
-                Fire.$emit("AfterCreate");
-                Toast.fire({
-                    icon: "warning",
-                    title: "Make sure you insert correct excel data!",
-                });
-            } else {
-                this.dialog2 = true;
-                axios
-                    .post("api/import", this.ocbsArrayFiltered)
-                    .then(({ data }) => {
-                        (this.dialog2 = false), $("#importData").val("");
-                        Fire.$emit("AfterCreate");
-                        Toast.fire(
-                            "Successfully!",
-                            "Excel Imported",
-                            "success"
-                        );
-                        console.log(data)
-                        this.$Progress.finish();
-                        this.soaLists();
-                        this.fileUpload = null;
-                        this.isExcel = false;
-                    })
-                    .catch((error) => {
-                        (this.dialog2 = false),
-                            swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: "Something went wrong!",
-                                footer: error,
-                            });
-                    });
-            }
-        },
         async soaLists(){
             const soaLists = await soa();
             this.arenaData = soaLists;
@@ -1080,58 +907,7 @@ export default {
             this.arenaData = withStatusData;
          
         },
-        clearDatabyDate() {
-
-            const from = this.dates[0];
-            const to = moment(this.dates[1], "YYYY-MM-DD")
-                .add(1, "days")
-                .format("YYYY-MM-DD");
-
-            const tab = this.tab
-            console.log(`${tab} - ${from} - ${to}`)
-            const fromSwal = moment(this.dates[0]).format('LL');
-            const toSwal = moment(this.dates[1]).format('LL');
-            swal.fire({
-                title: "Are you sure?",
-                text: `The SOA that range from ${fromSwal} to  ${toSwal} will be remove!`,
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, remove it!",
-            }).then( (result) => {
-                if (result.isConfirmed) {
-                    axios
-                        .post("api/clearfilterbydate", {
-                            from: from,
-                            to: to,
-                            tab: tab
-                        })
-                        .then((data) => {
-                            console.log('delete',data)
-                            swal.fire(
-                                "Deleted!",
-                                "Your file has been deleted.",
-                                "success"
-                            );
-                        
-                            this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
-
-
-                        })
-                        .catch((error) => {});
-                }
-            });
-        },
-  
-        handleArenaOnGoing(){
-            this.arenaOnGoing = this.arenaData.filter(arr => arr.status === null)
-            console.log(this.arenaOnGoing)
-        },
-
-
- 
-
+       
         openModel(data) {
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
@@ -1145,7 +921,6 @@ export default {
                 this.dateCreated = moment(data.date_closed).format("LL");
                 this.dateEvent = moment(data.date_of_soa).format("LL");
                 this.refNo = data.refNo;
-
                 this.arenaDetails = data.arena_details;
                 this.banks = data.arena_details.bank_details;
                 this.arenaId = data.arena_details.id;
@@ -1169,16 +944,12 @@ export default {
                 data.arena_details.contact_details &&
                 this.defineContact(data && data.arena_details.contact_details);
         },
-
-
         closeDialog() {
             this.editmode = false;
             this.dialog = false;
             this.banks = [];
-     
             this.arenaDetails = {};
             this.operator_name = "";
-            
             this.form.reset();
             $(".computation").attr("disabled", true);
         },
@@ -1192,7 +963,6 @@ export default {
         async downloadImg(details, codeEvent) {
             const el = this.$refs.soaReport;
             const imgdl = await imageDownload(details, codeEvent, el);
-            console.log(imgdl)
 
             if(imgdl.status === 200) {
                 this.dialog = false;
@@ -1202,186 +972,8 @@ export default {
                 Fire.$emit("AfterCreate");
                 swal.fire("convert to png!", "successfully", "success");
             }
-          
-            
-               
-            
         },
-        async multiDownloads() {
-            console.log(this.tab)
-            let statusArenas = [];
-            this.downloadingReport = true;
-            this.dialog2 = true;
-            const divsss = document.querySelectorAll(".reportsoaoutput");
-            const start = new Date();
-
-            for (let i = 0; i < this.selected.length; i++) {
-                this.progressvalue = Math.ceil(
-                    (parseInt(i + 1) / parseInt(this.selected.length)) * 100
-                );
-                console.log(
-                    `Currently at ${i}, ${(new Date() - start) / 1000} s`
-                );
-                statusArenas.push({
-                    codeEvent: this.selected[i].codeEvent,
-                    status: "done",
-                });
-
-                const canvas = await html2canvas(divsss[i], {
-                    onclone: function (clonedDoc) {
-                        const elems =
-                            clonedDoc.getElementsByClassName("reportsoaoutput");
-                        for (let i = 0; i < elems.length; i++) {
-                            elems[i].style.display = "block";
-                        }
-                    },
-                    type: "dataURL",
-                    backgroundColor: "#ffffff",
-                    scale: 0.9,
-                });
-
-                const link = document.createElement("a");
-                link.download = `${this.selected[i].arena_name}.png`;
-                link.href = canvas.toDataURL("image/png");
-                document.body.appendChild(link);
-                link.click();
-
-                await setTimeout(() => {
-                    document.body.removeChild(link); // On modern browsers you can use `tempLink.remove();`
-                }, 500);
-
-                if (this.selected.length - 1 === i) {
-                    await axios.put("api/arenaStatus", statusArenas);
-                    const c = this.arenaData.filter(
-                        (arena) =>
-                            !this.selected.find(
-                                (select) => select.areaCode === arena.areaCode
-                            )
-                    );
-
-                    this.arenaData = c;
-
-                    setTimeout(async () => {
-                        this.downloadingReport = false;
-                        this.dialog2 = false;
-                        console.log("done");
-                        this.selected = [];
-                    }, 1000);
-                    this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
-                }
-            }
-
-            const end = new Date();
-            console.log("Without promise.all ", (end - start) / 1000, " secs");
-        },
-        async downloadZip() {
-            console.log(this.tab)
-            let statusArenas = [];
-            this.downloadingReport = true;
-            this.dialog2 = true;
-
-            // // -----------ZIP--------------- // // //
-            const divsss = document.querySelectorAll(".reportsoaoutput");
-
-            const zip = new JSZip();
-
-            const urlToPromise = async (url) => {
-                return new Promise(function (resolve, reject) {
-                    JSZipUtils.getBinaryContent(url, function (err, data) {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve(data);
-                            console.log(data);
-                        }
-                    });
-                });
-            };
-
-            const generateZipFile = async (zip) => {
-                const blob = await zip.generateAsync({ type: "blob" });
-                await saveAs(
-                    blob,
-                    `report-${moment(this.selected[0].date_closed).format(
-                        "MMDYY"
-                    )}.zip`
-                );
-                console.log("zip generated");
-                await axios.put("api/arenaStatus", statusArenas);
-                const c = this.arenaData.filter(
-                    (arena) =>
-                        !this.selected.find(
-                            (select) => select.areaCode === arena.areaCode
-                        )
-                );
-
-                this.arenaData = c;
-                if (this.progressvalue === 100) {
-                    setTimeout(async () => {
-                        this.downloadingReport = false;
-                        this.dialog2 = false;
-
-                        console.log("done");
-                        this.selected = [];
-                    }, 1000);
-                }
-                this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
-            };
-            // start benchmark
-            const t = new Date();
-            // some xml processing
-
-            for (let i = 0; i < this.selected.length; i++) {
-                statusArenas.push({
-                    codeEvent: this.selected[i].codeEvent,
-                    status: "done",
-                });
-
-                console.log(
-                    `Currently at ${i}, ${(new Date() - t) / 1000} secs`
-                );
-
-                this.progressvalue = Math.ceil(
-                    (parseInt(i + 1) / parseInt(this.selected.length)) * 100
-                );
-
-                const canvas = await html2canvas(divsss[i], {
-                    onclone: function (clonedDoc) {
-                        const elems =
-                            clonedDoc.getElementsByClassName("reportsoaoutput");
-                        for (let i = 0; i < elems.length; i++) {
-                            elems[i].style.display = "block";
-                        }
-                    },
-                    type: "dataURL",
-                    backgroundColor: "#ffffff",
-                    scale: 0.9,
-                });
-
-                const link = document.createElement("a");
-                // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
-                link.download = `${this.selected[i].arena_name}.png`;
-                link.href = await canvas.toDataURL("image/png");
-                const url = link.href;
-
-                const folderName =
-                    parseFloat(this.selected[i].for_total) < 0 ? "fr" : "soa";
-
-                const arenaName =
-                    (await this.selected[i].arena_name.indexOf("/")) > -1
-                        ? this.selected[i].arena_name.replace(/\//g, "-")
-                        : this.selected[i].arena_name;
-                const filename = `${folderName}/${arenaName}.png`;
-
-                await zip.file(filename, await urlToPromise(url), {
-                    binary: true,
-                }); //Create new zip file with filename and content
-            }
-
-            //Generate zip file
-            await generateZipFile(zip);
-        },
-
+        
         loadBankDetails() {
             axios.get("api/Companybanks").then(({ data }) => {
                 this.bankAccounts = data;
@@ -1409,34 +1001,14 @@ export default {
             this.$refs.menu.save([]);
             this.arenaData = soa()
         },
-        printDiv(divName) {
-            this.dialog = false;
-            const divContent = document.getElementById(divName)
-            const printContents = divContent.innerHTML;
-            const originalContents = document.body.innerHTML;
-            document.body.innerHTML = printContents;
-            window.print();
-            document.body.innerHTML = originalContents;
-            window.location.reload();
-        },
-        fileUploaded(value){
-            this.dialog2 = value
-        },
         handleFilterDate(value){
             this.arenaData = value
-         
-         
-            if(value.length === 0 ){
-                 this.showClear = false
-            }
-
-           
+            if(value.length === 0 ) this.showClear = false
         },
         handleClearBtn(value){
             this.showClear = value
         },
         handleSelected(value){
-    
             this.selected = value
         },
         getDates(value){
@@ -1449,23 +1021,24 @@ export default {
            this.$refs.tableArenaOnGoing && this.$refs.tableArenaOnGoing.emptySelect();
             this.$refs.tableArenaConverted && this.$refs.tableArenaConverted.emptySelect();
         },
-        handleLoadingDR(item){
-            this.dialog2 = item
+        handleArenaDownload(value){
+            // this.arenaData = value.arena
+            this.selected = value.selected
+        },
+        async loadDateRange(item){
+            this.$refs.dateRange && await this.$refs.dateRange.loadDateRange(item);
         },
         async handleChangeTab(item){
             this.dialog2 = true
             if(this.dates.length === 0) {
                 item === 'ongoing' ? this.arenaData = await soa() : this.arenaData = await withStatus();
             } else {
-                this.$refs.dateRange && await this.$refs.dateRange.loadDateRange(item);
+                this.loadDateRange(item)
             }
             
             this.loadBankDetails()
             this.dialog2 = false
         }
-     
-      
-      
     },
 
     computed: {  
@@ -1654,17 +1227,6 @@ export default {
                 localStorage.removeItem("prepared");
             }
         }
-    },
-    async created() {
-       
-        // await this.soaLists();
-        // this.importWithStatus();
-        // this.handleArenaOnGoing()
-        // this.loadBankDetails();
-        // Fire.$on("AfterCreate", () => {
-        //     this.soaLists();
-        //     this.importWithStatus();
-        // });
     },
 };
 </script>
