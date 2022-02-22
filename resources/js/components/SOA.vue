@@ -11,7 +11,7 @@
                 <v-col class="col-md-12">
                     <v-row>
                         <!-- DATE RANGE -->
-                        <date-range @depositReplenish="handleFilterDate" :soaLists="soaLists" @dates="getDates" @tabs="revertTab" ref="dateRange" :tab.sync="tab"></date-range>
+                        <date-range @depositReplenish="handleFilterDate" @loadingDR="handleLoadingDR" :soaLists="soaLists" @dates="getDates" @tabs="revertTab" ref="dateRange" :tab.sync="tab"></date-range>
                         <!-- Search Input -->
                            <v-col class="col-md-2">
                                 <v-text-field
@@ -810,54 +810,7 @@
 
                 <!-- </v-col> -->
             </v-row>
-            <!-- PLEASE STAND BY -->
-
-            <v-dialog v-model="dialog2" persistent width="400">
-                <v-card
-                    :color="progressvalue === 100 ? '#6BB3EF' : '#002050'"
-                    dark
-                >
-                    <v-card-text>
-                        {{
-                            downloadingReport
-                                ? "Downloading..."
-                                : "Please stand by"
-                        }}
-                        <v-progress-linear
-                            v-model="progressvalue"
-                            :color="
-                                progressvalue === 100 ? '#6BB3EF' : '#6BB3EF'
-                            "
-                            class="black--text"
-                            :height="downloadingReport ? '14' : '9'"
-                            :stream="downloadingReport"
-                            :buffer-value="progressvalue"
-                            :indeterminate="!downloadingReport"
-                        >
-                            <template
-                                v-if="downloadingReport"
-                                v-slot:default="{ value }"
-                            >
-                                <strong
-                                    :class="[
-                                        progressvalue > 50
-                                            ? 'black--text'
-                                            : 'white--text',
-                                    ]"
-                                    class="text-xs"
-                                    >{{
-                                        value === 100
-                                            ? "Complete"
-                                            : `${Math.ceil(value)}%`
-                                    }}</strong
-                                >
-                            </template>
-                        </v-progress-linear>
-                    </v-card-text>
-                </v-card>
-            </v-dialog>
-
-            <!-- PLEASE STAND BY -->
+            <loading-progress :dialog2="dialog2" :progressvalue="progressvalue" :downloadingReport="downloadingReport"></loading-progress>
         </v-container>
     </v-app>
 </template>
@@ -892,6 +845,7 @@ import {
 
 import ArenaModal from "./modal/ArenaModal.vue"
 import FilterArena from './ComponentBits/FilterArena.vue';
+import LoadingProgress from './ComponentBits/LoadingProgress.vue';
 export default {
     components: {
         VueHtml2pdf,
@@ -903,7 +857,8 @@ export default {
         ArenaModal,
         DateRange,
         TableSoa,
-        FilterArena
+        FilterArena,
+        LoadingProgress
     },
     data() {
         return {
@@ -1458,9 +1413,12 @@ export default {
         handleFilterDate(value){
             this.arenaData = value
          
+         
             if(value.length === 0 ){
                  this.showClear = false
             }
+
+           
         },
         handleSelected(value){
     
@@ -1476,8 +1434,11 @@ export default {
            this.$refs.tableArenaOnGoing && this.$refs.tableArenaOnGoing.emptySelect();
             this.$refs.tableArenaConverted && this.$refs.tableArenaConverted.emptySelect();
         },
+        handleLoadingDR(item){
+            this.dialog2 = item
+        },
         async handleChangeTab(item){
-          
+            this.dialog2 = true
             if(this.dates.length === 0) {
                 item === 'ongoing' ? this.arenaData = await soa() : this.arenaData = await withStatus();
             } else {
@@ -1485,6 +1446,7 @@ export default {
             }
             
             this.loadBankDetails()
+            this.dialog2 = false
         }
      
       

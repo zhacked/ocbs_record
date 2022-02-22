@@ -82,7 +82,7 @@ export default {
 
         async loadDateRange(tabItem) {
             // DATE RANGE
-            console.log(tabItem)
+           this.$emit('loadingDR',  true)
             const endDate = moment(this.dates[1], "YYYY-MM-DD")
                 .add(1, "days")
                 .format("YYYY-MM-DD");
@@ -93,7 +93,8 @@ export default {
          
             const filteredDepositReplenish = tabItem === 'ongoing' || (!tabItem && this.tab ==='ongoing') ? depositReplenish.data.filter(dr => dr.status === null) : depositReplenish.data.filter(dr => dr.status !== null)
         
-            this.$emit('depositReplenish', filteredDepositReplenish)
+            this.$emit('depositReplenish',  filteredDepositReplenish)
+            this.$emit('loadingDR',  false)
 
             return await filteredDepositReplenish
         },
