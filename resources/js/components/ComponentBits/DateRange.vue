@@ -64,7 +64,7 @@ export default {
         handleFilterDate(dates) {
             this.$refs.menu.save(dates);
             if(dates.length === 1) dates.push(dates[0])
-            console.log(dates)
+            
             if(dates[1]){
                 this.$emit('showClearBtn', true)
                 this.loadDateRange();

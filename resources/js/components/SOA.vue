@@ -28,52 +28,8 @@
                         
                         <v-spacer></v-spacer>
                         <!-- FILE INPUT -->
-                        <v-col class="col-md-3" v-show="$gate.isAdmin()">
-                            <v-file-input
-                                outlined
-                                dense
-                                v-model="fileUpload"
-                                color="deep-purple accent-4"
-                                label="File input"
-                                placeholder="Select your file"
-                                :clearable="false"
-                                counter
-                                
-                                append-icon="mdi-file-import"
-                                :show-size="1000"
-                                @change="onFileChange($event)"
-                            >
-                                <template v-slot:append>
-                                    <v-tooltip bottom color="success">
-                                        <template v-slot:activator="{ on }">
-                                            <v-icon
-                                                large
-                                                :disabled="!isExcel"
-                                                v-on="on"
-                                                color="green darken-3"
-                                                style="cursor: pointer"
-                                                @click="proceedAction"
-                                            >
-                                                mdi-file-import
-                                            </v-icon>
-                                        </template>
-                                        <span>Import File</span>
-                                    </v-tooltip>
-                                </template>
-                                <template v-slot:selection="{ index, text }">
-                                    <v-chip
-                                        v-if="index < 2"
-                                        color="deep-purple accent-4"
-                                        dark
-                                        label
-                                        close
-                                        @click:close="clearFile"
-                                    >
-                                        {{ text }}
-                                    </v-chip>
-                                </template>
-                            </v-file-input>
-                        </v-col>
+                        <soa-input></soa-input>
+                    
                     </v-row>
                     <v-card>
                         <v-card-title>
@@ -830,6 +786,8 @@ import BankBox from "./DialogPreview/BankBox.vue";
 import SignatoryBox from "./DialogPreview/SignatoryBox.vue";
 import DateRange from "./ComponentBits/DateRange.vue";
 import TableSoa from "./ComponentBits/TableSoa.vue";
+import SoaInput from "./ComponentBits/SoaInput.vue";
+
 import {
     imageDownload,
     readSoa,
@@ -858,7 +816,8 @@ export default {
         DateRange,
         TableSoa,
         FilterArena,
-        LoadingProgress
+        SoaInput,
+        LoadingProgress,
     },
     data() {
         return {
