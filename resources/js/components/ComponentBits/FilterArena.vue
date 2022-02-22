@@ -17,6 +17,7 @@ export default {
     props: {
         arenaData: Array,
         soaLists: Function,
+        importWithStatus: Function,
         dates: Array,
         tab: String,
         loadDateRange: Function
@@ -51,7 +52,7 @@ export default {
             console.log(item);
             item === "noArenaDetails"
                 ? this.filterNoArenaDetails()
-                : this.dates.length !== 0 ? this.loadDateRange(this.tab) : this.soaLists();
+                : this.dates.length !== 0 ? this.loadDateRange(this.tab) : this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
         },
     },
 };
