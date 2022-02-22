@@ -105,7 +105,10 @@ export default {
                 });
                 console.log('ok',this.selected)
                 this.$emit('selectedSoa', this.selected)
-            } else this.$emit('selectedSoa', []);
+            } else {
+                this.selected = []
+                this.$emit('selectedSoa', [])
+            };
         },
         emptySelect(){
             this.selected = []

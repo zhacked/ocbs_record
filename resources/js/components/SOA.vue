@@ -13,7 +13,7 @@
                         <!-- DATE RANGE -->
                         <date-range @depositReplenish="handleFilterDate" :showData="showData" @dates="getDates"></date-range>
                         <!-- Search Input -->
-                           <v-col class="col-md-3">
+                           <v-col class="col-md-2">
                                 <v-text-field
                                     v-model="search"
                                     outlined
@@ -24,17 +24,8 @@
                                 ></v-text-field>
                             </v-col>
                              <!-- Filter WIth/Without ARENA Details -->
-                        <v-col class="col-md-1">
-                            <!-- <v-select
-                                :items="arenaItemsSelection"
-                                label="Filter arena"
-                                dense
-                                outlined
-                                item-text="text"
-                                item-value="key"
-                                @change="handleSelectionFilterArena"
-                            ></v-select> -->
-                        </v-col>
+                        <filter-arena :arenaData="arenaData" :showData="showData"></filter-arena>
+                        
                         <v-spacer></v-spacer>
                         <!-- FILE INPUT -->
                         <v-col class="col-md-3" v-show="$gate.isAdmin()">
@@ -887,6 +878,7 @@ import {
 } from "../methods";
 
 import ArenaModal from "./modal/ArenaModal.vue"
+import FilterArena from './ComponentBits/FilterArena.vue';
 export default {
     components: {
         VueHtml2pdf,
@@ -897,7 +889,8 @@ export default {
         SignatoryBox,
         ArenaModal,
         DateRange,
-        TableSoa
+        TableSoa,
+        FilterArena
     },
     data() {
         return {

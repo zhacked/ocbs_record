@@ -1,5 +1,5 @@
 <template lang="">
-    <v-col class="col-md-2">
+    <v-col class="col-md-3">
         <v-select
             :items="arenaItemsSelection"
             label="Filter arena"
