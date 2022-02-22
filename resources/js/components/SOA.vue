@@ -11,7 +11,7 @@
                 <v-col class="col-md-12">
                     <v-row>
                         <!-- DATE RANGE -->
-                        <date-range @depositReplenish="handleFilterDate" :showData="showData" @dates="getDates"></date-range>
+                        <date-range @depositReplenish="handleFilterDate" :soaLists="soaLists" @dates="getDates" @tabs="revertTab" ref="dateRange" :tab.sync="tab"></date-range>
                         <!-- Search Input -->
                            <v-col class="col-md-2">
                                 <v-text-field
@@ -24,7 +24,7 @@
                                 ></v-text-field>
                             </v-col>
                              <!-- Filter WIth/Without ARENA Details -->
-                        <filter-arena :arenaData="arenaData" :showData="showData"></filter-arena>
+                        <filter-arena :arenaData="arenaData" :soaLists="soaLists"></filter-arena>
                         
                         <v-spacer></v-spacer>
                         <!-- FILE INPUT -->
@@ -161,7 +161,7 @@
                              <v-tabs
                                 v-model="tab"
                                 align-with-title
-                                   
+                                @change="handleChangeTab"
                                 >
                                 <v-tabs-slider color="primary"></v-tabs-slider>
 
@@ -182,7 +182,7 @@
                                         <table-soa :arenaData="arenaData" :downloadingReport="downloadingReport" @selectedSoa="handleSelected" :search="search" :openModel="openModel" ref="tableArenaOnGoing"></table-soa>
                                     </v-tab-item>
                                      <v-tab-item  id="converted" >
-                                        <table-soa :arenaData="arenaDatastatus" :downloadingReport.sync="downloadingReport" @selectedSoa="handleSelected" :search.sync="search" :openModel="openModel" ref="tableArenaConverted"></table-soa>
+                                        <table-soa :arenaData="arenaData" :downloadingReport.sync="downloadingReport" @selectedSoa="handleSelected" :search.sync="search" :openModel="openModel" ref="tableArenaConverted"></table-soa>
                                     </v-tab-item>
                                 </v-tabs-items>
                         </v-card-text>
@@ -873,6 +873,7 @@ import {
     defineEmail,
     defineContact,
     withStatus,
+    soa,
     reportGenerate,
     computationOpenSoa,
 } from "../methods";
@@ -937,6 +938,7 @@ export default {
             operator_name: "",
             sofrNumSeq: 0,
             arenaData: [],
+            arenaOnGoing: [],
             arenaDatastatus: [],
             arenaDetails: {},
             areaCode: "",
@@ -1088,9 +1090,14 @@ export default {
                     });
             }
         },
-        async importwithstatus() {
-            const withStatusData = await withStatus();
-            this.arenaDatastatus = withStatusData;
+        async soaLists(){
+            const soaLists = await soa();
+            this.arenaData = soaLists;
+        },
+        async importWithStatus() {
+            const withStatusData = await withStatus(this.arenaData);
+            this.arenaData = withStatusData;
+         
         },
         clearDatabyDate(val) {
             const from = this.dates[0];
@@ -1125,42 +1132,14 @@ export default {
             //     }
             // });
         },
-        async showData() {
-            const data = await axios.get("api/import");
-
-            const newArray = [];
-            data.data.forEach((dObj) => {
-                const arenaName =
-                    dObj.arena_name.indexOf("~") > -1
-                        ? dObj.arena_name.replace(/\~/g, "/")
-                        : dObj.arena_name;
-
-                const obj = {
-                    ...dObj,
-                    arena_name: arenaName,
-                };
-                newArray.push(obj);
-            });
-
-            const obj = {
-                data: newArray,
-            };
-
-            this.arenaData = obj.data;
+  
+        handleArenaOnGoing(){
+            this.arenaOnGoing = this.arenaData.filter(arr => arr.status === null)
+            console.log(this.arenaOnGoing)
         },
 
-         async loadDateRange() { // DATE RANGE
-            console.log(this.dates)
-            console.log(this.dates[0])
-            const endDate = moment(this.dates[1], 'YYYY-MM-DD').add(1, 'days').format('YYYY-MM-DD')
-            const depositReplenish = await axios.get(`api/importDateRange/${this.dates[0]}/${endDate}`)
-            
-            // const deposit = depositReplenish.data.soa.map(d => ({...d,date_of_soa: moment(d.date_of_soa, 'YYYY-MM-DD HH:mm:ss a').format('MMM DD YYYY LTS') }))
-            // const reflenish = depositReplenish.data.fr.map(d => ({...d,date_of_soa: moment(d.date_of_soa, 'YYYY-MM-DD HH:mm:ss a').format('MMM DD YYYY LTS') }))
-            this.arenaData = depositReplenish.data;
-         
 
-        },
+ 
 
         openModel(data) {
             if (data.arena_details === null) {
@@ -1200,11 +1179,7 @@ export default {
                 this.defineContact(data && data.arena_details.contact_details);
         },
 
-        clearFile(file) {
-            console.log(file);
-            this.isExcel = false;
-            this.fileUpload = null;
-        },
+
         closeDialog() {
             this.editmode = false;
             this.dialog = false;
@@ -1300,7 +1275,7 @@ export default {
                         console.log("done");
                         this.selected = [];
                     }, 1000);
-                    this.importwithstatus();
+                    this.importWithStatus();
                 }
             }
 
@@ -1357,7 +1332,7 @@ export default {
                         this.selected = [];
                     }, 1000);
                 }
-                this.importwithstatus();
+                this.importWithStatus();
             };
             // start benchmark
             const t = new Date();
@@ -1419,22 +1394,7 @@ export default {
                 this.bankAccounts = data;
             });
         },
-        selectAllToggle(props) {
-            let dis = 0;
-            this.selectedItems = props.items;
-            props.items.map((x) => {
-                if (!x.arena_details) dis += 1;
-            });
-            if (this.selected.length != props.items.length - dis) {
-                this.selected = [];
-                const self = this;
-                props.items.forEach((item) => {
-                    if (item.arena_details) {
-                        self.selected.push(item);
-                    }
-                });
-            } else this.selected = [];
-        },
+
         filterNoArenaDetails(){
             let arenaNoDetais = []
             this.arenaData.forEach(arena => {
@@ -1447,19 +1407,20 @@ export default {
             this.arenaData.splice(0, this.arenaData.length, ...arenaNoDetais)
         },
         
-        handleFilterDate(dates){
-            this.$refs.menu.save(dates);
-            this.loadDateRange()
+        handleFilterDate(value){
+        
+            this.arenaData = value
+         
         },
 
-        handleSelectionFilterArena(item){
+        async handleSelectionFilterArena(item){
             console.log(item)
-            item === 'noArenaDetails' ? this.filterNoArenaDetails() : this.showData()
+            item === 'noArenaDetails' ? this.filterNoArenaDetails() : this.arenaData = await soa()
         },
         handleClear(){
             this.menu = false;
             this.$refs.menu.save([]);
-            this.showData();
+            this.arenaData = soa()
         },
         printDiv(divName) {
             this.dialog = false;
@@ -1474,9 +1435,7 @@ export default {
         fileUploaded(value){
             this.dialog2 = value
         },
-        handleFilterDate(value){
-            this.arenaData = value
-        },
+   
         handleSelected(value){
     
             this.selected = value
@@ -1484,13 +1443,23 @@ export default {
         getDates(value){
             this.dates = value
         },
-        handleSwitchTab(item){
-          
+        revertTab(item){
+            this.tab = item
+        },
+        handleSwitchTab(){
            this.$refs.tableArenaOnGoing && this.$refs.tableArenaOnGoing.emptySelect();
             this.$refs.tableArenaConverted && this.$refs.tableArenaConverted.emptySelect();
-      
-         
         },
+        async handleChangeTab(item){
+          
+            if(this.dates.length === 0) {
+                item === 'ongoing' ? this.arenaData = await soa() : this.arenaData = await withStatus();
+            } else {
+                this.$refs.dateRange && await this.$refs.dateRange.loadDateRange(item);
+            }
+            
+            this.loadBankDetails()
+        }
      
       
       
@@ -1684,14 +1653,15 @@ export default {
         }
     },
     async created() {
-        await this.showData();
-        this.importwithstatus();
        
-        this.loadBankDetails();
-        Fire.$on("AfterCreate", () => {
-            this.showData();
-            this.importwithstatus();
-        });
+        // await this.soaLists();
+        // this.importWithStatus();
+        // this.handleArenaOnGoing()
+        // this.loadBankDetails();
+        // Fire.$on("AfterCreate", () => {
+        //     this.soaLists();
+        //     this.importWithStatus();
+        // });
     },
 };
 </script>

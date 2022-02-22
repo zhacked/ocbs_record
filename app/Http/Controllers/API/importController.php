@@ -46,7 +46,7 @@ class importController extends Controller
         'arenaDetails.EmailDetails',
         'arenaDetails.ContactDetails', 
         'arenaDetails.UserTeam.userDetails.positionDetails'
-        ])->whereBetween('date_of_soa',[$from, $to])->whereNull('status')->get();
+        ])->whereBetween('date_of_soa',[$from, $to])->get();
     }
 
     public function withstatus()

@@ -51,7 +51,8 @@ import moment from "moment";
 export default {
     name: 'date-range',
     props: {
-        showData: Function
+        soaLists: Function,
+        tab: String
     },
     data: ()=>({
         menu: false,
@@ -66,12 +67,14 @@ export default {
         handleClear() {
             this.menu = false;
             this.$refs.menu.save([]);
-            this.showData();
+            this.$emit('dates', [])
+            this.$emit('tabs', 'ongoing')
+            this.soaLists();
         },
 
-        async loadDateRange() {
+        async loadDateRange(tabItem) {
             // DATE RANGE
-    
+            console.log(tabItem)
             const endDate = moment(this.dates[1], "YYYY-MM-DD")
                 .add(1, "days")
                 .format("YYYY-MM-DD");
@@ -79,10 +82,12 @@ export default {
                 `api/importDateRange/${this.dates[0]}/${endDate}`
             );
 
-            // const deposit = depositReplenish.data.soa.map(d => ({...d,date_of_soa: moment(d.date_of_soa, 'YYYY-MM-DD HH:mm:ss a').format('MMM DD YYYY LTS') }))
-            // const reflenish = depositReplenish.data.fr.map(d => ({...d,date_of_soa: moment(d.date_of_soa, 'YYYY-MM-DD HH:mm:ss a').format('MMM DD YYYY LTS') }))
-            // this.arenaData = depositReplenish.data;
-            this.$emit('depositReplenish', depositReplenish.data)
+         
+            const filteredDepositReplenish = tabItem === 'ongoing' || (!tabItem && this.tab ==='ongoing') ? depositReplenish.data.filter(dr => dr.status === null) : depositReplenish.data.filter(dr => dr.status !== null)
+        
+            this.$emit('depositReplenish', filteredDepositReplenish)
+
+            return await filteredDepositReplenish
         },
     },
     computed: {
