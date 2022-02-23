@@ -27,7 +27,7 @@
                         
                         <v-spacer></v-spacer>
                         <!-- FILE INPUT -->
-                        <soa-input></soa-input>
+                        <soa-input :soaLists="soaLists"></soa-input>
              
                     </v-row>
                     <v-card>
@@ -772,10 +772,10 @@ export default {
         },
         truncate,
         async soaLists(){
-            this.dialog2 = true
+          
             const soaLists = await soa();
             this.arenaData = soaLists;
-            this.dialog2 = false
+           
         },
         async importWithStatus() {
             this.dialog2 = true
