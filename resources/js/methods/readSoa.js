@@ -278,46 +278,46 @@ const readSoa = (event, isExcel) => {
                     const type = rest.type || rest.classification;
                     const exempted = rest.exempted;
                     const totalMWBets = rest.meron + rest.wala;
-                    const totalCancelledBets = rest.drawCancelled;
-                    const totalDrawBets = rest.draw;
-                    const totalPayoutPaid = rest.payoutPaid;
-                    const totalCDPaid = rest.cDPaid;
-                    const totalDrawPaid = rest.drawPaid;
-                    const totalMWMobile = rest.totalMWMobile;
-                    const totalDrawMobile = rest.drawMobile;
-                    const safetyFundMob = rest.safetyFundMob;
-                    const otherCommIntMob = rest.otherCommIntMob;
-                    const consolCommMob = rest.consolCommMob;
-                    const payOutsBalMob = rest.payOutsBalMob;
-                    const netWinLoss = rest.netWinLoss
+                    const totalCancelledBets = rest.drawCancelled.toString();
+                    const totalDrawBets = rest.draw.toString();
+                    const totalPayoutPaid = rest.payoutPaid.toString();
+                    const totalCDPaid = rest.cDPaid.toString();
+                    const totalDrawPaid = rest.drawPaid.toString();
+                    const totalMWMobile = rest.totalMWMobile.toString();
+                    const totalDrawMobile = rest.drawMobile.toString();
+                    const safetyFundMob = rest.safetyFundMob.toString();
+                    const otherCommIntMob = rest.otherCommIntMob.toString();
+                    const consolCommMob = rest.consolCommMob.toString();
+                    const payOutsBalMob = rest.payOutsBalMob.toString();
+                    const netWinLoss = rest.netWinLoss.toString()
                    
                     const mwTwo = totalMWBets * 0.02;
                     const drawTwo = totalDrawBets * 0.02;
                     const mwTwoMobile = totalMWMobile * 0.02;
                     const drawTwoMobile = totalDrawMobile * 0.02;
-                    const totalUnclaimed = rest.unclaimed;
-                    const totalCUnpaid = rest.cUnpaid;
-                    const salesDeduction = rest.salesDeductionTablet;
+                    const totalUnclaimed = rest.unclaimed.toString();
+                    const totalCUnpaid = rest.cUnpaid.toString();
+                    const salesDeduction = rest.salesDeductionTablet.toString();
                     const netOperatorsCommission = rest.netOperatorsCommission.toString()
                  
                     const otherCommissionIntel =
-                        rest.otherCommissionIntel05;
+                        rest.otherCommissionIntel05.toString();
                     const consolidatorsCommission =
-                        rest.consolidatorsCommission;
+                        rest.consolidatorsCommission.toString();
 
-                    const safetyFund = rest.safetyFund;
+                    const safetyFund = rest.safetyFund.toString();
                    
 
                     const paymentForOutstandingBalance =
-                        rest.paymentForOutstandingBalance;
+                        rest.paymentForOutstandingBalance.toString();
 
                     const totalCommission = rest.totalCommission.toString();
-                    const cashLoad = rest.cashLoad;
-                    const cashWithdrawal = rest.cashWithdrawal;
-                    const totalOthers = rest.totalOthers;
-                    const systemErrorCOArmsi = rest.systemErrorCOArmsi;
+                    const cashLoad = rest.cashLoad.toString();
+                    const cashWithdrawal = rest.cashWithdrawal.toString();
+                    const totalOthers = rest.totalOthers.toString();
+                    const systemErrorCOArmsi = rest.systemErrorCOArmsi.toString();
 
-                    const depositReplenish = rest.forDepositReplenish
+                    const depositReplenish = rest.forDepositReplenish.toString()
 
                     const soaFr =
                         parseFloat(depositReplenish) < 0 ? "fr" : "soa";
@@ -340,36 +340,36 @@ const readSoa = (event, isExcel) => {
                         codeEvent,
                         date_of_soa: rest.eventCreated,
                         date_closed: rest.eventClosed,
-                        meron: rest.meron,
-                        wala: rest.wala,
-                        rake: rest.rake,
-                        draw_unpaid: rest.dUnpaid,
-                        draw_unclaimed: rest.drawUnclaimed,
+                        meron: rest.meron.toString(),
+                        wala: rest.wala.toString(),
+                        rake: rest.rake.toString(),
+                        draw_unpaid: rest.dUnpaid.toString(),
+                        draw_unclaimed: rest.drawUnclaimed.toString(),
                         arena_name: arenaName.toUpperCase(),
                         type,
                         exempted,
-                        total_meron_wala: totalMWBets,
-                        draw_cancelled: totalCancelledBets,
-                        draw: totalDrawBets,
-                        total_payout_paid: totalPayoutPaid,
-                        draw_cancelled_paid: totalCDPaid,
-                        draw_paid: totalDrawPaid,
+                        total_meron_wala: totalMWBets.toString(),
+                        draw_cancelled: totalCancelledBets.toString(),
+                        draw: totalDrawBets.toString(),
+                        total_payout_paid: totalPayoutPaid.toString(),
+                        draw_cancelled_paid: totalCDPaid.toString(),
+                        draw_paid: totalDrawPaid.toString(),
                         netWinLoss,
                         mwTwo,
                         drawTwo,
                         mwTwoMobile,
                         drawTwoMobile,
-                        unclaimed: totalUnclaimed,
-                        cancelled_unpaid: totalCUnpaid,
-                        salesDeductionTablet: salesDeduction,
+                        unclaimed: totalUnclaimed.toString(),
+                        cancelled_unpaid: totalCUnpaid.toString(),
+                        salesDeductionTablet: salesDeduction.toString(),
                         netOperatorsCommission,
-                        otherCommissionIntel05: otherCommissionIntel,
+                        otherCommissionIntel05: otherCommissionIntel.toString(),
                         consolidatorsCommission,
                         safetyFund,
                         paymentForOutstandingBalance,
                         totalCommission,
-                        total_win_mobile: totalMWMobile,
-                        draw_mobile: totalDrawMobile,
+                        total_win_mobile: totalMWMobile.toString(),
+                        draw_mobile: totalDrawMobile.toString(),
                         cashLoad,
                         cashWithdrawal,
                         for_total: depositReplenish.toString(),

@@ -20,26 +20,17 @@
         >
         
             <template v-slot:[`item.data-table-select`]="{ item, isSelected, select }">
-                <div>
+            
                     <v-simple-checkbox
                         :value="isSelected"
                         :readonly="item.disabled"
                         :disabled="item.arena_details ? false : true"
                         @input="select($event)"
                     ></v-simple-checkbox>
-                </div>
-            </template>
-            <!-- <template v-slot:[`item.areaCode`]="{ item }">
-                <div>
-                    <span class="font-weight-medium">{{ item.arena_details ? item.arena_details.area_code : item.areaCode}}</span>
-                    <span class="font-weight-medium">{{ item.refNo}}</span>
-                    <span class="font-weight-medium">{{ item.arena_details ? item.arena_details.arena : item.arena_name}}</span>
-                </div>
-            </template> -->
-          
-         
-             <template v-slot:[`item.actions`]="{ item }">
-                 <div>
+              
+            </template>          
+            <template v-slot:[`item.actions`]="{ item }">
+             
                     <v-tooltip top color="primary">
                         <template v-slot:activator="{ on, attrs, hover }">
                             <v-btn
@@ -60,8 +51,8 @@
                         </template>
                         <span>View Account</span>
                     </v-tooltip>
-                    </div>
-                </template>
+                
+            </template>
         </v-data-table>
     </fragment>
 </template>
@@ -77,7 +68,7 @@ export default {
     },
     data: () => ({
         headers: [
-            { text: "#", value: "id" },
+            { text: "Date", value: "date_of_soa" },
             { text: "CODE", value: "areaCode" },
             { text: "ref", value: "refNo" },
             { text: "Arena Name", value: "arena_name" },

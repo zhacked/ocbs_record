@@ -139,7 +139,10 @@
                                         </td>
                                         </template>
                                         
-                                             <template v-slot:[`item.totalCommission`]="{ item }">
+                                             <template v-slot:[`item.areaCode`]="{ item }">
+                                               <span class="font-weight-bold">{{item.areaCode }}</span>
+                                            </template>
+                                           <template v-slot:[`item.totalCommission`]="{ item }">
                                                <span>{{moneyFormat(parseFloat(item.totalCommission)) }}</span>
                                             </template>
                                            <template v-slot:[`item.otherCommissionIntel05`]="{ item }">
@@ -152,7 +155,7 @@
                                                <span>{{moneyFormat(parseFloat(item.safetyFund)+parseFloat(item.safetyFundMob))}}</span>
                                             </template>
                                              <template v-slot:[`item.for_total`]="{ item }">
-                                               <span>{{moneyFormat(parseFloat(item.for_total))}}</span>
+                                               <span class="font-weight-bold">{{moneyFormat(parseFloat(item.for_total))}}</span>
                                             </template>
                                         </v-data-table>
                                     </div>
@@ -215,6 +218,24 @@
                                                 
                                             </td>
                                         </template>
+                                            <template v-slot:[`item.areaCode`]="{ item }">
+                                               <span class="font-weight-bold">{{item.areaCode }}</span>
+                                            </template>
+                                           <template v-slot:[`item.totalCommission`]="{ item }">
+                                               <span>{{moneyFormat(parseFloat(item.totalCommission)) }}</span>
+                                            </template>
+                                           <template v-slot:[`item.otherCommissionIntel05`]="{ item }">
+                                               <span>{{moneyFormat(parseFloat(item.otherCommissionIntel05)+parseFloat(item.otherCommIntMob)) }}</span>
+                                            </template>
+                                             <template v-slot:[`item.consolidatorsCommission`]="{ item }">
+                                               <span>{{moneyFormat(parseFloat(item.consolidatorsCommission)+parseFloat(item.consolCommMob))}}</span>
+                                            </template>
+                                             <template v-slot:[`item.safetyFund`]="{ item }">
+                                               <span>{{moneyFormat(parseFloat(item.safetyFund)+parseFloat(item.safetyFundMob))}}</span>
+                                            </template>
+                                             <template v-slot:[`item.for_total`]="{ item }">
+                                               <span class="font-weight-bold">{{moneyFormat(parseFloat(item.for_total))}}</span>
+                                            </template>
                                         </v-data-table>
                                     </div>
                                 </div>
@@ -240,11 +261,10 @@ export default {
     data() {
         return {
             headers: [
-                { text: "#", value: "id" },
-            
-                { text: "ref", value: "refNo" },
-                { text: "DATE", value: "date_of_soa" },
-                { text: "OCBS Name", value: "arena_name" },
+                { text: "Code", value: "areaCode" },
+                { text: "Reference", value: "refNo" },
+                { text: "Date", value: "date_of_soa" },
+                { text: "OCBS/Arena Name", value: "arena_name" },
                 { text: "Total Commission", value: "totalCommission" },
                 { text: "Othe Commission -M", value: "otherCommissionIntel05" },
                 { text: "Consolidator's Commission", value: "consolidatorsCommission" },

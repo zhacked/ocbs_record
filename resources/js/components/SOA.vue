@@ -605,6 +605,7 @@ import {
 
 import ArenaModal from "./modal/ArenaModal.vue"
 import FilterArena from './ComponentBits/FilterArena.vue';
+import { orderBy } from 'lodash'
 
 export default {
     components: {
@@ -772,16 +773,21 @@ export default {
         },
         truncate,
         async soaLists(){
-          
+         
             const soaLists = await soa();
-            this.arenaData = soaLists;
+            const ordered = orderBy(soaLists, ['date_of_soa'], ['desc'])
+            const soaListing = ordered.map(o => ({ ...o, date_of_soa: moment(o.date_of_soa).format('DD MMM YYYY')}))
+            this.arenaData = soaListing
+         
            
         },
         async importWithStatus() {
-            this.dialog2 = true
+         
             const withStatusData = await withStatus(this.arenaData);
-            this.arenaData = withStatusData;
-            this.dialog2 = false
+            const ordered = orderBy(withStatusData, ['date_of_soa'], ['desc'])
+            const soaListing = ordered.map(o => ({ ...o, date_of_soa: moment(o.date_of_soa).format('DD MMM YYYY')}))
+            this.arenaData = soaListing
+         
          
         },
        
@@ -906,7 +912,7 @@ export default {
         },
         async handleChangeTab(item){
             this.dialog2 = true
-            this.dates.length !== 0 ? this.loadDateRange(item) : item === 'ongoing' ? this.arenaData = await soa() : this.arenaData = await withStatus();
+            this.dates.length !== 0 ? this.loadDateRange(item) : item === 'ongoing' ? await this.soaLists() : await this.importWithStatus();
             this.loadBankDetails()
             this.dialog2 = false
         }
