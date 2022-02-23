@@ -1,5 +1,6 @@
 <template lang="">
     <fragment>
+       
         <v-data-table
             item-key="codeEvent"
             :headers="headers"
@@ -17,6 +18,7 @@
                 'items-per-page-options': [10, 20, 30, 40, 50, 100],
             }"
             @toggle-select-all="selectAllToggle"
+            @input="singleSelected"
         >
         
             <template v-slot:[`item.data-table-select`]="{ item, isSelected, select }">
@@ -103,6 +105,10 @@ export default {
         },
         emptySelect(){
             this.selected = []
+        },
+        singleSelected(item){
+            console.log(item)
+            this.$emit('selectedSoa', item)
         }
     },
 };

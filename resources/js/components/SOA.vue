@@ -904,6 +904,7 @@ export default {
            this.$refs.tableArenaOnGoing && this.$refs.tableArenaOnGoing.emptySelect();
             this.$refs.tableArenaConverted && this.$refs.tableArenaConverted.emptySelect();
         },
+    
         handleArenaDownload(value){
             this.selected = value.selected
         },
