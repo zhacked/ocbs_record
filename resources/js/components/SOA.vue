@@ -77,11 +77,11 @@
                                 <v-tabs-items v-model="tab" >
                                     <v-tab-item id="ongoing" >
                                         <!-- Table for ongoing soa -->
-                                        <table-soa :arenaData="arenaData" :downloadingReport="downloadingReport" @selectedSoa="handleSelected" :search="search" :openModel="openModel" ref="tableArenaOnGoing"></table-soa>
+                                        <table-soa :arenaData="arenaData" :downloadingReport="downloadingReport" @selectedSoa="handleSelected" :search="search" :openModel="openModel" ref="tableArenaOnGoing" :selected.sync="selected"></table-soa>
                                     </v-tab-item>
                                      <v-tab-item  id="converted" >
                                           <!-- Table for converted soa -->
-                                        <table-soa :arenaData="arenaData" :downloadingReport.sync="downloadingReport" @selectedSoa="handleSelected" :search.sync="search" :openModel="openModel" ref="tableArenaConverted"></table-soa>
+                                        <table-soa :arenaData="arenaData" :downloadingReport.sync="downloadingReport" @selectedSoa="handleSelected" :search.sync="search" :openModel="openModel" ref="tableArenaConverted" :selected.sync="selected"></table-soa>
                                     </v-tab-item>
                                 </v-tabs-items>
                             </v-card-text>
@@ -173,162 +173,41 @@
                                 </v-row>
                                 <ComputeBox
                                     :computation="{
-                                        totalMWBets: numberFormat(
-                                            item.total_meron_wala || 0
-                                        ),
-                                        drawCancelled: numberFormat(
-                                            item.draw_cancelled || 0
-                                        ),
-                                        draw: numberFormat(item.draw || 0),
-                                        totalPayoutPaid: numberFormat(
-                                            item.total_payout_paid || 0
-                                        ),
-                                        cdPaid: numberFormat(
-                                            item.draw_cancelled_paid || 0
-                                        ),
-                                        drawPaid: numberFormat(
-                                            item.draw_paid || 0
-                                        ),
-                                        systemErrorCOArmsi: numberFormat(
-                                            item.systemErrorCOArmsi || 0
-                                        ),
-                                        safetyFund: numberFormat(
-                                            item.safetyFund || 0
-                                        ),
-                                        salesDeduction:
-                                            numberFormat(
-                                                item.salesDeductionTablet
-                                            ) || 0,
-                                        unclaimed: numberFormat(
-                                            item.unclaimed || 0
-                                        ),
-                                        cUnpaid: numberFormat(
-                                            item.cancelled_unpaid || 0
-                                        ),
-                                        otherCommissionIntel05: numberFormat(
-                                            item.otherCommissionIntel05 || 0
-                                        ),
-                                        consolidatorsCommission: numberFormat(
-                                            item.consolidatorsCommission || 0
-                                        ),
-                                        paymentForOutstandingBalance:
-                                            numberFormat(
-                                                item.paymentForOutstandingBalance ||
-                                                    0
-                                            ),
-                                        totalCommission: numberFormat(
-                                            moneyFormat(
-                                                numberUnformat(
-                                                    numberFormat(
-                                                        parseFloat(
-                                                            item.totalCommission
-                                                        ),
-                                                        3
-                                                    )
-                                                )
-                                            ) || 0
-                                        ),
-                                        mwTotalPercent: numberFormat(
-                                            item.mwTwo || 0
-                                        ),
-                                        depositReplenish: numberFormat(
-                                            moneyFormat(
-                                                numberUnformat(
-                                                    numberFormat(
-                                                        parseFloat(
-                                                            item.for_total
-                                                        ),
-                                                        3
-                                                    )
-                                                )
-                                            ) || 0
-                                        ),
-                                        netWinLoss: numberFormat(
-                                            item.netWinLoss || 0
-                                        ),
-
-                                        safetyFund: numberFormat(
-                                            parseFloat(item.safetyFund) +
-                                                parseFloat(
-                                                    item.safetyFundMob
-                                                ) || 0
-                                        ),
-                                        otherCommissionIntel05: numberFormat(
-                                            parseFloat(
-                                                item.otherCommissionIntel05
-                                            ) +
-                                                parseFloat(
-                                                    item.otherCommIntMob
-                                                ) || 0
-                                        ),
-                                        consolidatorsCommission: numberFormat(
-                                            parseFloat(
-                                                item.consolidatorsCommission
-                                            ) +
-                                                parseFloat(
-                                                    item.consolCommMob
-                                                ) || 0
-                                        ),
-                                        paymentForOutstandingBalance:
-                                            numberFormat(
-                                                parseFloat(
-                                                    item.paymentForOutstandingBalance
-                                                ) +
-                                                    parseFloat(
-                                                        item.payOutsBalMob
-                                                    ) || 0
-                                            ),
-                                        netOpCommission: numberFormat(
-                                            item.netOperatorsCommission || 0
-                                        ),
-
+                                        totalMWBets: moneyFormat(item.total_meron_wala || 0),
+                                        drawCancelled: moneyFormat(item.draw_cancelled || 0),
+                                        draw: moneyFormat(item.draw || 0),
+                                        totalPayoutPaid: moneyFormat(item.total_payout_paid || 0),
+                                        cdPaid: moneyFormat(item.draw_cancelled_paid || 0),
+                                        drawPaid: moneyFormat(item.draw_paid || 0),
+                                        systemErrorCOArmsi: moneyFormat(item.systemErrorCOArmsi || 0),
+                                        safetyFund: moneyFormat(item.safetyFund || 0),
+                                        salesDeduction: moneyFormat(item.salesDeductionTablet) || 0,
+                                        unclaimed: moneyFormat(item.unclaimed || 0),
+                                        cUnpaid: moneyFormat(item.cancelled_unpaid || 0),
+                                        otherCommissionIntel05: moneyFormat(item.otherCommissionIntel05 || 0 ),
+                                        consolidatorsCommission: moneyFormat(item.consolidatorsCommission || 0 ),
+                                        paymentForOutstandingBalance: moneyFormat(item.paymentForOutstandingBalance || 0 ),
+                                        totalCommission: moneyFormat(parseFloat(item.totalCommission) || 0),
+                                        mwTotalPercent: moneyFormat(item.mwTwo || 0),
+                                        depositReplenish: moneyFormat(parseFloat(item.for_total) || 0),
+                                        netWinLoss: moneyFormat(item.netWinLoss || 0),
+                                        safetyFund: moneyFormat(parseFloat(item.safetyFund) + parseFloat(item.safetyFundMob) || 0),
+                                        otherCommissionIntel05: moneyFormat(parseFloat(item.otherCommissionIntel05) + parseFloat(item.otherCommIntMob) || 0),
+                                        consolidatorsCommission: moneyFormat(parseFloat(item.consolidatorsCommission) + parseFloat(item.consolCommMob) || 0),
+                                        paymentForOutstandingBalance: moneyFormat(parseFloat(item.paymentForOutstandingBalance) + parseFloat(item.payOutsBalMob) || 0),
+                                        netOpCommission: moneyFormat(item.netOperatorsCommission || 0),
+                                        mwTwo: moneyFormat(item.mwTwo || 0),
+                                        drawTwo: moneyFormat(item.drawTwo || 0),
+                                        mwTwoMobile: moneyFormat(item.mwTwoMobile || 0 ),
+                                        drawTwoMobile: moneyFormat(item.drawTwoMobile || 0),
                                         mobile: {
-                                            totalMWBets: numberFormat(
-                                                item.total_win_mobile || 0
-                                            ),
-                                            totalDrawBets: numberFormat(
-                                                item.draw_mobile || 0
-                                            ),
-                                            cashLoad: numberFormat(
-                                                item.cashLoad || 0
-                                            ),
-                                            cashWithdrawal: numberFormat(
-                                                item.cashWithdrawal || 0
-                                            ),
+                                            totalMWBets: moneyFormat(item.total_win_mobile || 0),
+                                            totalDrawBets: moneyFormat(item.draw_mobile || 0),
+                                            cashLoad: moneyFormat(item.cashLoad || 0),
+                                            cashWithdrawal: moneyFormat(item.cashWithdrawal || 0),
                                         },
                                     }"
-                                    :computedAve="{
-                                        depositReplenish: numberFormat(
-                                            item.for_total || 0
-                                        ),
-                                        mwTotalPercent: numberFormat(
-                                            item.mwTwo || 0
-                                        ),
-
-                                        mwTotalPercent: numberFormat(
-                                            item.mwTwo || 0
-                                        ),
-                                        drawTotalPercent: numberFormat(
-                                            item.drawTwo || 0
-                                        ),
-                                        mwMobileTotalPercent: numberFormat(
-                                            item.mwTwoMobile || 0
-                                        ),
-                                        drawMobileTotalPercent: numberFormat(
-                                            item.drawTwoMobile || 0
-                                        ),
-                                        totalComputationOthers:
-                                            item.exempted.toUpperCase() ===
-                                                'NOT EXEMPTED' ||
-                                            item.exempted.toUpperCase() ===
-                                                'NOT'
-                                                ? numberFormat(
-                                                      item.totalOthers || 0
-                                                  )
-                                                : numberFormat(
-                                                      item.totalCommission || 0
-                                                  ),
-                                    }"
+                           
                                     :commissionPercent="commission_percent"
                                     :editmode="editmode"
                                     :depositReplenishTxt="
@@ -471,7 +350,7 @@
                                                     class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
                                                 >
                                                     <span>{{
-                                                        computedAve
+                                                        depRep
                                                             .depositReplenishText
                                                             .title
                                                     }}</span>
@@ -484,7 +363,7 @@
                                                         <v-spacer></v-spacer>
                                                         <DateSOA
                                                             :depositReplenishText="
-                                                                computedAve.depositReplenishText
+                                                                depRep.depositReplenishText
                                                             "
                                                             :refNo="refNo"
                                                             :dateEvent="
@@ -519,7 +398,7 @@
                                                     <v-row>
                                                     <ComputeBox
                                                         :depositReplenishTxt="
-                                                            computedAve.depositReplenishText
+                                                            depRep.depositReplenishText
                                                         "
                                                         :commissionPercent="
                                                             parseFloat(
@@ -527,9 +406,7 @@
                                                             )
                                                         "
                                                         :editmode="editmode"
-                                                        :computedAve="
-                                                            computedAve
-                                                        "
+                                                    
                                                         :computation="
                                                             computation
                                                         "
@@ -540,7 +417,7 @@
 
                                                     <span
                                                         v-if="
-                                                            computedAve
+                                                            depRep
                                                                 .depositReplenishText
                                                                 .dateText ===
                                                             'FR'
@@ -566,7 +443,7 @@
                                                         :operatorName="operator_name"
                                                         :editmode="editmode"
                                                         :depositReplenishText="
-                                                            computedAve.depositReplenishText
+                                                            depRep.depositReplenishText
                                                         "
                                                     />
                                                     </v-row>
@@ -703,11 +580,11 @@
 import { numberFormat, numberUnformat, moneyFormat } from "../utility";
 import VueHtml2pdf from "vue-html2pdf";
 import moment from "moment";
-import DateSOA from "./DialogPreview/DateSOA.vue";
-import ArenaDetails from "./DialogPreview/ArenaDetails.vue";
-import ComputeBox from "./DialogPreview/ComputeBox.vue";
-import BankBox from "./DialogPreview/BankBox.vue";
-import SignatoryBox from "./DialogPreview/SignatoryBox.vue";
+import DateSOA from "./SoaComponents/DateSOA.vue";
+import ArenaDetails from "./SoaComponents/ArenaDetails.vue";
+import ComputeBox from "./SoaComponents/ComputeBox.vue";
+import BankBox from "./SoaComponents/BankBox.vue";
+import SignatoryBox from "./SoaComponents/SignatoryBox.vue";
 import DateRange from "./ComponentBits/DateRange.vue";
 import TableSoa from "./ComponentBits/TableSoa.vue";
 import SoaInput from "./ComponentBits/SoaInput.vue";
@@ -883,10 +760,6 @@ export default {
                 console.log(data);
             });
         },
-        clearDatesBtn(item){
-            this.showClear = item;
-            console.log(item);
-        },
         arenaSelectedBank(bankId) {
             const bId = bankId;
 
@@ -1026,7 +899,6 @@ export default {
             this.$refs.tableArenaConverted && this.$refs.tableArenaConverted.emptySelect();
         },
         handleArenaDownload(value){
-            // this.arenaData = value.arena
             this.selected = value.selected
         },
         async loadDateRange(item){
@@ -1045,93 +917,10 @@ export default {
         const dateRange = this.dates.length > 1 ? this.dates.sort() : null
         return dateRange ? dateRange.join(' ~ ') : null
       },
-        computedAve: function () {
-            const netWinLoss = numberFormat(
-                numberUnformat(this.computation.totalMWBets) +
-                    numberUnformat(this.computation.drawCancelled) +
-                    numberUnformat(this.computation.draw) -
-                    numberUnformat(this.computation.totalPayoutPaid) -
-                    numberUnformat(this.computation.cdPaid) -
-                    numberUnformat(this.computation.drawPaid) || 0
-            );
-
-            const mwTotalPercent = numberFormat(
-                parseFloat(this.commission_percent) *
-                    numberUnformat(this.computation.totalMWBets) || 0
-            );
-
-            const drawTotalPercent = numberFormat(
-                parseFloat(this.commission_percent) *
-                    numberUnformat(this.computation.draw) || 0
-            );
-            const mwMobileTotalPercent = numberFormat(
-                parseFloat(this.commission_percent) *
-                    numberUnformat(this.computation.mobile.totalMWBets) || 0
-            );
-
-            const drawMobileTotalPercent = numberFormat(
-                parseFloat(this.commission_percent) *
-                    numberUnformat(this.computation.mobile.totalDrawBets) || 0
-            );
-            const netOpCommTotal =
-                numberUnformat(mwTotalPercent) +
-                numberUnformat(drawTotalPercent) +
-                numberUnformat(mwMobileTotalPercent) +
-                numberUnformat(drawMobileTotalPercent) +
-                numberUnformat(this.computation.unclaimed) +
-                numberUnformat(this.computation.cUnpaid) -
-                numberUnformat(this.computation.salesDeduction);
-
-            const totalCommIntel =
-                numberUnformat(this.computation.otherCommissionIntel05) +
-                numberUnformat(this.computation.otherCommIntMob);
-            const totalConsolComm =
-                numberUnformat(this.computation.consolidatorsCommission) +
-                numberUnformat(this.computation.consolCommMob);
-            const totalPayOutsBal =
-                numberUnformat(this.computation.paymentForOutstandingBalance) +
-                numberUnformat(this.computation.payOutsBalMob);
-            const totalSafetyFund =
-                numberUnformat(this.computation.safetyFund) +
-                numberUnformat(this.computation.safetyFundMob);
-
-            const totalComm =
-                numberUnformat(netOpCommTotal) +
-                numberUnformat(totalCommIntel || "0.00") -
-                numberUnformat(totalConsolComm || "0.00") -
-                numberUnformat(totalSafetyFund || "0.00") -
-                numberUnformat(totalPayOutsBal || "0.00");
-
-            const netOpCommission = numberFormat(netOpCommTotal || 0);
-            const totalCommission = numberFormat(totalComm || 0);
-
-            const cashLoad = numberFormat(
-                this.computation.mobile.cashLoad || 0
-            );
-            const cashWithdraw = numberFormat(
-                this.computation.mobile.cashWithdrawal || 0
-            );
-
-            const totalOthers =
-                numberUnformat(this.computation.unclaimed) +
-                numberUnformat(this.computation.cUnpaid);
-
-            const totalComputationOthers =
-                this.computation.exempted.toUpperCase() === "NOT EXEMPTED" ||
-                this.computation.exempted.toUpperCase() === "NOT"
-                    ? numberFormat(totalOthers)
-                    : numberFormat(this.computation.totalCommission); // to fixed
-
-            const depositReplenish = numberFormat(
-                numberUnformat(netWinLoss) -
-                    numberUnformat(totalComputationOthers) -
-                    numberUnformat(this.computation.systemErrorCOArmsi) +
-                    (numberUnformat(this.computation.mobile.cashLoad) -
-                        numberUnformat(this.computation.mobile.cashWithdrawal))
-            );
-
+        depRep: function () {
+ 
             const depositReplenishText =
-                numberUnformat(depositReplenish) < 0
+                numberUnformat(this.computation.depositReplenish) < 0
                     ? {
                           title: "For Replenishment",
                           dateText: "FR",
@@ -1151,67 +940,8 @@ export default {
                           bankTitle: "Kindly Deposit to",
                       };
 
-            const totalMWBets = numberFormat(this.computation.totalMWBets || 0);
-            const drawCancelled = numberFormat(
-                this.computation.drawCancelled || 0
-            );
-            const draw = numberFormat(this.computation.draw || 0);
-            const totalPayoutPaid = numberFormat(
-                this.computation.totalPayoutPaid || 0
-            );
-            const cdPaid = numberFormat(this.computation.cdPaid || 0);
-            const drawPaid = numberFormat(this.computation.drawPaid || 0);
-
-            const unclaimed = numberFormat(this.computation.unclaimed || 0);
-            const cUnpaid = numberFormat(this.computation.cUnpaid || 0);
-
-            const otherCommissionIntel05 = numberFormat(totalCommIntel);
-            const consolidatorsCommission = numberFormat(totalConsolComm);
-            const paymentForOutstandingBalance = numberFormat(totalPayOutsBal);
-
-            const safetyFund = numberFormat(totalSafetyFund);
-            const salesDeduction = numberFormat(
-                this.computation.salesDeductionTablet
-            );
-            const systemErrorCOArmsi = numberFormat(
-                this.computation.systemErrorCOArmsi
-            );
-            const totalMWMobile = numberFormat(
-                this.computation.mobile.totalMWBets
-            );
-            const totalDrawMobile = numberFormat(
-                this.computation.mobile.totalDrawBets
-            );
-
             return {
-                totalMWBets,
-                netWinLoss,
-                mwTotalPercent,
-                drawTotalPercent,
-                mwMobileTotalPercent,
-                drawMobileTotalPercent,
-                netOpCommission,
-                totalComputationOthers,
-                totalCommission,
-                cashLoad,
-                cashWithdraw,
-                depositReplenish,
                 depositReplenishText,
-                salesDeduction,
-                systemErrorCOArmsi,
-                safetyFund,
-                drawCancelled,
-                draw,
-                totalPayoutPaid,
-                cdPaid,
-                drawPaid,
-                unclaimed,
-                cUnpaid,
-                otherCommissionIntel05,
-                consolidatorsCommission,
-                paymentForOutstandingBalance,
-                totalMWMobile,
-                totalDrawMobile,
             };
         },
     },

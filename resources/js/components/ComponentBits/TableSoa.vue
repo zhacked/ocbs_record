@@ -73,7 +73,7 @@ export default {
         downloadingReport: Boolean,
         openModel: Function,
         search: String,
-        handleSwitchTab: Function
+        handleSwitchTab: Function,
     },
     data: () => ({
         headers: [

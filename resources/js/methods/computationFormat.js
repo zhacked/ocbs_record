@@ -6,7 +6,6 @@ import {
 } from "../utility";
 const computationOpenSoa = (data) =>  {
 
-
         const totalMWBets = data.total_meron_wala;
         const drawCancelled = data.draw_cancelled;
         const draw = data.draw;
@@ -39,7 +38,6 @@ const computationOpenSoa = (data) =>  {
         const depositReplenish = data.for_total
         const totalCommission = data.totalCommission
         const netOpCommission = data.netOperatorsCommission
-    
         const totalSafetyFund = parseFloat(safetyFund)+parseFloat(safetyFundMob)
         const totalOtherCommIntel = parseFloat(otherCommissionIntel05)+parseFloat(otherCommIntMob)
         const totalConsolComm = parseFloat(consolidatorsCommission)+parseFloat(consolCommMob)

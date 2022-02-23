@@ -1,5 +1,6 @@
 <template lang="">
     <v-col class="col-md-6 d-flex justify-end align-center">
+     
         <v-btn
             color="red lighten-1 text-white"
             class="mr-4"
@@ -14,7 +15,7 @@
             bottom
             origin="center center"
             transition="scale-transition"
-            v-if="selected.length !=0"
+            v-if="selected.length > 0"
             rounded="rounded"
             :loading="downloadingReport"
             :disabled="downloadingReport"      

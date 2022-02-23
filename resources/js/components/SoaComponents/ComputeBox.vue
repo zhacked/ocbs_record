@@ -163,16 +163,15 @@
                             <div
                                 class="custom-span computation-span d-flex align-center computation"
                             >
-                                <span>{{ computedAve.mwTotalPercent }}</span>
+                                <span>{{ computation.mwTwo }}</span>
                             </div>
                         </div>
                     </div>
                     <div
                         class="d-flex align-center justify-end computation-wrapper_field"
                     >
-                        <span class="custom-label"
-                            >Draw*{{ commissionPercent * 100 }}% (kiosk):</span
-                        >
+                        <span class="custom-label">Draw*{{ commissionPercent * 100 }}% (kiosk):</span
+>
                         <div
                             class="d-flex align-center computation-container_field"
                         >
@@ -180,7 +179,7 @@
                             <div
                                 class="custom-span computation-span d-flex align-center"
                             >
-                                <span>{{ computedAve.drawTotalPercent }}</span>
+                                <span>{{ computation.drawTwo }}</span>
                             </div>
                         </div>
                     </div>
@@ -198,7 +197,7 @@
                                 class="custom-span computation-span d-flex align-center"
                             >
                                 <span>{{
-                                    computedAve.mwMobileTotalPercent
+                                    computation.mwTwoMobile
                                 }}</span>
                             </div>
                         </div>
@@ -217,7 +216,7 @@
                                 class="custom-span computation-span d-flex align-center"
                             >
                                 <span>{{
-                                    computedAve.drawMobileTotalPercent
+                                    computation.drawTwoMobile
                                 }}</span>
                             </div>
                         </div>
@@ -495,7 +494,6 @@ export default {
     name: "ComputeBox",
     props: {
         computation: Object,
-        computedAve: Object,
         editmode: Boolean,
         commissionPercent: Number,
         depositReplenishTxt: Object,

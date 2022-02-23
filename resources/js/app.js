@@ -14,6 +14,7 @@ import vuetify from '../plugin/vuetify'
 import LoadingProgress from "./components/ComponentBits/LoadingProgress" 
 
 import Form from 'vform'
+
 import {
     Button,
     HasError,
@@ -53,7 +54,7 @@ const Toast = swal.mixin({
     }
   })
 
-Vue.component('loading-progress', LoadingProgress)
+
 
 Vue.filter('upText', function (text) {
     return text.charAt(0).toUpperCase() + text.slice(1)
@@ -107,7 +108,7 @@ Vue.component(
     'not-found',
     require('./components/NotFound.vue')
 );
-
+Vue.component('loading-progress', LoadingProgress)
 Vue.component(Button.name, Button)
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)

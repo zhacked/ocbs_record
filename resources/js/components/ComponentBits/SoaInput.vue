@@ -91,6 +91,7 @@ export default {
             this.$Progress.finish();
             this.fileUpload = null;
             this.isExcel = false;
+            
           })
           .catch((error) => {
             this.loading = false
