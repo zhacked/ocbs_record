@@ -298,7 +298,7 @@ const readSoa = (event, isExcel) => {
                     const totalUnclaimed = rest.unclaimed;
                     const totalCUnpaid = rest.cUnpaid;
                     const salesDeduction = rest.salesDeductionTablet;
-                    const netOperatorsCommission = rest.netOperatorsCommission
+                    const netOperatorsCommission = rest.netOperatorsCommission.toString()
                  
                     const otherCommissionIntel =
                         rest.otherCommissionIntel05;
@@ -311,7 +311,7 @@ const readSoa = (event, isExcel) => {
                     const paymentForOutstandingBalance =
                         rest.paymentForOutstandingBalance;
 
-                    const totalCommission = rest.totalCommission;
+                    const totalCommission = rest.totalCommission.toString();
                     const cashLoad = rest.cashLoad;
                     const cashWithdrawal = rest.cashWithdrawal;
                     const totalOthers = rest.totalOthers;
