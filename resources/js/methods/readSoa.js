@@ -274,10 +274,8 @@ const readSoa = (event, isExcel) => {
 
             const removeKeyReportObject = filterObjectHeader.map(
                 ({ key, ...rest }) => {
+                    if(rest.arenaName.includes("MA90")) console.log(rest)
                     const type = rest.type || rest.classification;
-
-    
-
                     const exempted = rest.exempted;
                     const totalMWBets = rest.meron + rest.wala;
                     const totalCancelledBets = rest.drawCancelled;
@@ -374,7 +372,7 @@ const readSoa = (event, isExcel) => {
                         draw_mobile: totalDrawMobile,
                         cashLoad,
                         cashWithdrawal,
-                        for_total: depositReplenish,
+                        for_total: depositReplenish.toString(),
                         totalOthers,
                         systemErrorCOArmsi,
                         safetyFundMob,
