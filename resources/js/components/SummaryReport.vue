@@ -171,7 +171,6 @@
                                             :items="reflenish"
                                             :items-per-page="-1"
                                             :search="search"
-                                         
                                             sort-by="date_of_soa"
                                             group-by="date_of_soa"
                                             class="elevation-1 text-center"

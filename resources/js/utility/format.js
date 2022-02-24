@@ -13,7 +13,7 @@ const numberUnformat = (string) => {
     return numbro.unformat(string)
 }
 
-const moneyFormat = (num, decimals = 2) => numberFormat(num.toLocaleString('en-US', {
+const moneyFormat = (num, decimals = 2) => numberFormat(parseFloat(num).toLocaleString('en-US', {
 	minimumFractionDigits: 2,      
 	maximumFractionDigits: 2,
  }), decimals);

@@ -92,7 +92,8 @@ export default {
         arenaData: Array,
         soaLists: Function,
         importWithStatus: Function,
-        loadDateRange: Function
+        loadDateRange: Function,
+        handleEmptySelect: Function
     },
     data: () => ({
         loading: false,
@@ -203,10 +204,7 @@ export default {
                     setTimeout(async () => {
                         this.downloadingReport = false;
                         this.loading = false;
-                        this.$emit('arenaDownload', {
-                             arena: c,
-                             selected: []
-                         })
+                         this.handleEmptySelect()
                     }, 1000);
                       if(this.dates.length !== 0) {
                                 this.loadDateRange(this.tab)
@@ -244,40 +242,41 @@ export default {
             };
 
             const generateZipFile = async (zip) => {
-                const blob = await zip.generateAsync({ type: "blob" });
-                await saveAs(
-                    blob,
-                    `report-${moment(this.selected[0].date_closed).format(
-                        "MMDYY"
-                    )}.zip`
-                );
-                console.log("zip generated");
-                await axios.put("api/arenaStatus", statusArenas);
-                const c = this.arenaData.filter(
-                    (arena) =>
-                        !this.selected.find(
-                            (select) => select.areaCode === arena.areaCode
-                        )
-                );
+                    const blob = await zip.generateAsync({ type: "blob" });
+                    await saveAs(
+                        blob,
+                        `report-${moment(this.selected[0].date_closed).format(
+                            "MMDYY"
+                        )}.zip`
+                    );
+                    console.log("zip generated");
+                    await axios.put("api/arenaStatus", statusArenas);
+                    const c = this.arenaData.filter(
+                        (arena) =>
+                            !this.selected.find(
+                                (select) => select.areaCode === arena.areaCode
+                            )
+                    );
 
-                if (this.progressvalue === 100) {
-                    setTimeout(async () => {
-                        this.downloadingReport = false;
-                        this.loading = false;
+                    if (this.progressvalue === 100) {
+                        setTimeout(async () => {
+                            this.downloadingReport = false;
+                            this.loading = false;
 
-                        console.log("done");
-                        // this.selected = [];
-                         this.$emit('arenaDownload', {
-                             arena: c,
-                             selected: []
-                         })
-                    }, 1000);
-                }
-                  if(this.dates.length !== 0) {
+                            console.log("done");
+                            // this.selected = [];
+                          
+                        }, 1000);
+                    }
+
+                    
+                    if(this.dates.length !== 0) {
                         this.loadDateRange(this.tab)
                     }else{
                         this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
                     }
+
+                    this.handleEmptySelect()
             };
             // start benchmark
             const t = new Date();

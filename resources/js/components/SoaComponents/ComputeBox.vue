@@ -14,9 +14,9 @@
                         <span class="custom-label">Total M/W Bets:</span>
                         <div
                             class="custom-span computation-span d-flex align-center"
-                            :class="{ 'editmode-span': editmode }"
+                            
                         >
-                            <span>{{ computation.totalMWBets }}</span>
+                            <span>{{ moneyFormat(computation.totalMWBets) }}</span>
                         </div>
                     </div>
                     <div
@@ -29,9 +29,9 @@
                             <span class="operation">+</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
-                                <span>{{ computation.drawCancelled }}</span>
+                                <span>{{ moneyFormat(computation.drawCancelled) }}</span>
                             </div>
                         </div>
                     </div>
@@ -45,9 +45,9 @@
                             <span class="operation">+</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
-                                <span>{{ computation.draw }}</span>
+                                <span>{{ moneyFormat(computation.draw) }}</span>
                             </div>
                         </div>
                     </div>
@@ -61,9 +61,9 @@
                             <span class="operation">-</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
-                                <span>{{ computation.totalPayoutPaid }}</span>
+                                <span>{{ moneyFormat(computation.totalPayoutPaid) }}</span>
                             </div>
                         </div>
                     </div>
@@ -78,9 +78,9 @@
                             <span class="operation">-</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
-                                <span>{{ computation.cdPaid }}</span>
+                                <span>{{ moneyFormat(computation.cdPaid) }}</span>
                             </div>
                         </div>
                     </div>
@@ -95,16 +95,8 @@
                             <div
                                 class="custom-span computation-span d-flex align-center"
                             >
-                                <!-- <input
-                                    type="text"
-                                    disabled
-                                    class="input-field_report computation comp"
-                                    v-model="computation.drawPaid"
-                                    @focus="handleCleanZeroOnFocus($event)"
-                                    @blur="handleCleanZeroOnBlur($event)"
-                                /> -->
-
-                                <span>{{ computation.drawPaid }}</span>
+                               
+                                <span>{{ moneyFormat(computation.drawPaid) }}</span>
                             </div>
                         </div>
                     </div>
@@ -123,7 +115,7 @@
                                 class="custom-span computation-span d-flex align-center computation-total"
                             >
                                 <span class="ctotal-text">{{
-                                    computation.netWinLoss
+                                    moneyFormat(computation.netWinLoss)
                                 }}</span>
                             </div>
                         </div>
@@ -145,7 +137,7 @@
                                 class="custom-span computation-span d-flex align-center computation-total"
                             >
                                 <span class="ctotal-text">{{
-                                    computation.netWinLoss
+                                    moneyFormat(computation.netWinLoss)
                                 }}</span>
                             </div>
                         </div>
@@ -163,7 +155,7 @@
                             <div
                                 class="custom-span computation-span d-flex align-center computation"
                             >
-                                <span>{{ computation.mwTwo }}</span>
+                                <span>{{ moneyFormat(computation.mwTwo) }}</span>
                             </div>
                         </div>
                     </div>
@@ -179,7 +171,7 @@
                             <div
                                 class="custom-span computation-span d-flex align-center"
                             >
-                                <span>{{ computation.drawTwo }}</span>
+                                <span>{{ moneyFormat(computation.drawTwo) }}</span>
                             </div>
                         </div>
                     </div>
@@ -197,7 +189,7 @@
                                 class="custom-span computation-span d-flex align-center"
                             >
                                 <span>{{
-                                    computation.mwTwoMobile
+                                    moneyFormat(computation.mwTwoMobile)
                                 }}</span>
                             </div>
                         </div>
@@ -216,7 +208,7 @@
                                 class="custom-span computation-span d-flex align-center"
                             >
                                 <span>{{
-                                    computation.drawTwoMobile
+                                    moneyFormat(computation.drawTwoMobile)
                                 }}</span>
                             </div>
                         </div>
@@ -231,9 +223,9 @@
                             <span class="operation">+</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
-                                <span>{{ computation.unclaimed }}</span>
+                                <span>{{ moneyFormat(computation.unclaimed) }}</span>
                             </div>
                         </div>
                     </div>
@@ -247,9 +239,9 @@
                             <span class="operation">+</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
-                                <span>{{ computation.cUnpaid }}</span>
+                                <span>{{ moneyFormat(computation.cUnpaid) }}</span>
                             </div>
                         </div>
                     </div>
@@ -263,9 +255,9 @@
                             <span class="operation">-</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
-                                <span>{{ computation.salesDeduction }}</span>
+                                <span>{{ moneyFormat(computation.salesDeduction) }}</span>
                             </div>
                         </div>
                     </div>
@@ -282,7 +274,7 @@
                             <div
                                 class="custom-span computation-span d-flex align-center computation-total"
                             >
-                                <span>{{ computation.netOpCommission }}</span>
+                                <span>{{ moneyFormat(computation.netOpCommission) }}</span>
                             </div>
                         </div>
                     </div>
@@ -296,10 +288,10 @@
                             <span class="operation">+</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
                                 <span>{{
-                                    computation.otherCommissionIntel05
+                                    moneyFormat(computation.otherCommissionIntel05)
                                 }}</span>
                             </div>
                         </div>
@@ -316,10 +308,10 @@
                             <span class="operation">-</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
                                 <span>{{
-                                    computation.consolidatorsCommission
+                                    moneyFormat(computation.consolidatorsCommission)
                                 }}</span>
                             </div>
                         </div>
@@ -334,9 +326,9 @@
                             <span class="operation">-</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
-                                <span>{{ computation.safetyFund }}</span>
+                                <span>{{ moneyFormat(computation.safetyFund) }}</span>
                             </div>
                         </div>
                     </div>
@@ -352,10 +344,10 @@
                             <span class="operation">-</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
                                 <span>{{
-                                    computation.paymentForOutstandingBalance
+                                    moneyFormat(computation.paymentForOutstandingBalance)
                                 }}</span>
                             </div>
                         </div>
@@ -374,7 +366,7 @@
                                 class="custom-span computation-span d-flex align-center computation-total"
                             >
                                 <span class="ctotal-text">{{
-                                    computation.totalCommission
+                                    moneyFormat(computation.totalCommission)
                                 }}</span>
                             </div>
                         </div>
@@ -400,10 +392,10 @@
                         >
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
                                 <span>{{
-                                    computation.mobile.totalMWBets
+                                    moneyFormat(computation.totalMWMobile)
                                 }}</span>
                             </div>
                         </div>
@@ -418,10 +410,10 @@
                         >
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
                                 <span>{{
-                                    computation.mobile.totalDrawBets
+                                    moneyFormat(computation.drawMobile)
                                 }}</span>
                             </div>
                         </div>
@@ -438,9 +430,9 @@
                             <span class="operation">+</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                              
                             >
-                                <span>{{ computation.mobile.cashLoad }}</span>
+                                <span>{{ moneyFormat(computation.cashLoad) }}</span>
                             </div>
                         </div>
                     </div>
@@ -456,10 +448,10 @@
                             <span class="operation">-</span>
                             <div
                                 class="custom-span computation-span d-flex align-center"
-                                :class="{ 'editmode-span': editmode }"
+                                
                             >
                                 <span>{{
-                                    computation.mobile.cashWithdrawal
+                                    moneyFormat(computation.cashWithdrawal)
                                 }}</span>
                             </div>
                         </div>
@@ -478,7 +470,7 @@
                                 class="custom-span computation-span d-flex align-center overtotal"
                             >
                                 <span class="ctotal-text">{{
-                                    computation.depositReplenish
+                                    moneyFormat(computation.depositReplenish)
                                 }}</span>
                             </div>
                         </div>
@@ -490,6 +482,7 @@
 </template>
 
 <script>
+import {moneyFormat} from "../../utility/format"
 export default {
     name: "ComputeBox",
     props: {
@@ -498,5 +491,8 @@ export default {
         commissionPercent: Number,
         depositReplenishTxt: Object,
     },
+    data: () => ({
+        moneyFormat
+    })
 };
 </script>

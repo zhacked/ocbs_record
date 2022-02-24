@@ -1,62 +1,54 @@
 <template lang="">
-    <fragment>
-       
-        <v-data-table
-            item-key="codeEvent"
-            :headers="headers"
-            :items="arenaData"
-            :items-per-page="10"
-            v-model="selected"
-            :loading="downloadingReport"
-            :search="search"
-            :show-select="downloadingReport ? false : true"
-            :disable-filtering="downloadingReport ? true : false"
-            :disable-sort="downloadingReport ? true : false"
-            :single-select="singleSelect"
-            class="elevation-1 text-center"
-            :footer-props="{
-                'items-per-page-options': [10, 20, 30, 40, 50, 100],
-            }"
-            @toggle-select-all="selectAllToggle"
-            @input="singleSelected"
-        >
-        
-            <template v-slot:[`item.data-table-select`]="{ item, isSelected, select }">
-            
-                    <v-simple-checkbox
-                        :value="isSelected"
-                        :readonly="item.disabled"
-                        :disabled="item.arena_details ? false : true"
-                        @input="select($event)"
-                    ></v-simple-checkbox>
-              
-            </template>          
-            <template v-slot:[`item.actions`]="{ item }">
-             
-                    <v-tooltip top color="primary">
-                        <template v-slot:activator="{ on, attrs, hover }">
-                            <v-btn
-                                icon
-                                color="primary"
-                                dark
-                                small
-                                v-bind="attrs"
-                                v-on="on"
-                                @click="openModel(item)"
-                                :class="{
-                                'on-hover': hover,
-                                }"
-                                :disabled="downloadingReport"
-                            >
-                                <v-icon>mdi-eye</v-icon>
-                            </v-btn>
-                        </template>
-                        <span>View Account</span>
-                    </v-tooltip>
-                
-            </template>
-        </v-data-table>
-    </fragment>
+    <v-data-table
+        item-key="codeEvent"
+        :headers="headers"
+        :items="arenaData"
+        :items-per-page="10"
+        v-model="selected"
+        :loading="downloadingReport"
+        :search="search"
+        :show-select="downloadingReport ? false : true"
+        :disable-filtering="downloadingReport ? true : false"
+        :disable-sort="downloadingReport ? true : false"
+        :single-select="singleSelect"
+        class="elevation-1 text-center"
+        :footer-props="{
+            'items-per-page-options': [10, 20, 30, 40, 50, 100],
+        }"
+        @toggle-select-all="selectAllToggle"
+        @input="singleSelected"
+    >
+        <template v-slot:[`item.data-table-select`]="{ item, isSelected, select }">
+            <v-simple-checkbox
+                :value="isSelected"
+                :readonly="item.disabled"
+                :disabled="item.arena_details ? false : true"
+                @input="select($event)"
+            ></v-simple-checkbox>
+        </template>  
+        <template v-slot:[`item.actions`]="{ item }">
+            <v-tooltip top color="primary">
+                <template v-slot:activator="{ on, attrs, hover }">
+                    <v-btn
+                        icon
+                        color="primary"
+                        dark
+                        small
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="openModel(item)"
+                        :class="{
+                        'on-hover': hover,
+                        }"
+                        :disabled="downloadingReport"
+                    >
+                        <v-icon>mdi-eye</v-icon>
+                    </v-btn>
+                </template>
+                <span>View Account</span>
+            </v-tooltip>
+        </template>
+    </v-data-table>
 </template>
 <script>
 export default {
@@ -66,7 +58,6 @@ export default {
         downloadingReport: Boolean,
         openModel: Function,
         search: String,
-        handleSwitchTab: Function,
     },
     data: () => ({
         headers: [
@@ -107,7 +98,6 @@ export default {
             this.selected = []
         },
         singleSelected(item){
-            console.log(item)
             this.$emit('selectedSoa', item)
         }
     },

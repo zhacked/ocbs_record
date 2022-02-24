@@ -5,7 +5,7 @@ import { defineEmail, defineContact } from "../methods/defineEmailContacts";
 import { truncate } from "../methods/truncate";
 import { withStatus, soa } from "../methods/soaList";
 import { reportGenerate } from "../methods/generateReport";
-import { computationOpenSoa } from "../methods/computationFormat";
+import { computationSoa } from "../methods/computationFormat";
 import { printSoa } from "../methods/print";
 
 export {
@@ -18,6 +18,6 @@ export {
     withStatus,
     soa,
     reportGenerate,
-    computationOpenSoa,
+    computationSoa,
     printSoa,
 };
