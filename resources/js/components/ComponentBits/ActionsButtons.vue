@@ -183,7 +183,7 @@ export default {
                 });
 
                 const link = document.createElement("a");
-                link.download = `${this.selected[i].arena_name}.png`;
+                link.download = `${this.selected[i].arena_details.arena}.png`;
                 link.href = canvas.toDataURL("image/png");
                 document.body.appendChild(link);
                 link.click();
