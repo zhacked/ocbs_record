@@ -13,10 +13,22 @@ const numberUnformat = (string) => {
     return numbro.unformat(string)
 }
 
-const moneyFormat = (num, decimals = 2) => numberFormat(parseFloat(num).toLocaleString('en-US', {
-	minimumFractionDigits: 2,      
-	maximumFractionDigits: 2,
- }), decimals);
+const toFixed = (number, decimal = 3) => {
+	return number.toFixed(decimal);
+};
+
+const formatter = (number) => {
+	return new Intl.NumberFormat('en-PH', {
+		minimumFractionDigits: 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+		maximumFractionDigits: 2, // (causes 2500.99 to be printed as $2,501)
+	  }).format(number);
+ }
+
+const moneyFormat = (num, decimal = 2) => {
+    const money = parseFloat(num) < -1 ? parseFloat(num) : toFixed(parseFloat(num))
+    return numberFormat(formatter(parseFloat(money)), decimal)
+
+};
 
 
 export { numberFormat, numberUnformat, moneyFormat }

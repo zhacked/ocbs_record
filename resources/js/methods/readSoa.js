@@ -11,23 +11,28 @@ import {
     sortBy,
 } from "lodash";
 
-import {
-    mergeObject,
-    valueSplit,
-} from "../utility";
+import { mergeObject, valueSplit } from "../utility";
 
+function toString(o) {
+    Object.keys(o).forEach((k) => {
+        if (typeof o[k] === "object") {
+            return toString(o[k]);
+        }
 
+        o[k] = "" + o[k];
+    });
+
+    return o;
+}
 
 const readSoa = (event, isExcel) => {
-    let arenaReportFiltered = []
+    let arenaReportFiltered = [];
     const file = event ? event : null;
-           
-    const checkfile =
-        ( event.name.includes("xlsx")) || ( event.name.includes("csv"));
-      
+
+    const checkfile = event.name.includes("xlsx") || event.name.includes("csv");
 
     if (event && checkfile) {
-        isExcel = true
+        isExcel = true;
         const reader = new FileReader();
         let arrayData = [];
         let reportCombined = [];
@@ -44,11 +49,11 @@ const readSoa = (event, isExcel) => {
             const ws = wb.SheetNames;
 
             const filteredWS = ws.filter(function (value, index, arr) {
-      
-                const accReportComb = "Accounts Report Combined"
-                const summaryRep = "Summary Report"
+                const accReportComb = "Accounts Report Combined";
+                const summaryRep = "Summary Report";
                 return (
-                    camelCase(value) === camelCase(accReportComb) || camelCase(value) === camelCase(summaryRep)
+                    camelCase(value) === camelCase(accReportComb) ||
+                    camelCase(value) === camelCase(summaryRep)
                 );
             });
 
@@ -69,17 +74,13 @@ const readSoa = (event, isExcel) => {
                 if (Object.keys(r).length >= 17) reportCombined.push(r);
 
                 if (typeof r.A == "string") eventDetailsA.push(r);
-                if (
-                    typeof r.A == "string" &&
-                    r.A.indexOf("Date") > -1
-                ) {
+                if (typeof r.A == "string" && r.A.indexOf("Date") > -1) {
                     eventsCombined.push(valueSplit(r.A));
                 }
             });
 
             arrayData[1].map((sr) => {
-                if (Object.keys(sr).length >= 20)
-                    summaryReport.push(sr);
+                if (Object.keys(sr).length >= 20) summaryReport.push(sr);
             });
 
             // Merge Object
@@ -88,13 +89,9 @@ const readSoa = (event, isExcel) => {
             // date format MM/DD/YYYY || DD/MM/YYYY
             const dateFormatting = (date) =>
                 moment(date, "MM/DD/YYYY").isValid()
-                    ? moment(date, "MM/DD/YYYY").format(
-                          "YYYY-MM-DD LTS"
-                      )
+                    ? moment(date, "MM/DD/YYYY").format("YYYY-MM-DD LTS")
                     : moment(date, "DD/MM/YYYY").isValid()
-                    ? moment(date, "DD/MM/YYYY").format(
-                          "YYYY-MM-DD LTS"
-                      )
+                    ? moment(date, "DD/MM/YYYY").format("YYYY-MM-DD LTS")
                     : moment(date).format("YYYY-MM-DD LTS");
 
             // if date is serial
@@ -102,8 +99,7 @@ const readSoa = (event, isExcel) => {
                 const utc_days = Math.floor(serial - 25569);
                 const utc_value = utc_days * 86400;
                 const date_info = new Date(utc_value * 1000);
-                const fractional_day =
-                    serial - Math.floor(serial) + 0.0000001;
+                const fractional_day = serial - Math.floor(serial) + 0.0000001;
                 let total_seconds = Math.floor(86400 * fractional_day);
                 const seconds = total_seconds % 60;
                 total_seconds -= seconds;
@@ -119,9 +115,7 @@ const readSoa = (event, isExcel) => {
                 );
             };
 
-            const eventCreatedUTC = ExcelDateToJSDate(
-                arrayData[0][2].A
-            );
+            const eventCreatedUTC = ExcelDateToJSDate(arrayData[0][2].A);
             const eventClosedUTC = ExcelDateToJSDate(arrayData[0][4].A);
             const isValidEventArenaDate = (stringDate) =>
                 moment(stringDate, "MM/DD/YYYY hh:mm:ss a").isValid() ||
@@ -140,8 +134,6 @@ const readSoa = (event, isExcel) => {
                     eventClosedUTC
             );
 
-
-
             const objectKeyed = (array) => {
                 let objectKeyReplacedArray = [];
                 const keysss = array.find((k) => k.B === "ARENA NAME");
@@ -152,11 +144,9 @@ const readSoa = (event, isExcel) => {
                 array.map((data) => {
                     data = Object.assign(
                         {},
-                        ...Object.entries(data).map(
-                            ([, prop], index) => ({
-                                [camelCase(headK[index])]: prop,
-                            })
-                        )
+                        ...Object.entries(data).map(([, prop], index) => ({
+                            [camelCase(headK[index])]: prop,
+                        }))
                     );
 
                     objectKeyReplacedArray.push({
@@ -167,7 +157,7 @@ const readSoa = (event, isExcel) => {
                             : data.classification
                             ? data.classification
                             : null,
-                       
+
                         drawMobile: 0,
                         totalMWMobile: 0,
                         safetyFundMob: 0,
@@ -184,58 +174,45 @@ const readSoa = (event, isExcel) => {
             const objKeySummary = objectKeyed(summaryReport, 6);
 
             objKeySummary.forEach(function (item) {
-            
                 const existing = objMobileKiosk.filter((v, i) => {
-                    
-                    if (
-                        v.type === "KIOSK" &&
-                        v.areaCode == item.areaCode
-                    ){
-                      
-                         return v.areaCode == item.areaCode;
+                    if (v.type === "KIOSK" && v.areaCode == item.areaCode) {
+                        return v.areaCode == item.areaCode;
                     }
-                       
                 });
 
                 if (existing.length) {
                     const m = item.type.toLowerCase();
-                    const existingIndex = objMobileKiosk.indexOf(
-                        existing[0]
-                    );
+                    const existingIndex = objMobileKiosk.indexOf(existing[0]);
 
-                    objMobileKiosk[existingIndex].totalMWMobile =
-                        item.total;
-                    objMobileKiosk[existingIndex].drawMobile =
-                        item.draw;
+                    objMobileKiosk[existingIndex].totalMWMobile = item.total;
+                    objMobileKiosk[existingIndex].drawMobile = item.draw;
 
-                    objMobileKiosk[existingIndex].safetyFundMob = item.safetyFund;
-                    objMobileKiosk[existingIndex].otherCommIntMob = item.otherCommissionIntel05;
-                    objMobileKiosk[existingIndex].consolCommMob = item.consolidatorsCommission;
-                    objMobileKiosk[existingIndex].payOutsBalMob = item.paymentForOutstandingBalance;
+                    objMobileKiosk[existingIndex].safetyFundMob =
+                        item.safetyFund;
+                    objMobileKiosk[existingIndex].otherCommIntMob =
+                        item.otherCommissionIntel05;
+                    objMobileKiosk[existingIndex].consolCommMob =
+                        item.consolidatorsCommission;
+                    objMobileKiosk[existingIndex].payOutsBalMob =
+                        item.paymentForOutstandingBalance;
                 } else {
-                    if (typeof item.value == "string") { 
+                    if (typeof item.value == "string") {
                         item.value = [item.value];
-                        
                     }
 
-                    objMobileKiosk.push(item)
-               
+                    objMobileKiosk.push(item);
                 }
             });
-
-
-
 
             let helper = {};
             const result = objMobileKiosk.reduce(function (r, o) {
                 let key = o.areaCode;
-       
+
                 if (!helper[key]) {
                     helper[key] = Object.assign({}, o); // create a copy of o
 
                     r.push(helper[key]);
                 } else {
-
                     helper[key].totalMWMobile = o.total;
                     helper[key].drawMobile = o.draw;
                     helper[key].safetyFundMob = o.safetyFund;
@@ -246,9 +223,6 @@ const readSoa = (event, isExcel) => {
 
                 return r;
             }, []);
-
-
-           
 
             const accountsReportSummaryCombined = [...result];
 
@@ -270,59 +244,54 @@ const readSoa = (event, isExcel) => {
                     return obk;
             });
 
-
-
             const removeKeyReportObject = filterObjectHeader.map(
                 ({ key, ...rest }) => {
-                    if(rest.arenaName.includes("MA90")) console.log(rest)
+                    if (rest.arenaName.includes("MA90")) console.log(rest);
                     const type = rest.type || rest.classification;
                     const exempted = rest.exempted;
                     const totalMWBets = rest.meron + rest.wala;
-                    const totalCancelledBets = rest.drawCancelled.toString();
-                    const totalDrawBets = rest.draw.toString();
-                    const totalPayoutPaid = rest.payoutPaid.toString();
-                    const totalCDPaid = rest.cDPaid.toString();
-                    const totalDrawPaid = rest.drawPaid.toString();
-                    const totalMWMobile = rest.totalMWMobile.toString();
-                    const totalDrawMobile = rest.drawMobile.toString();
-                    const safetyFundMob = rest.safetyFundMob.toString();
-                    const otherCommIntMob = rest.otherCommIntMob.toString();
-                    const consolCommMob = rest.consolCommMob.toString();
-                    const payOutsBalMob = rest.payOutsBalMob.toString();
-                    const netWinLoss = rest.netWinLoss.toString()
-                   
+                    const totalCancelledBets = rest.drawCancelled;
+                    const totalDrawBets = rest.draw;
+                    const totalPayoutPaid = rest.payoutPaid;
+                    const totalCDPaid = rest.cDPaid;
+                    const totalDrawPaid = rest.drawPaid;
+                    const totalMWMobile = rest.totalMWMobile;
+                    const totalDrawMobile = rest.drawMobile;
+                    const safetyFundMob = rest.safetyFundMob;
+                    const otherCommIntMob = rest.otherCommIntMob;
+                    const consolCommMob = rest.consolCommMob;
+                    const payOutsBalMob = rest.payOutsBalMob;
+                    const netWinLoss = rest.netWinLoss;
+
                     const mwTwo = totalMWBets * 0.02;
                     const drawTwo = totalDrawBets * 0.02;
                     const mwTwoMobile = totalMWMobile * 0.02;
                     const drawTwoMobile = totalDrawMobile * 0.02;
-                    const totalUnclaimed = rest.unclaimed.toString();
-                    const totalCUnpaid = rest.cUnpaid.toString();
-                    const salesDeduction = rest.salesDeductionTablet.toString();
-                    const netOperatorsCommission = rest.netOperatorsCommission.toString()
-                 
-                    const otherCommissionIntel =
-                        rest.otherCommissionIntel05.toString();
-                    const consolidatorsCommission =
-                        rest.consolidatorsCommission.toString();
+                    const totalUnclaimed = rest.unclaimed;
+                    const totalCUnpaid = rest.cUnpaid;
+                    const salesDeduction = rest.salesDeductionTablet;
+                    const netOperatorsCommission = rest.netOperatorsCommission;
 
-                    const safetyFund = rest.safetyFund.toString();
-                   
+                    const otherCommissionIntel = rest.otherCommissionIntel05;
+                    const consolidatorsCommission =
+                        rest.consolidatorsCommission;
+
+                    const safetyFund = rest.safetyFund;
 
                     const paymentForOutstandingBalance =
-                        rest.paymentForOutstandingBalance.toString();
+                        rest.paymentForOutstandingBalance;
 
-                    const totalCommission = rest.totalCommission.toString();
-                    const cashLoad = rest.cashLoad.toString();
-                    const cashWithdrawal = rest.cashWithdrawal.toString();
-                    const totalOthers = rest.totalOthers.toString();
-                    const systemErrorCOArmsi = rest.systemErrorCOArmsi.toString();
+                    const totalCommission = rest.totalCommission;
+                    const cashLoad = rest.cashLoad;
+                    const cashWithdrawal = rest.cashWithdrawal;
+                    const totalOthers = rest.totalOthers;
+                    const systemErrorCOArmsi = rest.systemErrorCOArmsi;
 
-                    const depositReplenish = rest.forDepositReplenish.toString()
+                    const depositReplenish = rest.forDepositReplenish;
 
                     const soaFr =
                         parseFloat(depositReplenish) < 0 ? "fr" : "soa";
-                    const group =
-                        soaFr === "fr" ? "Replenish" : "Deposit";
+                    const group = soaFr === "fr" ? "Replenish" : "Deposit";
                     const arenaName =
                         rest.arenaName.indexOf("/") > -1
                             ? rest.arenaName.replace(/\//g, "~")
@@ -340,65 +309,65 @@ const readSoa = (event, isExcel) => {
                         codeEvent,
                         date_of_soa: rest.eventCreated,
                         date_closed: rest.eventClosed,
-                        meron: rest.meron.toString(),
-                        wala: rest.wala.toString(),
-                        rake: rest.rake.toString(),
-                        draw_unpaid: rest.dUnpaid.toString(),
-                        draw_unclaimed: rest.drawUnclaimed.toString(),
+                        meron: rest.meron,
+                        wala: rest.wala,
+                        rake: rest.rake,
+                        draw_unpaid: rest.dUnpaid,
+                        draw_unclaimed: rest.drawUnclaimed,
                         arena_name: arenaName.toUpperCase(),
                         type,
                         exempted,
-                        total_meron_wala: totalMWBets.toString(),
-                        draw_cancelled: totalCancelledBets.toString(),
-                        draw: totalDrawBets.toString(),
-                        total_payout_paid: totalPayoutPaid.toString(),
-                        draw_cancelled_paid: totalCDPaid.toString(),
-                        draw_paid: totalDrawPaid.toString(),
+                        total_meron_wala: totalMWBets,
+                        draw_cancelled: totalCancelledBets,
+                        draw: totalDrawBets,
+                        total_payout_paid: totalPayoutPaid,
+                        draw_cancelled_paid: totalCDPaid,
+                        draw_paid: totalDrawPaid,
                         netWinLoss,
                         mwTwo,
                         drawTwo,
                         mwTwoMobile,
                         drawTwoMobile,
-                        unclaimed: totalUnclaimed.toString(),
-                        cancelled_unpaid: totalCUnpaid.toString(),
-                        salesDeductionTablet: salesDeduction.toString(),
+                        unclaimed: totalUnclaimed,
+                        cancelled_unpaid: totalCUnpaid,
+                        salesDeductionTablet: salesDeduction,
                         netOperatorsCommission,
-                        otherCommissionIntel05: otherCommissionIntel.toString(),
+                        otherCommissionIntel05: otherCommissionIntel,
                         consolidatorsCommission,
                         safetyFund,
                         paymentForOutstandingBalance,
                         totalCommission,
-                        total_win_mobile: totalMWMobile.toString(),
-                        draw_mobile: totalDrawMobile.toString(),
+                        total_win_mobile: totalMWMobile,
+                        draw_mobile: totalDrawMobile,
                         cashLoad,
                         cashWithdrawal,
-                        for_total: depositReplenish.toString(),
+                        for_total: depositReplenish,
                         totalOthers,
                         systemErrorCOArmsi,
                         safetyFundMob,
                         otherCommIntMob,
-                        consolCommMob, 
+                        consolCommMob,
                         payOutsBalMob,
                         soaFr,
                         group,
                     };
 
-                    return { ...rest };
+                    return toString({ ...rest });
                 }
             );
 
-            const removeLucky = removeKeyReportObject.filter(removeLuck => (removeLuck.areaCode !== 'LUCKY' || removeLuck.arena_name.split(' ')[0] !== 'LUCKY'))
+            const removeLucky = removeKeyReportObject.filter(
+                (removeLuck) =>
+                    removeLuck.areaCode !== "LUCKY" ||
+                    removeLuck.arena_name.split(" ")[0] !== "LUCKY"
+            );
 
             // group fr and soa
-            const groupSOAFR = removeLucky.reduce(function (
-                r,
-                a
-            ) {
+            const groupSOAFR = removeLucky.reduce(function (r, a) {
                 r[a.soaFr] = r[a.soaFr] || [];
                 r[a.soaFr].push(a);
                 return r;
-            },
-            Object.create(null));
+            }, Object.create(null));
 
             const moLetter = String.fromCharCode(
                 96 + (moment(eventDateCreated).month() + 1)
@@ -408,13 +377,13 @@ const readSoa = (event, isExcel) => {
                 function (o) {
                     return o.areaCode;
                 },
-            ])
+            ]);
 
             const sortFr = sortBy(groupSOAFR.fr, [
                 function (o) {
                     return o.areaCode;
                 },
-            ])
+            ]);
 
             const newsoa = sortSoa.map(({ soaFr, ...s }, i) => ({
                 refNo:
@@ -440,32 +409,21 @@ const readSoa = (event, isExcel) => {
                 },
             ]);
 
-           
-
-            arenaReportFiltered.push(...sortReport) ;
-
-           
-
+            arenaReportFiltered.push(...sortReport);
         };
         reader.readAsBinaryString(file);
-    } 
-    else {
-       
-        isExcel = false
+    } else {
+        isExcel = false;
         Fire.$emit("AfterCreate"),
             Toast.fire({
                 icon: "warning",
                 title: "Make sure you insert correct excel data!",
-                
             });
-       
     }
     return {
         arenaReportFiltered,
-        isExcel
-    }
+        isExcel,
+    };
+};
 
-
-}
-
-export { readSoa }
+export { readSoa };
