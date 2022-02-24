@@ -25,8 +25,9 @@ const formatter = (number) => {
  }
 
 const moneyFormat = (num, decimal = 2) => {
-    const money = parseFloat(num) < -1 ? parseFloat(num) : toFixed(parseFloat(num))
-    return numberFormat(formatter(parseFloat(money)), decimal)
+    // const money = parseFloat(num) < -1 ? parseFloat(num) : toFixed(parseFloat(num))
+    const money = toFixed(parseFloat(num))
+    return numberFormat(formatter(money), decimal)
 
 };
 
