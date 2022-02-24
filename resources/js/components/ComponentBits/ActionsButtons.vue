@@ -311,17 +311,17 @@ export default {
 
                 const link = document.createElement("a");
                 // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
-                link.download = `${this.selected[i].arena_name}.png`;
+                link.download = `${this.selected[i].arena_details.arena}.png`;
                 link.href = await canvas.toDataURL("image/png");
                 const url = link.href;
 
                 const folderName =
                     parseFloat(this.selected[i].for_total) < 0 ? "fr" : "soa";
-
+                console.log(this.selected[i])
                 const arenaName =
-                    (await this.selected[i].arena_name.indexOf("/")) > -1
-                        ? this.selected[i].arena_name.replace(/\//g, "-")
-                        : this.selected[i].arena_name;
+                    (this.selected[i].arena_details.arena.indexOf("/")) > -1
+                        ? this.selected[i].arena_details.arena.replace(/\//g, "-")
+                        : this.selected[i].arena_details.arena;
                 const filename = `${folderName}/${arenaName}.png`;
 
                 await zip.file(filename, await urlToPromise(url), {

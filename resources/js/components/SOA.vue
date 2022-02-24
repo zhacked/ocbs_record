@@ -59,7 +59,6 @@
                                     :dates="dates"
                                     :tab="tab"
                                     :arenaData="arenaData"
-                                   
                                     :handleEmptySelect="handleEmptySelect"
                                     :soaLists="soaLists"
                                     :importWithStatus="importWithStatus"
