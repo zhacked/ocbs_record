@@ -771,6 +771,8 @@ export default {
         },
         handleSelected(value) {
             this.selected = value;
+            console.log('SELECTED',value)
+            if(value.length < 1) this.signsArray = [], this.printReadyProgress = 0;
         },
         getDates(value) {
             this.dates = value;

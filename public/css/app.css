@@ -73786,6 +73786,13 @@ select:disabled {
     font-weight: 500;
   }
 
+  .sign-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    min-width: 200px;
+  }
+
   .signed-text_name {
     line-height: 2.5;
     text-align: center;
