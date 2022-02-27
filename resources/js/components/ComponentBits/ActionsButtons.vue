@@ -32,8 +32,8 @@
                 >
                     <v-icon
                         light
-                    >mdi-download</v-icon>
-                        Download
+                    >mdi-menu</v-icon>
+                        Menu
                     <template
                         v-slot:loader
                     >
@@ -41,8 +41,8 @@
                     </template>
                 </v-btn>
             </template>
-            <v-list>
-                <v-list-item>
+            <v-list >
+                <v-list-item class="d-flex justify-center" >
                     <v-btn
                         :loading="downloadingReport"
                         :disabled="downloadingReport"
@@ -56,7 +56,7 @@
                         PNG
                     </v-btn>
                 </v-list-item>
-                <v-list-item>
+                <v-list-item class="d-flex justify-center">
                     <v-btn
                         :loading="downloadingReport"
                         :disabled="downloadingReport"
@@ -68,6 +68,21 @@
                             light
                         >mdi-zip-box</v-icon>
                             Zip
+                    </v-btn>
+                </v-list-item>
+                <hr color="green lighten-2" class="ma-2">
+                <v-list-item class="d-flex justify-center">
+                    <v-btn
+                        :loading="downloadingReport"
+                        :disabled="downloadingReport"
+                        color="red accent-1"
+                        class="ma-2 white--text allbtn"
+                        @click="MultiPrint('printingSOA')"
+                    >
+                        <v-icon
+                            light
+                        >mdi-printer</v-icon>
+                            Print
                     </v-btn>
                 </v-list-item>
             </v-list>
@@ -332,6 +347,27 @@ export default {
             //Generate zip file
             await generateZipFile(zip);
         },
+        async MultiPrint(){
+              const divsss = document.querySelectorAll(".reportsoaoutput");
+      
+                  for (let i = 0; i < this.selected.length; i++) {
+                        const canvas = await html2canvas(divsss[i], {
+                            onclone: function (clonedDoc) {
+                                const elems =
+                                    clonedDoc.getElementsByClassName("reportsoaoutput");
+                                for (let i = 0; i < elems.length; i++) {
+                                    elems[i].style.display = "block";
+                                }
+                                
+                            },
+                            type: "dataURL",
+                            backgroundColor: "#ffffff",
+                            scale: 0.9,
+                        });
+
+                  }
+               
+        }
     }
 }
 </script>
