@@ -2,7 +2,6 @@
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
-            <v-btn v-if="printReadyProgress" :disabled="printReadyProgress < 100 ? true : false"  @click="printSoa('report-soa_container')">{{ printReadyProgress >= 100 ? 'PRINT' : `PRINT READY AT ${printReadyProgress}%`}}</v-btn>
             <arena-modal :arenaNames="arenaNames"> </arena-modal>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
@@ -64,6 +63,7 @@
                                     :soaLists="soaLists"
                                     :importWithStatus="importWithStatus"
                                     :loadDateRange="loadDateRange"
+                                    :printReadyProgress="printReadyProgress"
                                 />
                             </v-row>
                         </v-card-title>
@@ -779,24 +779,20 @@ export default {
             this.tab = item;
         },
         handleEmptySelect() {
+            this.printReadyProgress = 0;
+            this.signsArray = []
             this.$refs.tableArenaOnGoing &&
                 this.$refs.tableArenaOnGoing.emptySelect();
             this.$refs.tableArenaConverted &&
                 this.$refs.tableArenaConverted.emptySelect();
         },
 
-        // handleArenaDownload(value) {
-        //     this.selected = value;
-        //       this.$refs.tableArenaOnGoing &&
-        //         this.$refs.tableArenaOnGoing.emptySelect();
-        //     this.$refs.tableArenaConverted &&
-        //         this.$refs.tableArenaConverted.emptySelect();
-        // },
         async loadDateRange(item) {
             this.$refs.dateRange &&
                 (await this.$refs.dateRange.loadDateRange(item));
         },
         async handleChangeTab(item) {
+            
             this.dialog2 = true;
             this.dates.length !== 0
                 ? this.loadDateRange(item)
@@ -805,12 +801,11 @@ export default {
                 : await this.importWithStatus();
             this.loadBankDetails();
             this.dialog2 = false;
+            
         },
         handleSigned(value){
             this.printReadyProgress = Math.ceil(((this.signsArray.length + 1)/ (this.selected.length * 3)) * 100);
             this.signsArray.push(value)
-
-           
         }
     },
 

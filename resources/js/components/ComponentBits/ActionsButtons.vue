@@ -12,34 +12,39 @@
         </v-btn>                                 
         <v-menu
             class="flex-end"
-            bottom
+            
             origin="center center"
-            transition="scale-transition"
+            transition="slide-x-transition"
             v-if="selected.length > 0"
             rounded="rounded"
             :loading="downloadingReport"
             :disabled="downloadingReport"      
         >
             <template
-                v-slot:activator="{attrs,on,}"
+                v-slot:activator="{on: menu,attrs}"
             >
-                <v-btn
-                    color="primary lighten-1"
-                    v-bind="attrs"
-                    v-on="on"
-                    :loading="downloadingReport"
-                    :disabled="downloadingReport"
-                >
-                    <v-icon
-                        light
-                    >mdi-menu</v-icon>
-                        Menu
-                    <template
-                        v-slot:loader
-                    >
-                        <span>Downloading...</span>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on: tooltip }">
+                        <v-btn
+                            color="primary lighten-1"
+                            v-bind="attrs"
+                            v-on="{ ...tooltip, ...menu }"
+                            :loading="downloadingReport"
+                            :disabled="downloadingReport"
+                        >
+                            <v-icon
+                                light
+                            >mdi-view-grid-outline</v-icon>
+                                Menu
+                            <template
+                                v-slot:loader
+                            >
+                                <span>Downloading...</span>
+                            </template>
+                        </v-btn>
                     </template>
-                </v-btn>
+                    <span>Action buttons menu</span>
+                </v-tooltip>
             </template>
             <v-list >
                 <v-list-item class="d-flex justify-center" >
@@ -73,16 +78,15 @@
                 <hr color="green lighten-2" class="ma-2">
                 <v-list-item class="d-flex justify-center">
                     <v-btn
-                        :loading="downloadingReport"
-                        :disabled="downloadingReport"
+                        :disabled="printReadyProgress < 100 ? true : false"
                         color="red accent-1"
                         class="ma-2 white--text allbtn"
-                        @click="MultiPrint('printingSOA')"
+                        @click="printSoa('report-soa_container')"
                     >
                         <v-icon
                             light
                         >mdi-printer</v-icon>
-                            Print
+                            {{ printReadyProgress >= 100 ? 'PRINT' : `Print ready at ${printReadyProgress}%`}}
                     </v-btn>
                 </v-list-item>
             </v-list>
@@ -96,6 +100,10 @@ import JSZip from "jszip";
 import JSZipUtils from "jszip-utils";
 import { saveAs } from "file-saver";
 import moment from "moment";
+import {
+    printSoa,
+} from "../../methods";
+
 
 export default {
     name: 'action-buttons',
@@ -108,12 +116,14 @@ export default {
         soaLists: Function,
         importWithStatus: Function,
         loadDateRange: Function,
-        handleEmptySelect: Function
+        handleEmptySelect: Function,
+        printReadyProgress: Number
     },
     data: () => ({
         loading: false,
         downloadingReport: false,
-        progressvalue: 0
+        progressvalue: 0,
+        printSoa
     }),
     methods: {
         clearDatabyDate() {
@@ -347,27 +357,7 @@ export default {
             //Generate zip file
             await generateZipFile(zip);
         },
-        async MultiPrint(){
-              const divsss = document.querySelectorAll(".reportsoaoutput");
-      
-                  for (let i = 0; i < this.selected.length; i++) {
-                        const canvas = await html2canvas(divsss[i], {
-                            onclone: function (clonedDoc) {
-                                const elems =
-                                    clonedDoc.getElementsByClassName("reportsoaoutput");
-                                for (let i = 0; i < elems.length; i++) {
-                                    elems[i].style.display = "block";
-                                }
-                                
-                            },
-                            type: "dataURL",
-                            backgroundColor: "#ffffff",
-                            scale: 0.9,
-                        });
-
-                  }
-               
-        }
+       
     }
 }
 </script>

@@ -142,6 +142,7 @@ export default {
 
     
             this.$emit('signed', signedUsers)
+            console.log(signedUsers)
         
            return signedUsers.data
         },
