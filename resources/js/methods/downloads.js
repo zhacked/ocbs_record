@@ -6,9 +6,7 @@ import moment from 'moment'
 
 const downloadZipping = async (selected, div, downloadingReport, dialog2, progressvalue, arenaData, importwithstatus) => {
     let statusArenas = [];
-    // downloadingReport = true;
-    // dialog2 = true
-
+   
     // // -----------ZIP--------------- // // //
     const divsss = div;
     const zip = new JSZip();
@@ -68,9 +66,7 @@ const downloadZipping = async (selected, div, downloadingReport, dialog2, progre
         });
 
         console.log(`Currently at ${i}, ${(new Date() - t) / 1000} secs`)
-
         progressvalue = Math.ceil((parseInt(i+1)/parseInt(selected.length))*100)
-
 
         const canvas = await html2canvas(divsss[i], {
             onclone: function (clonedDoc) {

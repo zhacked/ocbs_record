@@ -2,7 +2,7 @@
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
-            <v-btn  @click="printSoa('report-soa_container')">PRINT</v-btn>
+            <v-btn v-if="printReadyProgress" :disabled="printReadyProgress < 100 ? true : false"  @click="printSoa('report-soa_container')">{{ printReadyProgress >= 100 ? 'PRINT' : `PRINT READY AT ${printReadyProgress}%`}}</v-btn>
             <arena-modal :arenaNames="arenaNames"> </arena-modal>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
@@ -236,6 +236,7 @@
                                     <SignatoryBox
                                         v-show="switchPrepared"
                                         :arenaDetails="item.arena_details"
+                                        @signed="handleSigned"
                                     />
                                 </v-card-text>
                             </v-card>
@@ -636,6 +637,9 @@ export default {
             dates: [],
             showClear: false,
             computationSoa,
+            signsArray: [],
+            progressText: null,
+            printReadyProgress: 0
         };
     },
     methods: {
@@ -802,6 +806,12 @@ export default {
             this.loadBankDetails();
             this.dialog2 = false;
         },
+        handleSigned(value){
+            this.printReadyProgress = Math.ceil(((this.signsArray.length + 1)/ (this.selected.length * 3)) * 100);
+            this.signsArray.push(value)
+
+           
+        }
     },
 
     computed: {
