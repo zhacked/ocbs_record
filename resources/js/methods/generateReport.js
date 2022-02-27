@@ -1,24 +1,17 @@
 const reportGenerate = (codeEvent, html2Pdf) => {
-         
     html2Pdf.downloadPdf();
-
     axios
         .put("api/arenaStatus", [{ codeEvent, status: "done" }])
         .then(
             (data) => (
                 Fire.$emit("AfterCreate"),
-                
                 swal.fire("convert to pdf!", "successfully", "success")
             )
         );
-            
+
     return {
-        dialog: false
-    }
+        dialog: false,
+    };
+};
 
-}
-
-export {
-    reportGenerate
-}
-
+export { reportGenerate };

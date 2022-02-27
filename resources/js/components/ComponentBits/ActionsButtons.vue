@@ -12,7 +12,6 @@
         </v-btn>                                 
         <v-menu
             class="flex-end"
-            
             origin="center center"
             transition="slide-x-transition"
             v-if="selected.length > 0"
@@ -175,7 +174,7 @@ export default {
             });
         },
         async multiDownloads() {
-            console.log(this.tab)
+          
             let statusArenas = [];
             this.downloadingReport = true;
             this.loading = true;
@@ -335,7 +334,6 @@ export default {
                 });
 
                 const link = document.createElement("a");
-                // const soaFr = this.selected[i].group === "Replenish" ? "FR" : "SO"
                 link.download = `${this.selected[i].arena_details.arena}.png`;
                 link.href = await canvas.toDataURL("image/png");
                 const url = link.href;
