@@ -72,6 +72,7 @@ export default {
         selected: []
     }),
     methods: {
+        // Select all imports with arena details
         selectAllToggle(props) {
             let dis = 0;
             this.selectedItems = props.items;

@@ -1,6 +1,6 @@
 const defineEmail = (arrayEmail) => {
     if (arrayEmail != null) {
-        const emailMap = arrayEmail.map((ed) => ed["email"]); // @desc Map array email and return only the email string
+        const emailMap = arrayEmail.map((ed) => ed["email"]); // Map array email and return only the email string
         // const ee = emailMap.reduce((prev, current) => { // 
         //     return current + " " + prev;
         // }, "");

@@ -16,14 +16,6 @@ const  withStatus = async (array)=> {
     });
 
     return newArray
-
-    // const obj = {
-    //     data: newArray,
-    // };
-    // console.log(array)
-    // const filterered = array.filter(arr => arr.status === 'done');
-    // console.log(filterered)
-    // return filterered
 }
 
 const soa = async () => {
@@ -43,10 +35,6 @@ const soa = async () => {
         newArray.push(obj);
     });
 
-    // const obj = {
-    //     data: newArray,
-    // };
-    // this.loadBankDetails();
     return newArray
 }
 

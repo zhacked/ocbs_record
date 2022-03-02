@@ -633,11 +633,11 @@ export default {
     },
     methods: {
     
-        handleSwitchSignatory() { // @desc switch between to have signatory or not
+        handleSwitchSignatory() { // switch between to have signatory or not
             localStorage.setItem("prepared", this.switchPrepared);
         },
-        truncate, // @desc truncate data based on date
-        async soaLists() { // @desc fetch all soa with status = null
+        truncate, // truncate data based on date
+        async soaLists() { // fetch all soa with status = null
             const soaLists = await soa();
             const ordered = orderBy(soaLists, ["date_of_soa"], ["desc"]);
             const soaListing = ordered.map((o) => ({
@@ -646,7 +646,7 @@ export default {
             }));
             this.arenaData = soaListing;
         },
-        async importWithStatus() { // @desc fetch data with status = done
+        async importWithStatus() { // fetch data with status = done
             const withStatusData = await withStatus(this.arenaData);
             const ordered = orderBy(withStatusData, ["date_of_soa"], ["desc"]);
             const soaListing = ordered.map((o) => ({
@@ -656,7 +656,7 @@ export default {
             this.arenaData = soaListing;
         },
 
-        openModal(data) { // @desc View SOA dialog
+        openModal(data) { // View SOA dialog
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
                 this.arenaNames = data.arena_name;
@@ -676,7 +676,7 @@ export default {
                 this.computation = computation;
             }
 
-            // @desc Format email and contact to string
+            // Format email and contact to string
             this.emailFormat =
                 data.arena_details &&
                 data.arena_details.email_details &&
@@ -694,14 +694,14 @@ export default {
        
             $(".computation").attr("disabled", true);
         },
-        // @desc Generate a pdf report
+        // Generate a pdf report
         generateReport(codeEvent) {
             const { dialog } = reportGenerate(codeEvent, this.$refs.html2Pdf);
             this.dialog = dialog;
         },
-        beforeDownload,  // @desc Customize PDF before download
+        beforeDownload,  // Customize PDF before download
 
-        async downloadImg(details, codeEvent) { // @desc Download PNG 
+        async downloadImg(details, codeEvent) { // Download PNG 
             const el = this.$refs.soaReport;
             const imgdl = await imageDownload(details, codeEvent, el);
             if (imgdl.status === 200) {
@@ -712,32 +712,32 @@ export default {
             }
         },
 
-        loadBankDetails() { // @desc Load Company Bank Details
+        loadBankDetails() { // Load Company Bank Details
             axios.get("api/Companybanks").then(({ data }) => {
                 this.bankAccounts = data;
             });
         },
 
     
-        handleFilterDate(value) { // @desc $emit filter soa import by date from date-range component
+        handleFilterDate(value) { // $emit filter soa import by date from date-range component
             this.arenaData = value;
             if (value.length === 0) this.showClear = false;
         },
-        handleClearBtn(value) { // @desc $emit clear dates from date-range component
+        handleClearBtn(value) { // $emit clear dates from date-range component
             this.showClear = value;
         },
-        handleSelected(value) { // @desc $emit Selected imports from table-soa component
+        handleSelected(value) { // $emit Selected imports from table-soa component
             this.selected = value;
             console.log('SELECTED',value)
             if(value.length < 1) this.signsArray = [], this.printReadyProgress = 0;
         },
-        getDates(value) { // @desc $emit get dates from date-range component
+        getDates(value) { // $emit get dates from date-range component
             this.dates = value;
         },
-        revertTab(item) { // @desc $emit return to default menu tab (ongoing) from date-range component 
+        revertTab(item) { // $emit return to default menu tab (ongoing) from date-range component 
             this.tab = item;
         },
-        handleEmptySelect() { // @desc unselect all selected imports
+        handleEmptySelect() { // unselect all selected imports
             this.printReadyProgress = 0;
             this.signsArray = []
             this.$refs.tableArenaOnGoing &&
@@ -746,11 +746,11 @@ export default {
                 this.$refs.tableArenaConverted.emptySelect();
         },
 
-        async loadDateRange(item) { // @desc Load imports based on date range
+        async loadDateRange(item) { // Load imports based on date range
             this.$refs.dateRange &&
                 (await this.$refs.dateRange.loadDateRange(item));
         },
-        async handleChangeTab(item) { // @desc Swicth between menu tab: ongoing and converted
+        async handleChangeTab(item) { // Swicth between menu tab: ongoing and converted
             this.dialog2 = true;
             this.dates.length !== 0
                 ? this.loadDateRange(item)
@@ -761,18 +761,18 @@ export default {
             this.dialog2 = false;
             
         },
-        handleSigned(value){ // @desc $emit signatories data from signatory component
+        handleSigned(value){ // $emit signatories data from signatory component
             this.printReadyProgress = Math.ceil(((this.signsArray.length + 1)/ (this.selected.length * 3)) * 100);
             this.signsArray.push(value)
         }
     },
 
     computed: {
-        dateRangeText() { // @desc modify date string
+        dateRangeText() { // modify date string
             const dateRange = this.dates.length > 1 ? this.dates.sort() : null;
             return dateRange ? dateRange.join(" ~ ") : null;
         },
-        depRep: function () { // @desc switch between for replenishment and soa text and other details
+        depRep: function () { // switch between for replenishment and soa text and other details
             const depositReplenishText =
                 numberUnformat(this.computation.depositReplenish) < 0
                     ? {

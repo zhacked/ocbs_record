@@ -10,15 +10,14 @@ import {
     concat,
     sortBy,
 } from "lodash";
-
 import { mergeObject, valueSplit } from "../utility";
 
+// Convert all object values to a string
 function toString(o) {
     Object.keys(o).forEach((k) => {
         if (typeof o[k] === "object") {
             return toString(o[k]);
         }
-
         o[k] = "" + o[k];
     });
 
@@ -28,7 +27,6 @@ function toString(o) {
 const readSoa = (event, isExcel) => {
     let arenaReportFiltered = [];
     const file = event ? event : null;
-
     const checkfile = event.name.includes("xlsx") || event.name.includes("csv");
 
     if (event && checkfile) {
@@ -39,15 +37,15 @@ const readSoa = (event, isExcel) => {
         let eventsCombined = [];
         let summaryReport = [];
         let objMobileKiosk = [];
+        let eventDetailsA = [];
 
         reader.onload = (e) => {
             // eslint-disable-next-line no-unused-vars
-
             const bstr = e.target.result;
             const wb = XLSX.read(bstr, { type: "binary" });
-
             const ws = wb.SheetNames;
 
+            // Select only specific excel sheet
             const filteredWS = ws.filter(function (value, index, arr) {
                 const accReportComb = "Accounts Report Combined";
                 const summaryRep = "Summary Report";
@@ -57,9 +55,10 @@ const readSoa = (event, isExcel) => {
                 );
             });
 
+
+
             filteredWS.forEach((w) => {
                 const singleSheet = wb.Sheets[w];
-
                 arrayData.push(
                     XLSX.utils.sheet_to_json(singleSheet, {
                         header: "A",
@@ -68,7 +67,7 @@ const readSoa = (event, isExcel) => {
                 );
             });
 
-            let eventDetailsA = [];
+            
 
             arrayData[0].map((r) => {
                 if (Object.keys(r).length >= 17) reportCombined.push(r);
@@ -96,19 +95,19 @@ const readSoa = (event, isExcel) => {
 
             // if date is serial
             const ExcelDateToJSDate = (serial) => {
-                const utc_days = Math.floor(serial - 25569);
-                const utc_value = utc_days * 86400;
-                const date_info = new Date(utc_value * 1000);
-                const fractional_day = serial - Math.floor(serial) + 0.0000001;
-                let total_seconds = Math.floor(86400 * fractional_day);
-                const seconds = total_seconds % 60;
-                total_seconds -= seconds;
-                const hours = Math.floor(total_seconds / (60 * 60));
-                const minutes = Math.floor(total_seconds / 60) % 60;
+                const utcDays = Math.floor(serial - 25569);
+                const utcValues = utcDays * 86400;
+                const dateInfo = new Date(utcValues * 1000);
+                const fractionalDay = serial - Math.floor(serial) + 0.0000001;
+                let totalSeconds = Math.floor(86400 * fractionalDay);
+                const seconds = totalSeconds % 60;
+                totalSeconds -= seconds;
+                const hours = Math.floor(totalSeconds / (60 * 60));
+                const minutes = Math.floor(totalSeconds / 60) % 60;
                 return new Date(
-                    date_info.getFullYear(),
-                    date_info.getMonth(),
-                    date_info.getDate(),
+                    dateInfo.getFullYear(),
+                    dateInfo.getMonth(),
+                    dateInfo.getDate(),
                     hours,
                     minutes,
                     seconds
@@ -117,6 +116,8 @@ const readSoa = (event, isExcel) => {
 
             const eventCreatedUTC = ExcelDateToJSDate(arrayData[0][2].A);
             const eventClosedUTC = ExcelDateToJSDate(arrayData[0][4].A);
+
+            // Validate if Event date is in a correct date format
             const isValidEventArenaDate = (stringDate) =>
                 moment(stringDate, "MM/DD/YYYY hh:mm:ss a").isValid() ||
                 moment(stringDate, "DD/MM/YYYY hh:mm:ss a").isValid()
@@ -232,7 +233,7 @@ const readSoa = (event, isExcel) => {
                     spread(assign)
                 )
             );
-
+            // Filter not needed object with specific arenaName
             const filterObjectHeader = arsc.filter((obk) => {
                 if (
                     obk.arenaName !== "OCBS NAME" &&
@@ -369,6 +370,7 @@ const readSoa = (event, isExcel) => {
                 return r;
             }, Object.create(null));
 
+            // Convert Month number to alphabet
             const moLetter = String.fromCharCode(
                 96 + (moment(eventDateCreated).month() + 1)
             ).toUpperCase();

@@ -1,6 +1,5 @@
 const valueSplit = (data) => {
-        
-            
+
             let target = {};
             
             if(data != null && typeof data == "string" && data.indexOf(': ') > -1) {
@@ -11,11 +10,6 @@ const valueSplit = (data) => {
             
                 return target
             }
-         
-        
-       
-    
-  
 }
 
 export default valueSplit
