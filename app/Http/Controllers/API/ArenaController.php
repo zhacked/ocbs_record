@@ -21,8 +21,8 @@ class ArenaController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-   
-   
+
+
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -37,22 +37,22 @@ class ArenaController extends Controller
             'EmailDetails',
             'BankDetails.BankActivity' => function ($q){
                return $q->where('description','updated')->latest();
-            } 
+            }
          ])->get();
     }
 
     public function getArenaTeam($team){
-      
+
         $arenaTeam = arena::where('team', strtolower($team))->get();
         return $arenaTeam;
-        
+
     }
 
     public function getArenaNoTeam(){
-      
+
         $arenaTeam = arena::whereNull('team')->get();
         return $arenaTeam;
-        
+
     }
 
     /**
@@ -60,7 +60,7 @@ class ArenaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-   
+
 
     /**
      * Store a newly created resource in storage.
@@ -71,12 +71,12 @@ class ArenaController extends Controller
     public function store(Request $request)
     {
 
-       
+
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
             'operator' => 'required|string',
-            
+
         ]);
 
         $arena =  arena::create([
@@ -97,17 +97,17 @@ class ArenaController extends Controller
                 'email' => strtoupper($request['email'])
             ]);
         }
-        
+
         if($request['contact_number']) {
             Contact::updateOrCreate([
                 'area_code' => $arena->area_code,
                 'contact_number' => $request['contact_number']
             ]);
         }
-             
-      
-           
- 
+
+
+
+
         $activity_controller = new ActivitylogsController;
         $activity_controller->arenaLogs('created',$arena->arena,'arena',$arena->id);
 
@@ -115,7 +115,7 @@ class ArenaController extends Controller
     }
 
     public function importArena(Request $request){
-  
+
 
     $contactImport = arena::upsert($request['arenaList'], ['area_code']);
     $activity_controller = new ActivitylogsController;
@@ -160,8 +160,8 @@ class ArenaController extends Controller
         $email = Email::findOrFail($id);
         $this->Arenaactivity('deleted',$email->email,'arena',$id);
         $email->delete();
-     
-        
+
+
     }
 
 
@@ -191,17 +191,17 @@ class ArenaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
-    
+
+
         $arenas = arena::with('BankDetails')->findOrFail($id);
 
-        
+
         $this->validate($request,[
             'arena' => 'required|string',
             'address' => 'required|string|max:191',
             'operator' => 'required|string',
             'contact_number'=> 'required',
-   
+
         ]);
 
         $arena = arena::with('BankDetails')->where('id',$id)->update([
@@ -223,11 +223,11 @@ class ArenaController extends Controller
                         'email' => $request['email']
                         ]);
                 }
-                     
+
         }else if(Email::where('area_code',$request['area_code'])->exists() && !$request['email']){
             Email::where('area_code',$request['area_code'])->delete();
         }
-          
+
         if($request['contact_number']) {
             if(Contact::where('area_code',$request['area_code'])->exists()) {
                 Contact::where('area_code',$request['area_code'])->update([
@@ -242,19 +242,19 @@ class ArenaController extends Controller
         }else if(Contact::where('area_code',$request['area_code'])->exists() && !$request['contact_number']){
             Contact::where('area_code',$request['area_code'])->delete();
         }
-              
 
 
 
-            
-     
+
+
+
         $this->Arenaactivity('updated',$arenas->arena,'arena',$arenas->id);
         return ['message' => 'Updated the arena details'];
     }
 
     public function updateArenaTeam(Request $request, $code) {
         $arena = arena::where('area_code', $code)->firstOrFail();
-      
+
         $team = $request['team'] ? strtolower($request['team']) : null;
         $arena->update([
             'team' => $team ,
@@ -264,7 +264,7 @@ class ArenaController extends Controller
     }
 
     public function updateSelectedArenaToTeam(Request $request,$team) {
-      
+
 
         foreach($request->all() as $data){
             $arena = arena::where('area_code', $data['area_code']);
@@ -305,7 +305,7 @@ class ArenaController extends Controller
 
         $this->Arenaactivity('deleted',$arena->arena,'arena',$arena->id);
         $arena->delete();
-      
+
         return ['message' => 'User Deleted'];
     }
 
@@ -316,17 +316,17 @@ class ArenaController extends Controller
             'EmailDetails',
             'BankDetails.BankActivity' => function ($q){
                return $q->where('description','updated')->latest();
-            } 
+            }
          ])->get();
     }
 
 
     public function Arenaactivity($action,$description,$model,$id){
         $activity_controller = new ActivitylogsController;
-        $activity_controller->arenaLogs($action,$description,$model,$id); 
+        $activity_controller->arenaLogs($action,$description,$model,$id);
     }
 
-    
 
-   
+
+
 }

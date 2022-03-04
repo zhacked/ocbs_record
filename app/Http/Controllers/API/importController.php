@@ -34,18 +34,18 @@ class importController extends Controller
         $soa = import::with(['BankDetails',
             'arenaDetails.BankDetails',
             'arenaDetails.EmailDetails',
-            'arenaDetails.ContactDetails', 
+            'arenaDetails.ContactDetails',
             'arenaDetails.UserTeam.userDetails.positionDetails'
         ]);
 
         if($request->has('per_page')) {
             $perPage = $request->input('per_page');
-            return $soa->whereNull('status')->paginate($perPage);
+            return $soa->whereNull('status')->latest()->paginate($perPage);
         } else {
-            return $soa->whereNull('status')->get();
+            return $soa->whereNull('status')->latest()->get();
         }
-       
-      
+
+
     }
 
     public function importDateRange(Request $request, $from, $to){
@@ -53,43 +53,42 @@ class importController extends Controller
         $soaDateRange = import::with(['BankDetails',
         'arenaDetails.BankDetails',
         'arenaDetails.EmailDetails',
-        'arenaDetails.ContactDetails', 
+        'arenaDetails.ContactDetails',
         'arenaDetails.UserTeam.userDetails.positionDetails'
         ])->whereBetween('date_of_soa',[$from, $to]);
 
-        
+
         return $soaDateRange->get();
     }
 
+    //converted
     public function withstatus(Request $request)
-    {    
+    {
         $soa = import::with(['BankDetails',
             'arenaDetails.BankDetails',
             'arenaDetails.EmailDetails',
-            'arenaDetails.ContactDetails', 
+            'arenaDetails.ContactDetails',
             'arenaDetails.UserTeam.userDetails.positionDetails'
         ]);
 
         if($request->has('per_page')) {
             $perPage = $request->input('per_page');
-            return $soa->whereNotNull('status')->paginate($perPage);
+            return $soa->whereNotNull('status')->latest()->paginate($perPage);
         } else {
-            return $soa->whereNotNull('status')->get();
+            return $soa->whereNotNull('status')->latest()->get();
         }
-       
+
     }
 
     public function searchSoa(Request $request) {
-        $search = $request->query('search');
-      
             return  import::with(['BankDetails',
             'arenaDetails.BankDetails',
             'arenaDetails.EmailDetails',
-            'arenaDetails.ContactDetails', 
+            'arenaDetails.ContactDetails',
             'arenaDetails.UserTeam.userDetails.positionDetails'
-            ])->where('arena_name','like', '%'.$search.'%')->get();
-        
-       
+            ])->where('arena_name','like', '%'.$request->query('search').'%')->latest()->get();
+
+
     }
 
 
@@ -101,21 +100,21 @@ class importController extends Controller
     public function SavePrimaryBank($id)
     {
         $arena = arena::findOrFail($id);
-      
+
         if($arena->bank_id == null){
                 $bankOwn = BankAccount::where('area_code',$id)->first();
                 $arena->bank_id = $bankOwn->id;
                 $arena->update();
         }
-     
+
         return BankAccount::where('id',$arena->bank_id)->first();
     }
     public function bankaccountfilter($id)
     {
         return BankAccount::where('area_code',$id)->get();
     }
-   
-    
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -124,13 +123,13 @@ class importController extends Controller
      */
     public function store(Request $request)
     {
-      
+
         // dd($request->all());
 
         $import = import::upsert($request->all(),['codeEvent']);
-        
+
         return  $import;
-        
+
 
     }
 
@@ -152,12 +151,12 @@ class importController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function arenastatus(Request $request)
-    {   
+    {
         // dump($arena_name);
         // $import = import::where('areaCode',$areaCode)->update([
         //     'status' => 'done',
-        // ]); 
-      
+        // ]);
+
         $import = import::upsert( $request->all(),['codeEvent']);
     }
 
@@ -191,7 +190,7 @@ class importController extends Controller
     {
 
 
-       
+
     }
 
     public function depositedata(){
@@ -205,7 +204,7 @@ class importController extends Controller
         ]);
     }
     public function depositReplenishDateRange($from, $to){
-             
+
                 $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereBetween('date_of_soa', [$from, $to])->where('group','Deposit')->get();
                 $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereBetween('date_of_soa', [$from, $to])->where('group','Replenish')->get();
                 return Response()->json([
@@ -219,19 +218,19 @@ class importController extends Controller
 
        return import::where('group',$group)
                         ->where('date_of_soa',$data)
-                        ->get(); 
+                        ->get();
     }
 
     public function Clearfilterbydate(request $request){
-      
+
         $status = $request->tab == 'converted' ? 'done' : null;
-    
+
         $delete = import::whereBetween('date_of_soa',[$request->from, $request->to])
                         ->where('status',$status)
                         ->delete();
         return $delete;
     }
-  
-   
+
+
 
 }
