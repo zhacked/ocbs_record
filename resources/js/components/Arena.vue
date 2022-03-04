@@ -1121,7 +1121,7 @@ export default {
                             "ARENA NAME": d.arena,
                             "ADDRESS": d.address,
                             "OPERATOR'S NAME": d.operator,
-                            "CONTACT NUMBER": d.contact_details[0].contact_number, //to convert to string
+                            "CONTACT NUMBER": d.contact_details[0]?.contact_number, //to convert to string
                             "EMAIL (SOL)": d.email_details[0]?.email, //to convert to string
                             "ACCOUNT NAME": bankAccountName, //to convert string and get bank name
                             "Bank NAME": bankName, //to convert string and get bank name
