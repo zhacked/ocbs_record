@@ -309,10 +309,24 @@ class ArenaController extends Controller
         return ['message' => 'User Deleted'];
     }
 
+
+    public function masterListExcel() {
+        return arena::with([
+            'ContactDetails',
+            'EmailDetails',
+            'BankDetails.BankActivity' => function ($q){
+               return $q->where('description','updated')->latest();
+            } 
+         ])->get();
+    }
+
+
     public function Arenaactivity($action,$description,$model,$id){
         $activity_controller = new ActivitylogsController;
         $activity_controller->arenaLogs($action,$description,$model,$id); 
     }
+
+    
 
    
 }

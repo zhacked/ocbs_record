@@ -87,6 +87,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('emailDelete/{id}', [App\Http\Controllers\API\ArenaController::class, 'deleteEmail']);
     Route::get('getArenaNoTeam', [App\Http\Controllers\API\ArenaController::class, 'getArenaNoTeam']);
     Route::get('getArenaTeam/{team}', [App\Http\Controllers\API\ArenaController::class, 'getArenaTeam']);
+    Route::get('arenaToExcel', [App\Http\Controllers\API\ArenaController::class, 'masterListExcel']);
+
     //put
     Route::put('updateArenaTeam/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'updateArenaTeam']);
     Route::put('updateSelectedArenaToTeam/{team}', [App\Http\Controllers\API\ArenaController::class, 'updateSelectedArenaToTeam']);
