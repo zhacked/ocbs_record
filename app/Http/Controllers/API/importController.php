@@ -31,30 +31,52 @@ class importController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->query('per_page');
+        $soa = import::with(['BankDetails',
+            'arenaDetails.BankDetails',
+            'arenaDetails.EmailDetails',
+            'arenaDetails.ContactDetails', 
+            'arenaDetails.UserTeam.userDetails.positionDetails'
+        ]);
+
+        if($request->has('per_page')) {
+            $perPage = $request->input('per_page');
+            return $soa->whereNull('status')->paginate($perPage);
+        } else {
+            return $soa->whereNull('status')->get();
+        }
        
-        return import::with(['BankDetails',
-                'arenaDetails.BankDetails',
-                'arenaDetails.EmailDetails',
-                'arenaDetails.ContactDetails', 
-                'arenaDetails.UserTeam.userDetails.positionDetails'
-                ])->whereNull('status')->paginate($perPage);
       
     }
 
-    public function importDateRange($from, $to){
-        return import::with(['BankDetails',
+    public function importDateRange(Request $request, $from, $to){
+
+        $soaDateRange = import::with(['BankDetails',
         'arenaDetails.BankDetails',
         'arenaDetails.EmailDetails',
         'arenaDetails.ContactDetails', 
         'arenaDetails.UserTeam.userDetails.positionDetails'
-        ])->whereBetween('date_of_soa',[$from, $to])->get();
+        ])->whereBetween('date_of_soa',[$from, $to]);
+
+        
+        return $soaDateRange->get();
     }
 
     public function withstatus(Request $request)
-    {        
-        $perPage = $request->query('per_page');
-        return import::with(['BankDetails','arenaDetails.BankDetails','arenaDetails.EmailDetails','arenaDetails.ContactDetails', 'arenaDetails.UserTeam.userDetails.positionDetails'])->whereNotNull('status')->paginate($perPage);
+    {    
+        $soa = import::with(['BankDetails',
+            'arenaDetails.BankDetails',
+            'arenaDetails.EmailDetails',
+            'arenaDetails.ContactDetails', 
+            'arenaDetails.UserTeam.userDetails.positionDetails'
+        ]);
+
+        if($request->has('per_page')) {
+            $perPage = $request->input('per_page');
+            return $soa->whereNotNull('status')->paginate($perPage);
+        } else {
+            return $soa->whereNotNull('status')->get();
+        }
+       
     }
 
     public function searchSoa(Request $request) {

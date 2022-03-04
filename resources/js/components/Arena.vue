@@ -2,10 +2,8 @@
     <v-app style="height: 100%">
         <v-container style="height: auto">
             <!-- <h1 class="h3">Arena Details</h1> -->
-            <v-row class=" is-blurred">
+            <v-row class="is-blurred">
                 <v-col class="col-md-12">
-                
-
                     <v-row>
                         <v-col>
                             <h1>Arena Details</h1>
@@ -16,36 +14,53 @@
                                             color="success"
                                             elevation="2"
                                             @click="openModal"
-                                            >Add Arena<i class="fas fa-plus fa-fw"></i>
+                                            >Add Arena<i
+                                                class="fas fa-plus fa-fw"
+                                            ></i>
                                         </v-btn>
                                     </v-col>
                                     <v-col>
                                         <v-file-input
-                                          outlined
+                                            outlined
                                             dense
                                             v-model="fileUpload"
                                             color="deep-purple accent-4"
                                             label="File input"
                                             :clearable="false"
                                             placeholder="Select your file"
-                                           counter
+                                            counter
                                             append-icon="mdi-file-import"
                                             :show-size="1000"
                                             @change="onFileChange($event)"
-                                         
                                         >
-                                         <template v-slot:append>
-                                            <v-tooltip bottom color="success">
-                                                <template v-slot:activator="{ on }">
-                                              
-                                                <v-icon large :disabled="!isExcel" v-on="on" color="green darken-3" style="cursor: pointer"  @click="proceedAction">
-                                                    mdi-file-import
-                                                </v-icon>
-                                            
+                                            <template v-slot:append>
+                                                <v-tooltip
+                                                    bottom
+                                                    color="success"
+                                                >
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on,
+                                                        }"
+                                                    >
+                                                        <v-icon
+                                                            large
+                                                            :disabled="!isExcel"
+                                                            v-on="on"
+                                                            color="green darken-3"
+                                                            style="
+                                                                cursor: pointer;
+                                                            "
+                                                            @click="
+                                                                proceedAction
+                                                            "
+                                                        >
+                                                            mdi-file-import
+                                                        </v-icon>
+                                                    </template>
+                                                    <span>Import File</span>
+                                                </v-tooltip>
                                             </template>
-                                            <span>Import File</span>
-                                            </v-tooltip>
-                                        </template>
                                             <template
                                                 v-slot:selection="{
                                                     index,
@@ -57,22 +72,17 @@
                                                     color="deep-purple accent-4"
                                                     dark
                                                     label
-                                                    
                                                     close
                                                     @click:close="clearFile"
                                                 >
                                                     {{ text }}
                                                 </v-chip>
-
-                                            
                                             </template>
                                         </v-file-input>
-                                      
                                     </v-col>
-                                 
                                 </v-row>
                             </form>
-                             
+
                             <v-text-field
                                 v-model="search"
                                 append-icon="mdi-magnify"
@@ -88,7 +98,9 @@
                                 class="elevation-1 text-center"
                             >
                                 <template v-slot:[`item.team`]="{ item }">
-                                    <span>{{item.team && item.team.toUpperCase()}}</span>
+                                    <span>{{
+                                        item.team && item.team.toUpperCase()
+                                    }}</span>
                                 </template>
                                 <template v-slot:[`item.bank`]="{ item }">
                                     <v-tooltip top color="green">
@@ -108,7 +120,7 @@
                                         <span>Bank Information</span>
                                     </v-tooltip>
                                 </template>
-                              
+
                                 <template v-slot:[`item.actions`]="{ item }">
                                     <v-tooltip top color="primary">
                                         <template
@@ -152,17 +164,14 @@
                                 <v-btn
                                     color="success"
                                     elevation="2"
-                                    @click="DownloadArenaDetails"
-                                    > <i class="fas fa-plus fa-fw"></i>
+                                    @click="downloadArenaDetails"
+                                >
+                                    <i class="fas fa-plus fa-fw"></i>
                                     Download Arena Masterlist
                                 </v-btn>
                             </div>
-                           
                         </v-col>
-
-                    
                     </v-row>
-            
                 </v-col>
             </v-row>
 
@@ -176,7 +185,10 @@
                 aria-labelledby="addNewLabel"
                 aria-hidden="true"
             >
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div
+                    class="modal-dialog modal-dialog-centered modal-lg"
+                    role="document"
+                >
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5
@@ -211,9 +223,6 @@
                             :search="searchbank"
                             class="elevation-1 text-center"
                         >
-
-                       
-
                             <template v-slot:top>
                                 <v-toolbar flat>
                                     <v-toolbar-title>
@@ -245,10 +254,16 @@
                             <template v-slot:[`item.modify`]="{ item }">
                                 <!-- {{item.bank_activity.length}} -->
                                 <div v-if="item.bank_activity.length >= 1">
-                                      <strong>{{item.bank_activity[0].log_name}}</strong>  {{item.bank_activity[0].description}} it on {{item.bank_activity[0].created_at | myDatewithtime}}
+                                    <strong>{{
+                                        item.bank_activity[0].log_name
+                                    }}</strong>
+                                    {{ item.bank_activity[0].description }} it
+                                    on
+                                    {{
+                                        item.bank_activity[0].created_at
+                                            | myDatewithtime
+                                    }}
                                 </div>
-                              
-                              
                             </template>
                             <template v-slot:[`item.actions`]="{ item }">
                                 <v-tooltip top>
@@ -479,8 +494,6 @@
                                     chips
                                     item-text="contact_number"
                                     :error-messages="errors.contacts"
-                                   
-                                 
                                 >
                                 </v-combobox>
 
@@ -494,13 +507,10 @@
                                     outlined
                                     deletable-chips
                                     item-text="email"
-                                
                                 >
-                                
                                 </v-combobox>
                             </div>
                             <div class="modal-footer">
-                               
                                 <v-btn
                                     v-show="editmode"
                                     type="submit"
@@ -521,31 +531,25 @@
                 </div>
             </div>
         </v-container>
-            <v-dialog
-                v-model="arenaLoading"
-                persistent
-                width="300"
-                >
-                <v-card
-                    color="primary"
-                    dark
-                >
-                    <v-card-text>
+        <v-dialog v-model="arenaLoading" persistent width="300">
+            <v-card color="primary" dark>
+                <v-card-text>
                     Please stand by
                     <v-progress-linear
                         indeterminate
                         color="white"
                         class="mb-0"
                     ></v-progress-linear>
-                    </v-card-text>
-                </v-card>
-            </v-dialog>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
 <script>
 import { camelCase } from "lodash";
 import XLSX from "xlsx";
+import {sanitizeBank} from '../utility'
 
 export default {
     data() {
@@ -559,17 +563,17 @@ export default {
                 { text: "Bank Details", value: "bank" },
                 { text: "", value: "actions", sortable: false },
             ],
-    
+
             Bankheaders: [
                 { text: "Account Name", value: "account_name" },
                 { text: "Bank Name", value: "bank_name" },
                 { text: "Bank Number", value: "bank_number" },
-                 { text: "Modify", value: "modify" },
+                { text: "Modify", value: "modify" },
                 { text: "", value: "actions", sortable: false },
             ],
-            activityHeaders:[
+            activityHeaders: [
                 { text: "Name", value: "log_name" },
-                { text: "Description", value: "description"}
+                { text: "Description", value: "description" },
             ],
             select: [],
             emailRules: [],
@@ -579,9 +583,9 @@ export default {
             arena: [],
             emails: [],
             contacts: [],
-            arenalogs:[],
+            arenalogs: [],
             search: "",
-            searchlogs:'',
+            searchlogs: "",
             searchbank: "",
             input: "",
             loading: false,
@@ -595,7 +599,7 @@ export default {
                 address: "",
                 operator: "",
                 contact_number: [],
-                email: []
+                email: [],
             }),
             Bankform: new Form({
                 id: "",
@@ -614,24 +618,21 @@ export default {
             fileUpload: null,
             isExcel: false,
             errors: {
-                areaCode: '',
-                contacts:'',
-                emails:''
-            }
+                areaCode: "",
+                contacts: "",
+                emails: "",
+            },
         };
     },
     methods: {
-
         onFileChange(event) {
-       
             const file = event ? event : null;
 
             const checkfile =
-                (event.name.includes("xlsx")) || ( event.name.includes("csv"));
-           
+                event.name.includes("xlsx") || event.name.includes("csv");
 
             if (event && checkfile) {
-                this.isExcel = true
+                this.isExcel = true;
                 const reader = new FileReader();
                 let arrayData = [];
 
@@ -642,7 +643,7 @@ export default {
                     const ws = wb.SheetNames;
 
                     const filteredWS = ws.filter(function (value, index, arr) {
-                        return value.toLowerCase() === ("DETAILS").toLowerCase();
+                        return value.toLowerCase() === "DETAILS".toLowerCase();
                     });
                     filteredWS.forEach((w) => {
                         const singleSheet = wb.Sheets[w];
@@ -681,7 +682,6 @@ export default {
                         });
 
                         return objectKeyReplacedArray;
-                       
                     };
 
                     const objk = objectKeyed(arrayData[0]);
@@ -691,7 +691,7 @@ export default {
                         const checkBreak = contactString
                             .toString()
                             .includes("\r\n");
-                      
+
                         const checkForwardSlash = contactString
                             .toString()
                             .includes("/");
@@ -708,9 +708,7 @@ export default {
                                 );
 
                                 filteredContact.map((cs) => {
-                                  
-
-                                     number.push(cs.trim())
+                                    number.push(cs.trim());
                                 });
                             } else if (checkForwardSlash) {
                                 const contactSplit = contactString.split("/");
@@ -721,8 +719,7 @@ export default {
                                 );
 
                                 filteredContact.map((cs) => {
-                                  
-                                    number.push(cs.trim())
+                                    number.push(cs.trim());
                                 });
                             } else {
                                 number.push(contactString);
@@ -736,14 +733,12 @@ export default {
                     let emailList = [];
 
                     const removeFirstObjectTitle = objk.filter((oj) => {
-                         
                         if (oj.arenaName !== "ARENA NAME") {
                             return oj;
                         }
                     });
-   
+
                     removeFirstObjectTitle.forEach((foh) => {
-                      
                         if (foh.bankName !== "" || foh.bankNumber !== "")
                             this.bankList.push({
                                 account_name: foh.accountName,
@@ -751,7 +746,7 @@ export default {
                                 bank_number: foh.bankNumber,
                                 area_code: foh.code,
                             });
-                       
+
                         this.arenaList.push({
                             arena:
                                 foh.arenaName.indexOf("~") > -1
@@ -764,37 +759,44 @@ export default {
                             contact_number: "xxxxxxx",
                         });
 
-                        if(toArrayContactEmail(foh.contactNumber) !== "") contactNo.push({area_code: foh.code, contact_number: toArrayContactEmail(foh.contactNumber)})
-                        if(toArrayContactEmail(foh.emailSol) !== "") emailList.push({area_code: foh.code, email: toArrayContactEmail(foh.emailSol)})
-
-                     
+                        if (toArrayContactEmail(foh.contactNumber) !== "")
+                            contactNo.push({
+                                area_code: foh.code,
+                                contact_number: toArrayContactEmail(
+                                    foh.contactNumber
+                                ),
+                            });
+                        if (toArrayContactEmail(foh.emailSol) !== "")
+                            emailList.push({
+                                area_code: foh.code,
+                                email: toArrayContactEmail(foh.emailSol),
+                            });
                     });
 
                     this.emailList = emailList;
                     this.contactNumbers = contactNo;
-                    console.log('arenaliost',this.arenaList)
+                    console.log("arenaliost", this.arenaList);
                 };
                 reader.readAsBinaryString(file);
             } else {
-                   this.isExcel = false
+                this.isExcel = false;
                 Fire.$emit("AfterCreate"),
                     Toast.fire({
                         icon: "warning",
                         title: "Make sure you insert correct excel data!",
                     });
-               
             }
         },
-        clearFile(){
-            this.isExcel = false
-            this.fileUpload = null
+        clearFile() {
+            this.isExcel = false;
+            this.fileUpload = null;
         },
         async proceedAction() {
             this.$Progress.start();
-            this.arenaLoading = true
+            this.arenaLoading = true;
             await axios.post("api/importArena", {
-               arenaList  : this.arenaList,
-               Uploadname :  this.fileUpload.name
+                arenaList: this.arenaList,
+                Uploadname: this.fileUpload.name,
             });
             await axios.post("api/contactnumbers", this.contactNumbers);
             await axios.post("api/emails", this.emailList);
@@ -803,12 +805,12 @@ export default {
             Fire.$emit("AfterCreate");
             swal.fire("Successfully!", "Excel Imported", "success");
             this.$Progress.finish();
-            this.arenaLoading = false
-            this.fileUpload = null
+            this.arenaLoading = false;
+            this.fileUpload = null;
 
-            this.isExcel = false
+            this.isExcel = false;
         },
-       
+
         required(value) {
             if (value instanceof Array && value.length == 0) {
                 return "Email is Required.";
@@ -827,7 +829,7 @@ export default {
             });
         },
         removeContact(id) {
-            console.log(id)
+            console.log(id);
             console.log(this.form.area_code);
             axios.delete("api/deleteContact/" + id).then((data) => {
                 Fire.$emit("AfterCreate");
@@ -847,9 +849,9 @@ export default {
         },
         openBankModel(data) {
             this.show = false;
-          
+
             $("#bankModal").modal("show");
-              console.log('juny gaGO',data);
+            console.log("juny gaGO", data);
             this.bankDetails = data.bank_details;
             this.Bankform.arenas_id = data.id;
             this.Bankform.area_code = data.area_code;
@@ -943,13 +945,22 @@ export default {
             this.form.arenas_id = accounts.arenas_id;
         },
         updateArena() {
-            
             this.$Progress.start();
             const areaCode = this.form.arena.split(" ")[0];
             this.form.area_code = areaCode;
-            this.form.contact_number = this.contactNos == "" ? null : this.contactNos.length > 1 ? this.contactNos.join(" / "): this.contactNos.toString();
-            this.form.email = this.emailsArr == "" ? null : this.emailsArr.length > 1 ? this.emailsArr.join(" / ") : this.emailsArr.toString();    
-            console.log(this.form)
+            this.form.contact_number =
+                this.contactNos == ""
+                    ? null
+                    : this.contactNos.length > 1
+                    ? this.contactNos.join(" / ")
+                    : this.contactNos.toString();
+            this.form.email =
+                this.emailsArr == ""
+                    ? null
+                    : this.emailsArr.length > 1
+                    ? this.emailsArr.join(" / ")
+                    : this.emailsArr.toString();
+            console.log(this.form);
             this.form
                 .put("api/arena/" + this.form.id)
                 .then((data) => {
@@ -964,8 +975,9 @@ export default {
                 })
                 .catch((e) => {
                     // console.log('error',e.response.data.errors)
-                    this.errors.contacts = e.response.data.errors.contact_number
-                    this.errors.emails = e.response.data.errors.email
+                    this.errors.contacts =
+                        e.response.data.errors.contact_number;
+                    this.errors.emails = e.response.data.errors.email;
                     this.$Progress.fail();
                 });
         },
@@ -984,31 +996,39 @@ export default {
             this.getEmail(arenas.area_code);
             this.getContacts(arenas.area_code);
 
-            console.log(arenas)
+            console.log(arenas);
         },
         getEmail(areaCode) {
-            axios.get("api/getEmails/" + areaCode).then(({data}) => {
-                        //   const contacts = data.length > 0 && typeof data[0].contact_number == "string" && data[0].contact_number.indexOf(' / ') > -1 ?  data[0].contact_number.split(" / ") : data.length > 0 ? [data[0].contact_number] : []
+            axios.get("api/getEmails/" + areaCode).then(({ data }) => {
+                //   const contacts = data.length > 0 && typeof data[0].contact_number == "string" && data[0].contact_number.indexOf(' / ') > -1 ?  data[0].contact_number.split(" / ") : data.length > 0 ? [data[0].contact_number] : []
 
-                const em = data.length > 0 && data[0].email?.includes(" / ") ?  data[0].email.split(" / ") : data.length > 0 ? [data[0].email] : []
-                
+                const em =
+                    data.length > 0 && data[0].email?.includes(" / ")
+                        ? data[0].email.split(" / ")
+                        : data.length > 0
+                        ? [data[0].email]
+                        : [];
+
                 this.emailsArr = em;
-              
             });
         },
         getContacts(areaCode) {
-            axios.get("api/getContacts/" + areaCode).then(({data}) => {
-          
-                const contacts = data.length > 0 && data[0].contact_number?.includes(" / ") ? data[0].contact_number.split(" / ") :  data.length > 0 ? [data[0].contact_number] : []
-              
-                this.contactNos = contacts
+            axios.get("api/getContacts/" + areaCode).then(({ data }) => {
+                const contacts =
+                    data.length > 0 && data[0].contact_number?.includes(" / ")
+                        ? data[0].contact_number.split(" / ")
+                        : data.length > 0
+                        ? [data[0].contact_number]
+                        : [];
+
+                this.contactNos = contacts;
             });
         },
         openModal() {
             this.editmode = false;
             this.form.reset();
-            this.emailsArr = '';
-            this.contactNos = '';
+            this.emailsArr = "";
+            this.contactNos = "";
             $("#addNew").modal("show");
         },
         deleteArena(id) {
@@ -1044,17 +1064,24 @@ export default {
         },
         loadArena() {
             axios.get("api/arena").then((data) => {
-                this.arena = data.data
-                
-                });
+                this.arena = data.data;
+            });
         },
         createArena() {
             this.$Progress.start();
             const areaCode = this.form.arena.split(" ")[0];
             this.form.area_code = areaCode;
-            this.form.contact_number = !this.contactNos ? null : this.contactNos.length > 1 ? this.contactNos.join(" / "): this.contactNos.toString();
-            this.form.email = !this.emailsArr ? null : this.emailsArr.length > 1 ? this.emailsArr.join(" / ") : this.emailsArr.toString();  
-        
+            this.form.contact_number = !this.contactNos
+                ? null
+                : this.contactNos.length > 1
+                ? this.contactNos.join(" / ")
+                : this.contactNos.toString();
+            this.form.email = !this.emailsArr
+                ? null
+                : this.emailsArr.length > 1
+                ? this.emailsArr.join(" / ")
+                : this.emailsArr.toString();
+
             this.form
                 .post("api/arena")
                 .then(() => {
@@ -1068,55 +1095,62 @@ export default {
                     this.$Progress.finish();
                 })
                 .catch((e) => {
-                    this.errors.areaCode = (e.response.data.message.includes('Integrity constraint') || e.response.status === 500) ? 'Area Code/Arena already exist.' : ''
+                    this.errors.areaCode =
+                        e.response.data.message.includes(
+                            "Integrity constraint"
+                        ) || e.response.status === 500
+                            ? "Area Code/Arena already exist."
+                            : "";
                 });
         },
 
-        DownloadArenaDetails (){
-            let workbooks =  XLSX.utils.book_new();
-            let worksheet = '';
+        async downloadArenaDetails() {
+            let workbooks = XLSX.utils.book_new();
+            let worksheet = "";
             let array = [];
             const current = new Date();
-            axios.get('api/arenaToExcel').then(({ data }) => {
-                 data.forEach((val) => {
-  
-                    const objVal = {
-                        'NO'                : val.id,
-                        'CODE'              : val.area_code,
-                        'ARENA NAME'        : val.arena,
-                        'ADDRESS'           : val.address,
-                        "OPERATOR'S NAME"   : val.operator,
-                        'CONTACT NUMBER'    : val.contact_details, //to convert to string
-                        'EMAIL (SOL)'       : val.email_details, //to convert to string
-                        'ACCOUNT NAME'      : val.bank_details, //to convert string and get bank name
-                        'BANK NUMBER'       : val.bank_details, //to convert string and get bank number
-                        'Complete Details?' : '',
-                        'TEAM'              : val.team
-                    }
-                    array.push(objVal);
-                })
-             
-                worksheet =  XLSX.utils.json_to_sheet(array),
-               
+            const {data} = await axios.get("api/arenaToExcel");
+            // const { bankAccountName, bankName, bankNumber } = sanitizeBank(data)
+
+            const formatArenaDetails = data.map((d) => {
+                       const {bankAccountName, bankName, bankNumber} = sanitizeBank(d.bank_details)
+
+                       return {
+                            "NO": d.id,
+                            "CODE": d.area_code,
+                            "ARENA NAME": d.arena,
+                            "ADDRESS": d.address,
+                            "OPERATOR'S NAME": d.operator,
+                            "CONTACT NUMBER": d.contact_details[0].contact_number, //to convert to string
+                            "EMAIL (SOL)": d.email_details[0]?.email, //to convert to string
+                            "ACCOUNT NAME": bankAccountName, //to convert string and get bank name
+                            "Bank NAME": bankName, //to convert string and get bank name
+                            "BANK NUMBER":bankNumber, //to convert string and get bank number
+                            "TEAM": d.team,
+                            "Complete Details?": "",
+                       }
+            });
+
+            console.log(formatArenaDetails)
+
+        
+                worksheet =  XLSX.utils.json_to_sheet(formatArenaDetails),
+
                 XLSX.utils.book_append_sheet(workbooks,worksheet),
-    
+
                 XLSX.write(workbooks,{bookType:'xlsx',type:'buffer'}),
                 XLSX.write(workbooks,{bookType:'xlsx',type:'binary'}),
-                
-                XLSX.writeFile(workbooks,`Arena Master List-${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}.xlsx`)
 
-            });
-              
-        }
+                XLSX.writeFile(workbooks,`Arena Master List-${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}.xlsx`)
+            // });
+        },
     },
     created() {
         this.loadArena();
-     
+
         Fire.$on("AfterCreate", () => {
             this.loadArena();
-      
         });
     },
-    
 };
 </script>

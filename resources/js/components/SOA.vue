@@ -550,7 +550,7 @@
     </v-app>
 </template>
 <script>
-import { numberUnformat, moneyFormat } from "../utility";
+import { numberUnformat, moneyFormat,defineEmail, defineContact } from "../utility";
 import VueHtml2pdf from "vue-html2pdf";
 import moment from "moment";
 import DateSOA from "./SoaComponents/DateSOA.vue";
@@ -568,8 +568,7 @@ import {
     imageDownload,
     truncate,
     beforeDownload,
-    defineEmail,
-    defineContact,
+ 
     withStatus,
     soa,
     reportGenerate,
