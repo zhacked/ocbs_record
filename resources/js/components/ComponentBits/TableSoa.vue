@@ -1,11 +1,12 @@
 <template lang="">
+<div>
+
     <v-data-table
         item-key="codeEvent"
         :headers="headers"
         :items="arenaData"
-        :items-per-page="10"
         v-model="selected"
-        :loading="downloadingReport"
+        :loading="loading"
         :search="search"
         :show-select="downloadingReport ? false : true"
         :disable-filtering="downloadingReport ? true : false"
@@ -15,8 +16,15 @@
         :footer-props="{
             'items-per-page-options': [10, 20, 30, 40, 50, 100],
         }"
+        :page="page"
+        @page-count="handlePageCount"
+        :server-items-length="total"
+        @pagination="handlePaginate"
         @toggle-select-all="selectAllToggle"
         @input="singleSelected"
+        @update:page="handlePage"
+        @update:options="handlePageOptions"
+        
     >
         <template v-slot:[`item.data-table-select`]="{ item, isSelected, select }">
             <v-simple-checkbox
@@ -49,15 +57,24 @@
             </v-tooltip>
         </template>
     </v-data-table>
+    <loading-progress :loading="loading" />    
+</div>
 </template>
 <script>
 export default {
     name: "table-soa",
     props: {
+        soaLists: Function,
+        withStatus: Function,
         arenaData: Array,
         downloadingReport: Boolean,
         openModal: Function,
         search: String,
+        total: Number,
+        page: Number,
+        numberOfPages: Number,
+        dates: Array,
+        tab: String
     },
     data: () => ({
         headers: [
@@ -69,7 +86,9 @@ export default {
         ],
         singleSelect: false,
         selectedItems: [],
-        selected: []
+        selected: [],
+        loading: false,
+        pagePosition: 1,
     }),
     methods: {
         // Select all imports with arena details
@@ -99,7 +118,47 @@ export default {
         },
         singleSelected(item){
             this.$emit('selectedSoa', item)
+        },
+
+        async handlePaginate(e){
+            this.pagePosition  = e.page
+                if(this.tab === 'ongoing' && this.dates.length < 1){ 
+                    this.$emit('loading', true)
+                    await this.soaLists(e.page);
+
+                    this.$emit('loading', false)
+                } else if (this.tab === 'converted'&& this.dates.length < 1) { 
+                    this.$emit('loading', true)
+                    await this.withStatus(e.page)
+                    this.$emit('loading', false)
+                };
+           
+        },
+        async handlePageCount(e){
+            console.log(e)
+            const perPage = Math.ceil((this.total/e)+1)
+            console.log('PAGE COUNT',perPage)
+            // this.$emit('perPage', perPage)
+            //  await this.soaLists(this.pagePosition,perPage); 
+            //  if(this.tab === 'ongoing'){ 
+            //         await this.soaLists(this.pagePosition,perPage); 
+            //         this.loading = false
+            //     } else { 
+            //         await this.withStatus(this.pagePosition, perPage)
+            //         this.loading = false
+            //     };
+        },
+        handlePage(e){
+            console.log('PAGE', e)
+        },
+        handlePageOptions(e){
+           
+            console.log('OPTIONS>>>',e)
+            this.$emit('perPage', e.itemsPerPage)
+            this.$emit('pageOption', e)
+            
         }
+
     },
 };
 </script>

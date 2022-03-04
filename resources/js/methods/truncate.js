@@ -67,8 +67,6 @@ const truncate = () => {
                 });
         }
     });
-}
+};
 
-export {
-    truncate
-}
+export { truncate };

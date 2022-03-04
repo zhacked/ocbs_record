@@ -1,7 +1,5 @@
 const valueSplit = (data) => {
-
             let target = {};
-            
             if(data != null && typeof data == "string" && data.indexOf(': ') > -1) {
               
                 let splitpair =  data.split(': ');

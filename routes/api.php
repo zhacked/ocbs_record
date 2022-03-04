@@ -66,6 +66,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('depositeandreflenish', [App\Http\Controllers\API\ImportController::class, 'depositedata']);
     Route::get('importDateRange/{from}/{to}', [App\Http\Controllers\API\ImportController::class, 'importDateRange']);
     Route::get('depositReplenishDateRange/{from}/{to}', [App\Http\Controllers\API\ImportController::class, 'depositReplenishDateRange']);
+    Route::get('searchSoa', [App\Http\Controllers\API\ImportController::class, 'searchSoa']);
+
 
     Route::get('count', [App\Http\Controllers\API\ImportController::class, 'countdata']);
     Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);

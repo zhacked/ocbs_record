@@ -3,7 +3,7 @@
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
             <!-- Arena Modal -->
-            <arena-modal :arenaNames="arenaNames"> </arena-modal>
+            <arena-modal :arenaNames="arenaName"> </arena-modal>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
                     <v-row>
@@ -18,16 +18,8 @@
                             @showClearBtn="handleClearBtn"
                         ></date-range>
                         <!-- Search Input -->
-                        <v-col class="col-md-2">
-                            <v-text-field
-                                v-model="search"
-                                outlined
-                                dense
-                                append-icon="mdi-magnify"
-                                label="Search"
-                                color="primary darken-2"
-                            ></v-text-field>
-                        </v-col>
+                      
+                        <search-soa @searchData="handleSearch" :tab="tab" :soaLists="soaLists" :importWithStatus="importWithStatus" ></search-soa>
                         <!-- Filter WIth/Without ARENA Details -->
                         <filter-arena
                             :arenaData="arenaData"
@@ -92,9 +84,18 @@
                                         :arenaData="arenaData"
                                         :downloadingReport="downloadingReport"
                                         @selectedSoa="handleSelected"
-                                        :search="search"
+                                        
                                         :openModal="openModal"
                                         ref="tableArenaOnGoing"
+                                        :tab="tab"
+                                        :dates="dates"
+                                        :total="total"
+                                        :page="page"
+                                        :numberOfPages="numberOfPages"
+                                        :soaLists="soaLists"
+                                        :withStatus="importWithStatus"
+                                        @loading="handlePageLoad"
+                                        @pageOption="handlePageOption"
                                     ></table-soa>
                                 </v-tab-item>
                                 <v-tab-item id="converted">
@@ -105,9 +106,18 @@
                                             downloadingReport
                                         "
                                         @selectedSoa="handleSelected"
-                                        :search.sync="search"
+                                        
                                         :openModal="openModal"
                                         ref="tableArenaConverted"
+                                        :total="total"
+                                        :tab="tab"
+                                        :dates="dates"
+                                        :page="page"
+                                        :numberOfPages="numberOfPages"
+                                        :soaLists="soaLists"
+                                        :withStatus="importWithStatus"
+                                        @loading="handlePageLoad"
+                                        @pageOption="handlePageOption"
                                     ></table-soa>
                                 </v-tab-item>
                             </v-tabs-items>
@@ -116,15 +126,17 @@
                 </v-col>
                 <v-col>
                     <!-- SOA Container for PNG multiple Download and multiple print -->
-                    <div class="report-soa_container mx-auto d-flex flex-column" id="report-soa_container">
+                    <div
+                        class="report-soa_container mx-auto d-flex flex-column"
+                        id="report-soa_container"
+                    >
                         <div
                             v-for="item in selected"
                             :key="item.codeEvent"
-                            
                             class="reportsoaoutput"
                             id="reportsoaoutput"
                         >
-                            <v-card   ref="soaReport">
+                            <v-card ref="soaReport">
                                 <v-card-title
                                     class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
                                 >
@@ -142,23 +154,32 @@
                                             :depositReplenishText="
                                                 item.group === 'Replenish'
                                                     ? {
-                                                        title: 'For Replenishment',
-                                                        dateText: 'FR',
-                                                        totalText: 'Replenish',
-                                                        bankTitle: 'We will replenish to',
-                                                    }
+                                                          title: 'For Replenishment',
+                                                          dateText: 'FR',
+                                                          totalText:
+                                                              'Replenish',
+                                                          bankTitle:
+                                                              'We will replenish to',
+                                                      }
                                                     : {
-                                                        title: 'Statement of Account',
-                                                        dateText: 'SOA',
-                                                        totalText: 'Deposit',
-                                                        bankTitle: 'Kindly Deposit to',
-                                                    }
+                                                          title: 'Statement of Account',
+                                                          dateText: 'SOA',
+                                                          totalText: 'Deposit',
+                                                          bankTitle:
+                                                              'Kindly Deposit to',
+                                                      }
                                             "
                                             :refNo="item.refNo"
                                             :dateEvent="
-                                                moment(item.date_of_soa).format('LL')
+                                                moment(item.date_of_soa).format(
+                                                    'LL'
+                                                )
                                             "
-                                            :dateSoa="moment(item.date_closed).format('LL')"
+                                            :dateSoa="
+                                                moment(item.date_closed).format(
+                                                    'LL'
+                                                )
+                                            "
                                         />
                                     </v-row>
                                     <v-row>
@@ -168,71 +189,75 @@
                                                     ? item.arena_details
                                                     : { arena: item.arena_name }
                                             "
-                                        
+                                            :arenaName="item.arena_name"
                                             :emailFormat="
                                                 item.arena_details
                                                     ? defineEmail(
-                                                        item.arena_details.email_details
-                                                    )
+                                                          item.arena_details
+                                                              .email_details
+                                                      )
                                                     : ''
                                             "
                                             :contactFormat="
                                                 item.arena_details
                                                     ? defineContact(
-                                                        item.arena_details.contact_details
-                                                    )
+                                                          item.arena_details
+                                                              .contact_details
+                                                      )
                                                     : ''
                                             "
                                         />
                                     </v-row>
                                     <v-row>
-                                        <div class="computation-banner">Computation</div>
+                                        <div class="computation-banner">
+                                            Computation
+                                        </div>
                                     </v-row>
                                     <ComputeBox
                                         :computation="computationSoa(item)"
                                         :commissionPercent="commission_percent"
-                                    
                                         :depositReplenishTxt="
                                             item.group === 'Replenish'
                                                 ? {
-                                                    totalText: 'Replenishment',
-                                                }
+                                                      totalText:
+                                                          'Replenishment',
+                                                  }
                                                 : {
-                                                    totalText: 'Deposit',
-                                                }
+                                                      totalText: 'Deposit',
+                                                  }
                                         "
                                     />
                                     <span
                                         v-if="item.group === 'Replenish'"
                                         class="text-xs my-2"
                                         style="color: #e64a19"
-                                        >Please be advised that replenishment are only
-                                        available during banking days. We allow off setting
-                                        of pending remittances and replenishments during
+                                        >Please be advised that replenishment
+                                        are only available during banking days.
+                                        We allow off setting of pending
+                                        remittances and replenishments during
                                         non-banking days.</span
                                     >
 
                                     <BankBox
-                                    
                                         :bankAccounts="bankAccounts || []"
                                         :arenaDetails="item.arena_details"
-                                    
                                         :operatorName="
                                             item.arena_details
                                                 ? item.arena_details.operator
                                                 : ''
                                         "
-                                        
                                         :depositReplenishText="
                                             item.group === 'Replenish'
                                                 ? {
-                                                    totalText: 'Replenish',
-                                                    bankTitle: 'We will replenish to',
-                                                }
+                                                      totalText: 'Replenish',
+                                                      bankTitle:
+                                                          'We will replenish to',
+                                                  }
                                                 : {
-                                                    totalText: 'Deposit',
-                                                    bankTitle: 'Kindly Deposit to',
-                                                }
+                                                      totalText: 'Deposit',
+                                                      bankTitle:
+                                                          'Kindly Deposit to',
+                                                  }
                                         "
                                     />
 
@@ -255,7 +280,7 @@
                     width="800px"
                     style="z-index: 9999999999 !important"
                 >
-                <!-- SOA Container for single download ng print -->
+                    <!-- SOA Container for single download ng print -->
                     <v-card
                         class="overflow-y-auto overflow-x-hidden report-preview"
                     >
@@ -357,7 +382,9 @@
                                                             :arenaDetails="
                                                                 arenaDetails
                                                             "
-                                                           
+                                                            :arenaName="
+                                                                arenaName
+                                                            "
                                                             :emailFormat="
                                                                 emailFormat
                                                             "
@@ -383,7 +410,6 @@
                                                                     commission_percent
                                                                 )
                                                             "
-                                                            
                                                             :computation="
                                                                 computation
                                                             "
@@ -411,7 +437,6 @@
                                                             days.</span
                                                         >
                                                         <BankBox
-                                                        
                                                             :bankAccounts="
                                                                 bankAccounts ||
                                                                 []
@@ -422,7 +447,6 @@
                                                             :operatorName="
                                                                 operator_name
                                                             "
-                                                           
                                                             :depositReplenishText="
                                                                 depRep.depositReplenishText
                                                             "
@@ -441,7 +465,7 @@
                                     </div>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                      
+
                                         <v-spacer></v-spacer>
 
                                         <v-tooltip bottom>
@@ -449,7 +473,6 @@
                                                 v-slot:activator="{ on, attrs }"
                                             >
                                                 <v-btn
-                                                   
                                                     icon
                                                     large
                                                     color="green"
@@ -472,7 +495,6 @@
                                                 v-slot:activator="{ on, attrs }"
                                             >
                                                 <v-btn
-                                                    
                                                     icon
                                                     large
                                                     color="red darken-2"
@@ -498,7 +520,6 @@
                                                 v-slot:activator="{ on, attrs }"
                                             >
                                                 <v-btn
-                                                   
                                                     icon
                                                     large
                                                     color="primary"
@@ -522,6 +543,7 @@
                     </v-card>
                 </v-dialog>
             </v-row>
+
             <!-- Loading Progress -->
             <loading-progress :loading="dialog2"></loading-progress>
         </v-container>
@@ -540,6 +562,7 @@ import DateRange from "./ComponentBits/DateRange.vue";
 import TableSoa from "./ComponentBits/TableSoa.vue";
 import SoaInput from "./ComponentBits/SoaInput.vue";
 import ActionsButtons from "./ComponentBits/ActionsButtons.vue";
+import SearchSoa from "./ComponentBits/SearchSoa.vue";
 
 import {
     imageDownload,
@@ -572,6 +595,7 @@ export default {
         FilterArena,
         SoaInput,
         ActionsButtons,
+        SearchSoa
     },
     data() {
         return {
@@ -588,7 +612,7 @@ export default {
             ],
             sortBy: "refNo",
             keys: ["CATEGORY"],
-            arenaNames: "",
+            arenaName: "",
             selected: [],
             dialog: false,
             dialog2: false,
@@ -628,48 +652,56 @@ export default {
             computationSoa,
             signsArray: [],
             progressText: null,
-            printReadyProgress: 0
+            printReadyProgress: 0,
+            total: 0,
+            page: 0,
+            numberOfPages: 0,
+            perPage: 10,
+            pageNumber: 1,
         };
     },
     methods: {
-    
-        handleSwitchSignatory() { // switch between to have signatory or not
+        handleSwitchSignatory() {
+            // switch between to have signatory or not
             localStorage.setItem("prepared", this.switchPrepared);
         },
         truncate, // truncate data based on date
-        async soaLists() { // fetch all soa with status = null
-            const soaLists = await soa();
-            const ordered = orderBy(soaLists, ["date_of_soa"], ["desc"]);
-            const soaListing = ordered.map((o) => ({
-                ...o,
-                date_of_soa: moment(o.date_of_soa).format("DD MMM YYYY"),
-            }));
-            this.arenaData = soaListing;
+        async soaLists() {
+            // fetch all soa with status = null
+            const { soaLists, total, page, numberOfPages } = await soa(
+                this.pageNumber,
+                this.perPage
+            );
+   
+            this.arenaData = soaLists;
+            this.total = total;
+            this.page = page;
+            this.numberOfPages = numberOfPages;
         },
-        async importWithStatus() { // fetch data with status = done
-            const withStatusData = await withStatus(this.arenaData);
-            const ordered = orderBy(withStatusData, ["date_of_soa"], ["desc"]);
-            const soaListing = ordered.map((o) => ({
-                ...o,
-                date_of_soa: moment(o.date_of_soa).format("DD MMM YYYY"),
-            }));
-            this.arenaData = soaListing;
+        async importWithStatus() {
+            // fetch data with status = done
+            const { withStatusData, total, page, numberOfPages } =
+                await withStatus(this.pageNumber, this.perPage);
+       
+            this.arenaData = withStatusData;
+            this.total = total;
+            this.page = page;
+            this.numberOfPages = numberOfPages;
         },
 
-        openModal(data) { // View SOA dialog
+        openModal(data) {
+            // View SOA dialog
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
-                this.arenaNames = data.arena_name;
+                this.arenaName = data.arena_name;
             } else {
                 this.dialog = true;
-             
-           
                 this.operator_name = data.arena_details.operator;
                 this.dateCreated = moment(data.date_closed).format("LL");
                 this.dateEvent = moment(data.date_of_soa).format("LL");
                 this.refNo = data.refNo;
                 this.arenaDetails = data.arena_details;
-                this.arenaNames = data.arena_details.arena;
+                this.arenaName = data.arena_name;
                 this.areaCode = data.areaCode;
                 this.codeEvent = data.codeEvent;
                 const computation = computationSoa(data);
@@ -691,7 +723,7 @@ export default {
             this.dialog = false;
             this.arenaDetails = {};
             this.operator_name = "";
-       
+
             $(".computation").attr("disabled", true);
         },
         // Generate a pdf report
@@ -699,9 +731,10 @@ export default {
             const { dialog } = reportGenerate(codeEvent, this.$refs.html2Pdf);
             this.dialog = dialog;
         },
-        beforeDownload,  // Customize PDF before download
+        beforeDownload, // Customize PDF before download
 
-        async downloadImg(details, codeEvent) { // Download PNG 
+        async downloadImg(details, codeEvent) {
+            // Download PNG
             const el = this.$refs.soaReport;
             const imgdl = await imageDownload(details, codeEvent, el);
             if (imgdl.status === 200) {
@@ -712,46 +745,56 @@ export default {
             }
         },
 
-        loadBankDetails() { // Load Company Bank Details
+        loadBankDetails() {
+            // Load Company Bank Details
             axios.get("api/Companybanks").then(({ data }) => {
                 this.bankAccounts = data;
             });
         },
 
-    
-        handleFilterDate(value) { // $emit filter soa import by date from date-range component
+        handleFilterDate(value) {
+            // $emit filter soa import by date from date-range component
             this.arenaData = value;
             if (value.length === 0) this.showClear = false;
         },
-        handleClearBtn(value) { // $emit clear dates from date-range component
+        handleClearBtn(value) {
+            // $emit clear dates from date-range component
             this.showClear = value;
         },
-        handleSelected(value) { // $emit Selected imports from table-soa component
+        handleSelected(value) {
+            // $emit Selected imports from table-soa component
             this.selected = value;
-            console.log('SELECTED',value)
-            if(value.length < 1) this.signsArray = [], this.printReadyProgress = 0;
+            console.log("SELECTED", value);
+            if (value.length < 1)
+                (this.signsArray = []), (this.printReadyProgress = 0);
         },
-        getDates(value) { // $emit get dates from date-range component
+        getDates(value) {
+            // $emit get dates from date-range component
             this.dates = value;
         },
-        revertTab(item) { // $emit return to default menu tab (ongoing) from date-range component 
+        revertTab(item) {
+            // $emit return to default menu tab (ongoing) from date-range component
             this.tab = item;
         },
-        handleEmptySelect() { // unselect all selected imports
+        handleEmptySelect() {
+            // unselect all selected imports
             this.printReadyProgress = 0;
-            this.signsArray = []
+            this.signsArray = [];
             this.$refs.tableArenaOnGoing &&
                 this.$refs.tableArenaOnGoing.emptySelect();
             this.$refs.tableArenaConverted &&
                 this.$refs.tableArenaConverted.emptySelect();
         },
 
-        async loadDateRange(item) { // Load imports based on date range
+        async loadDateRange(item) {
+            // Load imports based on date range
             this.$refs.dateRange &&
                 (await this.$refs.dateRange.loadDateRange(item));
         },
-        async handleChangeTab(item) { // Swicth between menu tab: ongoing and converted
+        async handleChangeTab(item) {
+            // Swicth between menu tab: ongoing and converted
             this.dialog2 = true;
+
             this.dates.length !== 0
                 ? this.loadDateRange(item)
                 : item === "ongoing"
@@ -759,20 +802,36 @@ export default {
                 : await this.importWithStatus();
             this.loadBankDetails();
             this.dialog2 = false;
-            
         },
-        handleSigned(value){ // $emit signatories data from signatory component
-            this.printReadyProgress = Math.ceil(((this.signsArray.length + 1)/ (this.selected.length * 3)) * 100);
-            this.signsArray.push(value)
+        handleSigned(value) {
+            // $emit signatories data from signatory component
+            this.printReadyProgress = Math.ceil(
+                ((this.signsArray.length + 1) / (this.selected.length * 3)) *
+                    100
+            );
+            this.signsArray.push(value);
+        },
+        handlePageLoad(value) {
+            this.dialog2 = value;
+        },
+
+        handlePageOption(item) {
+            this.pageNumber = item.page;
+            this.perPage = item.itemsPerPage;
+        },
+        handleSearch(items){
+            this.arenaData = items
         }
     },
 
     computed: {
-        dateRangeText() { // modify date string
+        dateRangeText() {
+            // modify date string
             const dateRange = this.dates.length > 1 ? this.dates.sort() : null;
             return dateRange ? dateRange.join(" ~ ") : null;
         },
-        depRep: function () { // switch between for replenishment and soa text and other details
+        depRep: function () {
+            // switch between for replenishment and soa text and other details
             const depositReplenishText =
                 numberUnformat(this.computation.depositReplenish) < 0
                     ? {

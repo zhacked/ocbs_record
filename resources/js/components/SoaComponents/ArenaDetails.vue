@@ -9,7 +9,7 @@
                 <span
                     style="text-transform: uppercase; font-weight: 900"
                     class="computation"
-                    >{{ arenaDetails.arena }}</span
+                    >{{ arenaName }}</span
                 >
             </div>
         </div>
@@ -68,6 +68,7 @@ export default {
     name: "ArenaDetails",
     props: {
         arenaDetails: Object,
+        arenaName: String,
         editmode: Boolean,
         emailFormat: String,
         contactFormat: String,

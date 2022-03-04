@@ -29,14 +29,16 @@ class importController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = $request->query('per_page');
+       
         return import::with(['BankDetails',
                 'arenaDetails.BankDetails',
                 'arenaDetails.EmailDetails',
                 'arenaDetails.ContactDetails', 
                 'arenaDetails.UserTeam.userDetails.positionDetails'
-                ])->whereNull('status')->get();
+                ])->whereNull('status')->paginate($perPage);
       
     }
 
@@ -49,9 +51,23 @@ class importController extends Controller
         ])->whereBetween('date_of_soa',[$from, $to])->get();
     }
 
-    public function withstatus()
-    {
-        return import::with(['BankDetails','arenaDetails.BankDetails','arenaDetails.EmailDetails','arenaDetails.ContactDetails', 'arenaDetails.UserTeam.userDetails.positionDetails'])->whereNotNull('status')->get();
+    public function withstatus(Request $request)
+    {        
+        $perPage = $request->query('per_page');
+        return import::with(['BankDetails','arenaDetails.BankDetails','arenaDetails.EmailDetails','arenaDetails.ContactDetails', 'arenaDetails.UserTeam.userDetails.positionDetails'])->whereNotNull('status')->paginate($perPage);
+    }
+
+    public function searchSoa(Request $request) {
+        $search = $request->query('search');
+      
+            return  import::with(['BankDetails',
+            'arenaDetails.BankDetails',
+            'arenaDetails.EmailDetails',
+            'arenaDetails.ContactDetails', 
+            'arenaDetails.UserTeam.userDetails.positionDetails'
+            ])->where('arena_name','like', '%'.$search.'%')->get();
+        
+       
     }
 
 

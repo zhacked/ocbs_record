@@ -26,9 +26,9 @@ const formatter = (number) => {
 
 const moneyFormat = (num, decimal = 2) => {
     // const money = parseFloat(num) < -1 ? parseFloat(num) : toFixed(parseFloat(num))
-    const money = toFixed(parseFloat(num))
+    const money = toFixed(parseFloat(num)) // round up to thousandth
     // const money = parseFloat(num)
-    return numberFormat(formatter(money), decimal)
+    return numberFormat(formatter(money), decimal) // round up number of decimal place
 
 };
 

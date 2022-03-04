@@ -207,7 +207,7 @@ export default {
                 });
 
                 const link = document.createElement("a");
-                link.download = `${this.selected[i].arena_details.arena}.png`;
+                link.download = `${this.selected[i].arena_name}(${this.selected[i].refNo}).png`;
                 link.href = canvas.toDataURL("image/png");
                 document.body.appendChild(link);
                 link.click();
@@ -275,12 +275,12 @@ export default {
                     );
                     console.log("zip generated");
                     await axios.put("api/arenaStatus", statusArenas);
-                    const c = this.arenaData.filter(
-                        (arena) =>
-                            !this.selected.find(
-                                (select) => select.areaCode === arena.areaCode
-                            )
-                    );
+                    // const c = this.arenaData.filter(
+                    //     (arena) =>
+                    //         !this.selected.find(
+                    //             (select) => select.areaCode === arena.areaCode
+                    //         )
+                    // );
 
                     if (this.progressvalue === 100) {
                         setTimeout(async () => {
@@ -342,10 +342,10 @@ export default {
                     parseFloat(this.selected[i].for_total) < 0 ? "fr" : "soa";
                 console.log(this.selected[i])
                 const arenaName =
-                    (this.selected[i].arena_details.arena.indexOf("/")) > -1
-                        ? this.selected[i].arena_details.arena.replace(/\//g, "-")
-                        : this.selected[i].arena_details.arena;
-                const filename = `${folderName}/${arenaName}.png`;
+                    (this.selected[i].arena_name.indexOf("/")) > -1
+                        ? this.selected[i].arena_name.replace(/\//g, "-")
+                        : this.selected[i].arena_name;
+                const filename = `${folderName}/${arenaName}(${this.selected[i].refNo}).png`;
 
                 await zip.file(filename, await urlToPromise(url), {
                     binary: true,

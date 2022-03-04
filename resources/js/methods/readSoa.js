@@ -24,6 +24,27 @@ function toString(o) {
     return o;
 }
 
+// if date is serial
+const ExcelDateToJSDate = (serial) => {
+    const utcDays = Math.floor(serial - 25569);
+    const utcValues = utcDays * 86400;
+    const dateInfo = new Date(utcValues * 1000);
+    const fractionalDay = serial - Math.floor(serial) + 0.0000001;
+    let totalSeconds = Math.floor(86400 * fractionalDay);
+    const seconds = totalSeconds % 60;
+    totalSeconds -= seconds;
+    const hours = Math.floor(totalSeconds / (60 * 60));
+    const minutes = Math.floor(totalSeconds / 60) % 60;
+    return new Date(
+        dateInfo.getFullYear(),
+        dateInfo.getMonth(),
+        dateInfo.getDate(),
+        hours,
+        minutes,
+        seconds
+    );
+};
+
 const readSoa = (event, isExcel) => {
     let arenaReportFiltered = [];
     const file = event ? event : null;
@@ -55,8 +76,6 @@ const readSoa = (event, isExcel) => {
                 );
             });
 
-
-
             filteredWS.forEach((w) => {
                 const singleSheet = wb.Sheets[w];
                 arrayData.push(
@@ -66,8 +85,6 @@ const readSoa = (event, isExcel) => {
                     })
                 );
             });
-
-            
 
             arrayData[0].map((r) => {
                 if (Object.keys(r).length >= 17) reportCombined.push(r);
@@ -92,28 +109,6 @@ const readSoa = (event, isExcel) => {
                     : moment(date, "DD/MM/YYYY").isValid()
                     ? moment(date, "DD/MM/YYYY").format("YYYY-MM-DD LTS")
                     : moment(date).format("YYYY-MM-DD LTS");
-
-            // if date is serial
-            const ExcelDateToJSDate = (serial) => {
-                const utcDays = Math.floor(serial - 25569);
-                const utcValues = utcDays * 86400;
-                const dateInfo = new Date(utcValues * 1000);
-                const fractionalDay = serial - Math.floor(serial) + 0.0000001;
-                let totalSeconds = Math.floor(86400 * fractionalDay);
-                const seconds = totalSeconds % 60;
-                totalSeconds -= seconds;
-                const hours = Math.floor(totalSeconds / (60 * 60));
-                const minutes = Math.floor(totalSeconds / 60) % 60;
-                return new Date(
-                    dateInfo.getFullYear(),
-                    dateInfo.getMonth(),
-                    dateInfo.getDate(),
-                    hours,
-                    minutes,
-                    seconds
-                );
-            };
-
             const eventCreatedUTC = ExcelDateToJSDate(arrayData[0][2].A);
             const eventClosedUTC = ExcelDateToJSDate(arrayData[0][4].A);
 
@@ -263,7 +258,6 @@ const readSoa = (event, isExcel) => {
                     const consolCommMob = rest.consolCommMob;
                     const payOutsBalMob = rest.payOutsBalMob;
                     const netWinLoss = rest.netWinLoss;
-
                     const mwTwo = totalMWBets * 0.02;
                     const drawTwo = totalDrawBets * 0.02;
                     const mwTwoMobile = totalMWMobile * 0.02;
@@ -272,24 +266,18 @@ const readSoa = (event, isExcel) => {
                     const totalCUnpaid = rest.cUnpaid;
                     const salesDeduction = rest.salesDeductionTablet;
                     const netOperatorsCommission = rest.netOperatorsCommission;
-
                     const otherCommissionIntel = rest.otherCommissionIntel05;
                     const consolidatorsCommission =
                         rest.consolidatorsCommission;
-
                     const safetyFund = rest.safetyFund;
-
                     const paymentForOutstandingBalance =
                         rest.paymentForOutstandingBalance;
-
                     const totalCommission = rest.totalCommission;
                     const cashLoad = rest.cashLoad;
                     const cashWithdrawal = rest.cashWithdrawal;
                     const totalOthers = rest.totalOthers;
                     const systemErrorCOArmsi = rest.systemErrorCOArmsi;
-
                     const depositReplenish = rest.forDepositReplenish;
-
                     const soaFr =
                         parseFloat(depositReplenish) < 0 ? "fr" : "soa";
                     const group = soaFr === "fr" ? "Replenish" : "Deposit";
@@ -362,14 +350,13 @@ const readSoa = (event, isExcel) => {
                     removeLuck.areaCode !== "LUCKY" ||
                     removeLuck.arena_name.split(" ")[0] !== "LUCKY"
             );
-
             // group fr and soa
             const groupSOAFR = removeLucky.reduce(function (r, a) {
                 r[a.soaFr] = r[a.soaFr] || [];
                 r[a.soaFr].push(a);
                 return r;
             }, Object.create(null));
-
+            
             // Convert Month number to alphabet
             const moLetter = String.fromCharCode(
                 96 + (moment(eventDateCreated).month() + 1)
