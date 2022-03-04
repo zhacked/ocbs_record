@@ -2,6 +2,7 @@
     <v-app>
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
+            <!-- Arena Modal -->
             <arena-modal :arenaNames="arenaNames"> </arena-modal>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
@@ -49,7 +50,7 @@
                                         :label="`Signatory ${
                                             switchPrepared ? 'On' : 'Off'
                                         }`"
-                                        @change="handleSwitchPrepared"
+                                        @change="handleSwitchSignatory"
                                     ></v-switch>
                                 </v-col>
                                 <!-- Downloads and Clear Buttons -->
@@ -63,9 +64,11 @@
                                     :soaLists="soaLists"
                                     :importWithStatus="importWithStatus"
                                     :loadDateRange="loadDateRange"
+                                    :printReadyProgress="printReadyProgress"
                                 />
                             </v-row>
                         </v-card-title>
+                        <!-- TAB -->
                         <v-tabs
                             v-model="tab"
                             align-with-title
@@ -90,7 +93,7 @@
                                         :downloadingReport="downloadingReport"
                                         @selectedSoa="handleSelected"
                                         :search="search"
-                                        :openModel="openModel"
+                                        :openModal="openModal"
                                         ref="tableArenaOnGoing"
                                     ></table-soa>
                                 </v-tab-item>
@@ -103,7 +106,7 @@
                                         "
                                         @selectedSoa="handleSelected"
                                         :search.sync="search"
-                                        :openModel="openModel"
+                                        :openModal="openModal"
                                         ref="tableArenaConverted"
                                     ></table-soa>
                                 </v-tab-item>
@@ -111,131 +114,138 @@
                         </v-card-text>
                     </v-card>
                 </v-col>
-                <div
-                    v-for="item in selected"
-                    :key="item.codeEvent"
-                    ref="soaReport"
-                    id="reportsoaoutput"
-                    class="reportsoaoutput"
-                    style="display: none"
-                >
-                    <v-card-title
-                        class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
-                    >
-                        <span>{{
-                            item.group === "Replenish"
-                                ? "For Replenishment"
-                                : "Statement of Account"
-                        }}</span>
-                    </v-card-title>
-                    <v-card-text class="text-sm-body-2">
-                        <v-row>
-                            <v-spacer></v-spacer>
-                            <v-spacer></v-spacer>
-                            <DateSOA
-                                :depositReplenishText="
-                                    item.group === 'Replenish'
-                                        ? {
-                                              title: 'For Replenishment',
-                                              dateText: 'FR',
-                                              totalText: 'Replenish',
-                                              bankTitle: 'We will replenish to',
-                                          }
-                                        : {
-                                              title: 'Statement of Account',
-                                              dateText: 'SOA',
-                                              totalText: 'Deposit',
-                                              bankTitle: 'Kindly Deposit to',
-                                          }
-                                "
-                                :refNo="item.refNo"
-                                :dateEvent="
-                                    moment(item.date_of_soa).format('LL')
-                                "
-                                :dateSoa="moment(item.date_closed).format('LL')"
-                            />
-                        </v-row>
-                        <v-row>
-                            <ArenaDetails
-                                :arenaDetails="
-                                    item.arena_details
-                                        ? item.arena_details
-                                        : { arena: item.arena_name }
-                                "
-                               
-                                :emailFormat="
-                                    item.arena_details
-                                        ? defineEmail(
-                                              item.arena_details.email_details
-                                          )
-                                        : ''
-                                "
-                                :contactFormat="
-                                    item.arena_details
-                                        ? defineContact(
-                                              item.arena_details.contact_details
-                                          )
-                                        : ''
-                                "
-                            />
-                        </v-row>
-                        <v-row>
-                            <div class="computation-banner">Computation</div>
-                        </v-row>
-                        <ComputeBox
-                            :computation="computationSoa(item)"
-                            :commissionPercent="commission_percent"
-                           
-                            :depositReplenishTxt="
-                                item.group === 'Replenish'
-                                    ? {
-                                          totalText: 'Replenishment',
-                                      }
-                                    : {
-                                          totalText: 'Deposit',
-                                      }
-                            "
-                        />
-                        <span
-                            v-if="item.group === 'Replenish'"
-                            class="text-xs my-2"
-                            style="color: #e64a19"
-                            >Please be advised that replenishment are only
-                            available during banking days. We allow off setting
-                            of pending remittances and replenishments during
-                            non-banking days.</span
-                        >
-
-                        <BankBox
-                        
-                            :bankAccounts="bankAccounts || []"
-                            :arenaDetails="item.arena_details"
-                           
-                            :operatorName="
-                                item.arena_details
-                                    ? item.arena_details.operator
-                                    : ''
-                            "
+                <v-col>
+                    <!-- SOA Container for PNG multiple Download and multiple print -->
+                    <div class="report-soa_container mx-auto d-flex flex-column" id="report-soa_container">
+                        <div
+                            v-for="item in selected"
+                            :key="item.codeEvent"
                             
-                            :depositReplenishText="
-                                item.group === 'Replenish'
-                                    ? {
-                                          totalText: 'Replenish',
-                                          bankTitle: 'We will replenish to',
-                                      }
-                                    : {
-                                          totalText: 'Deposit',
-                                          bankTitle: 'Kindly Deposit to',
-                                      }
-                            "
-                        />
+                            class="reportsoaoutput"
+                            id="reportsoaoutput"
+                        >
+                            <v-card   ref="soaReport">
+                                <v-card-title
+                                    class="text-h5 text-center font-weight-medium d-flex justify-center align-center pdf-title"
+                                >
+                                    <span>{{
+                                        item.group === "Replenish"
+                                            ? "For Replenishment"
+                                            : "Statement of Account"
+                                    }}</span>
+                                </v-card-title>
+                                <v-card-text class="text-sm-body-2">
+                                    <v-row>
+                                        <v-spacer></v-spacer>
+                                        <v-spacer></v-spacer>
+                                        <DateSOA
+                                            :depositReplenishText="
+                                                item.group === 'Replenish'
+                                                    ? {
+                                                        title: 'For Replenishment',
+                                                        dateText: 'FR',
+                                                        totalText: 'Replenish',
+                                                        bankTitle: 'We will replenish to',
+                                                    }
+                                                    : {
+                                                        title: 'Statement of Account',
+                                                        dateText: 'SOA',
+                                                        totalText: 'Deposit',
+                                                        bankTitle: 'Kindly Deposit to',
+                                                    }
+                                            "
+                                            :refNo="item.refNo"
+                                            :dateEvent="
+                                                moment(item.date_of_soa).format('LL')
+                                            "
+                                            :dateSoa="moment(item.date_closed).format('LL')"
+                                        />
+                                    </v-row>
+                                    <v-row>
+                                        <ArenaDetails
+                                            :arenaDetails="
+                                                item.arena_details
+                                                    ? item.arena_details
+                                                    : { arena: item.arena_name }
+                                            "
+                                        
+                                            :emailFormat="
+                                                item.arena_details
+                                                    ? defineEmail(
+                                                        item.arena_details.email_details
+                                                    )
+                                                    : ''
+                                            "
+                                            :contactFormat="
+                                                item.arena_details
+                                                    ? defineContact(
+                                                        item.arena_details.contact_details
+                                                    )
+                                                    : ''
+                                            "
+                                        />
+                                    </v-row>
+                                    <v-row>
+                                        <div class="computation-banner">Computation</div>
+                                    </v-row>
+                                    <ComputeBox
+                                        :computation="computationSoa(item)"
+                                        :commissionPercent="commission_percent"
+                                    
+                                        :depositReplenishTxt="
+                                            item.group === 'Replenish'
+                                                ? {
+                                                    totalText: 'Replenishment',
+                                                }
+                                                : {
+                                                    totalText: 'Deposit',
+                                                }
+                                        "
+                                    />
+                                    <span
+                                        v-if="item.group === 'Replenish'"
+                                        class="text-xs my-2"
+                                        style="color: #e64a19"
+                                        >Please be advised that replenishment are only
+                                        available during banking days. We allow off setting
+                                        of pending remittances and replenishments during
+                                        non-banking days.</span
+                                    >
 
-                        <SignatoryBox
-                            v-show="switchPrepared"
-                            :arenaDetails="item.arena_details"
-                        />
-                    </v-card-text>
-                </div>
+                                    <BankBox
+                                    
+                                        :bankAccounts="bankAccounts || []"
+                                        :arenaDetails="item.arena_details"
+                                    
+                                        :operatorName="
+                                            item.arena_details
+                                                ? item.arena_details.operator
+                                                : ''
+                                        "
+                                        
+                                        :depositReplenishText="
+                                            item.group === 'Replenish'
+                                                ? {
+                                                    totalText: 'Replenish',
+                                                    bankTitle: 'We will replenish to',
+                                                }
+                                                : {
+                                                    totalText: 'Deposit',
+                                                    bankTitle: 'Kindly Deposit to',
+                                                }
+                                        "
+                                    />
+
+                                    <SignatoryBox
+                                        v-show="switchPrepared"
+                                        :arenaDetails="item.arena_details"
+                                        @signed="handleSigned"
+                                    />
+                                </v-card-text>
+                            </v-card>
+                        </div>
+                    </div>
+                </v-col>
                 <v-dialog
                     v-model="dialog"
                     transition="dialog-bottom-transition"
@@ -245,6 +255,7 @@
                     width="800px"
                     style="z-index: 9999999999 !important"
                 >
+                <!-- SOA Container for single download ng print -->
                     <v-card
                         class="overflow-y-auto overflow-x-hidden report-preview"
                     >
@@ -511,6 +522,7 @@
                     </v-card>
                 </v-dialog>
             </v-row>
+            <!-- Loading Progress -->
             <loading-progress :loading="dialog2"></loading-progress>
         </v-container>
     </v-app>
@@ -576,19 +588,12 @@ export default {
             ],
             sortBy: "refNo",
             keys: ["CATEGORY"],
-            computedPerTeam: {},
-            group: {
-                header: {
-                    isOpen: false,
-                },
-            },
             arenaNames: "",
             selected: [],
             dialog: false,
             dialog2: false,
             search: "",
             commission_percent: 0.02,
-            status: "Reflenish",
             bankAccounts: [],
             operator_name: "",
             sofrNumSeq: 0,
@@ -602,17 +607,9 @@ export default {
             loader: null,
             downloadingReport: false,
             fileUpload: null,
-            form: new Form({
-                id: "",
-                arena: "",
-                address: "",
-                operator: "",
-                contact_number: "",
-                email: "",
-            }),
             moment,
-            numberUnformat,
             moneyFormat,
+            numberUnformat,
             defineEmail,
             defineContact,
             computation: {},
@@ -623,28 +620,24 @@ export default {
             emailFormat: "",
             contactFormat: "",
             depositReplenishTxt: {},
-            disabledCount: 0,
             printSoa,
             switchPrepared: false,
             menu: false,
             dates: [],
             showClear: false,
             computationSoa,
+            signsArray: [],
+            progressText: null,
+            printReadyProgress: 0
         };
     },
     methods: {
- 
-        arenaSelectedBank(bankId) {
-            const bId = bankId;
-            axios.get(`api/arenaSelectedBank/${bId}`).then(({ data }) => {
-                this.bank = data;
-            });
-        },
-        handleSwitchPrepared() {
+    
+        handleSwitchSignatory() { // @desc switch between to have signatory or not
             localStorage.setItem("prepared", this.switchPrepared);
         },
-        truncate,
-        async soaLists() {
+        truncate, // @desc truncate data based on date
+        async soaLists() { // @desc fetch all soa with status = null
             const soaLists = await soa();
             const ordered = orderBy(soaLists, ["date_of_soa"], ["desc"]);
             const soaListing = ordered.map((o) => ({
@@ -653,7 +646,7 @@ export default {
             }));
             this.arenaData = soaListing;
         },
-        async importWithStatus() {
+        async importWithStatus() { // @desc fetch data with status = done
             const withStatusData = await withStatus(this.arenaData);
             const ordered = orderBy(withStatusData, ["date_of_soa"], ["desc"]);
             const soaListing = ordered.map((o) => ({
@@ -663,21 +656,19 @@ export default {
             this.arenaData = soaListing;
         },
 
-        openModel(data) {
+        openModal(data) { // @desc View SOA dialog
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
                 this.arenaNames = data.arena_name;
             } else {
                 this.dialog = true;
-                this.form.reset();
-                this.form.fill(data.arena_details);
+             
+           
                 this.operator_name = data.arena_details.operator;
                 this.dateCreated = moment(data.date_closed).format("LL");
                 this.dateEvent = moment(data.date_of_soa).format("LL");
                 this.refNo = data.refNo;
                 this.arenaDetails = data.arena_details;
-       
-           
                 this.arenaNames = data.arena_details.arena;
                 this.areaCode = data.areaCode;
                 this.codeEvent = data.codeEvent;
@@ -685,6 +676,7 @@ export default {
                 this.computation = computation;
             }
 
+            // @desc Format email and contact to string
             this.emailFormat =
                 data.arena_details &&
                 data.arena_details.email_details &&
@@ -699,94 +691,66 @@ export default {
             this.dialog = false;
             this.arenaDetails = {};
             this.operator_name = "";
-            this.form.reset();
+       
             $(".computation").attr("disabled", true);
         },
-
+        // @desc Generate a pdf report
         generateReport(codeEvent) {
             const { dialog } = reportGenerate(codeEvent, this.$refs.html2Pdf);
             this.dialog = dialog;
         },
-        beforeDownload,
+        beforeDownload,  // @desc Customize PDF before download
 
-        async downloadImg(details, codeEvent) {
+        async downloadImg(details, codeEvent) { // @desc Download PNG 
             const el = this.$refs.soaReport;
             const imgdl = await imageDownload(details, codeEvent, el);
-
             if (imgdl.status === 200) {
                 this.dialog = false;
-          
                 this.arenaDetails = {};
-
                 Fire.$emit("AfterCreate");
                 swal.fire("convert to png!", "successfully", "success");
             }
         },
 
-        loadBankDetails() {
+        loadBankDetails() { // @desc Load Company Bank Details
             axios.get("api/Companybanks").then(({ data }) => {
                 this.bankAccounts = data;
             });
         },
 
-        filterNoArenaDetails() {
-            let arenaNoDetais = [];
-            this.arenaData.forEach((arena) => {
-                if (!arena.arena_details) {
-                    console.log(arena);
-                    arenaNoDetais.push(arena);
-                }
-            });
-            this.arenaData.length = 0;
-            this.arenaData.splice(0, this.arenaData.length, ...arenaNoDetais);
-        },
-
-        async handleSelectionFilterArena(item) {
-            console.log(item);
-            item === "noArenaDetails"
-                ? this.filterNoArenaDetails()
-                : (this.arenaData = await soa());
-        },
-        handleClear() {
-            this.menu = false;
-            this.$refs.menu.save([]);
-            this.arenaData = soa();
-        },
-        handleFilterDate(value) {
+    
+        handleFilterDate(value) { // @desc $emit filter soa import by date from date-range component
             this.arenaData = value;
             if (value.length === 0) this.showClear = false;
         },
-        handleClearBtn(value) {
+        handleClearBtn(value) { // @desc $emit clear dates from date-range component
             this.showClear = value;
         },
-        handleSelected(value) {
+        handleSelected(value) { // @desc $emit Selected imports from table-soa component
             this.selected = value;
+            console.log('SELECTED',value)
+            if(value.length < 1) this.signsArray = [], this.printReadyProgress = 0;
         },
-        getDates(value) {
+        getDates(value) { // @desc $emit get dates from date-range component
             this.dates = value;
         },
-        revertTab(item) {
+        revertTab(item) { // @desc $emit return to default menu tab (ongoing) from date-range component 
             this.tab = item;
         },
-        handleEmptySelect() {
+        handleEmptySelect() { // @desc unselect all selected imports
+            this.printReadyProgress = 0;
+            this.signsArray = []
             this.$refs.tableArenaOnGoing &&
                 this.$refs.tableArenaOnGoing.emptySelect();
             this.$refs.tableArenaConverted &&
                 this.$refs.tableArenaConverted.emptySelect();
         },
 
-        // handleArenaDownload(value) {
-        //     this.selected = value;
-        //       this.$refs.tableArenaOnGoing &&
-        //         this.$refs.tableArenaOnGoing.emptySelect();
-        //     this.$refs.tableArenaConverted &&
-        //         this.$refs.tableArenaConverted.emptySelect();
-        // },
-        async loadDateRange(item) {
+        async loadDateRange(item) { // @desc Load imports based on date range
             this.$refs.dateRange &&
                 (await this.$refs.dateRange.loadDateRange(item));
         },
-        async handleChangeTab(item) {
+        async handleChangeTab(item) { // @desc Swicth between menu tab: ongoing and converted
             this.dialog2 = true;
             this.dates.length !== 0
                 ? this.loadDateRange(item)
@@ -795,15 +759,20 @@ export default {
                 : await this.importWithStatus();
             this.loadBankDetails();
             this.dialog2 = false;
+            
         },
+        handleSigned(value){ // @desc $emit signatories data from signatory component
+            this.printReadyProgress = Math.ceil(((this.signsArray.length + 1)/ (this.selected.length * 3)) * 100);
+            this.signsArray.push(value)
+        }
     },
 
     computed: {
-        dateRangeText() {
+        dateRangeText() { // @desc modify date string
             const dateRange = this.dates.length > 1 ? this.dates.sort() : null;
             return dateRange ? dateRange.join(" ~ ") : null;
         },
-        depRep: function () {
+        depRep: function () { // @desc switch between for replenishment and soa text and other details
             const depositReplenishText =
                 numberUnformat(this.computation.depositReplenish) < 0
                     ? {

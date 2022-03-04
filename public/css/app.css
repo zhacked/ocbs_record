@@ -73349,6 +73349,7 @@ readers do not read off random characters that represent icons */
 .computation {
   font-weight: 500;
   padding: 0;
+  color: #000;
 }
 
 .computation-span {
@@ -73359,6 +73360,7 @@ readers do not read off random characters that represent icons */
   padding: 0 2px;
   font-size: 14px;
   font-weight: 500;
+  color: #000;
 }
 
 .pdf-title {
@@ -73412,6 +73414,7 @@ readers do not read off random characters that represent icons */
   font-weight: 700;
   font-size: 11px;
   margin-bottom: 12px;
+  color: #000;
 }
 
 .computation-wrapper_field {
@@ -73443,6 +73446,11 @@ readers do not read off random characters that represent icons */
   font-weight: 900;
 }
 
+.refdate-text {
+  font-weight: 500;
+  color: #000;
+}
+
 .ctotal-text {
   overflow: hidden;
 }
@@ -73450,6 +73458,7 @@ readers do not read off random characters that represent icons */
 .ctotal-text, .ctotal-label {
   font-weight: 900;
   overflow: hidden;
+  color: #000;
 }
 
 .overtotal {
@@ -73462,6 +73471,7 @@ readers do not read off random characters that represent icons */
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #000;
 }
 
 .bank-wrapper {
@@ -73475,6 +73485,7 @@ readers do not read off random characters that represent icons */
   background-color: #eee;
   margin-bottom: 50px;
   font-weight: bold;
+  color: #000;
 }
 
 .bank-headline {
@@ -73495,10 +73506,12 @@ readers do not read off random characters that represent icons */
   flex-direction: column;
   font-size: 11px;
   font-weight: 500;
+  color: #000;
 }
 
 .bank_account-name {
   font-weight: 800;
+  color: #000;
 }
 
 .bank1 {
@@ -73523,6 +73536,7 @@ readers do not read off random characters that represent icons */
   display: flex;
   align-items: center;
   margin-top: 8px;
+  color: #000;
 }
 
 .sign-wrapper-bottom {
@@ -73649,7 +73663,11 @@ select:disabled {
 
 .reportsoaoutput {
   width: 750px;
+  margin: 20px auto;
   display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 @-webkit-keyframes loader {
   from {
@@ -73768,6 +73786,13 @@ select:disabled {
     font-weight: 500;
   }
 
+  .sign-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    min-width: 200px;
+  }
+
   .signed-text_name {
     line-height: 2.5;
     text-align: center;
@@ -73800,5 +73825,18 @@ select:disabled {
 
   .custom-textarea {
     height: 80px;
+  }
+
+  .report-soa_container {
+    width: 100%;
+    height: 100%;
+  }
+
+  .reportsoaoutput {
+    display: flex;
+    width: 100%;
+    height: 1480px;
+    margin: 20px 0 70px 0;
+    padding: 30px auto 65px auto;
   }
 }

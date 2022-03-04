@@ -1,31 +1,20 @@
 const defineEmail = (arrayEmail) => {
-         
     if (arrayEmail != null) {
-        const emailMap = arrayEmail.map((ed) => ed["email"]);
-
-        const ee = emailMap.reduce((prev, current) => {
-            return current + " " + prev;
-        }, "");
-        // return ee.trim().replace(/\s/g, " / ");
+        const emailMap = arrayEmail.map((ed) => ed["email"]); // @desc Map array email and return only the email string
+        // const ee = emailMap.reduce((prev, current) => { // 
+        //     return current + " " + prev;
+        // }, "");
+        const ee = emailMap.toString()
         return ee.trim();
-        // return arrayEmail[0].email;
     }
-}
+};
 
 const defineContact = (arrayContact) => {
-        
     if (arrayContact != null) {
-        const emailMap = arrayContact.map((ed) => ed["contact_number"]);
-
-        const ee = emailMap.reduce((prev, current) => {
-            return current + " " + prev;
-        }, "");
-        // return ee.trim().replace(/\s/g, " / ");
-        return ee.trim();
+        const contact = arrayContact.map((ed) => ed["contact_number"]);
+        const cc = contact.toString()
+        return cc.trim();
     }
-}
+};
 
-export {
-    defineEmail,
-    defineContact
-}
+export { defineEmail, defineContact };

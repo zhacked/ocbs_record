@@ -36,7 +36,7 @@
                         small
                         v-bind="attrs"
                         v-on="on"
-                        @click="openModel(item)"
+                        @click="openModal(item)"
                         :class="{
                         'on-hover': hover,
                         }"
@@ -56,7 +56,7 @@ export default {
     props: {
         arenaData: Array,
         downloadingReport: Boolean,
-        openModel: Function,
+        openModal: Function,
         search: String,
     },
     data: () => ({
@@ -65,7 +65,6 @@ export default {
             { text: "CODE", value: "areaCode" },
             { text: "ref", value: "refNo" },
             { text: "Arena Name", value: "arena_name" },
-
             { text: "", value: "actions", sortable: false },
         ],
         singleSelect: false,

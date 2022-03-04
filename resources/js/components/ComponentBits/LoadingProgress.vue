@@ -8,7 +8,9 @@
                 >
                     <v-card-text>
                         {{
-                            downloadingReport
+                           downloadingReport && progressText 
+                                ? `${progressText} ${progressvalue}`
+                                : downloadingReport
                                 ? "Downloading..."
                                 : "Please stand by"
                         }}
@@ -54,7 +56,8 @@ export default {
     props: {
         loading: Boolean,
         downloadingReport: Boolean,
-        progressvalue: Number
+        progressvalue: Number,
+        progressText: String
     }
 }
 </script>

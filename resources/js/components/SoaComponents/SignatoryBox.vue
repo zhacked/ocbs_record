@@ -102,7 +102,7 @@
                                
                                 >{{
                                      formatArrayToString(checkSetTwo).name || 
-                                    "Ma. Lourdes Anoba / Leo Tampilic Jr. / Mariel Pilotos / Jonalyn Bonares"
+                                    "Mariel Pilotos / Jonalyn Bonares"
                                 }}</span
                             >
                         </span>
@@ -131,6 +131,7 @@ export default {
             prepared: [],
             checkSetOne: [],
             checkSetTwo: [],
+  
         };
     },
     methods: {
@@ -138,7 +139,11 @@ export default {
             const signedUsers = await axios.get(
                 `api/getUsersSignatory/${signatory}`
             );
-            // this.signedUsers = signedUsers.data;
+
+    
+            this.$emit('signed', signedUsers)
+            console.log(signedUsers)
+        
            return signedUsers.data
         },
 
@@ -146,6 +151,7 @@ export default {
             const preparedUser = await this.usersSignatory('prepared');
             const checkSetOneUser = await this.usersSignatory('checkSetOne');
             const checkSetTwoUser = await this.usersSignatory('checkSetTwo');
+
             this.prepared = preparedUser
             this.checkSetOne = checkSetOneUser
             this.checkSetTwo = checkSetTwoUser
