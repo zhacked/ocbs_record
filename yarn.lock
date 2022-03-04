@@ -3983,11 +3983,6 @@
   dependencies:
     "websocket-driver" ">=0.5.1"
 
-"fflate@^0.3.8":
-  "integrity" "sha512-Rr5QlUeGN1mbOHlaqcSYMKVpPbgLy0AWT/W0EHxA6NGI12yO1jpoui2zBBvU2G824ltM6Ut8BFgfHSBGfkmS0A=="
-  "resolved" "https://registry.npmjs.org/fflate/-/fflate-0.3.11.tgz"
-  "version" "0.3.11"
-
 "fflate@^0.4.8":
   "integrity" "sha512-FJqqoDBR00Mdj9ppamLa/Y7vxm+PRmNWA67N846RvsoYVMKB4q3y/de5PA7gUmRMYK/8CMz2GDZQmCRN1wBcWA=="
   "resolved" "https://registry.npmjs.org/fflate/-/fflate-0.4.8.tgz"
@@ -8407,22 +8402,6 @@
   "integrity" "sha512-YmhHDO4MzaDLB+M9ym/mDA5z0naX8j7SIlT8f8z+I0VtzsRbekxEutHSme7NPS2qE8StCYQNUnfWdXta/Yu85A=="
   "resolved" "https://registry.npmjs.org/ws/-/ws-7.4.6.tgz"
   "version" "7.4.6"
-
-"xlsx-js-style@^1.0.0":
-  "integrity" "sha512-yabhAf0FSWypwPduARMA63wgrjbCGtE3VI5M28ayRHkgOqHYDZ2m5lDYAJ9HwiAJBRl1oClOCcyTxiwbO+ueyA=="
-  "resolved" "https://registry.npmjs.org/xlsx-js-style/-/xlsx-js-style-1.0.0.tgz"
-  "version" "1.0.0"
-  dependencies:
-    "adler-32" "~1.2.0"
-    "cfb" "^1.1.4"
-    "codepage" "~1.14.0"
-    "commander" "~2.17.1"
-    "crc-32" "~1.2.0"
-    "exit-on-epipe" "~1.0.1"
-    "fflate" "^0.3.8"
-    "ssf" "~0.11.2"
-    "wmf" "~1.0.1"
-    "word" "~0.3.0"
 
 "xlsx@^0.17.3":
   "integrity" "sha512-lXNU0TuYsvElzvtI6O7WIVb9Zar1XYw7Xb3VAx2wn8N/n0whBYrCnHMxtFyIiUU1Wjf09WzmLALDfBO5PqTb1g=="

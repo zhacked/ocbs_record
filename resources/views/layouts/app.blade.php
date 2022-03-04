@@ -14,7 +14,7 @@
 		<script src="{{ asset('js/app.js') }}" defer></script>
 		<script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4"></script>
 		<link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4/dist/vue-loading.css" rel="stylesheet">
-	
+		<script lang="javascript" src="dist/xlsx.full.min.js"></script>
 
 		<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 		<link href="{{ asset('css/custom.css') }}" rel="stylesheet">

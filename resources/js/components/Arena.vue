@@ -148,7 +148,19 @@
                                     </v-tooltip>
                                 </template>
                             </v-data-table>
+                            <div class="pt-5">
+                                <v-btn
+                                    color="success"
+                                    elevation="2"
+                                    @click="DownloadArenaDetails"
+                                    > <i class="fas fa-plus fa-fw"></i>
+                                    Download Arena Masterlist
+                                </v-btn>
+                            </div>
+                           
                         </v-col>
+
+                    
                     </v-row>
             
                 </v-col>
@@ -1042,7 +1054,6 @@ export default {
             this.form.area_code = areaCode;
             this.form.contact_number = !this.contactNos ? null : this.contactNos.length > 1 ? this.contactNos.join(" / "): this.contactNos.toString();
             this.form.email = !this.emailsArr ? null : this.emailsArr.length > 1 ? this.emailsArr.join(" / ") : this.emailsArr.toString();  
-            
         
             this.form
                 .post("api/arena")
@@ -1060,6 +1071,43 @@ export default {
                     this.errors.areaCode = (e.response.data.message.includes('Integrity constraint') || e.response.status === 500) ? 'Area Code/Arena already exist.' : ''
                 });
         },
+
+        DownloadArenaDetails (){
+            let workbooks =  XLSX.utils.book_new();
+            let worksheet = '';
+            let array = [];
+            const current = new Date();
+            axios.get('api/arenaToExcel').then(({ data }) => {
+                 data.forEach((val) => {
+  
+                    const objVal = {
+                        'NO'                : val.id,
+                        'CODE'              : val.area_code,
+                        'ARENA NAME'        : val.arena,
+                        'ADDRESS'           : val.address,
+                        "OPERATOR'S NAME"   : val.operator,
+                        'CONTACT NUMBER'    : val.contact_details, //to convert to string
+                        'EMAIL (SOL)'       : val.email_details, //to convert to string
+                        'ACCOUNT NAME'      : val.bank_details, //to convert string and get bank name
+                        'BANK NUMBER'       : val.bank_details, //to convert string and get bank number
+                        'Complete Details?' : '',
+                        'TEAM'              : val.team
+                    }
+                    array.push(objVal);
+                })
+             
+                worksheet =  XLSX.utils.json_to_sheet(array),
+               
+                XLSX.utils.book_append_sheet(workbooks,worksheet),
+    
+                XLSX.write(workbooks,{bookType:'xlsx',type:'buffer'}),
+                XLSX.write(workbooks,{bookType:'xlsx',type:'binary'}),
+                
+                XLSX.writeFile(workbooks,`Arena Master List-${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}.xlsx`)
+
+            });
+              
+        }
     },
     created() {
         this.loadArena();
@@ -1069,24 +1117,6 @@ export default {
       
         });
     },
-    watch: {
-        "form.email": function (val) {
-            // val.forEach((x) =>  {
-            //     if(!(/.+@.+\..+/.test(x))){
-            //       this.$nextTick(() => this.emailsArr.pop())
-            //     }
-            // });
-
-            // if (val.length > 5) {
-            //     this.$nextTick(() => this.form.email.pop());
-            // }
-        },
-        "form.contact_number": function (contacts) {
-            // console.log(contacts);
-            // contacts.forEach(c => {
-            //     if(c.length  !== 11 || !c.startsWith("09")) this.$nextTick(() => this.form.contact_number.pop())
-            // })
-        },
-    },
+    
 };
 </script>
