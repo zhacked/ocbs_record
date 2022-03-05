@@ -38,12 +38,12 @@ class importController extends Controller
             'arenaDetails.UserTeam.userDetails.positionDetails'
         ]);
 
-        if($request->has('per_page')) {
-            $perPage = $request->input('per_page');
-            return $soa->whereNull('status')->latest()->paginate($perPage);
-        } else {
-            return $soa->whereNull('status')->latest()->get();
-        }
+        // if($request->has('per_page')) {
+        //     $perPage = $request->input('per_page');
+        //     return $soa->whereNull('status')->paginate($perPage);
+        // } else {
+            return $soa->whereNull('status')->get();
+        // }
 
 
     }
@@ -71,12 +71,12 @@ class importController extends Controller
             'arenaDetails.UserTeam.userDetails.positionDetails'
         ]);
 
-        if($request->has('per_page')) {
-            $perPage = $request->input('per_page');
-            return $soa->whereNotNull('status')->latest()->paginate($perPage);
-        } else {
-            return $soa->whereNotNull('status')->latest()->get();
-        }
+        // if($request->has('per_page')) {
+        //     $perPage = $request->input('per_page');
+        //     return $soa->whereNotNull('status')->paginate($perPage);
+        // } else {
+            return $soa->whereNotNull('status')->get();
+        // }
 
     }
 
@@ -86,7 +86,7 @@ class importController extends Controller
             'arenaDetails.EmailDetails',
             'arenaDetails.ContactDetails',
             'arenaDetails.UserTeam.userDetails.positionDetails'
-            ])->where('arena_name','like', '%'.$request->query('search').'%')->latest()->get();
+            ])->where('arena_name','like', '%'.$request->query('search').'%')->get();
 
 
     }

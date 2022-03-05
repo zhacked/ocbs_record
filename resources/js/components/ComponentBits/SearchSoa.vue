@@ -8,10 +8,11 @@
                                 label="Search"
                                 color="primary darken-2"
                                 clearable
-                                @click:append="handleSearch"
-                                @click:clear="handleClear"
+                               
                             ></v-text-field>
                         </v-col>
+                         <!-- @click:append="handleSearch"
+                                @click:clear="handleClear" -->
 </template>
 <script>
 import axios from 'axios'

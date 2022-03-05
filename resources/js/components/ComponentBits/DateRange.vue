@@ -50,6 +50,7 @@
     </v-col>
 </template>
 <script>
+import {toOrderBy} from '../../utility'
 import moment from "moment";
 export default {
     name: 'date-range',
@@ -96,13 +97,29 @@ export default {
                 `api/importDateRange/${this.dates[0]}/${endDate}`
             );
 
+
+            const depRep = depositReplenish.data.map(dp => {
+                 const arenaName =
+                dp.arena_name.indexOf("~") > -1
+                ? dp.arena_name.replace(/\~/g, "/")
+                : dp.arena_name;
+
+                const obj = {
+                    ...dp,
+                    arena_name: arenaName,
+                };
+
+                return obj
+            })
+
+            // console.log(depRep)
          
-            const filteredDepositReplenish = tabItem === 'ongoing' || (!tabItem && this.tab ==='ongoing') ? depositReplenish.data.filter(dr => dr.status === null) : depositReplenish.data.filter(dr => dr.status !== null)
+            const filteredDepositReplenish = tabItem === 'ongoing' || (!tabItem && this.tab ==='ongoing') ? depRep.filter(dr => dr.status === null) : depRep.filter(dr => dr.status !== null)
         
-            this.$emit('depositReplenish', filteredDepositReplenish)
+            this.$emit('depositReplenish', toOrderBy(filteredDepositReplenish))
             this.loading = false
 
-            return await filteredDepositReplenish
+            // return toOrderBy(filteredDepositReplenish)
         },
     },
     computed: {

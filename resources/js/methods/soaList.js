@@ -1,11 +1,12 @@
 import {toOrderBy} from '../utility'
 
 const withStatus = async (page,perPage) => {
-    console.log(perPage)
+
     const newArray = [];
-    const perP = perPage ? perPage : 10
-    const {data} = await axios.get(`api/importwithstatus?page=${page}&per_page=${perP}`);
-    console.log(data)
+    // const perP = perPage ? perPage : 10
+    // const {data} = await axios.get(`api/importwithstatus?page=${page}&per_page=${perP}`);
+    const data = await axios.get(`api/importwithstatus`);
+
     data.data.forEach((dObj) => {
         const arenaName =
             dObj.arena_name.indexOf("~") > -1
@@ -28,10 +29,11 @@ const withStatus = async (page,perPage) => {
 };
 
 const soa = async (page, perPage) => {
-    console.log('>>>>',perPage)
-    const perP = perPage ? perPage : 10
-    const {data} = await axios.get(`api/import?page=${page}&per_page=${perP}`);
-    console.log(data)
+    // console.log('>>>>',perPage)
+    // const perP = perPage ? perPage : 10
+    // const {data} = await axios.get(`api/import?page=${page}&per_page=${perP}`);
+    const data = await axios.get(`api/import`);
+
 
     const newArray = [];
     data.data.forEach((dObj) => {

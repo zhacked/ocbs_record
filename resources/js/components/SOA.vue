@@ -19,7 +19,19 @@
                         ></date-range>
                         <!-- Search Input -->
                       
-                        <search-soa @searchData="handleSearch" :tab="tab" :soaLists="soaLists" :importWithStatus="importWithStatus" ></search-soa>
+                        <!-- <search-soa @searchData="handleSearch" :tab="tab" :soaLists="soaLists" :importWithStatus="importWithStatus" ></search-soa> -->
+                          <v-col class="col-md-2">
+                            <v-text-field
+                                v-model="search"
+                                outlined
+                                dense
+                                append-icon="mdi-magnify"
+                                label="Search"
+                                color="primary darken-2"
+                                clearable
+                               
+                            ></v-text-field>
+                        </v-col>
                         <!-- Filter WIth/Without ARENA Details -->
                         <filter-arena
                             :arenaData="arenaData"
@@ -84,7 +96,7 @@
                                         :arenaData="arenaData"
                                         :downloadingReport="downloadingReport"
                                         @selectedSoa="handleSelected"
-                                        
+                                        :search="search"
                                         :openModal="openModal"
                                         ref="tableArenaOnGoing"
                                         :tab="tab"
@@ -106,7 +118,7 @@
                                             downloadingReport
                                         "
                                         @selectedSoa="handleSelected"
-                                        
+                                        :search="search"
                                         :openModal="openModal"
                                         ref="tableArenaConverted"
                                         :total="total"
@@ -578,7 +590,7 @@ import {
 
 import ArenaModal from "./modal/ArenaModal.vue";
 import FilterArena from "./ComponentBits/FilterArena.vue";
-import { orderBy } from "lodash";
+
 
 export default {
     components: {
