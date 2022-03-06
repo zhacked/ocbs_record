@@ -1112,11 +1112,11 @@ export default {
             const {data} = await axios.get("api/arenaToExcel");
             // const { bankAccountName, bankName, bankNumber } = sanitizeBank(data)
 
-            const formatArenaDetails = data.map((d) => {
+            const formatArenaDetails = data.map((d,index) => {
                        const {bankAccountName, bankName, bankNumber} = sanitizeBank(d.bank_details)
 
                        return {
-                            "NO": d.id,
+                            "NO": index + 1,
                             "CODE": d.area_code,
                             "ARENA NAME": d.arena,
                             "ADDRESS": d.address,
