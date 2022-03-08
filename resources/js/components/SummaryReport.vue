@@ -175,6 +175,7 @@
                                             :search="search"
                                             sort-by="date_of_soa"
                                             group-by="date_of_soa"
+                                            :group-desc="true"
                                             class="elevation-1 text-center"
                                              single-expand
                                              :footer-props="{
@@ -266,7 +267,7 @@ export default {
             headers: [
                 { text: "Code", value: "areaCode" },
                 { text: "Reference", value: "refNo" },
-                { text: "Date", value: "date_of_soa", groupDesc: true },
+                { text: "Date", value: "date_of_soa"},
                 { text: "OCBS/Arena Name", value: "arena_name" },
                 { text: "Total Commission", value: "totalCommission" },
                 { text: "Othe Commission -M", value: "otherCommissionIntel05" },
