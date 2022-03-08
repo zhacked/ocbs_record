@@ -702,6 +702,7 @@ export default {
 
         openModal(data) {
             // View SOA dialog
+            console.log(data.arena_details)
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
                 this.arenaName = data.arena_name;

@@ -90,7 +90,7 @@ class ArenaController extends Controller
 
 
 
-
+        
         if($request['email']) {
             Email::updateOrCreate([
                 'area_code' => $arena->area_code,
@@ -117,10 +117,10 @@ class ArenaController extends Controller
     public function importArena(Request $request){
 
 
-    $contactImport = arena::upsert($request['arenaList'], ['area_code']);
-    $activity_controller = new ActivitylogsController;
-    $activity_controller->arenaLogs('imported',$request['Uploadname'],'arena',1);
-    return  $contactImport;
+        $contactImport = arena::upsert($request['arenaList'], ['area_code']);
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('imported',$request['Uploadname'],'arena',1);
+        return  $contactImport;
     }
 
     /**

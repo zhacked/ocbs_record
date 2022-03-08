@@ -86,9 +86,7 @@ class BankDetailsController extends Controller
 
     public function bankStore(Request $request)
     {
-      
-        // dd($request->all());
-
+    
         // $bankImport = BankAccount::upsert($request->all(),['area_code']);
         foreach ($request->all() as $data){
          

@@ -104,6 +104,7 @@
                                                 <v-row>
                                                     <v-col class="mt-2 ">
                                                         <div class=" float-left">
+                                                            <!-- {{isOpening(isOpen)}} -->
                                                             <v-btn @click="toggle" x-small icon :ref="group" class="test"  >
                                                                 <v-icon v-if="isOpen">mdi-plus</v-icon>
                                                                 <v-icon v-else>mdi-minus</v-icon>
@@ -191,6 +192,7 @@
                                                     <v-row>
                                                         <v-col class="mt-2 ">
                                                             <div class=" float-left">
+                                                                
                                                                 <v-btn @click="toggle" x-small icon :ref="group" class="test" >
                                                                     <v-icon v-if="isOpen">mdi-plus</v-icon>
                                                                     <v-icon v-else>mdi-minus</v-icon>
@@ -246,6 +248,7 @@
               
                 <!-- </v-col> -->
             </v-row>
+             <loading-progress :loading="loading"></loading-progress>
         </v-container>
     </v-app>
 </template>
@@ -262,7 +265,7 @@ export default {
             headers: [
                 { text: "Code", value: "areaCode" },
                 { text: "Reference", value: "refNo" },
-                { text: "Date", value: "date_of_soa" },
+                { text: "Date", value: "date_of_soa", props: {groupDesc: true} },
                 { text: "OCBS/Arena Name", value: "arena_name" },
                 { text: "Total Commission", value: "totalCommission" },
                 { text: "Othe Commission -M", value: "otherCommissionIntel05" },
@@ -276,19 +279,21 @@ export default {
             search:'',
             myBlob:'',
             filteredData:{},
-            moneyFormat
+            moneyFormat,
+            loading: false
         };  
     },
     methods: {
       
         loadSummary() {
+            this.loading = true
             axios
                 .get("api/depositeandreflenish")
                 .then(({ data }) => {
+                    
                     this.deposit = data.dp;
                     this.reflenish = data.rf;
-
-                    console.log(this.deposit)
+                    this.loading = false
                 });
         },
         convertToExcel(data,deprep){
@@ -330,6 +335,13 @@ export default {
                 ));
             
         },
+
+        isOpening(item){
+            let open = item
+            open = false
+            console.log(open)
+            return open
+        }
   
         
     },

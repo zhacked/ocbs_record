@@ -36,7 +36,7 @@ class importController extends Controller
             'arenaDetails.EmailDetails',
             'arenaDetails.ContactDetails',
             'arenaDetails.UserTeam.userDetails.positionDetails'
-        ]);
+        ])->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
         // if($request->has('per_page')) {
         //     $perPage = $request->input('per_page');
@@ -55,7 +55,7 @@ class importController extends Controller
         'arenaDetails.EmailDetails',
         'arenaDetails.ContactDetails',
         'arenaDetails.UserTeam.userDetails.positionDetails'
-        ])->whereBetween('date_of_soa',[$from, $to]);
+        ])->whereBetween('date_of_soa',[$from, $to])->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
 
         return $soaDateRange->get();
@@ -69,7 +69,7 @@ class importController extends Controller
             'arenaDetails.EmailDetails',
             'arenaDetails.ContactDetails',
             'arenaDetails.UserTeam.userDetails.positionDetails'
-        ]);
+        ])->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
         // if($request->has('per_page')) {
         //     $perPage = $request->input('per_page');
@@ -86,7 +86,7 @@ class importController extends Controller
             'arenaDetails.EmailDetails',
             'arenaDetails.ContactDetails',
             'arenaDetails.UserTeam.userDetails.positionDetails'
-            ])->where('arena_name','like', '%'.$request->query('search').'%')->get();
+            ])->where('arena_name','like', '%'.$request->query('search').'%')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC')->get();
 
 
     }
@@ -196,8 +196,8 @@ class importController extends Controller
     public function depositedata(){
 //         ->whereNotNull('status')
 // ->whereNotNull('status')
-        $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Deposit')->get();
-        $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Replenish')->get();
+        $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Deposit')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC')->get();
+        $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Replenish')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC')->get();
         return Response()->json([
             'rf' => $reflenish,
             'dp' => $deposit
