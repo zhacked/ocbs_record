@@ -289,6 +289,7 @@ export default {
       
         loadSummary() {
             this.loading = true
+            console.log('LOADING')
             axios
                 .get("api/depositeandreflenish")
                 .then(({ data }) => {
@@ -296,6 +297,7 @@ export default {
                     this.deposit = data.dp;
                     this.reflenish = data.rf;
                     this.loading = false
+                     console.log('LOADING DONE')
                 });
         },
         convertToExcel(data,deprep){
