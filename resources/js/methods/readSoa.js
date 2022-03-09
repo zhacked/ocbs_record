@@ -85,8 +85,9 @@ const readSoa = (event, isExcel) => {
                     })
                 );
             });
-
-            arrayData[0].map((r) => {
+            console.log('xxxxxx', arrayData[0])
+            arrayData[1].map((r) => {
+                
                 if (Object.keys(r).length >= 17) reportCombined.push(r);
 
                 if (typeof r.A == "string") eventDetailsA.push(r);
@@ -109,8 +110,8 @@ const readSoa = (event, isExcel) => {
                     : moment(date, "DD/MM/YYYY").isValid()
                     ? moment(date, "DD/MM/YYYY").format("YYYY-MM-DD LTS")
                     : moment(date).format("YYYY-MM-DD LTS");
-            const eventCreatedUTC = ExcelDateToJSDate(arrayData[0][2].A);
-            const eventClosedUTC = ExcelDateToJSDate(arrayData[0][4].A);
+            const eventCreatedUTC = ExcelDateToJSDate(arrayData[1][2].A);
+            const eventClosedUTC = ExcelDateToJSDate(arrayData[1][4].A);
 
             // Validate if Event date is in a correct date format
             const isValidEventArenaDate = (stringDate) =>
@@ -124,11 +125,15 @@ const readSoa = (event, isExcel) => {
                     isValidEventArenaDate(eventDetailsA[2]?.A) ||
                     eventCreatedUTC
             );
+
+            console.log(eventDateCreated)
             const eventDateClosed = dateFormatting(
-                mergeObj.dateClosed ||
-                    isValidEventArenaDate(eventDetailsA[4]?.A) ||
-                    eventClosedUTC
+                mergeObj.dateClosed  || isValidEventArenaDate(eventDetailsA[4]?.A) 
+                || eventClosedUTC
             );
+
+            console.log(isValidEventArenaDate(arrayData[1][3].A) )
+            console.log(eventClosedUTC )
 
             const objectKeyed = (array) => {
                 let objectKeyReplacedArray = [];
