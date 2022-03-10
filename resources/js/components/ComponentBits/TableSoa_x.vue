@@ -153,10 +153,7 @@ export default {
         selected: [],
         loading: false,
         pagePosition: 1,
-        pagination: {
-            page: 1,
-            itemsPerPage: 10,
-        },
+     
         paginationOption: {itemsPerPage: parseInt(localStorage.getItem('itemsPerPage'))}
     }),
     methods: {
