@@ -157,7 +157,7 @@ export default {
             page: 1,
             itemsPerPage: 10,
         },
-        paginationOption: {itemsPerPage: parseInt(localStorage.getItem('itemsPerPage')) || 10}
+        paginationOption: {itemsPerPage: parseInt(localStorage.getItem('itemsPerPage'))}
     }),
     methods: {
         // Select all imports with arena details
