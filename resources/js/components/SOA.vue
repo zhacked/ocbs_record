@@ -970,6 +970,7 @@ export default {
     },
 
     mounted() {
+        localStorage.setItem("itemsPerPage", 10)
         if (localStorage.getItem("prepared")) {
             try {
                 this.switchPrepared = JSON.parse(
