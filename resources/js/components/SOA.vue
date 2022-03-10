@@ -20,7 +20,14 @@
                             :page="page"
                         ></date-range>
                         <!-- Search Input -->
-                        <search-soa @searchData="handleSearch" :tab="tab" :page="pageNumber"  :soaLists="soaLists" :importWithStatus="importWithStatus" ref="search"></search-soa>
+                        <search-soa
+                            @searchData="handleSearch"
+                            :tab="tab"
+                            :page="pageNumber"
+                            :soaLists="soaLists"
+                            :importWithStatus="importWithStatus"
+                            ref="search"
+                        ></search-soa>
                         <!-- Filter WIth/Without ARENA Details -->
                         <filter-arena
                             :arenaData="arenaData"
@@ -77,7 +84,11 @@
                                 :key="item.tabItem"
                                 :href="`#${item.tabItem}`"
                                 @click="handleEmptySelect"
-                                :disabled="filteredText === 'noArenaDetails' ? true : false"
+                                :disabled="
+                                    filteredText === 'noArenaDetails'
+                                        ? true
+                                        : false
+                                "
                             >
                                 {{ item.text }}
                             </v-tab>
@@ -103,7 +114,9 @@
                                         :withStatus="importWithStatus"
                                         :loadDateRange="loadDateRange"
                                         :handleSearching="handleSearching"
-                                        :handleNoArenaDetails="handleNoArenaDetails"
+                                        :handleNoArenaDetails="
+                                            handleNoArenaDetails
+                                        "
                                         @loading="handlePageLoad"
                                         @pageOption="pageOption"
                                     ></table-soax>
@@ -129,7 +142,9 @@
                                         :withStatus="importWithStatus"
                                         :loadDateRange="loadDateRange"
                                         :handleSearching="handleSearching"
-                                        :handleNoArenaDetails="handleNoArenaDetails"
+                                        :handleNoArenaDetails="
+                                            handleNoArenaDetails
+                                        "
                                         @loading="handlePageLoad"
                                         @pageOption="pageOption"
                                     ></table-soax>
@@ -561,10 +576,33 @@
             <!-- Loading Progress -->
             <loading-progress :loading="dialog2"></loading-progress>
         </v-container>
+        <div class="floating-button" v-show="scY > 150">
+            <v-tooltip top  color="#000">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        v-bind="attrs"
+                        v-on="on"
+                        fab
+                        dark
+                        bottom
+                        right
+                        @click="toTop"
+                    >
+                        <v-icon>mdi-chevron-up</v-icon>
+                    </v-btn>
+                </template>
+                <span>Go to top</span>
+            </v-tooltip>
+        </div>
     </v-app>
 </template>
 <script>
-import { numberUnformat, moneyFormat,defineEmail, defineContact } from "../utility";
+import {
+    numberUnformat,
+    moneyFormat,
+    defineEmail,
+    defineContact,
+} from "../utility";
 import VueHtml2pdf from "vue-html2pdf";
 import moment from "moment";
 import DateSOA from "./SoaComponents/DateSOA.vue";
@@ -583,7 +621,6 @@ import {
     imageDownload,
     truncate,
     beforeDownload,
- 
     withStatus,
     soa,
     reportGenerate,
@@ -593,7 +630,6 @@ import {
 
 import ArenaModal from "./modal/ArenaModal.vue";
 import FilterArena from "./ComponentBits/FilterArena.vue";
-
 
 export default {
     components: {
@@ -610,7 +646,7 @@ export default {
         FilterArena,
         SoaInput,
         ActionsButtons,
-        SearchSoa
+        SearchSoa,
     },
     data() {
         return {
@@ -673,7 +709,9 @@ export default {
             numberOfPages: 0,
             perPage: 10,
             pageNumber: 1,
-            filteredText: ''
+            filteredText: "",
+            scTimer: 0,
+            scY: 0,
         };
     },
     methods: {
@@ -685,35 +723,34 @@ export default {
         async soaLists() {
             // fetch all soa with status = null
             // const pageNo = parseInt(localStorage.getItem('page'))
-            const perPage = parseInt(localStorage.getItem('itemsPerPage'))
+            const perPage = parseInt(localStorage.getItem("itemsPerPage"));
             const { soaLists, total, page } = await soa(
                 this.pageNumber,
                 perPage
             );
-            this.perPage = perPage
+            this.perPage = perPage;
             this.arenaData = soaLists;
             this.total = total;
             this.page = page;
-         
         },
         async importWithStatus() {
-            
             // fetch data with status = done
 
-            const perPage = parseInt(localStorage.getItem('itemsPerPage'))
-            this.perPage = perPage
-            const { withStatusData, total, page } =
-                await withStatus(this.pageNumber, perPage);
-            
+            const perPage = parseInt(localStorage.getItem("itemsPerPage"));
+            this.perPage = perPage;
+            const { withStatusData, total, page } = await withStatus(
+                this.pageNumber,
+                perPage
+            );
+
             this.arenaData = withStatusData;
             this.total = total;
             this.page = page;
-         
         },
 
         openModal(data) {
             // View SOA dialog
-            console.log(data.arena_details)
+            console.log(data.arena_details);
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
                 this.arenaName = data.arena_name;
@@ -811,7 +848,7 @@ export default {
             this.$refs.tableArenaConverted &&
                 this.$refs.tableArenaConverted.resetTable();
         },
-        fetchCurrentItemsPerPage(){
+        fetchCurrentItemsPerPage() {
             //  this.$refs.tableArenaOnGoing &&
             //     this.$refs.tableArenaOnGoing.pageOptions();
             // this.$refs.tableArenaConverted &&
@@ -821,23 +858,26 @@ export default {
         async loadDateRange(item) {
             // Load imports based on date range
             this.$refs.dateRange &&
-                (await this.$refs.dateRange.loadDateRange(item, this.pageNumber, this.perPage));
+                (await this.$refs.dateRange.loadDateRange(
+                    item,
+                    this.pageNumber,
+                    this.perPage
+                ));
         },
         async handleChangeTab(item) {
             // Swicth between menu tab: ongoing and converted
             this.pageNumber = 1;
-            const perPage = parseInt(localStorage.getItem('itemsPerPage'))
-            this.search ? this.handleSearching(item)
-                :this.dates.length !== 0
+            const perPage = parseInt(localStorage.getItem("itemsPerPage"));
+            this.search
+                ? this.handleSearching(item)
+                : this.dates.length !== 0
                 ? this.loadDateRange(item, this.pageNumber, perPage)
                 : item === "ongoing"
                 ? await this.soaLists()
                 : await this.importWithStatus();
-                
-            
-            this.fetchCurrentItemsPerPage()
+
+            this.fetchCurrentItemsPerPage();
             this.loadBankDetails();
-           
         },
         handleSigned(value) {
             // $emit signatories data from signatory component
@@ -854,30 +894,44 @@ export default {
         pageOption(item) {
             this.pageNumber = item.page;
         },
-        handleSearching(item){
-      
-            this.$refs.search.handleSearch(item)
+        handleSearching(item) {
+            this.$refs.search.handleSearch(item);
         },
-        handleSearch(items){
-           
-            this.search = items.search
-            this.arenaData = items.searchData
+        handleSearch(items) {
+            this.search = items.search;
+            this.arenaData = items.searchData;
             this.total = items.total;
-            this.page = items.page
-            
-    
+            this.page = items.page;
         },
         noArenaDetails(item) {
-            this.arenaData = item.noArenaData
+            this.arenaData = item.noArenaData;
             this.total = item.total;
-            this.page = item.current_page
+            this.page = item.current_page;
         },
-        handleNoArenaDetails(){
-            this.$refs.filterArena.handleSelectionFilterArena(this.filteredText)
+        handleNoArenaDetails() {
+            this.$refs.filterArena.handleSelectionFilterArena(
+                this.filteredText
+            );
         },
-        filterText(item){
-            this.filteredText = item
-        }
+        filterText(item) {
+            this.filteredText = item;
+        },
+
+        //scrolltotop
+        handleScroll() {
+            if (this.scTimer) return;
+            this.scTimer = setTimeout(() => {
+                this.scY = window.scrollY;
+                clearTimeout(this.scTimer);
+                this.scTimer = 0;
+            }, 100);
+        },
+        toTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        },
     },
 
     computed: {
@@ -925,6 +979,8 @@ export default {
                 localStorage.removeItem("prepared");
             }
         }
+
+        window.addEventListener("scroll", this.handleScroll);
     },
 };
 </script>
@@ -932,5 +988,10 @@ export default {
 .nav-tabs .nav-link.active {
     background-color: #00c4f5 !important ;
     color: white !important;
+}
+.floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
 }
 </style>

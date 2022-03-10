@@ -26,10 +26,7 @@
          @update:options="handlePageOptions"
         @toggle-select-all="selectAllToggle"
         @input="singleSelected"
-      
-       
-        
-        
+    
     >
         <template v-slot:top="{ pagination, options, updateOptions, itemsPerPageOptions }">
             <v-data-footer 
