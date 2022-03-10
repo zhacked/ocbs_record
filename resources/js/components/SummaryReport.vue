@@ -85,6 +85,7 @@
                                             :items-per-page="-1"
                                             sort-by="date_of_soa"
                                             group-by="date_of_soa"
+                                            :group-desc="true"
                                             class="elevation-1 text-center"
                                              single-expand
                                              :footer-props="{
@@ -173,6 +174,7 @@
                                             :search="search"
                                             sort-by="date_of_soa"
                                             group-by="date_of_soa"
+                                            :group-desc="true"
                                             class="elevation-1 text-center"
                                              single-expand
                                              :footer-props="{
@@ -246,6 +248,7 @@
               
                 <!-- </v-col> -->
             </v-row>
+            <loading-progress :loading="loading"></loading-progress>
         </v-container>
     </v-app>
 </template>
@@ -276,19 +279,21 @@ export default {
             search:'',
             myBlob:'',
             filteredData:{},
-            moneyFormat
+            moneyFormat,
+            loading: false
         };  
     },
     methods: {
       
         loadSummary() {
+            this.loading = true
             axios
                 .get("api/depositeandreflenish")
                 .then(({ data }) => {
                     this.deposit = data.dp;
                     this.reflenish = data.rf;
-
-                    console.log(this.deposit)
+                     this.loading = false
+                   
                 });
         },
         convertToExcel(data,deprep){

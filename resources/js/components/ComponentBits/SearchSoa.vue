@@ -8,11 +8,10 @@
                                 label="Search"
                                 color="primary darken-2"
                                 clearable
-                               
+                                @click:append="handleSearch"
+                                @click:clear="handleClear"
                             ></v-text-field>
                         </v-col>
-                         <!-- @click:append="handleSearch"
-                                @click:clear="handleClear" -->
 </template>
 <script>
 import axios from 'axios'
@@ -21,17 +20,28 @@ export default {
     props: {
         soaLists: Function,
         importWithStatus: Function,
-        tab: String
+        tab: String,
+        page: Number
     },
     data:()=>({
         search: ''
     }),
     methods: {
-        async handleSearch(){
-            console.log(this.search)
-            const {data} = await axios.get(`api/searchSoa?search=${this.search}`)
+        async handleSearch(tabItem){
+            console.log('searching....',this.search)
+            const status =  tabItem === 'ongoing' || (!tabItem && this.tab ==='ongoing') ? null : 'done'
+            const {data} = await axios.get(`api/searchSoa?search=${this.search}&status=${status}&page=${this.page}&per_page=${parseInt(localStorage.getItem('itemsPerPage'))}`)
+            this.$emit('searchData', {
+                searchData: data,
+                search: this.search
+            })
 
-            this.$emit('searchData', data)
+            return {
+                searchData: data.data,
+                total: data.total,
+                page: data.current_page,
+                numberOfPages: data.last_page
+            }
         },
         async handleClear(){
             this.tab === 'ongoing' ? await this.soaLists() : await this.importWithStatus()

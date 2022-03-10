@@ -36,29 +36,33 @@ class importController extends Controller
             'arenaDetails.EmailDetails',
             'arenaDetails.ContactDetails',
             'arenaDetails.UserTeam.userDetails.positionDetails'
-        ]);
+        ])->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
-        // if($request->has('per_page')) {
-        //     $perPage = $request->input('per_page');
-        //     return $soa->whereNull('status')->paginate($perPage);
-        // } else {
+        if($request->has('per_page')) {
+            $perPage = $request->input('per_page');
+            return $soa->whereNull('status')->paginate($perPage);
+        } else {
             return $soa->whereNull('status')->get();
-        // }
+        }
 
 
     }
 
     public function importDateRange(Request $request, $from, $to){
-
+        $status = $request->query('status') == "null" ? null : 'done';
         $soaDateRange = import::with(['BankDetails',
         'arenaDetails.BankDetails',
         'arenaDetails.EmailDetails',
         'arenaDetails.ContactDetails',
         'arenaDetails.UserTeam.userDetails.positionDetails'
-        ])->whereBetween('date_of_soa',[$from, $to]);
+        ])->where('status', $status)->whereBetween('date_of_soa',[$from, $to])->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
-
+         if($request->has('per_page')) {
+            $perPage = $request->input('per_page');
+            return $soaDateRange->paginate($perPage);
+        } else {
         return $soaDateRange->get();
+        }
     }
 
     //converted
@@ -69,26 +73,54 @@ class importController extends Controller
             'arenaDetails.EmailDetails',
             'arenaDetails.ContactDetails',
             'arenaDetails.UserTeam.userDetails.positionDetails'
-        ]);
+        ])->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
-        // if($request->has('per_page')) {
-        //     $perPage = $request->input('per_page');
-        //     return $soa->whereNotNull('status')->paginate($perPage);
-        // } else {
+        if($request->has('per_page')) {
+            $perPage = $request->input('per_page');
+            return $soa->whereNotNull('status')->paginate($perPage);
+        } else {
             return $soa->whereNotNull('status')->get();
-        // }
+        }
 
     }
 
     public function searchSoa(Request $request) {
-            return  import::with(['BankDetails',
-            'arenaDetails.BankDetails',
-            'arenaDetails.EmailDetails',
-            'arenaDetails.ContactDetails',
-            'arenaDetails.UserTeam.userDetails.positionDetails'
-            ])->where('arena_name','like', '%'.$request->query('search').'%')->get();
+        $status = $request->query('status') == "null" ? null : 'done';
+        $soaSearch = import::with(['BankDetails',
+        'arenaDetails.BankDetails',
+        'arenaDetails.EmailDetails',
+        'arenaDetails.ContactDetails',
+        'arenaDetails.UserTeam.userDetails.positionDetails'
+        ])->where('arena_name','like', '%'.$request->query('search').'%')->where('status', $status)->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
+
+         if($request->has('per_page')) {
+            $perPage = $request->input('per_page');
+            return $soaSearch->paginate($perPage);
+        } else {
+            return $soaSearch->get();
+        }
 
 
+    }
+
+    public function filterNoArena(Request $request) {
+        $soaNoArena = import::with(['BankDetails',
+        'arenaDetails.BankDetails',
+        'arenaDetails.EmailDetails',
+        'arenaDetails.ContactDetails',
+        'arenaDetails.UserTeam.userDetails.positionDetails'
+        ])->whereDoesntHave('arenaDetails')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
+
+        // dd($soa[6]->arenaDetails()->exists());
+
+        if($request->has('per_page')) {
+            $perPage = $request->input('per_page');
+            return $soaNoArena->paginate($perPage);
+        } else {
+            return $soaNoArena->get();
+        }
+
+       return $soa;
     }
 
 
@@ -203,20 +235,51 @@ class importController extends Controller
             'dp' => $deposit
         ]);
     }
-    public function depositReplenishDateRange($from, $to){
 
-                $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereBetween('date_of_soa', [$from, $to])->where('group','Deposit')->get();
-                $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereBetween('date_of_soa', [$from, $to])->where('group','Replenish')->get();
-                return Response()->json([
-                    'fr' => $reflenish,
-                    'soa' => $deposit
-                ]);
-            }
+    public function summaryReport(Request $request) {
+        $group = $request->query('group');
+
+        $soaSummaryReport = import::with(['BankDetails','arenaDetails.BankDetails'])->where('group', $group);
+
+        if($request->has('per_page')) { 
+        
+            return $soaSummaryReport->select('date_of_soa')->distinct()->orderBy('date_of_soa', 'DESC')->paginate($request->input('per_page'));
+        } else {
+            return $soaSummaryReport->get();
+        }
+    }
+
+
+    public function summaryDateRange(Request $request, $from, $to){
+        $group = $request->query('group');
+        $summaryDateRange = import::with(['BankDetails','arenaDetails.BankDetails'])->where('group', ucfirst($group))->whereBetween('date_of_soa',[$from, $to])->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
+
+         if($request->has('per_page')) {
+            $perPage = $request->input('per_page');
+            return $summaryDateRange->paginate($perPage);
+        } else {
+            return $summaryDateRange->get();
+        }
+    }
+
+
+    // public function depositReplenishDateRange($from, $to){
+
+    //             $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereBetween('date_of_soa', [$from, $to])->where('group','Deposit')->get();
+    //             $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereBetween('date_of_soa', [$from, $to])->where('group','Replenish')->get();
+    //             return Response()->json([
+    //                 'fr' => $reflenish,
+    //                 'soa' => $deposit
+    //             ]);
+    // }
+
+   
+
     public function ConvertToExcel($group,$data){
         // ->whereNotNull('status')
         // dd($group);
 
-       return import::where('group',$group)
+       return import::where('group',ucfirst($group))
                         ->where('date_of_soa',$data)
                         ->get();
     }

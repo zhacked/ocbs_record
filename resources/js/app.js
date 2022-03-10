@@ -133,6 +133,8 @@ let routes = [
     {
         path: '/soa', component: require('./components/SOA.vue').default
     },
+  
+  
     {
         path: '/arena', component: require('./components/Arena.vue').default
     },
@@ -140,7 +142,10 @@ let routes = [
         path: '/bankaccount', component: require('./components/BankAccount.vue').default
     },
     {
-        path: '/summary', component: require('./components/SummaryReport.vue').default
+        path: '/summary', component: require('./components/SummaryReport_x.vue').default
+    },
+    {
+        path: '/summaryx', component: require('./components/SummaryReport.vue').default
     },
     {
         path: '/teams', component: require('./components/Teams.vue').default

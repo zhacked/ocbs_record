@@ -16,30 +16,23 @@
                             ref="dateRange"
                             :tab.sync="tab"
                             @showClearBtn="handleClearBtn"
+                            :pageNumber="pageNumber"
+                            :page="page"
                         ></date-range>
                         <!-- Search Input -->
-                      
-                        <!-- <search-soa @searchData="handleSearch" :tab="tab" :soaLists="soaLists" :importWithStatus="importWithStatus" ></search-soa> -->
-                          <v-col class="col-md-2">
-                            <v-text-field
-                                v-model="search"
-                                outlined
-                                dense
-                                append-icon="mdi-magnify"
-                                label="Search"
-                                color="primary darken-2"
-                                clearable
-                               
-                            ></v-text-field>
-                        </v-col>
+                        <search-soa @searchData="handleSearch" :tab="tab" :page="pageNumber"  :soaLists="soaLists" :importWithStatus="importWithStatus" ref="search"></search-soa>
                         <!-- Filter WIth/Without ARENA Details -->
                         <filter-arena
                             :arenaData="arenaData"
                             :loadDateRange="loadDateRange"
+                            :page="pageNumber"
                             :tab="tab"
                             :dates="dates"
                             :soaLists="soaLists"
                             :importWithStatus="importWithStatus"
+                            @noArenaDetails="noArenaDetails"
+                            @filterText="filterText"
+                            ref="filterArena"
                         ></filter-arena>
                         <v-spacer></v-spacer>
                         <!-- FILE INPUT -->
@@ -84,6 +77,7 @@
                                 :key="item.tabItem"
                                 :href="`#${item.tabItem}`"
                                 @click="handleEmptySelect"
+                                :disabled="filteredText === 'noArenaDetails' ? true : false"
                             >
                                 {{ item.text }}
                             </v-tab>
@@ -92,7 +86,7 @@
                             <v-tabs-items v-model="tab">
                                 <v-tab-item id="ongoing">
                                     <!-- Table for ongoing soa -->
-                                    <table-soa
+                                    <table-soax
                                         :arenaData="arenaData"
                                         :downloadingReport="downloadingReport"
                                         @selectedSoa="handleSelected"
@@ -100,19 +94,23 @@
                                         :openModal="openModal"
                                         ref="tableArenaOnGoing"
                                         :tab="tab"
+                                        :filteredText="filteredText"
                                         :dates="dates"
                                         :total="total"
                                         :page="page"
                                         :numberOfPages="numberOfPages"
                                         :soaLists="soaLists"
                                         :withStatus="importWithStatus"
+                                        :loadDateRange="loadDateRange"
+                                        :handleSearching="handleSearching"
+                                        :handleNoArenaDetails="handleNoArenaDetails"
                                         @loading="handlePageLoad"
-                                        @pageOption="handlePageOption"
-                                    ></table-soa>
+                                        @pageOption="pageOption"
+                                    ></table-soax>
                                 </v-tab-item>
                                 <v-tab-item id="converted">
                                     <!-- Table for converted soa -->
-                                    <table-soa
+                                    <table-soax
                                         :arenaData="arenaData"
                                         :downloadingReport.sync="
                                             downloadingReport
@@ -121,6 +119,7 @@
                                         :search="search"
                                         :openModal="openModal"
                                         ref="tableArenaConverted"
+                                        :filteredText="filteredText"
                                         :total="total"
                                         :tab="tab"
                                         :dates="dates"
@@ -128,9 +127,12 @@
                                         :numberOfPages="numberOfPages"
                                         :soaLists="soaLists"
                                         :withStatus="importWithStatus"
+                                        :loadDateRange="loadDateRange"
+                                        :handleSearching="handleSearching"
+                                        :handleNoArenaDetails="handleNoArenaDetails"
                                         @loading="handlePageLoad"
-                                        @pageOption="handlePageOption"
-                                    ></table-soa>
+                                        @pageOption="pageOption"
+                                    ></table-soax>
                                 </v-tab-item>
                             </v-tabs-items>
                         </v-card-text>
@@ -572,6 +574,7 @@ import BankBox from "./SoaComponents/BankBox.vue";
 import SignatoryBox from "./SoaComponents/SignatoryBox.vue";
 import DateRange from "./ComponentBits/DateRange.vue";
 import TableSoa from "./ComponentBits/TableSoa.vue";
+import TableSoax from "./ComponentBits/TableSoa_x.vue";
 import SoaInput from "./ComponentBits/SoaInput.vue";
 import ActionsButtons from "./ComponentBits/ActionsButtons.vue";
 import SearchSoa from "./ComponentBits/SearchSoa.vue";
@@ -603,6 +606,7 @@ export default {
         ArenaModal,
         DateRange,
         TableSoa,
+        TableSoax,
         FilterArena,
         SoaInput,
         ActionsButtons,
@@ -669,6 +673,7 @@ export default {
             numberOfPages: 0,
             perPage: 10,
             pageNumber: 1,
+            filteredText: ''
         };
     },
     methods: {
@@ -679,25 +684,31 @@ export default {
         truncate, // truncate data based on date
         async soaLists() {
             // fetch all soa with status = null
-            const { soaLists, total, page, numberOfPages } = await soa(
+            // const pageNo = parseInt(localStorage.getItem('page'))
+            const perPage = parseInt(localStorage.getItem('itemsPerPage'))
+            const { soaLists, total, page } = await soa(
                 this.pageNumber,
-                this.perPage
+                perPage
             );
-   
+            this.perPage = perPage
             this.arenaData = soaLists;
             this.total = total;
             this.page = page;
-            this.numberOfPages = numberOfPages;
+         
         },
         async importWithStatus() {
+            
             // fetch data with status = done
-            const { withStatusData, total, page, numberOfPages } =
-                await withStatus(this.pageNumber, this.perPage);
-       
+
+            const perPage = parseInt(localStorage.getItem('itemsPerPage'))
+            this.perPage = perPage
+            const { withStatusData, total, page } =
+                await withStatus(this.pageNumber, perPage);
+            
             this.arenaData = withStatusData;
             this.total = total;
             this.page = page;
-            this.numberOfPages = numberOfPages;
+         
         },
 
         openModal(data) {
@@ -763,10 +774,13 @@ export default {
             });
         },
 
-        handleFilterDate(value) {
+        handleFilterDate(item) {
             // $emit filter soa import by date from date-range component
-            this.arenaData = value;
-            if (value.length === 0) this.showClear = false;
+            this.arenaData = item.depositReplenish;
+            this.total = item.total;
+            this.page = item.page;
+            this.numberOfPages = item.numberOfPages;
+            if (item.depositReplenish.length === 0) this.showClear = false;
         },
         handleClearBtn(value) {
             // $emit clear dates from date-range component
@@ -792,27 +806,37 @@ export default {
             this.printReadyProgress = 0;
             this.signsArray = [];
             this.$refs.tableArenaOnGoing &&
-                this.$refs.tableArenaOnGoing.emptySelect();
+                this.$refs.tableArenaOnGoing.resetTable();
             this.$refs.tableArenaConverted &&
-                this.$refs.tableArenaConverted.emptySelect();
+                this.$refs.tableArenaConverted.resetTable();
+        },
+        fetchCurrentItemsPerPage(){
+            //  this.$refs.tableArenaOnGoing &&
+            //     this.$refs.tableArenaOnGoing.pageOptions();
+            // this.$refs.tableArenaConverted &&
+            //     this.$refs.tableArenaConverted.pageOptions();
         },
 
         async loadDateRange(item) {
             // Load imports based on date range
             this.$refs.dateRange &&
-                (await this.$refs.dateRange.loadDateRange(item));
+                (await this.$refs.dateRange.loadDateRange(item, this.pageNumber, this.perPage));
         },
         async handleChangeTab(item) {
             // Swicth between menu tab: ongoing and converted
-            this.dialog2 = true;
-
-            this.dates.length !== 0
-                ? this.loadDateRange(item)
+            this.pageNumber = 1;
+            const perPage = parseInt(localStorage.getItem('itemsPerPage'))
+            this.search ? this.handleSearching(item)
+                :this.dates.length !== 0
+                ? this.loadDateRange(item, this.pageNumber, perPage)
                 : item === "ongoing"
                 ? await this.soaLists()
                 : await this.importWithStatus();
+                
+            
+            this.fetchCurrentItemsPerPage()
             this.loadBankDetails();
-            this.dialog2 = false;
+           
         },
         handleSigned(value) {
             // $emit signatories data from signatory component
@@ -826,12 +850,32 @@ export default {
             this.dialog2 = value;
         },
 
-        handlePageOption(item) {
+        pageOption(item) {
             this.pageNumber = item.page;
-            this.perPage = item.itemsPerPage;
+        },
+        handleSearching(item){
+      
+            this.$refs.search.handleSearch(item)
         },
         handleSearch(items){
-            this.arenaData = items
+            console.log(items)
+            this.search = items.search
+            this.arenaData = items.searchData.data
+            this.total = items.searchData.total;
+            this.page = items.searchData.current_page
+            
+    
+        },
+        noArenaDetails(item) {
+            this.arenaData = item.noArenaData
+            this.total = item.total;
+            this.page = item.current_page
+        },
+        handleNoArenaDetails(){
+            this.$refs.filterArena.handleSelectionFilterArena(this.filteredText)
+        },
+        filterText(item){
+            this.filteredText = item
         }
     },
 

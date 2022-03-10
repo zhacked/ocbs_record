@@ -1,21 +1,22 @@
-import { imageDownload } from "../methods/downloads";
-import { readSoa } from "../methods/readSoa";
-import { beforeDownload } from "../methods/beforeDownload";
+import { imageDownload } from "./downloads";
+import { readSoa } from "./readSoa";
+import { beforeDownload } from "./beforeDownload";
 
-import { truncate } from "../methods/truncate";
-import { withStatus, soa } from "../methods/soaList";
-import { reportGenerate } from "../methods/generateReport";
-import { computationSoa } from "../methods/computationFormat";
-import { printSoa } from "../methods/print";
+import { truncate } from "./truncate";
+import { withStatus, soa } from "./soaList";
+import { reportGenerate } from "./generateReport";
+import { computationSoa } from "./computationFormat";
+import { printSoa } from "./print";
 
 export {
     imageDownload,
     readSoa,
     truncate,
     beforeDownload,
-    withStatus,
     soa,
+    withStatus,
     reportGenerate,
     computationSoa,
     printSoa,
+  
 };

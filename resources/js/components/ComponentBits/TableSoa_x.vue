@@ -14,19 +14,82 @@
         :single-select="singleSelect"
         class="elevation-1 text-center"
         :footer-props="{
-            'items-per-page-options': [10, 20, 30, 40, 50, 100],
+            'items-per-page-options': [5, 10, 20, 30, 40, 50, 100],
+            
         }"
+        :options="paginationOption"
         :page="page"
+
         @page-count="handlePageCount"
         :server-items-length="total"
         @pagination="handlePaginate"
+         @update:options="handlePageOptions"
         @toggle-select-all="selectAllToggle"
         @input="singleSelected"
-        @update:page="handlePage"
-        @update:options="handlePageOptions"
+      
+       
+        
         
     >
-        <template v-slot:[`item.data-table-select`]="{ item, isSelected, select }">
+        <template v-slot:top="{ pagination, options, updateOptions, itemsPerPageOptions }">
+            <v-data-footer 
+                :items-per-page-options ="[5, 10, 20, 30, 40, 50, 100]"
+                :pagination="pagination"
+                :options="paginationOption"
+                items-per-page-text="$vuetify.dataTable.itemsPerPageText"
+            
+                @update:options="handlePageOptions"
+            />
+        </template>
+        <template v-slot:item="{item, isSelected, select}">
+
+            <tr>
+                <td>
+                    <v-simple-checkbox
+                        :value="isSelected"
+                        :readonly="item.disabled"
+                        :disabled="item.arena_details ? false : true"
+                        @input="select($event)"
+                    ></v-simple-checkbox> 
+                </td>
+                <td>
+                    <p class="font-weight-bold text-left">{{item.date_of_soa}}</p>
+                </td>
+                 <td>
+                    <p class="font-weight-bold text-left">{{item.areaCode}}</p>
+                </td>
+                <td>
+                    <p class="font-weight-bold text-left">{{item.refNo}}</p>
+                </td>
+                 <td>
+                    <p class="font-weight-bold text-left">{{item.arena_name}}</p>
+                </td>
+                <td>
+                    <v-tooltip top color="primary">
+                        <template v-slot:activator="{ on, attrs, hover }">
+                            <v-btn
+                                icon
+                                color="primary"
+                                dark
+                                small
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="openModal(item)"
+                                :class="{
+                                'on-hover': hover,
+                                }"
+                                :disabled="downloadingReport"
+                            >
+                                <v-icon>mdi-eye</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>View Account</span>
+                    </v-tooltip> 
+                </td>
+            </tr>
+
+        </template>
+        <!-- <template v-slot:[`item.data-table-select`]="{ item, isSelected, select }">
             <v-simple-checkbox
                 :value="isSelected"
                 :readonly="item.disabled"
@@ -54,18 +117,20 @@
                     </v-btn>
                 </template>
                 <span>View Account</span>
-            </v-tooltip>
-        </template>
+            </v-tooltip> -->
+        <!-- </template> -->
     </v-data-table>
     <loading-progress :loading="loading" />    
 </div>
 </template>
 <script>
 export default {
-    name: "table-soa",
+    name: "table-soax",
     props: {
         soaLists: Function,
         withStatus: Function,
+        loadDateRange: Function,
+        handleSearching: Function,
         arenaData: Array,
         downloadingReport: Boolean,
         openModal: Function,
@@ -74,13 +139,15 @@ export default {
         page: Number,
         numberOfPages: Number,
         dates: Array,
-        tab: String
+        tab: String,
+        handleNoArenaDetails: Function,
+        filteredText: String
     },
     data: () => ({
         headers: [
             { text: "Date", value: "date_of_soa" },
-            { text: "CODE", value: "areaCode" },
-            { text: "ref", value: "refNo" },
+            { text: "Area Code", value: "areaCode" },
+            { text: "Reference #", value: "refNo" },
             { text: "Arena Name", value: "arena_name" },
             { text: "", value: "actions", sortable: false },
         ],
@@ -89,6 +156,11 @@ export default {
         selected: [],
         loading: false,
         pagePosition: 1,
+        pagination: {
+            page: 1,
+            itemsPerPage: 10,
+        },
+        paginationOption: {itemsPerPage: parseInt(localStorage.getItem('itemsPerPage')) || 10}
     }),
     methods: {
         // Select all imports with arena details
@@ -113,7 +185,8 @@ export default {
                 this.$emit('selectedSoa', [])
             };
         },
-        emptySelect(){
+        resetTable(){
+            console.log('xxxRESETxxxx')
             this.selected = []
         },
         singleSelected(item){
@@ -122,23 +195,43 @@ export default {
 
         async handlePaginate(e){
             this.pagePosition  = e.page
-                if(this.tab === 'ongoing' && this.dates.length < 1){ 
-                    this.$emit('loading', true)
-                    await this.soaLists(e.page);
+            
+                if(this.dates.length < 1 && this.search) {
+                    await this.handleSearching()
 
-                    this.$emit('loading', false)
-                } else if (this.tab === 'converted'&& this.dates.length < 1) { 
+                }else if (this.filteredText === 'noArenaDetails' && this.dates.length < 1 && !this.search) {
+                 
                     this.$emit('loading', true)
-                    await this.withStatus(e.page)
+                    await this.handleNoArenaDetails();
                     this.$emit('loading', false)
-                };
+
+                }else if(this.tab === 'ongoing' && this.dates.length < 1 && !this.search){ 
+                    this.$emit('loading', true)
+                    await this.soaLists();
+                    this.$emit('loading', false)
+                } else if (this.tab === 'converted'&& this.dates.length < 1 && !this.search) { 
+                    console.log('converted FETCH DATA')
+                    this.$emit('loading', true)
+                    await this.withStatus()
+                   
+                    this.$emit('loading', false)
+                } else if(this.dates.length > 1 && !this.search) {
+                    this.$emit('loading', true)
+                    await this.loadDateRange()
+                    this.$emit('loading', false)
+                } else {
+                  console.log('SEARCH', this.search)
+                  
+                }
+              
+               
            
         },
         async handlePageCount(e){
-            console.log(e)
-            const perPage = Math.ceil((this.total/e)+1)
-            console.log('PAGE COUNT',perPage)
-            // this.$emit('perPage', perPage)
+         
+            const perPage = Math.ceil((this.total/e))
+          
+            this.$emit('perPage', perPage)
             //  await this.soaLists(this.pagePosition,perPage); 
             //  if(this.tab === 'ongoing'){ 
             //         await this.soaLists(this.pagePosition,perPage); 
@@ -148,18 +241,40 @@ export default {
             //         this.loading = false
             //     };
         },
-        handlePage(e){
-            console.log('PAGE', e)
-        },
+ 
         handlePageOptions(e){
-           
-            console.log('OPTIONS>>>',e)
-            this.$emit('perPage', e.itemsPerPage)
+        
+            localStorage.setItem('itemsPerPage', e.itemsPerPage)
             this.$emit('pageOption', e)
-            
+       
+            this.paginationOption = {
+              itemsPerPage: e.itemsPerPage,
+              ...e,
+            }
+
+
+        },
+        pageOptions(){
+            this.paginationOption = {
+              ...this.paginationOption,
+              // page: parseInt(localStorage.getItem('page')),
+              itemsPerPage: parseInt(localStorage.getItem('itemsPerPage')),
+              
+            }
+        },
+        pageReset(){
+           return this.paginationOption = {
+              ...this.paginationOption,
+              page: 1,
+              itemsPerPage: parseInt(localStorage.getItem('itemsPerPage')),
+              
+            }
         }
 
     },
+    created(){
+      this.pageReset()
+    }
 };
 </script>
 <style lang=""></style>
