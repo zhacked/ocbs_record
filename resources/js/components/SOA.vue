@@ -109,6 +109,7 @@
                                         :dates="dates"
                                         :total="total"
                                         :page="page"
+                                        :perPage="perPage"
                                         :numberOfPages="numberOfPages"
                                         :soaLists="soaLists"
                                         :withStatus="importWithStatus"
@@ -137,6 +138,7 @@
                                         :tab="tab"
                                         :dates="dates"
                                         :page="page"
+                                         :perPage="perPage"
                                         :numberOfPages="numberOfPages"
                                         :soaLists="soaLists"
                                         :withStatus="importWithStatus"
@@ -866,8 +868,9 @@ export default {
         },
         async handleChangeTab(item) {
             // Swicth between menu tab: ongoing and converted
-            this.pageNumber = 1;
+           this.pageNumber = 1
             const perPage = parseInt(localStorage.getItem("itemsPerPage"));
+            console.log('HANDLE CHANGE TAB>>>', perPage)
             this.search
                 ? this.handleSearching(item)
                 : this.dates.length !== 0
@@ -893,6 +896,7 @@ export default {
 
         pageOption(item) {
             this.pageNumber = item.page;
+            this.perPage = item.itemsPerPage
         },
         handleSearching(item) {
             this.$refs.search.handleSearch(item);
@@ -968,9 +972,14 @@ export default {
             };
         },
     },
-
+    created(){
+         console.log('MOUNTED',this.perPage )
+        if(localStorage.getItem('itemsPerPage') === 'NaN') localStorage.setItem("itemsPerPage", this.perPage)
+    },
     mounted() {
-        if (localStorage.getItem("itemsPerPage") === 'NaN' || !localStorage.getItem("itemsPerPage")) localStorage.setItem("itemsPerPage", 10)
+    //     localStorage.removeItem('itemsPerPage')
+    //    localStorage.setItem("itemsPerPage", this.perPage)
+   
         if (localStorage.getItem("prepared")) {
             try {
                 this.switchPrepared = JSON.parse(

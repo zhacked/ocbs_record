@@ -17,7 +17,7 @@
             'items-per-page-options': [5, 10, 20, 30, 40, 50, 100],
             
         }"
-        :options="paginationOption"
+        :options="perPagee"
         :page="page"
 
         @page-count="handlePageCount"
@@ -32,7 +32,7 @@
             <v-data-footer 
                 :items-per-page-options ="[5, 10, 20, 30, 40, 50, 100]"
                 :pagination="pagination"
-                :options="paginationOption"
+                :options="perPagee"
                 items-per-page-text="$vuetify.dataTable.itemsPerPageText"
             
                 @update:options="handlePageOptions"
@@ -134,6 +134,7 @@ export default {
         search: String,
         total: Number,
         page: Number,
+        perPage: Number,
         numberOfPages: Number,
         dates: Array,
         tab: String,
@@ -154,7 +155,7 @@ export default {
         loading: false,
         pagePosition: 1,
      
-        paginationOption: {itemsPerPage: parseInt(localStorage.getItem('itemsPerPage'))}
+        paginationOption: {}
     }),
     methods: {
         // Select all imports with arena details
@@ -237,24 +238,26 @@ export default {
         },
  
         handlePageOptions(e){
-        
+            console.log('handlePageOptions',e.itemsPerPage)
+            
             localStorage.setItem('itemsPerPage', e.itemsPerPage)
             this.$emit('pageOption', e)
        
             this.paginationOption = {
-              itemsPerPage: e.itemsPerPage,
               ...e,
+              itemsPerPage: this.perPage,
             }
 
 
         },
         pageOptions(){
-            this.paginationOption = {
-              ...this.paginationOption,
-              // page: parseInt(localStorage.getItem('page')),
-              itemsPerPage: parseInt(localStorage.getItem('itemsPerPage')),
+            console.log('pageOptions')
+            // this.paginationOption = {
+            //   ...this.paginationOption,
+            //   // page: parseInt(localStorage.getItem('page')),
+            //   itemsPerPage: parseInt(localStorage.getItem('itemsPerPage')),
               
-            }
+            // }
         },
         pageReset(){
            return this.paginationOption = {
@@ -265,6 +268,18 @@ export default {
             }
         }
 
+    },
+    computed: {
+        perPagee() {
+          
+            const paginationOpt = {
+                ...this.paginationOption,
+                itemsPerPage: this.perPage,
+            }
+
+
+            return paginationOpt
+        }
     },
     created(){
       this.pageReset()
