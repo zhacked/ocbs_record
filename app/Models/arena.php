@@ -16,11 +16,11 @@ class arena extends Model
 
 
     public function BankDetails(){
-        return $this->hasMany('App\Models\BankAccount','area_code', 'area_code');
+        return $this->hasMany('App\Models\BankAccount','area_code', 'area_code')->orderBy('created_at', 'DESC');
     }
 
     public function ArenaBankDetails(){
-        return $this->hasOne('App\Models\BankAccount','id', 'bank_id');
+        return $this->hasOne('App\Models\BankAccount','id', 'bank_id')->orderBy('created_at', 'DESC');
     }
     
     public function EmailDetails(){

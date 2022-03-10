@@ -15,6 +15,7 @@
 </template>
 <script>
 import axios from 'axios'
+import {toOrderBy} from '../../utility'
 export default {
     name: 'search-soa',
     props: {
@@ -32,12 +33,14 @@ export default {
             const status =  tabItem === 'ongoing' || (!tabItem && this.tab ==='ongoing') ? null : 'done'
             const {data} = await axios.get(`api/searchSoa?search=${this.search}&status=${status}&page=${this.page}&per_page=${parseInt(localStorage.getItem('itemsPerPage'))}`)
             this.$emit('searchData', {
-                searchData: data,
+                searchData: toOrderBy(data.data),
+                total: data.total,
+                page: data.current_page,
                 search: this.search
             })
 
             return {
-                searchData: data.data,
+                searchData: toOrderBy(data.data),
                 total: data.total,
                 page: data.current_page,
                 numberOfPages: data.last_page

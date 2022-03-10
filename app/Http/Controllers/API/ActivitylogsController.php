@@ -40,8 +40,10 @@ class ActivitylogsController extends Controller
              'subject_id'   => $subject_id,
              'causer_type'  => Auth::user()->type,
              'properties'   => $properties,
+             'ip_address'   => \Request::getClientIp(true),
              'causer_id'    => Auth::user()->id,
              'created_at'   => Carbon::now()->toDateTimeString()
+
          ]);
  
          return $activity;

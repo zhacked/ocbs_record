@@ -124,11 +124,15 @@ const readSoa = (event, isExcel) => {
                     isValidEventArenaDate(eventDetailsA[2]?.A) ||
                     eventCreatedUTC
             );
+
+            console.log(eventDateCreated)
             const eventDateClosed = dateFormatting(
-                mergeObj.dateClosed ||
-                    isValidEventArenaDate(eventDetailsA[4]?.A) ||
-                    eventClosedUTC
+                mergeObj.dateClosed  || isValidEventArenaDate(eventDetailsA[4]?.A) 
+                || eventClosedUTC
             );
+
+            console.log(isValidEventArenaDate(arrayData[1][3].A) )
+            console.log(eventClosedUTC )
 
             const objectKeyed = (array) => {
                 let objectKeyReplacedArray = [];

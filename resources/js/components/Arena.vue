@@ -555,20 +555,20 @@ export default {
     data() {
         return {
             headers: [
-                { text: "#", value: "index" },
-                { text: "Code", value: "area_code" },
-                { text: "Arena Name", value: "arena" },
-                { text: "Operator", value: "operator" },
-                { text: "Team", value: "team" },
-                { text: "Bank Details", value: "bank" },
+                { text: "#", value: "index" ,sortable: false },
+                { text: "Code", value: "area_code"  ,sortable: false},
+                { text: "Arena Name", value: "arena" ,sortable: false },
+                { text: "Operator", value: "operator" , sortable: false},
+                { text: "Team", value: "team" ,sortable: false },
+                { text: "Bank Details", value: "bank" ,sortable: false},
                 { text: "", value: "actions", sortable: false },
             ],
 
             Bankheaders: [
-                { text: "Account Name", value: "account_name" },
-                { text: "Bank Name", value: "bank_name" },
-                { text: "Bank Number", value: "bank_number" },
-                { text: "Modify", value: "modify" },
+                { text: "Account Name", value: "account_name",sortable: false },
+                { text: "Bank Name", value: "bank_name" ,sortable: false },
+                { text: "Bank Number", value: "bank_number",sortable: false },
+                { text: "Modify", value: "modify" ,sortable: false },
                 { text: "", value: "actions", sortable: false },
             ],
             activityHeaders: [
@@ -1112,11 +1112,11 @@ export default {
             const {data} = await axios.get("api/arenaToExcel");
             // const { bankAccountName, bankName, bankNumber } = sanitizeBank(data)
 
-            const formatArenaDetails = data.map((d) => {
+            const formatArenaDetails = data.map((d,index) => {
                        const {bankAccountName, bankName, bankNumber} = sanitizeBank(d.bank_details)
 
                        return {
-                            "NO": d.id,
+                            "NO": index + 1,
                             "CODE": d.area_code,
                             "ARENA NAME": d.arena,
                             "ADDRESS": d.address,

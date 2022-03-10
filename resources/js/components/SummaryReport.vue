@@ -105,6 +105,7 @@
                                                 <v-row>
                                                     <v-col class="mt-2 ">
                                                         <div class=" float-left">
+                                                            <!-- {{isOpening(isOpen)}} -->
                                                             <v-btn @click="toggle" x-small icon :ref="group" class="test"  >
                                                                 <v-icon v-if="isOpen">mdi-plus</v-icon>
                                                                 <v-icon v-else>mdi-minus</v-icon>
@@ -193,6 +194,7 @@
                                                     <v-row>
                                                         <v-col class="mt-2 ">
                                                             <div class=" float-left">
+                                                                
                                                                 <v-btn @click="toggle" x-small icon :ref="group" class="test" >
                                                                     <v-icon v-if="isOpen">mdi-plus</v-icon>
                                                                     <v-icon v-else>mdi-minus</v-icon>
@@ -265,7 +267,7 @@ export default {
             headers: [
                 { text: "Code", value: "areaCode" },
                 { text: "Reference", value: "refNo" },
-                { text: "Date", value: "date_of_soa" },
+                { text: "Date", value: "date_of_soa"},
                 { text: "OCBS/Arena Name", value: "arena_name" },
                 { text: "Total Commission", value: "totalCommission" },
                 { text: "Othe Commission -M", value: "otherCommissionIntel05" },
@@ -290,6 +292,7 @@ export default {
             axios
                 .get("api/depositeandreflenish")
                 .then(({ data }) => {
+                    
                     this.deposit = data.dp;
                     this.reflenish = data.rf;
                      this.loading = false
@@ -335,6 +338,13 @@ export default {
                 ));
             
         },
+
+        isOpening(item){
+            let open = item
+            open = false
+            console.log(open)
+            return open
+        }
   
         
     },

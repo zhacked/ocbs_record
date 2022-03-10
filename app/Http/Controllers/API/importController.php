@@ -228,8 +228,8 @@ class importController extends Controller
     public function depositedata(){
 //         ->whereNotNull('status')
 // ->whereNotNull('status')
-        $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Deposit')->get();
-        $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Replenish')->get();
+        $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Deposit')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC')->get();
+        $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->where('group','Replenish')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC')->get();
         return Response()->json([
             'rf' => $reflenish,
             'dp' => $deposit

@@ -713,6 +713,7 @@ export default {
 
         openModal(data) {
             // View SOA dialog
+            console.log(data.arena_details)
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
                 this.arenaName = data.arena_name;
@@ -858,11 +859,11 @@ export default {
             this.$refs.search.handleSearch(item)
         },
         handleSearch(items){
-            console.log(items)
+           
             this.search = items.search
-            this.arenaData = items.searchData.data
-            this.total = items.searchData.total;
-            this.page = items.searchData.current_page
+            this.arenaData = items.searchData
+            this.total = items.total;
+            this.page = items.page
             
     
         },
