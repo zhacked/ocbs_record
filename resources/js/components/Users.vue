@@ -223,10 +223,10 @@
         data() {
             return {
                 headers: [
-                    { text: 'Name', value: 'name' },
-                    { text: 'Username', value: 'username' },
-                    { text: 'Type', value: 'type'},
-                    { text: 'Modify', value: 'modify'},
+                    { text: 'Name', value: 'name' ,sortable: false },
+                    { text: 'Username', value: 'username' ,sortable: false },
+                    { text: 'Type', value: 'type' ,sortable: false },
+                    { text: 'Modify', value: 'modify',sortable: false },
                     { text: '', value: 'actions', sortable: false },
                 ],
                 editmode: false,
