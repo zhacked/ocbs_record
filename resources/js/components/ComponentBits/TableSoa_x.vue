@@ -86,36 +86,7 @@
             </tr>
 
         </template>
-        <!-- <template v-slot:[`item.data-table-select`]="{ item, isSelected, select }">
-            <v-simple-checkbox
-                :value="isSelected"
-                :readonly="item.disabled"
-                :disabled="item.arena_details ? false : true"
-                @input="select($event)"
-            ></v-simple-checkbox>
-        </template>  
-        <template v-slot:[`item.actions`]="{ item }">
-            <v-tooltip top color="primary">
-                <template v-slot:activator="{ on, attrs, hover }">
-                    <v-btn
-                        icon
-                        color="primary"
-                        dark
-                        small
-                        v-bind="attrs"
-                        v-on="on"
-                        @click="openModal(item)"
-                        :class="{
-                        'on-hover': hover,
-                        }"
-                        :disabled="downloadingReport"
-                    >
-                        <v-icon>mdi-eye</v-icon>
-                    </v-btn>
-                </template>
-                <span>View Account</span>
-            </v-tooltip> -->
-        <!-- </template> -->
+
     </v-data-table>
     <loading-progress :loading="loading" />    
 </div>
@@ -143,10 +114,10 @@ export default {
     },
     data: () => ({
         headers: [
-            { text: "Date", value: "date_of_soa" },
-            { text: "Area Code", value: "areaCode" },
-            { text: "Reference #", value: "refNo" },
-            { text: "Arena Name", value: "arena_name" },
+            { text: "Date", value: "date_of_soa" ,sortable: false },
+            { text: "Area Code", value: "areaCode", sortable: false  },
+            { text: "Reference #", value: "refNo", sortable: false  },
+            { text: "Arena Name", value: "arena_name" ,sortable: false },
             { text: "", value: "actions", sortable: false },
         ],
         singleSelect: false,

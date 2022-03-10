@@ -127,7 +127,7 @@
                                     v-model="form.type"
                                     class="pb-4"
 
-                             ></v-autocomplete> 
+                            ></v-autocomplete> 
 
                             <v-autocomplete
                                     v-show="form.type != 'admin'"
@@ -146,11 +146,9 @@
                                     :rules="[
                                             () => !!form.position_id || 'This field is required',
                                             ]"
-                                ></v-autocomplete>
-                            <!-- </div> -->
-                             
-                            <v-select
+                            ></v-autocomplete>  
 
+                            <v-select
                                 v-model="form.permission"
                                 :items="role_permission"
                                 chips
@@ -192,22 +190,6 @@
                                     </v-list-item-content>
                                 </v-list-item>
                                 </template>
-                            <!-- <template slot="selection" slot-scope="data">
-                                
-                                <v-chip
-                                        class="ma-1"
-                                        close
-                                        color="blue"
-                                        text-color="white"
-                                        @click:close="deletePermissions(data.item.id,userid)"
-                                      
-                                > {{ data.item.name }}
-                                </v-chip>
-                           
-                          
-                        </template> -->
-
-                            
                             </v-select>
 
                             <v-text-field
