@@ -48,7 +48,7 @@
                                 <label for="password"  class="form-label  custom-input__label">{{ __('Password') }}</label>
 
                                 <input id="password" type="password"
-                                    class="form-control custom-inputform-control{{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}"
+                                    class="form-control custom-input form-control{{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}"
                                     name="password" required autocomplete="current-password">
 
                                 {{-- @error('email')

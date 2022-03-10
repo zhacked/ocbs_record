@@ -209,12 +209,12 @@
         data() {
             return {
                 headers: [
-                    { text: 'Name', value: 'name' },
-                    { text: 'Email', value: 'email' },
+                    { text: 'Name', value: 'name',sortable: false },
+                    { text: 'Email', value: 'email' ,sortable: false},
                     // { text: 'Number', value: 'contact'},
-                    {text: 'Team', value: 'team'},
-                    { text: 'Position', value: 'position'},
-                    {text:'Assign', value: 'group'},
+                    {text: 'Team', value: 'team', sortable: false},
+                    { text: 'Position', value: 'position',sortable: false },
+                    {text:'Assign', value: 'group',sortable: false},
 
                     { text: '', value: 'actions', sortable: false },
                 ],

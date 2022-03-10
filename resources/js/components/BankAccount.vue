@@ -202,9 +202,9 @@ export default {
     data() {
         return {
             headers: [
-                { text: "Account Name", value: "account_name" },
-                { text: "Bank Name", value: "bank_name" },
-                { text: "Bank Account", value: "bank_number" },
+                { text: "Account Name", value: "account_name" ,sortable: false },
+                { text: "Bank Name", value: "bank_name" ,sortable: false },
+                { text: "Bank Account", value: "bank_number" ,sortable: false },
                 { text: "", value: "actions", sortable: false },
             ],
             editmode: false,
