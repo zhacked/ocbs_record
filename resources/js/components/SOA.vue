@@ -867,7 +867,7 @@ export default {
         async handleChangeTab(item) {
             // Swicth between menu tab: ongoing and converted
             this.pageNumber = 1;
-            const perPage = parseInt(localStorage.getItem("itemsPerPage"));
+            const perPage = parseInt(localStorage.getItem("itemsPerPage")) || 10;
             this.search
                 ? this.handleSearching(item)
                 : this.dates.length !== 0
@@ -970,7 +970,7 @@ export default {
     },
 
     mounted() {
-        localStorage.setItem("itemsPerPage", 10)
+        if (localStorage.getItem("itemsPerPage") === 'NaN') localStorage.setItem("itemsPerPage", 10)
         if (localStorage.getItem("prepared")) {
             try {
                 this.switchPrepared = JSON.parse(
