@@ -114,29 +114,6 @@
                                   
                             ></v-text-field>
 
-							<!-- <v-text-field
-                                    prepend-inner-icon="mdi-at"
-                                    label="Email"
-                                    placeholder="doe@gmail.com"
-                                    outlined
-                                    dense
-                                    v-model="form.email"
-                                    :rules="[
-                                    () =>  /.+@.+\..+/.test(form.email) || 'E-mail must be valid'
-                                    ]"
-                            ></v-text-field> -->
-
-                             
-                            <!-- <v-text-field
-                                     prepend-inner-icon="mdi-account-details"
-                                    label="Bio"
-                                    placeholder="(optional)"
-                                    outlined
-                                    dense
-                                    v-model="form.bio"
-                                   
-                            ></v-text-field> -->
-
                             <v-autocomplete
                                     :items="roles"
                                     label="Roles"
@@ -150,53 +127,10 @@
                                     v-model="form.type"
                                     class="pb-4"
 
-                                ></v-autocomplete> 
-                                 <!-- <v-checkbox
-                                    v-model="form.isAdmin"
-                                    label="Admin"
-                                ></v-checkbox> -->
-                                
-                           
-							
-                            <!-- <div v-show="this.form.type == 'employee'"> -->
-                                <!-- <v-autocomplete
-                                    :items="teams.data"
-                                    label="Teams"
-                                    prepend-inner-icon="mdi-account-group"
-                                    hide-details
-                                    hide-no-data
-                                    hide-selected
-                                    outlined
-                                    dense
-                                    item-text="name"
-                                    item-value="id"
-                                    v-model="form.team_id"
-                                    class="pb-4"
-                                    :rules="[
-                                            () => !!form.team_id || 'This field is required',
-                                            ]"
-                                ></v-autocomplete>  -->
-                                
-
-                                <!-- <v-autocomplete
-                                    :items="assigns"
-                                    label="Assign"
-                                    prepend-inner-icon="mdi-clipboard-account"
-                                    hide-details
-                                    hide-no-data
-                                    hide-selected
-                                    outlined
-                                    dense
-                                    v-model="form.assign"
-                                    
-                                    class="pb-4"
-                                    :rules="[
-                                            () => !!form.assign || 'This field is required',
-                                            ]"
-                                ></v-autocomplete> -->
-                            
+                             ></v-autocomplete> 
 
                             <v-autocomplete
+                                    v-show="form.type != 'admin'"
                                     :items="position"
                                     label="Position"
                                     prepend-inner-icon="mdi-shield-account"
@@ -381,7 +315,7 @@
             },
         
             updateUser(){
-                // console.log('form',this.form)
+
                 this.$Progress.start();
                 this.form.put('api/user/'+this.form.id)
                 .then(() => {
@@ -402,6 +336,7 @@
                 console.log('user',user);
             },
             async editModal(user){
+                console.log('editmodal>>>>>>>>>',user);
                 this.editmode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
