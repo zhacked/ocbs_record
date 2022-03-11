@@ -709,7 +709,7 @@ export default {
             total: 0,
             page: 0,
             numberOfPages: 0,
-            perPage: 10,
+            perPage: 0,
             pageNumber: 1,
             filteredText: "",
             scTimer: 0,
