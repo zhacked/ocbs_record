@@ -19,24 +19,24 @@
                     sort-by="calories"
                     class="elevation-1 ma-4"
                 >
-       
+
                 <template v-slot:[`item.date`]="{ item }">
-                            <span>{{item.created_at | myDatewithtime}}</span>   
+                            <span>{{item.created_at | myDatewithtime}}</span>
                 </template>
                 <template v-slot:[`item.causer`]="{ item }">
-                            <span>{{item.user.name}}</span>   
+                            <span>{{item.user == null ? "admin" : item.user.name }}</span>
+                             <!-- <span>{{item}}</span> -->
                 </template>
                 <template v-slot:[`item.Description`]="{ item }">
                             <span>{{item.log_name}}
-                                {{item.description}} 
-                                in 
-                                {{item.subject_type}}  
+                                {{item.description}}
+                                in
+                                {{item.subject_type}}
                                 on
-                                {{item.created_at | myDatewithtime}} </span>   
+                                {{item.created_at | myDatewithtime}} </span>
                 </template>
-                
                 </v-data-table>
-		
+
     </v-card>
     </v-app>
 </template>
@@ -45,17 +45,18 @@
     export default {
         data() {
             return {
-    
+
                 activityHeaders : [
                     { text: 'Date', value: 'date' },
                     { text: 'By User', value: 'causer' },
                     { text: 'Action', value: 'description' },
+                    { text: 'Ip Address', value: 'ip_address' },
                     { text: 'Description', value: 'Description' },
                 ],
                 search: '',
                 activity:[],
- 
-            
+
+
             }
         },
         methods: {
