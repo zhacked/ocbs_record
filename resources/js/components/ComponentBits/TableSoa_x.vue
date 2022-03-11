@@ -211,7 +211,7 @@ export default {
         handlePageOptions(e){
             console.log('handlePageOptions',e.itemsPerPage)
             
-            localStorage.setItem('itemsPerPage', e.itemsPerPage)
+            e.itemsPerPage && localStorage.setItem('itemsPerPage', e.itemsPerPage)
             this.$emit('pageOption', e)
        
             this.paginationOption = {
