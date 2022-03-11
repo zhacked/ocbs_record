@@ -411,13 +411,13 @@
             }
         },
         created() {
-           this.loadUsers();
-           this.loadTeams();
-           this.loadPosition();
-         
-           Fire.$on('AfterCreate',() => {
-               this.loadUsers();
-           });
+            this.loadUsers();
+            this.loadTeams();
+            this.loadPosition();
+            this.loadroles();
+            Fire.$on('AfterCreate',() => {
+                this.loadUsers();
+            });
         }
     }
 </script>
