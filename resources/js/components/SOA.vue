@@ -3,7 +3,7 @@
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
             <!-- Arena Modal -->
-            <arena-modal :arenaNames="arenaName"> </arena-modal>
+            <arena-modal :arenaNames="arenaName" :soaLists="soaLists"> </arena-modal>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
                     <v-row>
@@ -709,7 +709,7 @@ export default {
             total: 0,
             page: 0,
             numberOfPages: 0,
-            perPage: 10,
+            perPage: 0,
             pageNumber: 1,
             filteredText: "",
             scTimer: 0,
@@ -755,6 +755,7 @@ export default {
             console.log(data.arena_details);
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
+               
                 this.arenaName = data.arena_name;
             } else {
                 this.dialog = true;
@@ -978,7 +979,7 @@ export default {
     },
     mounted() {
     //     localStorage.removeItem('itemsPerPage')
-    //    localStorage.setItem("itemsPerPage", this.perPage)
+    if (localStorage.getItem('itemsPerPage') === null || JSON.parse(localStorage.getItem('itemsPerPage')) < 1) localStorage.setItem("itemsPerPage", 10)
    
         if (localStorage.getItem("prepared")) {
             try {

@@ -23,7 +23,7 @@ class ActivitylogsController extends Controller
     }
 
     public function AcitivityIndex(){
-       return  Activitylogs::with(['User'])->get();
+       return  Activitylogs::with(['User'])->latest()->get();
     }
 
     // public function logsIndex()
@@ -45,20 +45,20 @@ class ActivitylogsController extends Controller
              'created_at'   => Carbon::now()->toDateTimeString()
 
          ]);
- 
+
          return $activity;
      }
 
      public function BankAccount(request $request){
-      
+
          foreach($request->all() as $data){
-             foreach($data as $val){   
-                 
+             foreach($data as $val){
+
                 return Activitylogs::with(['BankActivity'])
                         ->where('subject_id',$val['id'])->get();
-             }  
+             }
          }
     }
-   
-    
+
+
 }

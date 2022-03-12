@@ -191,7 +191,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-     
+       
         $user = User::findOrFail($id);
         
 
@@ -223,8 +223,6 @@ class UserController extends Controller
       
         
         foreach($request->permission as $permission){
-     
-
              $permisions =  Permission::updateOrCreate([
                     'user_id' => $user->id,
                     'role_id'  => gettype($permission) == 'array' ? $permission['id'] : $permission,
@@ -237,7 +235,7 @@ class UserController extends Controller
         
 
          
-        // $this->Profileactivity('updated',$user->username,'profile',$user->id);
+        $this->Profileactivity('updated',$user->username,'profile',$user->id);
 
         return ['message' => 'Updated the user info'];
     }

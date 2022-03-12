@@ -133,8 +133,6 @@ let routes = [
     {
         path: '/soa', component: require('./components/SOA.vue').default
     },
-  
-  
     {
         path: '/arena', component: require('./components/Arena.vue').default
     },
@@ -149,10 +147,6 @@ let routes = [
     },
     {
         path: '/teams', component: require('./components/Teams.vue').default
-    },
-    
-    {
-        path: '/position', component: require('./components/Position.vue').default
     },
     {
         path: '/chooserecord', component: require('./components/ChooseRecord.vue').default

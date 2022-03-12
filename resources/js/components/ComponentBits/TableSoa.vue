@@ -61,10 +61,10 @@ export default {
     },
     data: () => ({
         headers: [
-            { text: "Date", value: "date_of_soa" },
-            { text: "CODE", value: "areaCode" },
-            { text: "ref", value: "refNo" },
-            { text: "Arena Name", value: "arena_name" },
+            { text: "Date", value: "date_of_soa" ,sortable: false },
+            { text: "CODE", value: "areaCode" ,sortable: false },
+            { text: "ref", value: "refNo" ,sortable: false },
+            { text: "Arena Name", value: "arena_name" ,sortable: false },
             { text: "", value: "actions", sortable: false },
         ],
         singleSelect: false,
