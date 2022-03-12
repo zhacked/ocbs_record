@@ -87,7 +87,7 @@ const readSoa = (event, isExcel) => {
             });
 
             arrayData[1].map((r) => {
-                
+
                 if (Object.keys(r).length >= 17) reportCombined.push(r);
 
                 if (typeof r.A == "string") eventDetailsA.push(r);
@@ -99,10 +99,10 @@ const readSoa = (event, isExcel) => {
             arrayData[1].map((sr) => {
                 if (Object.keys(sr).length >= 20) summaryReport.push(sr);
             });
-          
+
             // Merge Object
             const mergeObj = mergeObject(eventsCombined);
-     
+
             // date format MM/DD/YYYY || DD/MM/YYYY
             const dateFormatting = (date) =>
                 moment(date, "MM/DD/YYYY").isValid()
@@ -128,12 +128,12 @@ const readSoa = (event, isExcel) => {
 
             console.log('eventDateCreated',eventDateCreated)
             const eventDateClosed = dateFormatting(
-                mergeObj.dateClosed  || isValidEventArenaDate(eventDetailsA[4]?.A) 
+                mergeObj.dateClosed  || isValidEventArenaDate(eventDetailsA[4]?.A)
                 || eventClosedUTC
             );
 
             console.log(isValidEventArenaDate(arrayData[1][3].A) )
-      
+
             const objectKeyed = (array) => {
                 let objectKeyReplacedArray = [];
                 const keysss = array.find((k) => k.B === "ARENA NAME");
@@ -360,7 +360,7 @@ const readSoa = (event, isExcel) => {
                 r[a.soaFr].push(a);
                 return r;
             }, Object.create(null));
-            
+
             // Convert Month number to alphabet
             const moLetter = String.fromCharCode(
                 96 + (moment(eventDateCreated).month() + 1)
@@ -380,8 +380,8 @@ const readSoa = (event, isExcel) => {
 
             const newsoa = sortSoa.map(({ soaFr, ...s }, i) => ({
                 refNo:
-                    "S" + 
-                    arrayData[0][5].B + 
+                    "S" +
+                    arrayData[1][5].B +
                     moment(eventDateCreated).format("YYDD") +
                     moLetter +
                     `0000${i + 1}`.slice(-4),
@@ -390,7 +390,7 @@ const readSoa = (event, isExcel) => {
             const newfr = sortFr.map(({ soaFr, ...f }, i) => ({
                 refNo:
                     "R" +
-                    arrayData[0][5].B + 
+                    arrayData[1][5].B +
                     moment(eventDateCreated).format("YYDD") +
                     moLetter +
                     `0000${i + 1}`.slice(-4),
