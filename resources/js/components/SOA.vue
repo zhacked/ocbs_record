@@ -755,6 +755,7 @@ export default {
             console.log(data.arena_details);
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
+               
                 this.arenaName = data.arena_name;
             } else {
                 this.dialog = true;

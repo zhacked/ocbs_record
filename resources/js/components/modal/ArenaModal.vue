@@ -189,7 +189,7 @@
             createArena() {
            
             this.$Progress.start();
-               
+                
                 axios.post("api/arena" ,{ 
                     arena : this.arenaNames,
                     area_code:  this.arenaNames.split(" ")[0],
@@ -201,13 +201,18 @@
                 .then(() => {
                    
                     $("#addNew").modal("hide");
+                    this.address = '',
+                    this.operator = '',
+                    this.contactNos = ''
+                   this.emailsArr = ''
                     Toast.fire({
                         icon: "success",
                         title: "Successfully Created",
                     });
 
                     this.$Progress.finish();
-                    window.location.reload();
+                    // window.location.reload();
+                    this.soaLists();
                 })
                 .catch((e) => {
                     this.errors.areaCode = (e.response.data.message.includes('Integrity constraint') || e.response.status === 500) ? 'Area Code/Arena already exist.' : ''
