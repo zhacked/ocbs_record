@@ -130,6 +130,7 @@
     export default {
          props: {
             arenaNames: String,
+            soaLists: Function
             },
         data() {
             return {

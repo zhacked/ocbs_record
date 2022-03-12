@@ -3,7 +3,7 @@
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
             <!-- Arena Modal -->
-            <arena-modal :arenaNames="arenaName"> </arena-modal>
+            <arena-modal :arenaNames="arenaName" :soaLists="soaLists"> </arena-modal>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
                     <v-row>
