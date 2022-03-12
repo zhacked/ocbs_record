@@ -978,7 +978,7 @@ export default {
     },
     mounted() {
     //     localStorage.removeItem('itemsPerPage')
-    if (localStorage.getItem('itemsPerPage') === null) localStorage.setItem("itemsPerPage", 10)
+    if (localStorage.getItem('itemsPerPage') === null || JSON.parse(localStorage.getItem('itemsPerPage')) < 1) localStorage.setItem("itemsPerPage", 10)
    
         if (localStorage.getItem("prepared")) {
             try {
