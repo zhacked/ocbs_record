@@ -171,7 +171,7 @@ const readSoa = (event, isExcel) => {
                 return objectKeyReplacedArray;
             };
 
-            const objKeySummary = objectKeyed(summaryReport, 6);
+            const objKeySummary = objectKeyed(summaryReport, 7);
 
             objKeySummary.forEach(function (item) {
                 const existing = objMobileKiosk.filter((v, i) => {
