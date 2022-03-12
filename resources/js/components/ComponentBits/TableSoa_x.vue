@@ -14,7 +14,7 @@
         :single-select="singleSelect"
         class="elevation-1 text-center"
         :footer-props="{
-            'items-per-page-options': [5, 10, 20, 30, 40, 50, 100],
+            'items-per-page-options': itemsPerPageOptions,
             
         }"
         :options="perPagee"
@@ -28,9 +28,9 @@
         @input="singleSelected"
     
     >
-        <template v-slot:top="{ pagination, options, updateOptions, itemsPerPageOptions }">
+        <template v-slot:top="{ pagination, options, updateOptions }">
             <v-data-footer 
-                :items-per-page-options ="[5, 10, 20, 30, 40, 50, 100]"
+                :items-per-page-options ="itemsPerPageOptions"
                 :pagination="pagination"
                 :options="perPagee"
                 items-per-page-text="$vuetify.dataTable.itemsPerPageText"
@@ -149,6 +149,7 @@ export default {
             { text: "Arena Name", value: "arena_name" },
             { text: "", value: "actions", sortable: false },
         ],
+        itemsPerPageOptions: [5, 10, 20, 30, 40, 50, 100, 200],
         singleSelect: false,
         selectedItems: [],
         selected: [],

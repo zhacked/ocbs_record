@@ -1001,7 +1001,7 @@ export default {
 }
 .floating-button {
     position: fixed;
-    bottom: 20px;
+    bottom: 7%;
     right: 20px;
 }
 </style>
