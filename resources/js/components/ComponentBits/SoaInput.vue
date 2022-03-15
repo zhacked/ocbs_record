@@ -1,5 +1,5 @@
 <template lang="">
-    <v-col class="col-md-4" v-show="$gate.isAdmin()">
+    <v-col class="col-md-3" v-show="$gate.isAdmin()">
         <v-file-input
             outlined
             dense
@@ -74,6 +74,7 @@ export default {
     },
 
     async proceedAction() {
+      console.log(this.ocbsArrayFiltered)
       try {
          this.$Progress.start();
         if (

@@ -95,14 +95,15 @@
 export default {
     name: "table-soax",
     props: {
-        soaLists: Function,
-        withStatus: Function,
+        soaLists: Function, // FIXME: TO REMOVE
+        withStatus: Function, // FIXME: TO REMOVE
+        fetchLists: Function,
         loadDateRange: Function,
         handleSearching: Function,
         arenaData: Array,
         downloadingReport: Boolean,
         openModal: Function,
-        search: String,
+        search: String, 
         total: Number,
         page: Number,
         perPage: Number,
@@ -162,34 +163,43 @@ export default {
 
         async handlePaginate(e){
             this.pagePosition  = e.page
+            console.log('Tabbbbb>>>>', this.tab)
+                  this.$emit('loading', true)
+                    await this.fetchLists(localStorage.getItem('site'));
+                    this.$emit('loading', false)
             
-                if(this.dates.length < 1 && this.search) {
-                    await this.handleSearching()
+                // if(this.dates.length < 1 && this.search) {
+                //     this.$emit('loading', true)
+                //     await this.handleSearching()
+                //     this.$emit('loading', false)
 
-                }else if (this.filteredText === 'noArenaDetails' && this.dates.length < 1 && !this.search) {
-                 
-                    this.$emit('loading', true)
-                    await this.handleNoArenaDetails();
-                    this.$emit('loading', false)
+                // }else if (this.filteredText === 'noArenaDetails' && this.dates.length < 1 && !this.search) {
+                //     this.$emit('loading', true)
+                //     await this.handleNoArenaDetails();
+                //     this.$emit('loading', false)
 
-                }else if(this.tab === 'ongoing' && this.dates.length < 1 && !this.search){ 
-                    this.$emit('loading', true)
-                    await this.soaLists();
-                    this.$emit('loading', false)
-                } else if (this.tab === 'converted'&& this.dates.length < 1 && !this.search) { 
-                    console.log('converted FETCH DATA')
-                    this.$emit('loading', true)
-                    await this.withStatus()
+                // }else if(this.tab && this.dates.length < 1 && !this.search){ 
+                //     this.$emit('loading', true)
+                //     await this.fetchLists();
+                //     this.$emit('loading', false)
+                // } 
+                
+                // // else if (this.tab === 'converted'&& this.dates.length < 1 && !this.search) { 
+                // //     console.log('converted FETCH DATA')
+                // //     this.$emit('loading', true)
+                // //     await this.withStatus()
                    
-                    this.$emit('loading', false)
-                } else if(this.dates.length > 1 && !this.search) {
-                    this.$emit('loading', true)
-                    await this.loadDateRange()
-                    this.$emit('loading', false)
-                } else {
-                  console.log('SEARCH', this.search)
+                // //     this.$emit('loading', false)
+                // // } 
+                
+                // else if(this.dates.length > 1 && !this.search) {
+                //     this.$emit('loading', true)
+                //     await this.loadDateRange()
+                //     this.$emit('loading', false)
+                // } else {
+                //   console.log('SEARCH', this.search)
                   
-                }
+                // }
               
                
            

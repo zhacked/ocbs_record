@@ -1,10 +1,11 @@
 import {toOrderBy} from '../utility'
 
-const withStatus = async (page,perPage) => {
+const withStatus = async (site,page,perPage, status) => {
     console.log('PER PAGE',perPage)
     const newArray = [];
     const perP = perPage ? perPage : 10
-    const {data} = await axios.get(`api/importwithstatus?page=${page}&per_page=${perPage}`);
+    // const {data} = await axios.get(`api/importwithstatus?page=${page}&per_page=${perPage}`);
+    const {data} = await axios.get(`api/importwithstatus?site=${site}&status=done&page=${page}&per_page=${perPage}`);
     // const data = await axios.get(`api/importwithstatus`);
 
     data.data.forEach((dObj) => {
@@ -28,9 +29,9 @@ const withStatus = async (page,perPage) => {
     };
 };
 
-const soa = async (page, perPage) => {
-
-    const {data} = await axios.get(`api/import?page=${page}&per_page=${perPage}`);
+const soa = async (site, page, perPage, status = null) => {
+console.log('soaLists>>>',site)
+    const {data} = await axios.get(`api/import?site=${site}&status=${status}&page=${page}&per_page=${perPage}`);
     // const data = await axios.get(`api/import`);
 
 

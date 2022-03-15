@@ -1,5 +1,6 @@
 import moment from "moment";
 import XLSX from "xlsx";
+import CryptoJS from "crypto-js";
 import {
     camelCase,
     groupBy,
@@ -293,13 +294,17 @@ const readSoa = (event, isExcel) => {
                         rest.areaCode.indexOf("/") > -1
                             ? rest.areaCode.replace(/\//g, "~")
                             : rest.areaCode;
+
+                 
                     const codeEvent = `${areaCode.toLowerCase()}${moment(
                         rest.eventCreated
                     ).format("X")}`;
-
+                 
+                   const hashedCode = CryptoJS.AES.encrypt(codeEvent, 'secretKey').toString();
+            
                     rest = {
                         areaCode,
-                        codeEvent,
+                        codeEvent: hashedCode,
                         date_of_soa: rest.eventCreated,
                         date_closed: rest.eventClosed,
                         meron: rest.meron,
@@ -355,11 +360,13 @@ const readSoa = (event, isExcel) => {
                     removeLuck.arena_name.split(" ")[0] !== "LUCKY"
             );
             // group fr and soa
-            const groupSOAFR = removeLucky.reduce(function (r, a) {
+            const groupSOAFR =  removeLucky.reduce(function (r, a) {
                 r[a.soaFr] = r[a.soaFr] || [];
                 r[a.soaFr].push(a);
                 return r;
             }, Object.create(null));
+
+            console.log(groupSOAFR)
 
             // Convert Month number to alphabet
             const moLetter = String.fromCharCode(
@@ -378,26 +385,22 @@ const readSoa = (event, isExcel) => {
                 },
             ]);
 
+            const site = arrayData[1][5].A.split(':')[1].trim() === '' ? arrayData[1][5].B : arrayData[1][5].A.split(':')[1];
+           
+            const count = (i) => `0000${i + 1}`.slice(-4);
             const newsoa = sortSoa.map(({ soaFr, ...s }, i) => ({
-                refNo:
-                    "S" +
-                    arrayData[1][5].B +
-                    moment(eventDateCreated).format("YYDD") +
-                    moLetter +
-                    `0000${i + 1}`.slice(-4),
+                refNo: `S${site}${moment(eventDateCreated).format("YYDD")}${moLetter}${count(i)}`,
                 ...s,
             }));
             const newfr = sortFr.map(({ soaFr, ...f }, i) => ({
-                refNo:
-                    "R" +
-                    arrayData[1][5].B +
-                    moment(eventDateCreated).format("YYDD") +
-                    moLetter +
-                    `0000${i + 1}`.slice(-4),
+                refNo: `R${site}${moment(eventDateCreated).format("YYDD")}${moLetter}${count(i)}`,
                 ...f,
             }));
 
+
+
             const newSetReport = concat(newsoa, newfr);
+         
             const sortReport = sortBy(newSetReport, [
                 function (o) {
                     return o.areaCode;
