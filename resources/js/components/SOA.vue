@@ -54,7 +54,7 @@
                             :importWithStatus="importWithStatus"
                             :fetchLists="handleFetchLists"
                             @arenaPerSite="arenaPerSite"
-                            @filteredSite="filteredSite"
+                         
                             ref="site"
                         ></filter-site>
                         <!-- FILE INPUT -->
@@ -101,7 +101,7 @@
                                 :href="`#${item.tabItem}`"
                                 @click="handleEmptySelect"
                                 :disabled="
-                                    filteredText === 'noArenaDetails'
+                                    filteredText === 'noArenaDetails' || dialog2
                                         ? true
                                         : false
                                 "
@@ -144,35 +144,7 @@
                                         @pageOption="pageOption"
                                     ></table-soax>
                                 </v-tab-item>
-                                <!-- <v-tab-item id="converted">
-                                
-                                    <table-soax
-                                        :arenaData="arenaData"
-                                        :downloadingReport.sync="
-                                            downloadingReport
-                                        "
-                                        @selectedSoa="handleSelected"
-                                        :search="search"
-                                        :openModal="openModal"
-                                        ref="tableArenaConverted"
-                                        :filteredText="filteredText"
-                                        :total="total"
-                                        :tab="tab"
-                                        :dates="dates"
-                                        :page="page"
-                                        :perPage="perPage"
-                                        :numberOfPages="numberOfPages"
-                                        :soaLists="soaLists"
-                                        :withStatus="importWithStatus"
-                                        :loadDateRange="loadDateRange"
-                                        :handleSearching="handleSearching"
-                                        :handleNoArenaDetails="
-                                            handleNoArenaDetails
-                                        "
-                                        @loading="handlePageLoad"
-                                        @pageOption="pageOption"
-                                    ></table-soax>
-                                </v-tab-item> -->
+                  
                             </v-tabs-items>
                         </v-card-text>
                     </v-card>
@@ -850,9 +822,6 @@ export default {
             } else {
                 console.log("SEARCH", this.search);
             }
-
-            // if (this.tab === "ongoing") this.soaLists();
-            // else this.importWithStatus();
         },
         // Generate a pdf report
         generateReport(codeEvent) {
@@ -916,12 +885,6 @@ export default {
                 this.$refs.tableArenaOnGoing.resetTable();
             this.$refs.tableArenaConverted &&
                 this.$refs.tableArenaConverted.resetTable();
-        },
-        fetchCurrentItemsPerPage() {
-            //  this.$refs.tableArenaOnGoing &&
-            //     this.$refs.tableArenaOnGoing.pageOptions();
-            // this.$refs.tableArenaConverted &&
-            //     this.$refs.tableArenaConverted.pageOptions();
         },
 
         async loadDateRange(item) {
@@ -991,10 +954,10 @@ export default {
             this.page = item.current_page;
         },
    
-        filteredSite(item){
-            console.log(item)
-            this.site = item
-        },
+        // filteredSite(item){
+        //     console.log(item)
+        //     this.site = item
+        // },
 
         //scrolltotop
         handleScroll() {
@@ -1077,10 +1040,7 @@ export default {
 };
 </script>
 <style scoped>
-.nav-tabs .nav-link.active {
-    background-color: #00c4f5 !important ;
-    color: white !important;
-}
+
 .floating-button {
     position: fixed;
     bottom: 7%;
