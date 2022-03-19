@@ -304,7 +304,7 @@ const readSoa = (event, isExcel) => {
             
                     rest = {
                         areaCode,
-                        codeEvent: hashedCode,
+                        codeEvent,
                         date_of_soa: rest.eventCreated,
                         date_closed: rest.eventClosed,
                         meron: rest.meron,
