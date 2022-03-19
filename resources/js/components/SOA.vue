@@ -3,7 +3,8 @@
         <v-container :class="{ 'blur-content': dialog }">
             <h1 class="h3">Statement of Accounts</h1>
             <!-- Arena Modal -->
-            <arena-modal :arenaNames="arenaName" :soaLists="soaLists"> </arena-modal>
+            <arena-modal :arenaNames="arenaName" :soaLists="soaLists">
+            </arena-modal>
             <v-row class="mt-3">
                 <v-col class="col-md-12">
                     <v-row>
@@ -37,11 +38,25 @@
                             :dates="dates"
                             :soaLists="soaLists"
                             :importWithStatus="importWithStatus"
+                            :fetchLists="handleFetchLists"
                             @noArenaDetails="noArenaDetails"
                             @filterText="filterText"
                             ref="filterArena"
                         ></filter-arena>
-                        <v-spacer></v-spacer>
+                      
+                        <filter-site
+                            
+                            :loadDateRange="loadDateRange"
+                            :page="pageNumber"
+                            :tab="tab"
+                            :dates="dates"
+                            :soaLists="soaLists"
+                            :importWithStatus="importWithStatus"
+                            :fetchLists="handleFetchLists"
+                            @arenaPerSite="arenaPerSite"
+                         
+                            ref="site"
+                        ></filter-site>
                         <!-- FILE INPUT -->
                         <soa-input :soaLists="soaLists"></soa-input>
                     </v-row>
@@ -67,6 +82,7 @@
                                     :handleEmptySelect="handleEmptySelect"
                                     :soaLists="soaLists"
                                     :importWithStatus="importWithStatus"
+                                    :fetchLists="handleFetchLists"
                                     :loadDateRange="loadDateRange"
                                     :printReadyProgress="printReadyProgress"
                                 />
@@ -85,7 +101,7 @@
                                 :href="`#${item.tabItem}`"
                                 @click="handleEmptySelect"
                                 :disabled="
-                                    filteredText === 'noArenaDetails'
+                                    filteredText === 'noArenaDetails' || dialog2
                                         ? true
                                         : false
                                 "
@@ -95,15 +111,20 @@
                         </v-tabs>
                         <v-card-text>
                             <v-tabs-items v-model="tab">
-                                <v-tab-item id="ongoing">
+                                <v-tab-item
+                                    v-for="item in items"
+                                    :key="item.tabItem"
+                                    :id="item.tabItem"
+                                >
                                     <!-- Table for ongoing soa -->
+                                    <!-- ref="tableArenaOnGoing" -->
+
                                     <table-soax
                                         :arenaData="arenaData"
                                         :downloadingReport="downloadingReport"
                                         @selectedSoa="handleSelected"
                                         :search="search"
                                         :openModal="openModal"
-                                        ref="tableArenaOnGoing"
                                         :tab="tab"
                                         :filteredText="filteredText"
                                         :dates="dates"
@@ -113,6 +134,7 @@
                                         :numberOfPages="numberOfPages"
                                         :soaLists="soaLists"
                                         :withStatus="importWithStatus"
+                                        :fetchLists="handleFetchLists"
                                         :loadDateRange="loadDateRange"
                                         :handleSearching="handleSearching"
                                         :handleNoArenaDetails="
@@ -122,35 +144,7 @@
                                         @pageOption="pageOption"
                                     ></table-soax>
                                 </v-tab-item>
-                                <v-tab-item id="converted">
-                                    <!-- Table for converted soa -->
-                                    <table-soax
-                                        :arenaData="arenaData"
-                                        :downloadingReport.sync="
-                                            downloadingReport
-                                        "
-                                        @selectedSoa="handleSelected"
-                                        :search="search"
-                                        :openModal="openModal"
-                                        ref="tableArenaConverted"
-                                        :filteredText="filteredText"
-                                        :total="total"
-                                        :tab="tab"
-                                        :dates="dates"
-                                        :page="page"
-                                         :perPage="perPage"
-                                        :numberOfPages="numberOfPages"
-                                        :soaLists="soaLists"
-                                        :withStatus="importWithStatus"
-                                        :loadDateRange="loadDateRange"
-                                        :handleSearching="handleSearching"
-                                        :handleNoArenaDetails="
-                                            handleNoArenaDetails
-                                        "
-                                        @loading="handlePageLoad"
-                                        @pageOption="pageOption"
-                                    ></table-soax>
-                                </v-tab-item>
+                  
                             </v-tabs-items>
                         </v-card-text>
                     </v-card>
@@ -579,7 +573,7 @@
             <loading-progress :loading="dialog2"></loading-progress>
         </v-container>
         <div class="floating-button" v-show="scY > 150">
-            <v-tooltip top  color="#000">
+            <v-tooltip top color="#000">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn
                         v-bind="attrs"
@@ -618,6 +612,8 @@ import TableSoax from "./ComponentBits/TableSoa_x.vue";
 import SoaInput from "./ComponentBits/SoaInput.vue";
 import ActionsButtons from "./ComponentBits/ActionsButtons.vue";
 import SearchSoa from "./ComponentBits/SearchSoa.vue";
+import FilterArena from "./ComponentBits/FilterArena.vue";
+import FilterSite from "./ComponentBits/FilterSite.vue";
 
 import {
     imageDownload,
@@ -631,7 +627,7 @@ import {
 } from "../methods";
 
 import ArenaModal from "./modal/ArenaModal.vue";
-import FilterArena from "./ComponentBits/FilterArena.vue";
+
 
 export default {
     components: {
@@ -649,6 +645,7 @@ export default {
         SoaInput,
         ActionsButtons,
         SearchSoa,
+        FilterSite
     },
     data() {
         return {
@@ -712,6 +709,7 @@ export default {
             perPage: 0,
             pageNumber: 1,
             filteredText: "",
+            site: "",
             scTimer: 0,
             scY: 0,
         };
@@ -722,11 +720,14 @@ export default {
             localStorage.setItem("prepared", this.switchPrepared);
         },
         truncate, // truncate data based on date
-        async soaLists() {
+        async soaLists(site) {
+            console.log('SOALISTxxxxx', site)
             // fetch all soa with status = null
             // const pageNo = parseInt(localStorage.getItem('page'))
             const perPage = parseInt(localStorage.getItem("itemsPerPage"));
+            const sited = site
             const { soaLists, total, page } = await soa(
+                sited,
                 this.pageNumber,
                 perPage
             );
@@ -735,14 +736,17 @@ export default {
             this.total = total;
             this.page = page;
         },
-        async importWithStatus() {
+        async importWithStatus(site) {
             // fetch data with status = done
 
             const perPage = parseInt(localStorage.getItem("itemsPerPage"));
+            const sited = site
             this.perPage = perPage;
             const { withStatusData, total, page } = await withStatus(
+                sited,
                 this.pageNumber,
-                perPage
+                perPage,
+                'done'
             );
 
             this.arenaData = withStatusData;
@@ -755,7 +759,7 @@ export default {
             console.log(data.arena_details);
             if (data.arena_details === null) {
                 $("#addNew").modal("show");
-               
+
                 this.arenaName = data.arena_name;
             } else {
                 this.dialog = true;
@@ -789,9 +793,40 @@ export default {
 
             $(".computation").attr("disabled", true);
         },
+        async handleFetchLists(site) {
+             if (this.dates.length < 1 && this.search) {
+                await this.handleSearching();
+            } else if (
+                this.filteredText === "noArenaDetails" &&
+                this.dates.length < 1 &&
+                !this.search
+            ) {
+                await this.handleNoArenaDetails();
+            }
+            else if (
+                site &&
+                this.tab === "ongoing" &&
+                this.dates.length < 1 &&
+                !this.search
+            ) {
+                await this.soaLists(site);
+            } else if (
+                site &&
+                this.tab === "converted" &&
+                this.dates.length < 1 &&
+                !this.search
+            ) {
+                await this.importWithStatus(site);
+            } else if (this.dates.length > 1 && !this.search) {
+                await this.loadDateRange();
+            } else {
+                console.log("SEARCH", this.search);
+            }
+        },
         // Generate a pdf report
         generateReport(codeEvent) {
             const { dialog } = reportGenerate(codeEvent, this.$refs.html2Pdf);
+            this.handleFetchLists();
             this.dialog = dialog;
         },
         beforeDownload, // Customize PDF before download
@@ -803,7 +838,7 @@ export default {
             if (imgdl.status === 200) {
                 this.dialog = false;
                 this.arenaDetails = {};
-                Fire.$emit("AfterCreate");
+                this.handleFetchLists();
                 swal.fire("convert to png!", "successfully", "success");
             }
         },
@@ -851,12 +886,6 @@ export default {
             this.$refs.tableArenaConverted &&
                 this.$refs.tableArenaConverted.resetTable();
         },
-        fetchCurrentItemsPerPage() {
-            //  this.$refs.tableArenaOnGoing &&
-            //     this.$refs.tableArenaOnGoing.pageOptions();
-            // this.$refs.tableArenaConverted &&
-            //     this.$refs.tableArenaConverted.pageOptions();
-        },
 
         async loadDateRange(item) {
             // Load imports based on date range
@@ -869,9 +898,8 @@ export default {
         },
         async handleChangeTab(item) {
             // Swicth between menu tab: ongoing and converted
-           this.pageNumber = 1
+            this.pageNumber = 1;
             const perPage = parseInt(localStorage.getItem("itemsPerPage"));
-            console.log('HANDLE CHANGE TAB>>>', perPage)
             this.search
                 ? this.handleSearching(item)
                 : this.dates.length !== 0
@@ -879,8 +907,6 @@ export default {
                 : item === "ongoing"
                 ? await this.soaLists()
                 : await this.importWithStatus();
-
-            this.fetchCurrentItemsPerPage();
             this.loadBankDetails();
         },
         handleSigned(value) {
@@ -897,7 +923,7 @@ export default {
 
         pageOption(item) {
             this.pageNumber = item.page;
-            this.perPage = item.itemsPerPage
+            this.perPage = item.itemsPerPage;
         },
         handleSearching(item) {
             this.$refs.search.handleSearch(item);
@@ -921,6 +947,17 @@ export default {
         filterText(item) {
             this.filteredText = item;
         },
+
+        arenaPerSite(item){
+            this.arenaData = item.arenaData
+            this.total = item.total;
+            this.page = item.current_page;
+        },
+   
+        // filteredSite(item){
+        //     console.log(item)
+        //     this.site = item
+        // },
 
         //scrolltotop
         handleScroll() {
@@ -973,14 +1010,21 @@ export default {
             };
         },
     },
-    created(){
-         console.log('MOUNTED',this.perPage )
-        if(localStorage.getItem('itemsPerPage') === 'NaN') localStorage.setItem("itemsPerPage", this.perPage)
+    created() {
+        console.log("MOUNTED", this.perPage);
+        if (localStorage.getItem("itemsPerPage") === "NaN")
+            localStorage.setItem("itemsPerPage", this.perPage);
     },
     mounted() {
-    //     localStorage.removeItem('itemsPerPage')
-    if (localStorage.getItem('itemsPerPage') === null || JSON.parse(localStorage.getItem('itemsPerPage')) < 1) localStorage.setItem("itemsPerPage", 10)
-   
+        //     localStorage.removeItem('itemsPerPage')
+        if (
+            localStorage.getItem("itemsPerPage") === null ||
+            JSON.parse(localStorage.getItem("itemsPerPage")) < 1
+        )
+            localStorage.setItem("itemsPerPage", 10);
+
+        if (localStorage.getItem("site") === null) localStorage.setItem("site", 'all');
+
         if (localStorage.getItem("prepared")) {
             try {
                 this.switchPrepared = JSON.parse(
@@ -996,13 +1040,10 @@ export default {
 };
 </script>
 <style scoped>
-.nav-tabs .nav-link.active {
-    background-color: #00c4f5 !important ;
-    color: white !important;
-}
+
 .floating-button {
     position: fixed;
-    bottom: 20px;
+    bottom: 7%;
     right: 20px;
 }
 </style>

@@ -31,18 +31,31 @@ class importController extends Controller
      */
     public function index(Request $request)
     {
+        $status = $request->query('status') == "null" ? null : 'done';
+        $site = $request->query('site');
+        $from = $request->query('dateFrom');
+        $to = $request->query('dateTo');
+
         $soa = import::with(['BankDetails',
             'arenaDetails.BankDetails',
             'arenaDetails.EmailDetails',
             'arenaDetails.ContactDetails',
             'arenaDetails.UserTeam.userDetails.positionDetails'
-        ])->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
+        ])->whereNull('status')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
         if($request->has('per_page')) {
+            
             $perPage = $request->input('per_page');
-            return $soa->whereNull('status')->paginate($perPage);
+
+            if($request->has('site') && $site !== 'all') {
+                return $soa->where('refNo','like', '_'.$site.'%')
+                        ->paginate($perPage);
+            }
+                return $soa->paginate($perPage);
+            
+
         } else {
-            return $soa->whereNull('status')->get();
+            return $soa->get();
         }
 
 
@@ -61,25 +74,38 @@ class importController extends Controller
             $perPage = $request->input('per_page');
             return $soaDateRange->paginate($perPage);
         } else {
-        return $soaDateRange->get();
+            return $soaDateRange->get();
         }
     }
 
     //converted
     public function withstatus(Request $request)
     {
+        $status = $request->query('status') == "null" ? null : 'done';
+        $site = $request->query('site');
+        $from = $request->query('dateFrom');
+        $to = $request->query('dateTo');
+
         $soa = import::with(['BankDetails',
             'arenaDetails.BankDetails',
             'arenaDetails.EmailDetails',
             'arenaDetails.ContactDetails',
             'arenaDetails.UserTeam.userDetails.positionDetails'
-        ])->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
+    ])->whereNotNull('status')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
         if($request->has('per_page')) {
+            
             $perPage = $request->input('per_page');
-            return $soa->whereNotNull('status')->paginate($perPage);
+            if($request->has('site') && $site !== 'all') {
+                return $soa->where('refNo','like', '_'.$site.'%')
+                    
+                    ->paginate($perPage);
+            }
+                return $soa->paginate($perPage);
+            
+
         } else {
-            return $soa->whereNotNull('status')->get();
+            return $soa->get();
         }
 
     }
@@ -99,8 +125,6 @@ class importController extends Controller
         } else {
             return $soaSearch->get();
         }
-
-
     }
 
     public function filterNoArena(Request $request) {
@@ -122,6 +146,28 @@ class importController extends Controller
 
        return $soa;
     }
+
+    public function filterSite(Request $request) {
+        $soaSite = import::with(['BankDetails',
+            'arenaDetails.BankDetails',
+            'arenaDetails.EmailDetails',
+            'arenaDetails.ContactDetails',
+            'arenaDetails.UserTeam.userDetails.positionDetails'
+        ]);
+        $perPage = $request->query('per_page');
+        $site = $request->query('site');
+        if($request->has('site') && $site !== 'all') {
+            return $soaSite->where('refNo','like', 'S'.$site.'%')
+                    ->orWhere('refNo','like', 'R'.$site.'%')
+                    ->paginate($perPage);
+        } else {
+            return $soaSite->paginate($perPage);
+        }   
+
+    }
+
+
+   
 
 
     /**

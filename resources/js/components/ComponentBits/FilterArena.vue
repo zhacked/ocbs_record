@@ -1,5 +1,5 @@
 <template lang="">
-    <v-col class="col-md-3">
+    <v-col class="col-md-2">
         <v-select
             :items="arenaItemsSelection"
             label="Filter arena"
@@ -13,7 +13,7 @@
     </v-col>
 </template>
 <script>
-import axios from 'axios'
+
 import {toOrderBy} from '../../utility'
 export default {
     name: 'filter-arena',
@@ -47,20 +47,6 @@ export default {
             this.loading = true
             const {data} = await axios.get(`api/filterNoArena?page=${this.page}&per_page=${parseInt(localStorage.getItem('itemsPerPage'))}`)
             console.log('DATA', data)
-
-            
-            // arenaData.forEach((arena) => {
-            //     if (!arena.arena_details) {
-            //         arenaNoDetais.push(arena);
-            //     }
-            // });
-
-            // const arenaNoDetais = data.filter((a) => !a.arena_details)
-            // console.log('xxxxxx', arenaNoDetais)
-
-            // arenaData.length = 0;
-            // arenaData.splice(0, Infinity, ...arenaNoDetais);
-            // console.log('NO ARENA', arenaNoDetais)
             this.$emit('noArenaDetails', {noArenaData: toOrderBy(data.data), ...data})
             this.loading = false
 

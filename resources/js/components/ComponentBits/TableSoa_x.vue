@@ -14,8 +14,8 @@
         :single-select="singleSelect"
         class="elevation-1 text-center"
         :footer-props="{
-            'items-per-page-options': [5, 10, 20, 30, 40, 50, 100],
-
+            'items-per-page-options': itemsPerPageOptions,
+            
         }"
         :options="perPagee"
         :page="page"
@@ -29,7 +29,7 @@
 
     >
         <template v-slot:top="{ pagination, options, updateOptions, itemsPerPageOptions }">
-            <v-data-footer
+            <v-data-footer 
                 :items-per-page-options ="[5, 10, 20, 30, 40, 50, 100]"
                 :pagination="pagination"
                 :options="perPagee"
@@ -116,14 +116,15 @@
 export default {
     name: "table-soax",
     props: {
-        soaLists: Function,
-        withStatus: Function,
+        soaLists: Function, // FIXME: TO REMOVE
+        withStatus: Function, // FIXME: TO REMOVE
+        fetchLists: Function,
         loadDateRange: Function,
         handleSearching: Function,
         arenaData: Array,
         downloadingReport: Boolean,
         openModal: Function,
-        search: String,
+        search: String, 
         total: Number,
         page: Number,
         perPage: Number,
@@ -141,6 +142,7 @@ export default {
             { text: "Arena Name", value: "arena_name" ,sortable: false },
             { text: "", value: "actions", sortable: false },
         ],
+        itemsPerPageOptions: [5, 10, 20, 30, 40, 50, 100, 200],
         singleSelect: false,
         selectedItems: [],
         selected: [],
@@ -209,25 +211,25 @@ export default {
 
         async handlePaginate(e){
             this.pagePosition  = e.page
-
+            
                 if(this.dates.length < 1 && this.search) {
                     await this.handleSearching()
 
                 }else if (this.filteredText === 'noArenaDetails' && this.dates.length < 1 && !this.search) {
-
+                 
                     this.$emit('loading', true)
                     await this.handleNoArenaDetails();
                     this.$emit('loading', false)
 
-                }else if(this.tab === 'ongoing' && this.dates.length < 1 && !this.search){
+                }else if(this.tab === 'ongoing' && this.dates.length < 1 && !this.search){ 
                     this.$emit('loading', true)
                     await this.soaLists();
                     this.$emit('loading', false)
-                } else if (this.tab === 'converted'&& this.dates.length < 1 && !this.search) {
+                } else if (this.tab === 'converted'&& this.dates.length < 1 && !this.search) { 
                     console.log('converted FETCH DATA')
                     this.$emit('loading', true)
                     await this.withStatus()
-
+                   
                     this.$emit('loading', false)
                 } else if(this.dates.length > 1 && !this.search) {
                     this.$emit('loading', true)
@@ -235,11 +237,11 @@ export default {
                     this.$emit('loading', false)
                 } else {
                   console.log('SEARCH', this.search)
-
+                  
                 }
-
-
-
+              
+               
+           
         },
         async handlePageCount(e){
 

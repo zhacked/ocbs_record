@@ -1,5 +1,5 @@
 <template lang="">
-    <v-col class="col-md-4" v-show="$gate.isAdmin()">
+    <v-col class="col-md-3" v-show="$gate.isAdmin()">
         <v-file-input
             outlined
             dense
@@ -82,33 +82,33 @@ export default {
     },
 
     async proceedAction() {
-         console.log("hey!!!!>>",this.ocbsArrayFiltered);
-    //   try {
-    //      this.$Progress.start();
-    //     if (
-    //       $("#importData").val() === "" ||
-    //       !this.fileUpload.name.includes("xlsx")
-    //     ) {
-    //       Toast.fire({
-    //         icon: "warning",
-    //         title: "Make sure you insert correct excel data!",
-    //       });
-    //     } else {
-    //       this.loading = true
-    //       await axios.post("api/import", this.ocbsArrayFiltered)
-    //       await this.soaLists()
-
-    //       this.isExcel = false;
-    //       this.fileUpload = null;
-    //       setTimeout(() => {this.loading = false}, 1000)
-
-    //     }
-    //   } catch (error) {
-    //       this.loading = false
-    //       Toast.fire("Error!", "Excel import denied", "error");
-
-    //   }
-
+      console.log(this.ocbsArrayFiltered)
+      try {
+         this.$Progress.start();
+        if (
+          $("#importData").val() === "" ||
+          !this.fileUpload.name.includes("xlsx")
+        ) {
+          Toast.fire({
+            icon: "warning",
+            title: "Make sure you insert correct excel data!",
+          });
+        } else {
+          this.loading = true
+          await axios.post("api/import", this.ocbsArrayFiltered)
+          await this.soaLists()
+          
+          this.isExcel = false;
+          this.fileUpload = null;
+          setTimeout(() => {this.loading = false}, 1000)
+    
+        }
+      } catch (error) { 
+          this.loading = false
+          Toast.fire("Error!", "Excel import denied", "error");
+         
+      }
+     
     },
     clearFile(file) {
       console.log(file);

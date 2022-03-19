@@ -7,13 +7,12 @@
             :return-value.sync="dates"
             transition="scale-transition"
             offset-y
-          
             min-width="auto"
         >
             <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                    v-model="dateRangeText"
-                    outlined
+                        v-model="dateRangeText"
+                        outlined
                         dense
                         label="Select Date Range"
                         prepend-icon="mdi-calendar"
@@ -66,7 +65,8 @@ export default {
     data: ()=>({
         menu: false,
         dates: [],
-        dateRangeTxt: ''
+        dateRangeTxt: '',
+        loading: false
       
     }),
     methods: {
@@ -96,9 +96,7 @@ export default {
 
         async loadDateRange(tabItem, page, perPage) {
             const status =  tabItem === 'ongoing' || (!tabItem && this.tab ==='ongoing') ? null : 'done'
-          
             // DATE RANGE
-         
             const endDate = moment(this.dates[1], "YYYY-MM-DD")
                 .add(1, "days")
                 .format("YYYY-MM-DD");
@@ -120,19 +118,12 @@ export default {
                 return obj
             })
 
-            // console.log(depRep)
-         
-            // const filteredDepositReplenish = tabItem === 'ongoing' || (!tabItem && this.tab ==='ongoing') ? depositReplenish.filter(dr => dr.status === null) : depositReplenish.filter(dr => dr.status !== null)
-        
             this.$emit('depositReplenish', {
                 depositReplenish: toOrderBy(depositReplenish),
                 page: data.current_page,
                 total: data.total,
                 numberOfPages: data.last_page
             })
-          
-
-            // return toOrderBy(filteredDepositReplenish)
         },
     },
     computed: {

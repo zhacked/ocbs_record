@@ -114,6 +114,7 @@ export default {
         arenaData: Array,
         soaLists: Function,
         importWithStatus: Function,
+        fetchLists: Function,
         loadDateRange: Function,
         handleEmptySelect: Function,
         printReadyProgress: Number
@@ -230,11 +231,12 @@ export default {
                         this.loading = false;
                          this.handleEmptySelect()
                     }, 1000);
-                      if(this.dates.length !== 0) {
-                                this.loadDateRange(this.tab)
-                            }else{
-                                this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
-                            }
+                    //   if(this.dates.length !== 0) {
+                    //             await this.loadDateRange(this.tab)
+                    //         }else{
+                                // this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
+                                await this.fetchLists()
+                            // }
                 }
             }
 
@@ -294,11 +296,12 @@ export default {
                     }
 
                     
-                    if(this.dates.length !== 0) {
-                        this.loadDateRange(this.tab)
-                    }else{
-                        this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
-                    }
+                    // if(this.dates.length !== 0) {
+                    //     await this.loadDateRange(this.tab)
+                    // }else{
+                        // this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus();
+                        await this.fetchLists()
+                    // }
 
                     this.handleEmptySelect()
             };
@@ -339,7 +342,7 @@ export default {
                 const url = link.href;
 
                 const folderName =
-                    parseFloat(this.selected[i].for_total) < 0 ? "fr" : "soa";
+                    parseFloat(this.selected[i].for_total) < 0 ? "Replenishment" : "Deposit";
                 console.log(this.selected[i])
                 const arenaName =
                     (this.selected[i].arena_name.indexOf("/")) > -1

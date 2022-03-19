@@ -974,7 +974,6 @@ export default {
                     Fire.$emit("AfterCreate");
                 })
                 .catch((e) => {
-                    // console.log('error',e.response.data.errors)
                     this.errors.contacts =
                         e.response.data.errors.contact_number;
                     this.errors.emails = e.response.data.errors.email;
@@ -991,8 +990,6 @@ export default {
             this.form.arena = arenas.arena;
             this.form.address = arenas.address;
             this.form.operator = arenas.operator;
-            // this.form.contact_number = arenas.contact_number
-
             this.getEmail(arenas.area_code);
             this.getContacts(arenas.area_code);
 
@@ -1000,8 +997,6 @@ export default {
         },
         getEmail(areaCode) {
             axios.get("api/getEmails/" + areaCode).then(({ data }) => {
-                //   const contacts = data.length > 0 && typeof data[0].contact_number == "string" && data[0].contact_number.indexOf(' / ') > -1 ?  data[0].contact_number.split(" / ") : data.length > 0 ? [data[0].contact_number] : []
-
                 const em =
                     data.length > 0 && data[0].email?.includes(" / ")
                         ? data[0].email.split(" / ")
