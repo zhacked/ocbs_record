@@ -73,13 +73,9 @@ export default {
         const { arenaReportFiltered, isExcel, withSite } = await readSoa(event, this.isExcel, this.withSite);
         this.ocbsArrayFiltered = arenaReportFiltered;
         this.isExcel = isExcel;
-        this.withSite = withSite
+        // this.withSite = withSite;
 
-
-        // site.forEach(s =>{
-        //   this.site.push(s)
-        // });
-
+        console.log('withSite', withSite);
 
     },
 
@@ -89,8 +85,7 @@ export default {
          this.$Progress.start();
         if (
           $("#importData").val() === "" ||
-          !this.fileUpload.name.includes("xlsx") ||
-          this.withSite == false
+          !this.fileUpload.name.includes("xlsx")
         ) {
           Toast.fire({
             icon: "warning",

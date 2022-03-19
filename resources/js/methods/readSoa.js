@@ -49,7 +49,6 @@ const ExcelDateToJSDate = (serial) => {
 const readSoa = (event, isExcel, withSite) => {
 
     let arenaReportFiltered = [];
-    let site = [];
     const file = event ? event : null;
     const checkfile = event.name.includes("xlsx") || event.name.includes("csv");
 
@@ -95,9 +94,10 @@ const readSoa = (event, isExcel, withSite) => {
             const siteLists = ['A', 'B']
 
             const checkSiteExist = siteLists.some(s => Object.values(arrayData[1][5]).includes(s))
-            console.log('wrwrwrer',checkSiteExist);
+
             // if(checkSiteExist == true) throw new Error() //FIXME
-            if (checkSiteExist == true){
+            if (checkSiteExist){
+
                 withSite = true;
                 arrayData[1].map((r) => {
 
@@ -427,7 +427,7 @@ const readSoa = (event, isExcel, withSite) => {
                 Fire.$emit("AfterCreate"),
                     Toast.fire({
                         icon: "warning",
-                        title: "double check the excel!",
+                        title: "Site is Missing, Please double check your excel!",
                     });
             }
 
