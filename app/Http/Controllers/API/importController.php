@@ -241,8 +241,8 @@ class importController extends Controller
 
         $soaSummaryReport = import::with(['BankDetails','arenaDetails.BankDetails'])->where('group', $group);
 
-        if($request->has('per_page')) { 
-        
+        if($request->has('per_page')) {
+
             return $soaSummaryReport->select('date_of_soa')->distinct()->orderBy('date_of_soa', 'DESC')->paginate($request->input('per_page'));
         } else {
             return $soaSummaryReport->get();
@@ -273,7 +273,7 @@ class importController extends Controller
     //             ]);
     // }
 
-   
+
 
     public function ConvertToExcel($group,$data){
         // ->whereNotNull('status')
@@ -291,6 +291,12 @@ class importController extends Controller
         $delete = import::whereBetween('date_of_soa',[$request->from, $request->to])
                         ->where('status',$status)
                         ->delete();
+        return $delete;
+    }
+
+    public function deleteSpecificSoa($id){
+        $delete = import::whereId($id)->delete();
+
         return $delete;
     }
 

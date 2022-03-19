@@ -58,48 +58,57 @@ export default {
     isExcel: false,
     ocbsArrayFiltered: [],
     fileUpload: null,
-    loading: false
+    loading: false,
+    site: []
   }),
   methods: {
     async onFileChange(event) {
+
         if(event) {
             this.loading = true
             setTimeout(() => {this.loading = false}, 3000)
-         
+
         }
-        const { arenaReportFiltered, isExcel } = await readSoa(event, this.isExcel);
+        const { arenaReportFiltered, isExcel, site } = await readSoa(event, this.isExcel);
         this.ocbsArrayFiltered = arenaReportFiltered;
         this.isExcel = isExcel;
-        
+        console.log(site);
+
+        // site.forEach(s =>{
+        //   this.site.push(s)
+        // });
+
+
     },
 
     async proceedAction() {
-      try {
-         this.$Progress.start();
-        if (
-          $("#importData").val() === "" ||
-          !this.fileUpload.name.includes("xlsx")
-        ) {
-          Toast.fire({
-            icon: "warning",
-            title: "Make sure you insert correct excel data!",
-          });
-        } else {
-          this.loading = true
-          await axios.post("api/import", this.ocbsArrayFiltered)
-          await this.soaLists()
-          
-          this.isExcel = false;
-          this.fileUpload = null;
-          setTimeout(() => {this.loading = false}, 1000)
-    
-        }
-      } catch (error) { 
-          this.loading = false
-          Toast.fire("Error!", "Excel import denied", "error");
-         
-      }
-     
+         console.log("hey!!!!>>",this.ocbsArrayFiltered);
+    //   try {
+    //      this.$Progress.start();
+    //     if (
+    //       $("#importData").val() === "" ||
+    //       !this.fileUpload.name.includes("xlsx")
+    //     ) {
+    //       Toast.fire({
+    //         icon: "warning",
+    //         title: "Make sure you insert correct excel data!",
+    //       });
+    //     } else {
+    //       this.loading = true
+    //       await axios.post("api/import", this.ocbsArrayFiltered)
+    //       await this.soaLists()
+
+    //       this.isExcel = false;
+    //       this.fileUpload = null;
+    //       setTimeout(() => {this.loading = false}, 1000)
+
+    //     }
+    //   } catch (error) {
+    //       this.loading = false
+    //       Toast.fire("Error!", "Excel import denied", "error");
+
+    //   }
+
     },
     clearFile(file) {
       console.log(file);

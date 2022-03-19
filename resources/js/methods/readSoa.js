@@ -46,12 +46,15 @@ const ExcelDateToJSDate = (serial) => {
 };
 
 const readSoa = (event, isExcel) => {
+
     let arenaReportFiltered = [];
+    let site = [];
     const file = event ? event : null;
     const checkfile = event.name.includes("xlsx") || event.name.includes("csv");
 
     if (event && checkfile) {
         isExcel = true;
+
         const reader = new FileReader();
         let arrayData = [];
         let reportCombined = [];
@@ -59,6 +62,8 @@ const readSoa = (event, isExcel) => {
         let summaryReport = [];
         let objMobileKiosk = [];
         let eventDetailsA = [];
+
+
 
         reader.onload = (e) => {
             // eslint-disable-next-line no-unused-vars
@@ -398,12 +403,15 @@ const readSoa = (event, isExcel) => {
             }));
 
             const newSetReport = concat(newsoa, newfr);
+
+
             const sortReport = sortBy(newSetReport, [
                 function (o) {
                     return o.areaCode;
                 },
             ]);
 
+            site.push(arrayData[1][5].B);
             arenaReportFiltered.push(...sortReport);
         };
         reader.readAsBinaryString(file);
@@ -418,6 +426,8 @@ const readSoa = (event, isExcel) => {
     return {
         arenaReportFiltered,
         isExcel,
+        site,
+
     };
 };
 

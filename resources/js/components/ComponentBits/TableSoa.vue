@@ -25,7 +25,7 @@
                 :disabled="item.arena_details ? false : true"
                 @input="select($event)"
             ></v-simple-checkbox>
-        </template>  
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
             <v-tooltip top color="primary">
                 <template v-slot:activator="{ on, attrs, hover }">
@@ -45,7 +45,7 @@
                         <v-icon>mdi-eye</v-icon>
                     </v-btn>
                 </template>
-                <span>View Account</span>
+                <span>View Accountss</span>
             </v-tooltip>
         </template>
     </v-data-table>
