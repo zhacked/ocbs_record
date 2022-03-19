@@ -91,6 +91,14 @@ const readSoa = (event, isExcel) => {
                     })
                 );
             });
+            
+            const siteLists = ['A', 'B']
+            
+            const checkSiteExist = siteLists.some(s => Object.values(arrayData[1][5]).includes(s))
+            
+            if(checkSiteExist) throw new Error() //FIXME
+            
+            
 
             arrayData[1].map((r) => {
 
@@ -389,8 +397,10 @@ const readSoa = (event, isExcel) => {
                     return o.areaCode;
                 },
             ]);
-
+            
+            
             const site = arrayData[1][5].A.split(':')[1].trim() === '' ? arrayData[1][5].B : arrayData[1][5].A.split(':')[1];
+            
            
             const count = (i) => `0000${i + 1}`.slice(-4);
             const newsoa = sortSoa.map(({ soaFr, ...s }, i) => ({
