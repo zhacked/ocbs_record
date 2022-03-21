@@ -168,39 +168,6 @@ export default {
                     await this.fetchLists(localStorage.getItem('site'));
                     this.$emit('loading', false)
             
-                // if(this.dates.length < 1 && this.search) {
-                //     this.$emit('loading', true)
-                //     await this.handleSearching()
-                //     this.$emit('loading', false)
-
-                // }else if (this.filteredText === 'noArenaDetails' && this.dates.length < 1 && !this.search) {
-                //     this.$emit('loading', true)
-                //     await this.handleNoArenaDetails();
-                //     this.$emit('loading', false)
-
-                // }else if(this.tab && this.dates.length < 1 && !this.search){ 
-                //     this.$emit('loading', true)
-                //     await this.fetchLists();
-                //     this.$emit('loading', false)
-                // } 
-                
-                // // else if (this.tab === 'converted'&& this.dates.length < 1 && !this.search) { 
-                // //     console.log('converted FETCH DATA')
-                // //     this.$emit('loading', true)
-                // //     await this.withStatus()
-                   
-                // //     this.$emit('loading', false)
-                // // } 
-                
-                // else if(this.dates.length > 1 && !this.search) {
-                //     this.$emit('loading', true)
-                //     await this.loadDateRange()
-                //     this.$emit('loading', false)
-                // } else {
-                //   console.log('SEARCH', this.search)
-                  
-                // }
-              
                
            
         },
