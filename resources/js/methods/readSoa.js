@@ -46,8 +46,7 @@ const ExcelDateToJSDate = (serial) => {
     );
 };
 
-const readSoa = (event, isExcel) => {
-    let withSite = true;
+const readSoa = (event, isExcel, withSite) => {
     let arenaReportFiltered = [];
     const file = event ? event : null;
     const checkfile = event.name.includes("xlsx") || event.name.includes("csv");
@@ -97,7 +96,7 @@ const readSoa = (event, isExcel) => {
 
             // if(checkSiteExist == true) throw new Error() //FIXME
             if (checkSiteExist) {
-                withSite = true;
+                withSite = true
                 arrayData[1].map((r) => {
                     if (Object.keys(r).length >= 17) reportCombined.push(r);
 
@@ -432,7 +431,7 @@ const readSoa = (event, isExcel) => {
                 ]);
                 arenaReportFiltered.push(...sortReport);
             } else {
-                withSite = false;
+                withSite = false
                 Fire.$emit("AfterCreate"),
                     Toast.fire({
                         icon: "warning",
@@ -452,7 +451,7 @@ const readSoa = (event, isExcel) => {
     return {
         arenaReportFiltered,
         isExcel,
-        withSite,
+        withSite
     };
 };
 

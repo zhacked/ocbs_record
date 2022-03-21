@@ -8,9 +8,7 @@
             label="File input"
             placeholder="Select your file"
             :clearable="false"
-            counter
             append-icon="mdi-file-import"
-            :show-size="1000"
             @change="onFileChange($event)"
         >
             <template v-slot:append>
@@ -18,7 +16,7 @@
                     <template v-slot:activator="{ on }">
                         <v-icon
                             large
-                            :disabled="!isExcel"
+                            :disabled="!isExcel || !withSite"
                             v-on="on"
                             color="green darken-3"
                             style="cursor: pointer"
@@ -59,6 +57,7 @@ export default {
     ocbsArrayFiltered: [],
     fileUpload: null,
     loading: false,
+    withSite: false
 
   }),
   methods: {
@@ -69,23 +68,29 @@ export default {
             setTimeout(() => {this.loading = false}, 3000)
 
         }
-        const { arenaReportFiltered, isExcel, withSite } = await readSoa(event, this.isExcel);
+        const { arenaReportFiltered, isExcel, withSite } = await readSoa(event, this.isExcel, this.withSite);
         this.ocbsArrayFiltered = arenaReportFiltered;
         this.isExcel = isExcel;
-        // this.withSite = withSite;
-
-        console.log('withSite', withSite);
-
+        this.withSite = withSite
+ 
+       
     },
 
     async proceedAction() {
-      console.log(this.ocbsArrayFiltered)
       try {
          this.$Progress.start();
-        if (
+        if(!this.withSite) {
+            this.fileUpload = null
+            Fire.$emit("AfterCreate"),
+                    Toast.fire({
+                        icon: "warning",
+                        title: "Site is Missing, Please double check your excel!",
+                    });
+        } else if (
           $("#importData").val() === "" ||
           !this.fileUpload.name.includes("xlsx")
         ) {
+          this.fileUpload = null
           Toast.fire({
             icon: "warning",
             title: "Make sure you insert correct excel data!",

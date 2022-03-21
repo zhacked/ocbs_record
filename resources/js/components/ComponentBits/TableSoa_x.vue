@@ -19,14 +19,12 @@
         }"
         :options="perPagee"
         :page="page"
-
         @page-count="handlePageCount"
         :server-items-length="total"
         @pagination="handlePaginate"
          @update:options="handlePageOptions"
         @toggle-select-all="selectAllToggle"
         @input="singleSelected"
-
     >
         <template v-slot:top="{ pagination, options, updateOptions, itemsPerPageOptions }">
             <v-data-footer 
@@ -39,7 +37,6 @@
             />
         </template>
         <template v-slot:item="{item, isSelected, select}">
-
             <tr>
                 <td>
                     <v-simple-checkbox
@@ -84,11 +81,9 @@
                             </template>
                             <span>View Account</span>
                         </v-tooltip>
-
                         <v-tooltip top color="red">
                             <template v-slot:activator="{ on, attrs, hover }">
                                 <v-btn
-                                    
                                     color="red"
                                     dark
                                     small
@@ -109,7 +104,6 @@
                     </div>
                 </td>
             </tr>
-
         </template>
 
     </v-data-table>
