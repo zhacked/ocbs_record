@@ -56,21 +56,27 @@ export default {
   },
   data: () => ({
     isExcel: false,
+    withSite: false,
     ocbsArrayFiltered: [],
     fileUpload: null,
-    loading: false
+    loading: false,
+
   }),
   methods: {
     async onFileChange(event) {
+
         if(event) {
             this.loading = true
             setTimeout(() => {this.loading = false}, 3000)
-         
+
         }
-        const { arenaReportFiltered, isExcel } = await readSoa(event, this.isExcel);
+        const { arenaReportFiltered, isExcel, withSite } = await readSoa(event, this.isExcel, this.withSite);
         this.ocbsArrayFiltered = arenaReportFiltered;
         this.isExcel = isExcel;
-        
+        // this.withSite = withSite;
+
+        console.log('withSite', withSite);
+
     },
 
     async proceedAction() {
@@ -89,18 +95,18 @@ export default {
           this.loading = true
           await axios.post("api/import", this.ocbsArrayFiltered)
           await this.soaLists()
-          
+
           this.isExcel = false;
           this.fileUpload = null;
           setTimeout(() => {this.loading = false}, 1000)
-    
+
         }
-      } catch (error) { 
+      } catch (error) {
           this.loading = false
           Toast.fire("Error!", "Excel import denied", "error");
-         
+
       }
-     
+
     },
     clearFile(file) {
       console.log(file);

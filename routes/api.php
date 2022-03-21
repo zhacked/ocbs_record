@@ -47,7 +47,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::put('updateSignatory', [App\Http\Controllers\API\UserController::class, 'updateSignatory']);
     Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');
     Route::put('updateSelectedUserToTeam/{team}', [App\Http\Controllers\API\UserController::class, 'updateSelectedUserToTeam']);
-   
+
 
     //custom BankDetails api
     //get
@@ -60,7 +60,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
-    //custome Import api 
+    //custome Import api
     //get
     Route::get('importwithstatus', [App\Http\Controllers\API\ImportController::class, 'withstatus']);
     Route::get('depositeandreflenish', [App\Http\Controllers\API\ImportController::class, 'depositedata']);
@@ -75,16 +75,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('count', [App\Http\Controllers\API\ImportController::class, 'countdata']);
     Route::get('updateBank/{id}/{bank_id}', [App\Http\Controllers\API\ImportController::class, 'updatebankaccount']);
     Route::get('selectedbank/{id}', [App\Http\Controllers\API\ImportController::class, 'bankaccountfilter']);
-    Route::get('convertToExcel/{group}/{data}', [App\Http\Controllers\API\ImportController::class, 'ConvertToExcel']); 
+    Route::get('convertToExcel/{group}/{data}', [App\Http\Controllers\API\ImportController::class, 'ConvertToExcel']);
     //post
     Route::post('clearfilterbydate', [App\Http\Controllers\API\ImportController::class, 'Clearfilterbydate']);
     //put
     Route::put('arenaStatus', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
 
+    //cusom Delete Soa
+    Route::get('deleteOneSoa/{id}', [App\Http\Controllers\API\ImportController::class, 'deleteSpecificSoa']);
 
 
     //custom Arena api
-    //post 
+    //post
     Route::post('importArena', [App\Http\Controllers\API\ArenaController::class, 'importArena']);
     //get
     Route::get('getEmails/{areaCode}', [App\Http\Controllers\API\ArenaController::class, 'getEmails']);
@@ -112,7 +114,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::put('selected/{id}', [App\Http\Controllers\API\EmployeeController::class, 'selectedbyUser']);
     //post
     Route::post('saveposition', [App\Http\Controllers\API\EmployeeController::class, 'savepostionNow']);
-   
+
 
 
     //custom Team api
@@ -129,7 +131,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('Logsindex', [App\Http\Controllers\API\ActivitylogsController::class, 'logsIndex']);
     //post
     Route::post('activitybank', [App\Http\Controllers\API\ActivitylogsController::class, 'BankAccount']);
-    
-    
-    
-   
+
+
+
