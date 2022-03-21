@@ -72,6 +72,7 @@ export default {
         this.ocbsArrayFiltered = arenaReportFiltered;
         this.isExcel = isExcel;
         this.withSite = withSite
+  
  
        
     },

@@ -49,14 +49,22 @@ class importController extends Controller
 
             if($request->has('site') && $site !== 'all') {
                 if($request->has('dateFrom') && $request->has('dateTo')) {
-                  
                     return $soa->where('refNo','like', '_'.$site.'%')->whereBetween('date_of_soa',[$from, $to])->paginate($perPage);
                 }else {
                     return $soa->where('refNo','like', '_'.$site.'%')->paginate($perPage);
                 }
                 
+            } else if ($request->has('site')  && $site == 'all') {
+                if($request->has('dateFrom') && $request->has('dateTo')) {
+                    return $soa->whereBetween('date_of_soa',[$from, $to])->paginate($perPage);
+                }else {
+                    return $soa->paginate($perPage);
+                }
+
+            } else {
+                 return $soa->paginate($perPage);
             }
-                return $soa->paginate($perPage);
+               
             
 
         } else {

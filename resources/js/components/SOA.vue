@@ -722,7 +722,7 @@ export default {
         },
         truncate, // truncate data based on date
         async soaLists(site, dates) {
-            console.log('SOALISTxxxxx', dates)
+            console.log('SOALISTxxxxx', site)
             // fetch all soa with status = null
             // const pageNo = parseInt(localStorage.getItem('page'))
             const perPage = parseInt(localStorage.getItem("itemsPerPage"));
@@ -816,7 +816,7 @@ export default {
                 this.tab === "ongoing" &&
                 this.dates.length > 1 &&
                 !this.search){
-                    console.log(this.dates, site)
+                
                     await this.soaLists(site, this.dates);
             }else if ( site &&
                 this.tab === "converted" &&
@@ -830,6 +830,7 @@ export default {
                 this.dates.length < 1 &&
                 !this.search
             ) {
+        
                 await this.soaLists(site);
             } else if (
                 site &&

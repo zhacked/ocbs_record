@@ -38,7 +38,7 @@ const soa = async (site, page, perPage, status = null, dates) => {
     const fromTo = (Array.isArray(dates) && dates.length > 1) && `dateFrom=${dates[0]}&dateTo=${endDate}`
     
     const {data} = await axios.get(`api/import?${fromTo}&site=${site}&status=${status}&page=${page}&per_page=${perPage}`);
-    console.log(data)
+
 
 
     const newArray = [];

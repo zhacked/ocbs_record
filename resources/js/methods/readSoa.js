@@ -47,6 +47,7 @@ const ExcelDateToJSDate = (serial) => {
 };
 
 const readSoa = (event, isExcel, withSite) => {
+    
     let arenaReportFiltered = [];
     const file = event ? event : null;
     const checkfile = event.name.includes("xlsx") || event.name.includes("csv");
