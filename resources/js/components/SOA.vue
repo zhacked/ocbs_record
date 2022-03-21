@@ -899,6 +899,7 @@ export default {
         async handleChangeTab(item) {
             // Swicth between menu tab: ongoing and converted
             this.pageNumber = 1;
+            this.signsArray = [];
             const perPage = parseInt(localStorage.getItem("itemsPerPage"));
             this.search
                 ? this.handleSearching(item)
@@ -907,6 +908,7 @@ export default {
                 : item === "ongoing"
                 ? await this.soaLists()
                 : await this.importWithStatus();
+            
             this.loadBankDetails();
         },
         handleSigned(value) {

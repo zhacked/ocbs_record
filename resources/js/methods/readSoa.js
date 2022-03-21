@@ -127,30 +127,24 @@ const readSoa = (event, isExcel) => {
                     eventCreatedUTC
             );
 
-            console.log('eventDateCreated',eventDateCreated)
+           
             const eventDateClosed = dateFormatting(
                 mergeObj.dateClosed  || isValidEventArenaDate(eventDetailsA[4]?.A)
                 || eventClosedUTC
             );
 
-            console.log(isValidEventArenaDate(arrayData[1][3].A) )
-
             const objectKeyed = (array) => {
-                let objectKeyReplacedArray = [];
                 const keysss = array.find((k) => k.B === "ARENA NAME");
-
                 const [, ...headKey] = Object.values(keysss);
                 const headK = ["key", ...headKey];
-
-                array.map((data) => {
+                const objectKeyReplacedArray = array.map((data) => {
                     data = Object.assign(
                         {},
                         ...Object.entries(data).map(([, prop], index) => ({
                             [camelCase(headK[index])]: prop,
                         }))
                     );
-
-                    objectKeyReplacedArray.push({
+                    return {
                         eventCreated: eventDateCreated,
                         eventClosed: eventDateClosed,
                         type: data.type
@@ -166,7 +160,7 @@ const readSoa = (event, isExcel) => {
                         consolCommMob: 0,
                         payOutsBalMob: 0,
                         ...data,
-                    });
+                    }
                 });
 
                 return objectKeyReplacedArray;
@@ -247,7 +241,7 @@ const readSoa = (event, isExcel) => {
 
             const removeKeyReportObject = filterObjectHeader.map(
                 ({ key, ...rest }) => {
-                    if (rest.arenaName.includes("MA90")) console.log(rest);
+                  
                     const type = rest.type || rest.classification;
                     const exempted = rest.exempted;
                     const totalMWBets = rest.meron + rest.wala;
