@@ -56,7 +56,6 @@ export default {
   },
   data: () => ({
     isExcel: false,
-    withSite: false,
     ocbsArrayFiltered: [],
     fileUpload: null,
     loading: false,
@@ -70,7 +69,7 @@ export default {
             setTimeout(() => {this.loading = false}, 3000)
 
         }
-        const { arenaReportFiltered, isExcel, withSite } = await readSoa(event, this.isExcel, this.withSite);
+        const { arenaReportFiltered, isExcel, withSite } = await readSoa(event, this.isExcel);
         this.ocbsArrayFiltered = arenaReportFiltered;
         this.isExcel = isExcel;
         // this.withSite = withSite;
