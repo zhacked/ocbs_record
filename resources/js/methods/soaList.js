@@ -1,4 +1,5 @@
 import {toOrderBy} from '../utility'
+import moment from 'moment'
 
 const withStatus = async (site,page,perPage, status) => {
     console.log('PER PAGE',perPage)
@@ -29,10 +30,15 @@ const withStatus = async (site,page,perPage, status) => {
     };
 };
 
-const soa = async (site, page, perPage, status = null) => {
-console.log('soaLists>>>',site)
-    const {data} = await axios.get(`api/import?site=${site}&status=${status}&page=${page}&per_page=${perPage}`);
-    // const data = await axios.get(`api/import`);
+const soa = async (site, page, perPage, status = null, dates) => {
+    const endDate = (Array.isArray(dates) && dates.length > 1) && moment(dates[1], "YYYY-MM-DD")
+    .add(1, "days")
+    .format("YYYY-MM-DD");
+
+    const fromTo = (Array.isArray(dates) && dates.length > 1) && `dateFrom=${dates[0]}&dateTo=${endDate}`
+    
+    const {data} = await axios.get(`api/import?${fromTo}&site=${site}&status=${status}&page=${page}&per_page=${perPage}`);
+    console.log(data)
 
 
     const newArray = [];

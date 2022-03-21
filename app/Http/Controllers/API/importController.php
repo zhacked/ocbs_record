@@ -48,8 +48,13 @@ class importController extends Controller
             $perPage = $request->input('per_page');
 
             if($request->has('site') && $site !== 'all') {
-                return $soa->where('refNo','like', '_'.$site.'%')
-                        ->paginate($perPage);
+                if($request->has('dateFrom') && $request->has('dateTo')) {
+                  
+                    return $soa->where('refNo','like', '_'.$site.'%')->whereBetween('date_of_soa',[$from, $to])->paginate($perPage);
+                }else {
+                    return $soa->where('refNo','like', '_'.$site.'%')->paginate($perPage);
+                }
+                
             }
                 return $soa->paginate($perPage);
             
@@ -139,7 +144,14 @@ class importController extends Controller
 
         if($request->has('per_page')) {
             $perPage = $request->input('per_page');
-            return $soaNoArena->paginate($perPage);
+
+            if($request->has('from') && $request->has('to')) {
+                return $soaNoArena->whereBetween('date_of_soa',[$request->query('from'), $request->query('to')])->paginate($perPage);
+            } else {
+                return $soaNoArena->paginate($perPage);
+            }
+
+            
         } else {
             return $soaNoArena->get();
         }
@@ -157,9 +169,16 @@ class importController extends Controller
         $perPage = $request->query('per_page');
         $site = $request->query('site');
         if($request->has('site') && $site !== 'all') {
-            return $soaSite->where('refNo','like', 'S'.$site.'%')
+            if($request->has('from') && $request->has('to')) {
+                return $soaSite->whereBetween('date_of_soa',[$request->query('from'), $request->query('to')])->where('refNo','like', 'S'.$site.'%')
                     ->orWhere('refNo','like', 'R'.$site.'%')
                     ->paginate($perPage);
+            }else {
+                return $soaSite->where('refNo','like', 'S'.$site.'%')
+                    ->orWhere('refNo','like', 'R'.$site.'%')
+                    ->paginate($perPage);
+            }
+            
         } else {
             return $soaSite->paginate($perPage);
         }   
@@ -309,15 +328,6 @@ class importController extends Controller
     }
 
 
-    // public function depositReplenishDateRange($from, $to){
-
-    //             $deposit =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereBetween('date_of_soa', [$from, $to])->where('group','Deposit')->get();
-    //             $reflenish =  import::with(['BankDetails','arenaDetails.BankDetails'])->whereBetween('date_of_soa', [$from, $to])->where('group','Replenish')->get();
-    //             return Response()->json([
-    //                 'fr' => $reflenish,
-    //                 'soa' => $deposit
-    //             ]);
-    // }
 
 
 

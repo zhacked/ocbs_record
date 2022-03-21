@@ -16,7 +16,7 @@
                     <template v-slot:activator="{ on }">
                         <v-icon
                             large
-                            :disabled="!isExcel || !withSite"
+                            :disabled="!isExcel"
                             v-on="on"
                             color="green darken-3"
                             style="cursor: pointer"
@@ -79,14 +79,7 @@ export default {
     async proceedAction() {
       try {
          this.$Progress.start();
-        if(!this.withSite) {
-            this.fileUpload = null
-            Fire.$emit("AfterCreate"),
-                    Toast.fire({
-                        icon: "warning",
-                        title: "Site is Missing, Please double check your excel!",
-                    });
-        } else if (
+        if (
           $("#importData").val() === "" ||
           !this.fileUpload.name.includes("xlsx")
         ) {

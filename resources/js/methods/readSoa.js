@@ -93,7 +93,7 @@ const readSoa = (event, isExcel, withSite) => {
             const checkSiteExist = siteLists.some((s) =>
                 Object.values(arrayData[1][5]).includes(s)
             );
-
+            console.log(checkSiteExist)
             // if(checkSiteExist == true) throw new Error() //FIXME
             if (checkSiteExist) {
                 withSite = true
@@ -261,7 +261,7 @@ const readSoa = (event, isExcel, withSite) => {
 
                 const removeKeyReportObject = filterObjectHeader.map(
                     ({ key, ...rest }) => {
-                        if (rest.arenaName.includes("MA90")) console.log(rest);
+           
                         const type = rest.type || rest.classification;
                         const exempted = rest.exempted;
                         const totalMWBets = rest.meron + rest.wala;

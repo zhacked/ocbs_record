@@ -36,9 +36,10 @@
                             :page="pageNumber"
                             :tab="tab"
                             :dates="dates"
+                            :fetchLists="handleFetchLists"
                             :soaLists="soaLists"
                             :importWithStatus="importWithStatus"
-                            :fetchLists="handleFetchLists"
+                            
                             @noArenaDetails="noArenaDetails"
                             @filterText="filterText"
                             ref="filterArena"
@@ -720,8 +721,8 @@ export default {
             localStorage.setItem("prepared", this.switchPrepared);
         },
         truncate, // truncate data based on date
-        async soaLists(site) {
-            console.log('SOALISTxxxxx', site)
+        async soaLists(site, dates) {
+            console.log('SOALISTxxxxx', dates)
             // fetch all soa with status = null
             // const pageNo = parseInt(localStorage.getItem('page'))
             const perPage = parseInt(localStorage.getItem("itemsPerPage"));
@@ -729,14 +730,16 @@ export default {
             const { soaLists, total, page } = await soa(
                 sited,
                 this.pageNumber,
-                perPage
+                perPage,
+                null,
+                dates
             );
             this.perPage = perPage;
             this.arenaData = soaLists;
             this.total = total;
             this.page = page;
         },
-        async importWithStatus(site) {
+        async importWithStatus(site, dates) {
             // fetch data with status = done
 
             const perPage = parseInt(localStorage.getItem("itemsPerPage"));
@@ -746,7 +749,8 @@ export default {
                 sited,
                 this.pageNumber,
                 perPage,
-                'done'
+                'done',
+                dates
             );
 
             this.arenaData = withStatusData;
@@ -801,9 +805,26 @@ export default {
                 this.dates.length < 1 &&
                 !this.search
             ) {
-                await this.handleNoArenaDetails();
+                await this.handleNoArenaDetails(this.filteredText);
             }
-            else if (
+            else if ( this.filteredText === "noArenaDetails" &&
+                this.dates.length > 1 ) {
+                    await this.handleNoArenaDetails(this.filteredText, this.dates);
+
+            }
+            else if ( site &&
+                this.tab === "ongoing" &&
+                this.dates.length > 1 &&
+                !this.search){
+                    console.log(this.dates, site)
+                    await this.soaLists(site, this.dates);
+            }else if ( site &&
+                this.tab === "converted" &&
+                this.dates.length > 1 &&
+                !this.search){
+                    await this.importWithStatus(site, this.dates);
+            }
+              else if (
                 site &&
                 this.tab === "ongoing" &&
                 this.dates.length < 1 &&
@@ -817,7 +838,10 @@ export default {
                 !this.search
             ) {
                 await this.importWithStatus(site);
-            } else if (this.dates.length > 1 && !this.search) {
+            } 
+            
+            
+            else if (this.dates.length > 1 && !this.search) {
                 await this.loadDateRange();
             } else {
                 console.log("SEARCH", this.search);
@@ -941,9 +965,10 @@ export default {
             this.total = item.total;
             this.page = item.current_page;
         },
-        handleNoArenaDetails() {
+        handleNoArenaDetails(dates) {
             this.$refs.filterArena.handleSelectionFilterArena(
-                this.filteredText
+                this.filteredText,
+                dates
             );
         },
         filterText(item) {

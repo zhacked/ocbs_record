@@ -18,9 +18,11 @@ import {toOrderBy} from '../../utility'
 export default {
     name: 'filter-arena',
     props: {
+        fetchLists: Function,
         arenaData: Array,
         soaLists: Function,
         importWithStatus: Function,
+        
         dates: Array,
         tab: String,
         page: Number,
@@ -40,12 +42,12 @@ export default {
             loading: false
     }),
     methods: {
-        async filterNoArenaDetails() {
+        async filterNoArenaDetails(from, to) {
             console.log(this.page)
             let arenaData = []
             // let arenaNoDetais = [];
             this.loading = true
-            const {data} = await axios.get(`api/filterNoArena?page=${this.page}&per_page=${parseInt(localStorage.getItem('itemsPerPage'))}`)
+            const {data} = await axios.get(`api/filterNoArena?from=${from}&to=${to}%page=${this.page}&per_page=${parseInt(localStorage.getItem('itemsPerPage'))}`)
             console.log('DATA', data)
             this.$emit('noArenaDetails', {noArenaData: toOrderBy(data.data), ...data})
             this.loading = false
@@ -55,10 +57,20 @@ export default {
             
         },
 
-        handleSelectionFilterArena(item) {
+        async handleSelectionFilterArena(item, dates) {
             this.loading = true
-            item === "noArenaDetails" && this.filterNoArenaDetails()
-            item === 'all' && (this.dates.length !== 0 ? this.loadDateRange(this.tab) : this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus())
+            console.log(item)
+            if(this.dates.length !== 0 && item === 'all' && this.tab === 'ongoing') {
+                await this.soaLists();
+            } else if (this.dates.length !== 0 && item === 'all' && this.tab === 'converted') {
+                await this.importWithStatus()
+            } else if (this.dates.length !== 0 && item === "noArenaDetails") {
+                await this.filterNoArenaDetails(dates[0], dates[1])
+            } else {
+                await this.filterNoArenaDetails()
+            }
+            // item === "noArenaDetails" && this.filterNoArenaDetails()
+            // item === 'all' && (this.dates.length !== 0 ? this.loadDateRange(this.tab) : this.tab === 'ongoing' ? this.soaLists() : this.importWithStatus())
            
             // item === "noArenaDetails"
             //     ? this.filterNoArenaDetails()

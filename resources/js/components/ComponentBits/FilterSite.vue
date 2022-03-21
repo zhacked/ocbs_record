@@ -22,6 +22,7 @@ export default {
         soaLists: Function,
         importWithStatus: Function,
         tab: String,
+        dates: Array,
     },
     data: () => ({
         defaultSelected: {
