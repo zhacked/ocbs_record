@@ -82,7 +82,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::put('arenaStatus', [App\Http\Controllers\API\ImportController::class, 'arenastatus']);
 
     //cusom Delete Soa
-    Route::get('deleteOneSoa/{id}', [App\Http\Controllers\API\ImportController::class, 'deleteSpecificSoa']);
+    Route::delete('deleteOneSoa/{id}', [App\Http\Controllers\API\ImportController::class, 'deleteSpecificSoa']);
 
 
     //custom Arena api

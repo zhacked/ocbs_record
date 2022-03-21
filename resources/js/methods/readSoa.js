@@ -63,8 +63,6 @@ const readSoa = (event, isExcel) => {
         let objMobileKiosk = [];
         let eventDetailsA = [];
 
-
-
         reader.onload = (e) => {
             // eslint-disable-next-line no-unused-vars
             const bstr = e.target.result;
@@ -91,16 +89,16 @@ const readSoa = (event, isExcel) => {
                 );
             });
 
-            const siteLists = ['A', 'B']
+            const siteLists = ["A", "B"];
 
-            const checkSiteExist = siteLists.some(s => Object.values(arrayData[1][5]).includes(s))
+            const checkSiteExist = siteLists.some((s) =>
+                Object.values(arrayData[1][5]).includes(s)
+            );
 
             // if(checkSiteExist == true) throw new Error() //FIXME
-            if (checkSiteExist){
-
+            if (checkSiteExist) {
                 withSite = true;
                 arrayData[1].map((r) => {
-
                     if (Object.keys(r).length >= 17) reportCombined.push(r);
 
                     if (typeof r.A == "string") eventDetailsA.push(r);
@@ -139,13 +137,14 @@ const readSoa = (event, isExcel) => {
                         eventCreatedUTC
                 );
 
-                console.log('eventDateCreated',eventDateCreated)
+                console.log("eventDateCreated", eventDateCreated);
                 const eventDateClosed = dateFormatting(
-                    mergeObj.dateClosed  || isValidEventArenaDate(eventDetailsA[4]?.A)
-                    || eventClosedUTC
+                    mergeObj.dateClosed ||
+                        isValidEventArenaDate(eventDetailsA[4]?.A) ||
+                        eventClosedUTC
                 );
 
-                console.log(isValidEventArenaDate(arrayData[1][3].A) )
+                console.log(isValidEventArenaDate(arrayData[1][3].A));
 
                 const objectKeyed = (array) => {
                     let objectKeyReplacedArray = [];
@@ -195,9 +194,12 @@ const readSoa = (event, isExcel) => {
 
                     if (existing.length) {
                         const m = item.type.toLowerCase();
-                        const existingIndex = objMobileKiosk.indexOf(existing[0]);
+                        const existingIndex = objMobileKiosk.indexOf(
+                            existing[0]
+                        );
 
-                        objMobileKiosk[existingIndex].totalMWMobile = item.total;
+                        objMobileKiosk[existingIndex].totalMWMobile =
+                            item.total;
                         objMobileKiosk[existingIndex].drawMobile = item.draw;
 
                         objMobileKiosk[existingIndex].safetyFundMob =
@@ -231,7 +233,8 @@ const readSoa = (event, isExcel) => {
                         helper[key].safetyFundMob = o.safetyFund;
                         helper[key].otherCommIntMob = o.otherCommissionIntel05;
                         helper[key].consolCommMob = o.consolidatorsCommission;
-                        helper[key].payOutsBalMob = o.paymentForOutstandingBalance;
+                        helper[key].payOutsBalMob =
+                            o.paymentForOutstandingBalance;
                     }
 
                     return r;
@@ -282,8 +285,10 @@ const readSoa = (event, isExcel) => {
                         const totalUnclaimed = rest.unclaimed;
                         const totalCUnpaid = rest.cUnpaid;
                         const salesDeduction = rest.salesDeductionTablet;
-                        const netOperatorsCommission = rest.netOperatorsCommission;
-                        const otherCommissionIntel = rest.otherCommissionIntel05;
+                        const netOperatorsCommission =
+                            rest.netOperatorsCommission;
+                        const otherCommissionIntel =
+                            rest.otherCommissionIntel05;
                         const consolidatorsCommission =
                             rest.consolidatorsCommission;
                         const safetyFund = rest.safetyFund;
@@ -307,12 +312,14 @@ const readSoa = (event, isExcel) => {
                                 ? rest.areaCode.replace(/\//g, "~")
                                 : rest.areaCode;
 
-
                         const codeEvent = `${areaCode.toLowerCase()}${moment(
                             rest.eventCreated
                         ).format("X")}`;
 
-                       const hashedCode = CryptoJS.AES.encrypt(codeEvent, 'secretKey').toString();
+                        const hashedCode = CryptoJS.AES.encrypt(
+                            codeEvent,
+                            "secretKey"
+                        ).toString();
 
                         rest = {
                             areaCode,
@@ -372,13 +379,13 @@ const readSoa = (event, isExcel) => {
                         removeLuck.arena_name.split(" ")[0] !== "LUCKY"
                 );
                 // group fr and soa
-                const groupSOAFR =  removeLucky.reduce(function (r, a) {
+                const groupSOAFR = removeLucky.reduce(function (r, a) {
                     r[a.soaFr] = r[a.soaFr] || [];
                     r[a.soaFr].push(a);
                     return r;
                 }, Object.create(null));
 
-                console.log(groupSOAFR)
+                console.log(groupSOAFR);
 
                 // Convert Month number to alphabet
                 const moLetter = String.fromCharCode(
@@ -397,21 +404,24 @@ const readSoa = (event, isExcel) => {
                     },
                 ]);
 
-
-                const site = arrayData[1][5].A.split(':')[1].trim() === '' ? arrayData[1][5].B : arrayData[1][5].A.split(':')[1];
-
+                const site =
+                    arrayData[1][5].A.split(":")[1].trim() === ""
+                        ? arrayData[1][5].B
+                        : arrayData[1][5].A.split(":")[1];
 
                 const count = (i) => `0000${i + 1}`.slice(-4);
                 const newsoa = sortSoa.map(({ soaFr, ...s }, i) => ({
-                    refNo: `S${site}${moment(eventDateCreated).format("YYDD")}${moLetter}${count(i)}`,
+                    refNo: `S${site}${moment(eventDateCreated).format(
+                        "YYDD"
+                    )}${moLetter}${count(i)}`,
                     ...s,
                 }));
                 const newfr = sortFr.map(({ soaFr, ...f }, i) => ({
-                    refNo: `R${site}${moment(eventDateCreated).format("YYDD")}${moLetter}${count(i)}`,
+                    refNo: `R${site}${moment(eventDateCreated).format(
+                        "YYDD"
+                    )}${moLetter}${count(i)}`,
                     ...f,
                 }));
-
-
 
                 const newSetReport = concat(newsoa, newfr);
 
@@ -421,8 +431,7 @@ const readSoa = (event, isExcel) => {
                     },
                 ]);
                 arenaReportFiltered.push(...sortReport);
-
-            }else{
+            } else {
                 withSite = false;
                 Fire.$emit("AfterCreate"),
                     Toast.fire({
@@ -430,9 +439,6 @@ const readSoa = (event, isExcel) => {
                         title: "Site is Missing, Please double check your excel!",
                     });
             }
-
-
-
         };
         reader.readAsBinaryString(file);
     } else {
@@ -446,7 +452,7 @@ const readSoa = (event, isExcel) => {
     return {
         arenaReportFiltered,
         isExcel,
-        withSite
+        withSite,
     };
 };
 

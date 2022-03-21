@@ -61,48 +61,52 @@
                  <td>
                     <p class="font-weight-bold text-left">{{item.arena_name}}</p>
                 </td>
-                <td>
-                    <v-tooltip top color="primary">
-                        <template v-slot:activator="{ on, attrs, hover }">
-                            <v-btn
-                                icon
-                                color="primary"
-                                dark
-                                small
-                                v-bind="attrs"
-                                v-on="on"
-                                @click="openModal(item)"
-                                :class="{
-                                'on-hover': hover,
-                                }"
-                                :disabled="downloadingReport"
-                            >
-                                <v-icon>mdi-eye</v-icon>
-                            </v-btn>
-                        </template>
-                        <span>View Account</span>
-                    </v-tooltip>
+                <td >
+                    <div class="d-flex">
+                        <v-tooltip top color="primary">
+                            <template v-slot:activator="{ on, attrs, hover }">
+                                <v-btn
+                                    color="primary"
+                                    dark
+                                    small
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    @click="openModal(item)"
+                                    :class="{
+                                    'on-hover': hover,
+                                    }"
+                                    :disabled="downloadingReport"
+                                    class='mr-2'
+                                >
+                                    View
+                                    <!-- <v-icon>mdi-eye</v-icon> -->
+                                </v-btn>
+                            </template>
+                            <span>View Account</span>
+                        </v-tooltip>
 
-                    <v-tooltip top color="red">
-                        <template v-slot:activator="{ on, attrs, hover }">
-                            <v-btn
-                                icon
-                                color="red"
-                                dark
-                                small
-                                v-bind="attrs"
-                                v-on="on"
-                                @click="deleteOneSoa(item.id)"
-                                :class="{
-                                'on-hover': hover,
-                                }"
-                                :disabled="downloadingReport"
-                            >
-                                <v-icon>mdi-trash-can</v-icon>
-                            </v-btn>
-                        </template>
-                        <span>Delete Account</span>
-                    </v-tooltip>
+                        <v-tooltip top color="red">
+                            <template v-slot:activator="{ on, attrs, hover }">
+                                <v-btn
+                                    
+                                    color="red"
+                                    dark
+                                    small
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    @click="deleteOneSoa(item.id)"
+                                    :class="{
+                                    'on-hover': hover,
+                                    }"
+                                    :disabled="downloadingReport"
+                                >
+                                    Delete
+                                    <!-- <v-icon>mdi-trash-can</v-icon> -->
+                                </v-btn>
+                            </template>
+                            <span>Delete Account</span>
+                        </v-tooltip>
+                    </div>
                 </td>
             </tr>
 
@@ -164,16 +168,12 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.get('api/deleteOneSoa/'+ id).then((data)=>{
+                    axios.delete('api/deleteOneSoa/'+ id).then((data)=>{
                         console.log('data',data)
                         this.$emit('loading', true)
                         this.soaLists();
                         this.$emit('loading', false)
-                        Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                        )
+                      
                     });
 
                 }

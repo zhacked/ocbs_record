@@ -366,7 +366,7 @@
                                 class="custom-span computation-span d-flex align-center computation-total"
                             >
                                 <span class="ctotal-text">{{
-                                    moneyFormat(computation.totalCommission)
+                                    moneyFormat(computation.totalCommission, true)
                                 }}</span>
                             </div>
                         </div>
