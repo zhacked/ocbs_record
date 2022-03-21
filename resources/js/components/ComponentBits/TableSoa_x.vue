@@ -176,14 +176,7 @@ export default {
             const perPage = Math.ceil((this.total/e))
           
             this.$emit('perPage', perPage)
-            //  await this.soaLists(this.pagePosition,perPage); 
-            //  if(this.tab === 'ongoing'){ 
-            //         await this.soaLists(this.pagePosition,perPage); 
-            //         this.loading = false
-            //     } else { 
-            //         await this.withStatus(this.pagePosition, perPage)
-            //         this.loading = false
-            //     };
+           
         },
  
         handlePageOptions(e){
