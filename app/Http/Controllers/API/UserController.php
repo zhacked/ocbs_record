@@ -40,8 +40,8 @@ class UserController extends Controller
 
     public function getUserTeam(Request $request, $teamId) {
         $userTeam = User::with(['positionDetails','teamDetails'])->where('team_id', $teamId)->get();
-      
-      
+
+
         return $userTeam;
     }
 
@@ -59,20 +59,20 @@ class UserController extends Controller
     }
 
     public function getAvailableSignatory(Request $request, $signatory) {
-     
+
         $getUsers = User::with(['positionDetails'])->where('type','!=','admin')->where('type', '!=', 'tech')->whereNull('assign')->orWhere('assign', $signatory)->get();
 
         return $getUsers;
     }
 
     public function getUsersSignatory(Request $request, $signatory) {
-     
+
         $getUsersSignatory = User::with(['positionDetails'])->where('assign', $signatory)->get();
 
         return $getUsersSignatory;
     }
 
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -82,8 +82,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-      
-        
+
+
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'username' => 'required|string|max:191|unique:users',
@@ -103,32 +103,33 @@ class UserController extends Controller
             'password' => Hash::make($request['password']),
         ]);
 
-        
+
         foreach($request->permission as $permission){
            $permision =  Permission::create([
                 'user_id' => $user->id,
                 'role_id'  => $permission,
             ]);
-        }   
+        }
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('created',$user->username,'profile',$user->id);
 
-        // $this->Profileactivity('created',$user->username,'profile',$user->id);
         // return $user;
     }
 
 
     public function updateProfile(Request $request)
     {
-       
+
     $user = auth('api')->user();
 
-   
+
         $this->validate($request,[
             'name' => 'required|string|max:191',
             // 'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,
             'password' => 'sometimes|required|min:6'
         ]);
 
-       
+
 
         $currentPhoto = $user->photo;
             if($request->photo != $currentPhoto){
@@ -148,8 +149,10 @@ class UserController extends Controller
                 $request->merge(['password' => Hash::make($request['password'])]);
             }
 
-        $this->Profileactivity('updated',$user->username,'profile',$user->id);
-        
+
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('updated',$user->username,'profile',$user->id);
+
         $user->update($request->all());
         return ['message' => "Success"];
     }
@@ -167,19 +170,20 @@ class UserController extends Controller
      */
     public function validate_user($password)
     {
-    
+
         if (Hash::check($password, Auth::user()->password)) {
             // $artisan = Artisan::call('backup:run',[
             //     '--only-db' => true,
             // ]);
              $import =  import::truncate();
-             $this->Profileactivity('truncate',Auth::user()->name,'profile',Auth::user()->id);
+             $activity_controller = new ActivitylogsController;
+             $activity_controller->arenaLogs('truncate',Auth::user()->name,'profile',Auth::user()->id);
              return 'success';
         }else{
             return 'error';
         }
-        
-       
+
+
     }
 
     /**
@@ -191,9 +195,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-       
+
         $user = User::findOrFail($id);
-        
+
 
 
         if($request->type == 'admin'){
@@ -220,45 +224,40 @@ class UserController extends Controller
             'password' => $request['password'] == null ? $user->password :  Hash::make($request['password'])
         ]);
 
-      
-        
+
+
         foreach($request->permission as $permission){
              $permisions =  Permission::updateOrCreate([
                     'user_id' => $user->id,
                     'role_id'  => gettype($permission) == 'array' ? $permission['id'] : $permission,
             ]);
-           
-            }   
 
-        
-    
-        
+            }
 
-         
-        $this->Profileactivity('updated',$user->username,'profile',$user->id);
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('updated',$user->username,'profile',$user->id);
+
 
         return ['message' => 'Updated the user info'];
     }
 
     public function updateUserTeam(Request $request, $id){
         $user = User::findOrFail($id);
-      
+
         $user->update([
             'team_id' => $request['team_id'],
             'assign' => $request['assign'],
         ]);
 
-        // $usersTeam = User::where('team_id', $request['team_id']);
-        // $usersTeam->update(['isAssign' => false]);
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('updated',$user->username,'team',$user->id);
 
-
-        $this->Profileactivity('updated',$user->username,'team',$user->id);
         return $user;
     }
 
-    
+
     public function updateSelectedUserToTeam(Request $request, $team){
-   
+
         foreach($request['users'] as $user){
             $user = User::findOrFail($user['id']);
 
@@ -269,9 +268,8 @@ class UserController extends Controller
         };
 
 
-
-        $this->Profileactivity('updated',$user->username,'team',$user->id);
-
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('updated',$user->username,'team',$user->id);
         return true;
     }
 
@@ -282,12 +280,13 @@ class UserController extends Controller
         $usersTeam->update(['isAssign' => false]);
 
         $user->update(['isAssign' => true]);
-
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('updated',$user->username,'team',$user->id);
         return $user;
     }
 
     public function updateSignatory(Request $request){
-   
+
         $userAssigned = User::where('assign', $request['assigned']);
         $getUsers = $userAssigned->get();
         if(count($request['users']) > $request['noOfSign']) throw new \Exception('Assigned User Exceeded');
@@ -297,13 +296,15 @@ class UserController extends Controller
                 'assign' => null
             ]);
         }
-      
+
         foreach($request['users'] as $users){
             $user = User::findOrFail($users['id']);
             $signatoryUpdate = $user->update([
                 'assign' => $request['assigned']
             ]);
-        }   
+        }
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('updated',$userAssigned->username,'signatory',$userAssigned->id);
         return true;
     }
 
@@ -317,36 +318,34 @@ class UserController extends Controller
     {
         $this->authorize('isAdmin');
 
-        
+
         $user = User::findOrFail($id);
         $permission = permission::where('user_id', $id)->delete();
+
+        $activity_controller = new ActivitylogsController;
+        $activity_controller->arenaLogs('deleted',$user->username,'user',$user->id);
         // delete the user
         $user->delete();
 
         return ['message' => 'User Deleted'];
-        
+
     }
     public function roles(){
        return Role::latest()->get();
-    
     }
 
     public function getpermission($id){
         return permission::with('roles')->where('user_id', $id)->get();
-    }   
+    }
 
     public function DeletePermissions(request $request){
         $permission = permission::where('user_id', $request->userid)
                         ->where('role_id',$request->roleid)
                         ->delete();
-                        
+
         return permission::with('roles')->where('user_id', $request->userid)->get();
     }
 
-    public function Profileactivity($action,$description,$model,$id){
-        $activity_controller = new ActivitylogsController;
-        $activity_controller->arenaLogs($action,$description,$model,$id); 
-    }
 
-   
+
 }
