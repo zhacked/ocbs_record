@@ -39,14 +39,14 @@
                             :fetchLists="handleFetchLists"
                             :soaLists="soaLists"
                             :importWithStatus="importWithStatus"
-                            
+
                             @noArenaDetails="noArenaDetails"
                             @filterText="filterText"
                             ref="filterArena"
                         ></filter-arena>
-                      
+
                         <filter-site
-                            
+
                             :loadDateRange="loadDateRange"
                             :page="pageNumber"
                             :tab="tab"
@@ -55,7 +55,7 @@
                             :importWithStatus="importWithStatus"
                             :fetchLists="handleFetchLists"
                             @arenaPerSite="arenaPerSite"
-                         
+
                             ref="site"
                         ></filter-site>
                         <!-- FILE INPUT -->
@@ -145,7 +145,7 @@
                                         @pageOption="pageOption"
                                     ></table-soax>
                                 </v-tab-item>
-                  
+
                             </v-tabs-items>
                         </v-card-text>
                     </v-card>
@@ -713,6 +713,8 @@ export default {
             site: "",
             scTimer: 0,
             scY: 0,
+            selectsited: '',
+            selectedDated:'',
         };
     },
     methods: {
@@ -722,9 +724,10 @@ export default {
         },
         truncate, // truncate data based on date
         async soaLists(site, dates) {
-            console.log('SOALISTxxxxx', site)
+            this.selectsited = site;
+            this.selectedDated = dates;
+            // console.log('SOALISTxxxxx', site)
             // fetch all soa with status = null
-            // const pageNo = parseInt(localStorage.getItem('page'))
             const perPage = parseInt(localStorage.getItem("itemsPerPage"));
             const sited = site
             const { soaLists, total, page } = await soa(
@@ -740,6 +743,9 @@ export default {
             this.page = page;
         },
         async importWithStatus(site, dates) {
+            this.selectsited = site;
+            this.selectedDated = dates;
+            console.log('SOALISTxxxxx', site)
             // fetch data with status = done
 
             const perPage = parseInt(localStorage.getItem("itemsPerPage"));
@@ -816,7 +822,7 @@ export default {
                 this.tab === "ongoing" &&
                 this.dates.length > 1 &&
                 !this.search){
-                
+
                     await this.soaLists(site, this.dates);
             }else if ( site &&
                 this.tab === "converted" &&
@@ -830,7 +836,7 @@ export default {
                 this.dates.length < 1 &&
                 !this.search
             ) {
-        
+
                 await this.soaLists(site);
             } else if (
                 site &&
@@ -839,9 +845,9 @@ export default {
                 !this.search
             ) {
                 await this.importWithStatus(site);
-            } 
-            
-            
+            }
+
+
             else if (this.dates.length > 1 && !this.search) {
                 await this.loadDateRange();
             } else {
@@ -922,18 +928,22 @@ export default {
                 ));
         },
         async handleChangeTab(item) {
+
             // Swicth between menu tab: ongoing and converted
+            console.log('switch tab', this.selectsited);
+
             this.pageNumber = 1;
             this.signsArray = [];
             const perPage = parseInt(localStorage.getItem("itemsPerPage"));
             this.search
                 ? this.handleSearching(item)
-                : this.dates.length !== 0
+                    : this.dates.length !== 0
                 ? this.loadDateRange(item, this.pageNumber, perPage)
-                : item === "ongoing"
-                ? await this.soaLists()
-                : await this.importWithStatus();
-            
+                    : item === "ongoing"
+                ? await this.soaLists(this.selectsited, this.selectedDated )
+                    : await this.importWithStatus(this.selectsited, this.selectedDated );
+
+
             this.loadBankDetails();
         },
         handleSigned(value) {
@@ -981,7 +991,7 @@ export default {
             this.total = item.total;
             this.page = item.current_page;
         },
-   
+
         // filteredSite(item){
         //     console.log(item)
         //     this.site = item

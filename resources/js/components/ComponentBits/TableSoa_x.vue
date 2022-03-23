@@ -15,7 +15,7 @@
         class="elevation-1 text-center"
         :footer-props="{
             'items-per-page-options': itemsPerPageOptions,
-            
+
         }"
         :options="perPagee"
         :page="page"
@@ -27,7 +27,7 @@
         @input="singleSelected"
     >
         <template v-slot:top="{ pagination, options, updateOptions, itemsPerPageOptions }">
-            <v-data-footer 
+            <v-data-footer
                 :items-per-page-options ="[5, 10, 20, 30, 40, 50, 100]"
                 :pagination="pagination"
                 :options="perPagee"
@@ -122,7 +122,7 @@ export default {
         arenaData: Array,
         downloadingReport: Boolean,
         openModal: Function,
-        search: String, 
+        search: String,
         total: Number,
         page: Number,
         perPage: Number,
@@ -167,7 +167,7 @@ export default {
                         this.$emit('loading', true)
                         this.soaLists();
                         this.$emit('loading', false)
-                      
+
                     });
 
                 }
@@ -205,21 +205,21 @@ export default {
 
         async handlePaginate(e){
               this.pagePosition  = e.page
-                console.log('Tabbbbb>>>>', this.tab)
+                // console.log('Tabbbbb>>>>', this.tab)
                   this.$emit('loading', true)
                     await this.fetchLists(localStorage.getItem('site'));
                     this.$emit('loading', false)
-            
-            
-               
-           
+
+
+
+
         },
         async handlePageCount(e){
 
             const perPage = Math.ceil((this.total/e))
 
             this.$emit('perPage', perPage)
-           
+
         },
 
         handlePageOptions(e){

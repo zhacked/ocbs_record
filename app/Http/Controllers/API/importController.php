@@ -44,7 +44,7 @@ class importController extends Controller
         ])->whereNull('status')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
         if($request->has('per_page')) {
-            
+
             $perPage = $request->input('per_page');
 
             if($request->has('site') && $site !== 'all') {
@@ -53,7 +53,7 @@ class importController extends Controller
                 }else {
                     return $soa->where('refNo','like', '_'.$site.'%')->paginate($perPage);
                 }
-                
+
             } else if ($request->has('site')  && $site == 'all') {
                 if($request->has('dateFrom') && $request->has('dateTo')) {
                     return $soa->whereBetween('date_of_soa',[$from, $to])->paginate($perPage);
@@ -64,13 +64,12 @@ class importController extends Controller
             } else {
                  return $soa->paginate($perPage);
             }
-               
-            
+
+
 
         } else {
             return $soa->get();
         }
-
 
     }
 
@@ -107,15 +106,15 @@ class importController extends Controller
     ])->whereNotNull('status')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
         if($request->has('per_page')) {
-            
+
             $perPage = $request->input('per_page');
             if($request->has('site') && $site !== 'all') {
                 return $soa->where('refNo','like', '_'.$site.'%')
-                    
+
                     ->paginate($perPage);
             }
                 return $soa->paginate($perPage);
-            
+
 
         } else {
             return $soa->get();
@@ -148,6 +147,7 @@ class importController extends Controller
         'arenaDetails.UserTeam.userDetails.positionDetails'
         ])->whereDoesntHave('arenaDetails')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
+        dd($soaNoArena->count());
         // dd($soa[6]->arenaDetails()->exists());
 
         if($request->has('per_page')) {
@@ -159,7 +159,7 @@ class importController extends Controller
                 return $soaNoArena->paginate($perPage);
             }
 
-            
+
         } else {
             return $soaNoArena->get();
         }
@@ -186,15 +186,15 @@ class importController extends Controller
                     ->orWhere('refNo','like', 'R'.$site.'%')
                     ->paginate($perPage);
             }
-            
+
         } else {
             return $soaSite->paginate($perPage);
-        }   
+        }
 
     }
 
 
-   
+
 
 
     /**
