@@ -103,7 +103,8 @@
                                     }}</span>
                                 </template>
                                 <template v-slot:[`item.bank`]="{ item }">
-                                    <v-tooltip top color="green">
+
+                                    <v-tooltip top :color="item.bank_details.length == 0 ? 'gray' : 'green'">
                                         <template
                                             v-slot:activator="{ on, attrs }"
                                         >
@@ -111,13 +112,13 @@
                                                 icon
                                                 v-bind="attrs"
                                                 v-on="on"
-                                                color="green"
+                                                :color="item.bank_details.length == 0 ? 'gray' : 'green'"
                                                 @click="openBankModel(item)"
                                             >
                                                 <v-icon small>mdi-bank</v-icon>
                                             </v-btn>
                                         </template>
-                                        <span>Bank Information</span>
+                                        <span>{{item.bank_details.length== 0 ? 'No bank Details Available' : 'Bank Information'}}</span>
                                     </v-tooltip>
                                 </template>
 
@@ -1128,7 +1129,7 @@ export default {
 
             console.log(formatArenaDetails)
 
-        
+
                 worksheet =  XLSX.utils.json_to_sheet(formatArenaDetails),
 
                 XLSX.utils.book_append_sheet(workbooks,worksheet),

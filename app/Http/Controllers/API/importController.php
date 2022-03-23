@@ -147,7 +147,7 @@ class importController extends Controller
         'arenaDetails.UserTeam.userDetails.positionDetails'
         ])->whereDoesntHave('arenaDetails')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
-        dd($soaNoArena->count());
+
         // dd($soa[6]->arenaDetails()->exists());
 
         if($request->has('per_page')) {
@@ -164,7 +164,7 @@ class importController extends Controller
             return $soaNoArena->get();
         }
 
-       return $soa;
+    //    return $soa;
     }
 
     public function filterSite(Request $request) {
