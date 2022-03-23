@@ -64,9 +64,6 @@ class importController extends Controller
             } else {
                  return $soa->paginate($perPage);
             }
-
-
-
         } else {
             return $soa->get();
         }
@@ -105,20 +102,30 @@ class importController extends Controller
             'arenaDetails.UserTeam.userDetails.positionDetails'
     ])->whereNotNull('status')->orderBy('date_of_soa', 'DESC')->orderBy('areaCode', 'ASC');
 
-        if($request->has('per_page')) {
+    if($request->has('per_page')) {
 
-            $perPage = $request->input('per_page');
-            if($request->has('site') && $site !== 'all') {
-                return $soa->where('refNo','like', '_'.$site.'%')
+        $perPage = $request->input('per_page');
 
-                    ->paginate($perPage);
+        if($request->has('site') && $site !== 'all') {
+            if($request->has('dateFrom') && $request->has('dateTo')) {
+                return $soa->where('refNo','like', '_'.$site.'%')->whereBetween('date_of_soa',[$from, $to])->paginate($perPage);
+            }else {
+                return $soa->where('refNo','like', '_'.$site.'%')->paginate($perPage);
             }
-                return $soa->paginate($perPage);
 
+        } else if ($request->has('site')  && $site == 'all') {
+            if($request->has('dateFrom') && $request->has('dateTo')) {
+                return $soa->whereBetween('date_of_soa',[$from, $to])->paginate($perPage);
+            }else {
+                return $soa->paginate($perPage);
+            }
 
         } else {
-            return $soa->get();
+             return $soa->paginate($perPage);
         }
+    } else {
+        return $soa->get();
+    }
 
     }
 

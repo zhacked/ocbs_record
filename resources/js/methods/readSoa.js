@@ -94,8 +94,8 @@ const readSoa = (event, isExcel, withSite) => {
             const checkSiteExist = siteLists.some((s) =>
                 Object.values(arrayData[1][5]).includes(s)
             );
-            console.log(checkSiteExist)
-            // if(checkSiteExist == true) throw new Error() //FIXME
+          
+         
             if (checkSiteExist) {
                 withSite = true
                 arrayData[1].map((r) => {
