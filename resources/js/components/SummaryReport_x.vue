@@ -328,60 +328,58 @@ export default {
             console.log("Change Tab", this.pageNumber, item);
             await this.loadSummary(item, this.pageNumber);
         },
-        convertToExcel(data, deprep) {
-            const value = moment(data).format("YYYY-MM-DD LTS");
-            const date = moment(data).format("MMMM-DD-YYYY");
+        async convertToExcel(item) {
+            const value = moment(item).format("YYYY-MM-DD LTS");
+            const date = moment(item).format("MMMM-DD-YYYY");
             let workbooks = XLSX.utils.book_new();
             let worksheet = "";
-            let aray = [];
-            axios.get("api/convertToExcel/" + this.tab + "/" + value).then(
-                ({ data }) => (
-                    data.forEach((val, index) => {
 
-                        const objVal = {
-                            ID: index + 1,
-                            "Date of Event": date,
-                            "Ref Number": val.refNo,
-
-                            "OCBS Name": val.arena_name,
-                            "Total Commission": moneyFormat(
-                                parseFloat(val.totalCommission)
-                            ),
-                            "Other Commission -M": moneyFormat(
-                                parseFloat(val.otherCommissionIntel05) +
-                                    parseFloat(val.otherCommIntMob)
-                            ),
-                            "Consolidators commission": moneyFormat(
-                                parseFloat(val.consolidatorsCommission) +
-                                    parseFloat(val.consolCommMob)
-                            ),
-                            "Safety Fund": moneyFormat(
-                                parseFloat(val.safetyFund) +
-                                    parseFloat(val.safetyFundMob)
-                            ),
-                            "Payment For O/Standing Balance": moneyFormat(
-                                parseFloat(val.paymentForOutstandingBalance) +
-                                    parseFloat(val.payOutsBalMob)
-                            ),
-                            Amount: moneyFormat(parseFloat(val.for_total)),
-                        };
-
-                        aray.push(objVal);
-                    }),
-                    (worksheet = XLSX.utils.json_to_sheet(aray)),
-                    delete worksheet["E2"].w,
-                    XLSX.utils.format_cell(worksheet["E2"]),
-                    // console.log(worksheet['E2'].v),
-                    XLSX.utils.format_cell(workbooks,worksheet),
-                    XLSX.utils.book_append_sheet(workbooks, worksheet, date),
-                    XLSX.write(workbooks, { bookType: "xlsx", type: "buffer" }),
-                    XLSX.write(workbooks, { bookType: "xlsx", type: "binary" }),
-                    XLSX.writeFile(
-                        workbooks,
-                        `${this.tab}-${moment(date).format("MMDDYY")}.xlsx`
-                    )
-                )
+            const { data } = await axios.get(
+                "api/convertToExcel/" + this.tab + "/" + value
             );
+
+            const arraySheet = data.map((val, index) => ({
+                ID: index + 1,
+                "Date of Event": date,
+                "Ref Number": val.refNo,
+
+                "OCBS Name": val.arena_name,
+                "Total Commission": moneyFormat(
+                    parseFloat(val.totalCommission)
+                ),
+                "Other Commission -M": moneyFormat(
+                    parseFloat(val.otherCommissionIntel05) +
+                        parseFloat(val.otherCommIntMob)
+                ),
+                "Consolidators commission": moneyFormat(
+                    parseFloat(val.consolidatorsCommission) +
+                        parseFloat(val.consolCommMob)
+                ),
+                "Safety Fund": moneyFormat(
+                    parseFloat(val.safetyFund) + parseFloat(val.safetyFundMob)
+                ),
+                "Payment For O/Standing Balance": moneyFormat(
+                    parseFloat(val.paymentForOutstandingBalance) +
+                        parseFloat(val.payOutsBalMob)
+                ),
+                Amount: moneyFormat(parseFloat(val.for_total)),
+            }));
+
+            
+
+            worksheet =  XLSX.utils.json_to_sheet(arraySheet);
+            delete worksheet["E2"].w;
+             XLSX.utils.format_cell(worksheet["E2"]);
+            // console.log(worksheet['E2'].v),
+             XLSX.utils.format_cell(workbooks, worksheet);
+             XLSX.utils.book_append_sheet(workbooks, worksheet, date);
+             XLSX.write(workbooks, { bookType: "xlsx", type: "buffer" });
+             XLSX.write(workbooks, { bookType: "xlsx", type: "binary" });
+             XLSX.writeFile(
+                workbooks,
+                `${this.tab}-${moment(date).format("MMDDYY")}.xlsx`
+            );
+          
         },
     },
 };
