@@ -294,12 +294,10 @@ export default {
             console.log("loadSummary>>>>>>", page);
             this.loading = true;
             const { data } = await axios.get(
-                `api/summaryReport?group=${group}&page=${page}&per_page=${parseInt(
-                    localStorage.getItem("itemsPerPage")
-                )}`
+                `api/summaryReport?group=${group}`
             );
 
-            this.summaryData = data.data;
+            this.summaryData = data;
             this.total = data.total;
             this.loading = false;
         },
@@ -329,6 +327,7 @@ export default {
             await this.loadSummary(item, this.pageNumber);
         },
         async convertToExcel(item) {
+
             const value = moment(item).format("YYYY-MM-DD LTS");
             const date = moment(item).format("MMMM-DD-YYYY");
             let workbooks = XLSX.utils.book_new();
@@ -365,8 +364,10 @@ export default {
                 Amount: moneyFormat(parseFloat(val.for_total)),
             }));
 
-            
 
+            const tabTitle = this.tab === 'deposit' ? 'SOA' : 'FR'
+            const siteTitle = arraySheet[0]['Ref Number'].charAt(1) === 'B' ? 'BRAVO' : 'ALPHA'
+            console.log()
             worksheet =  XLSX.utils.json_to_sheet(arraySheet);
             delete worksheet["E2"].w;
              XLSX.utils.format_cell(worksheet["E2"]);
@@ -377,9 +378,9 @@ export default {
              XLSX.write(workbooks, { bookType: "xlsx", type: "binary" });
              XLSX.writeFile(
                 workbooks,
-                `${this.tab}-${moment(date).format("MMDDYY")}.xlsx`
+                `${tabTitle} Summary Report_${siteTitle}-${moment(date).format("MMMM DD YYYY")}.xlsx`
             );
-          
+
         },
     },
 };

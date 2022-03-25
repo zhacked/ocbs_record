@@ -325,7 +325,7 @@ class importController extends Controller
 
             return $soaSummaryReport->select('date_of_soa')->distinct()->orderBy('date_of_soa', 'DESC')->paginate($request->input('per_page'));
         } else {
-            return $soaSummaryReport->get();
+            return $soaSummaryReport->select('date_of_soa')->distinct()->orderBy('date_of_soa', 'DESC')->get();
         }
     }
 
