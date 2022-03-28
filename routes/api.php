@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\EmailController;
 
 
 /*
@@ -133,4 +134,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::post('activitybank', [App\Http\Controllers\API\ActivitylogsController::class, 'BankAccount']);
 
 
+
+    //custom sending email
+    //post
+    Route::post('sendEmail',[App\Http\Controllers\API\EmailController::class,'SendEmail']);
 

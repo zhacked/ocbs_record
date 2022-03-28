@@ -1,7 +1,7 @@
 import { imageDownload } from "./downloads";
 import { readSoa } from "./readSoa";
 import { beforeDownload } from "./beforeDownload";
-
+import {sendEmailwithImage} from "./sendEmailwithImage";
 import { truncate } from "./truncate";
 import { withStatus, soa } from "./soaList";
 import { reportGenerate } from "./generateReport";
@@ -10,6 +10,7 @@ import { printSoa } from "./print";
 
 export {
     imageDownload,
+    sendEmailwithImage,
     readSoa,
     truncate,
     beforeDownload,
@@ -18,5 +19,5 @@ export {
     reportGenerate,
     computationSoa,
     printSoa,
-  
+
 };

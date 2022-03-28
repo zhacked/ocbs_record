@@ -16,30 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('auth.login');
-// });
-// route::get('/email',function(){
-//     $data["email"] = "fsiapco@gmail.com";
-//     $data["type"] = "Statement of Account";
-//     $data["date"] = "March 23, 2022";
-//     $data["subject"] = "KIOSK SALES REPORT FOR MARCH 23, 2022";
-//     $files = [
-//         public_path('zip/test.rar'),
-//     ];
-//     Mail::send('email.emailsoa', $data, function($message)use($data, $files) {
-//         $message->to($data["email"])
-//                 ->subject($data["subject"]);
+Route::get('/', function () {
+    return view('auth.login');
+});
 
-//         foreach ($files as $file){
-//             $message->attach($file);
-//         }
-
-//     });
-
-//     dd('Mail sent successfully');
-
-// });
 // Route::get('/register', function () {
 //   return view('register');
 // });

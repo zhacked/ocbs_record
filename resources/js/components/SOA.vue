@@ -507,7 +507,7 @@
                                                     @click="
                                                         downloadImg(
                                                             arenaDetails,
-                                                            codeEvent
+                                                            dateEvent
                                                         )
                                                     "
                                                 >
@@ -561,6 +561,27 @@
                                                 </v-btn>
                                             </template>
                                             <span>PRINT</span>
+                                        </v-tooltip>
+                                        <v-tooltip bottom>
+                                            <template
+                                                v-slot:activator="{ on, attrs }"
+                                            >
+                                                <v-btn
+                                                    icon
+                                                    large
+                                                    color="yellow"
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    :loading="loading"
+                                                    :disabled="loading"
+                                                    @click="
+                                                        sendEmiail(arenaDetails)
+                                                    "
+                                                >
+                                                    <v-icon>mdi-email</v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>Send via Email</span>
                                         </v-tooltip>
                                     </v-card-actions>
                                 </v-card>
@@ -625,6 +646,7 @@ import {
     reportGenerate,
     computationSoa,
     printSoa,
+    sendEmailwithImage,
 } from "../methods";
 
 import ArenaModal from "./modal/ArenaModal.vue";
@@ -718,6 +740,18 @@ export default {
         };
     },
     methods: {
+        async sendEmiail(details){
+            const el = this.$refs.soaReport;
+            const imgdl = await sendEmailwithImage(details, this.dateEvent, el);
+            if (imgdl.status === 200) {
+                this.dialog = false;
+                // this.arenaDetails = {};
+                this.handleFetchLists();
+                swal.fire("Email Send!", "successfully", "success");
+            }
+
+
+        },
         handleSwitchSignatory() {
             // switch between to have signatory or not
             localStorage.setItem("prepared", this.switchPrepared);
